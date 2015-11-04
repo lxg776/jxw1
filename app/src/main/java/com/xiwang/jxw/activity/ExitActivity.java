@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 /**
- * 作者: liangxg on 2015/8/28.
+ * 作者: lxg776 on 2015/8/28.
  */
 public class ExitActivity extends Activity{
 
