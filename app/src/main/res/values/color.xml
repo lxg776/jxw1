@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 透明色 -->
+    <color name="trans">#00000000</color>
+    <!-- 橙色 -->
+    <color name="bg_orange_home">#E6601B</color>
+    <!-- 橙色 -->
+    <color name="bg_orange_car">#F79F15</color>
+    <!-- 透明色(50) -->
+    <color name="transparent_50">#50000000</color>
+    <!-- 透明色(50) -->
+    <color name="trans50">#50000000</color>
+    <!-- 红色 -->
+    <color name="red_3c">#FF3C00</color>
+    <!-- 绿色 -->
+    <color name="green">#00FF00</color>
+    
+     <color name="green_wx"> #32CD32</color>
+    <!-- 蓝色 -->
+    <color name="blue">#4481D2</color>
+    <!-- 蓝色 -->
+    <color name="order_font_blue">#3e61c6</color>
+    <!-- 纯白色 -->
+    <color name="white">#ffffffff</color>
+    <!-- 黄色 -->
+    <color name="yellow">#ffffff00</color>
+    <!-- 灰色 -->
+    <color name="gray">#ff868686</color>
+    <!-- 红色 -->
+    <color name="red">#ffff0000</color>
+    <!-- 红色 -->
+    <color name="oil_my_unit_income">#b81818</color>
+    <!-- 红色 -->
+    <color name="car_font_red">#80180e</color>
+
+    <!-- 黑色透明 -->
+    <color name="bg_black_99">#99000000</color>
+    <!-- 蓝色背景 -->
+    <color name="mine_blue_bg">#ff0c7ee3</color>
+    <!-- 灰色 不透明 -->
+    <color name="bg_gray_0">#ffe8e8e8</color>
+    <!-- 深灰色 -->
+    <color name="btn_gray_1">#B9B9B9</color>
+    <!-- 橙色2 -->
+    <color name="btn_orange_reg">#FFA018</color>
+    <!-- 灰色字体 -->
+    <color name="font_actionbar_gray">#ff666666</color>
+    <!-- 首页黑色 -->
+    <color name="home_font_black">#323232</color>
+    <!-- 首页灰色 -->
+    <color name="home_font_gray">#646464</color>
+    <!-- 默认背景颜色 -->
+    <color name="bg_default">#ffe7eaf1</color>
+    <!-- 默认提示文本颜色 -->
+    <color name="font_hint_gray">#ffcccccc</color>
+    <!-- 导航背景灰色 -->
+    <color name="home_title_gray">#F2F2F2</color>
+    <!-- 通用 -->
+    <color name="view_line">#D9D9D9</color>
+    <color name="view_line_bold">#EEEEEE</color>
+    <color name="all_txt_32">#323232</color>
+    <color name="all_txt_00">#000000</color>
+    <color name="all_txt_b4">#B4B4B4</color>
+    <color name="all_txt_66">#666666</color>
+    <color name="all_txt_f5">#f5f5f5</color>
+    <color name="all_txt_green">#23B818</color>
+    <color name="all_txt_hint1">#cccccc</color>
+    <color name="all_bg_gray">#EBEBEB</color>
+    <color name="all_bg_presse">#D9D9D9</color>
+    <color name="home_my_money">#f6c3a5</color>
+    <color name="home_my_money2">#f6cbbc</color>
+    <color name="trade_record_txt">#565656</color>
+    <color name="trade_record_txt2">#08af57</color>
+    <color name="cash_income_txt">#00af56</color>
+    <color name="cash_income_txt2">#777777</color>
+    <color name="setup_password_txt">#fe4141</color>
+    <color name="goods_detail_font">#454545</color>
+    <color name="goods_detail_gray">#5b5b5b</color>
+    <color name="goods_detail_gray1">#969696</color>
+    <color name="trans_detail_gray">#fafafa</color>
+    <!-- 白色透明 -->
+    <color name="white_55">#55ffffff</color>
+    <!-- 登录提示文本 -->
+    <color name="login_hint">#FF70bcf5</color>
+    <!-- 正文文本颜色 -->
+    <color name="font_content">#ff4d4d4d</color>
+    <!-- 灰色文本 -->
+    <color name="font_gray">#ff999999</color>
+    <!-- 灰色文本 -->
+    <color name="msg_font_gray">#999999</color>
+    <!-- 灰色分割线 -->
+    <color name="divider_gray">#ffcacacc</color>
+    <!-- 灰色 透明 -->
+    <color name="bg_gray_30">#30868686</color>
+    <!-- 浅灰色 -->
+    <color name="bg_oil_item_gray">#E6E6E6</color>
+    <!-- 浅蓝色 -->
+    <color name="login_txt_blue">#00aaff</color>
+
+    <!-- ********************title Colors********************* -->
+    <!-- 浅灰色透明 -->
+    <color name="title_transparent_grey">#66222266</color>
+    <!-- 标题栏背景颜色 -->
+    <!-- <color name="title_bg_blue">#ff3f8ff2</color> -->
+    <!-- <color name="title_bg_blue">#ff1f8fe4</color> -->
+    
+<color name="title_bg_reds">#B81818</color> 
+
+    <color name="title_bg_red">#a4b4d5</color>
+    <color name="tab_bg_bule">#4653a2</color>
+    <!-- 纯黑色 -->
+    <color name="black_50">#50000000</color>
+    <!-- 纯黑色 -->
+    <color name="black_20">#20000000</color>
+    <!-- 纯黑色 -->
+    <color name="black_70">#70000000</color>
+    <!-- 黑色 透明_50% -->
+    <color name="bg_black_88">#882d2d2d</color>
+    <!-- 透明灰色背景 -->
+    <color name="bg_transparent_grey">#bb000000</color>
+    <!-- 灰色黑色背景 -->
+    <color name="bg_gray_black">#ff161616</color>
+    <!-- 淡灰色透明 -->
+    <color name="thin_gray_lucency">#FFF0F0F0</color>
+    <!-- 淡灰色 -->
+    <color name="btn_car_selector">#E5E5E5</color>
+
+    <!-- ****************************图表色块******************************************** -->
+    <!-- 曲线颜色 -->
+    <color name="char_curve">#ffeab900</color>
+    <!-- 点的颜色 -->
+    <color name="char_dot">#ffD2D0D1</color>
+    <!-- 网格线的颜色 -->
+    <color name="char_gridline">#ff187ddd</color>
+    <!-- pk色块 -->
+    <color name="pk_font_blue">#ff58B7FF</color>
+    <color name="pk_font_mazarine">#ff0558B8</color>
+    <color name="pk_bg_orange">#ffa018</color>
+    <color name="pk_progress_orange">#ffEAB700</color>
+    <color name="pk_progress_blue">#ff0150B2</color>
+   <color name="navpage">#FFE1E8EB</color>
+
+
+    <!-- 黑色色块 -->
+    <!-- 黑色 -->
+    <color name="black">#ff000000</color>
+    <color name="black_transparent_87">#dd000000</color>
+    <color name="black_transparent_54">#8a000000</color>
+    <color name="black_transparent_26">#42000000</color>
+    <!-- 灰色背景 -->
+    <color name="grag_bg">#eeeeee</color>
+
+    <!-- 橙色 -->
+    <color name="orange_700">#f57700</color>
+    <color name="orange_500">#ff9800</color>
+    <color name="gray_500">#616161</color>
+    <color name="gray_100">#f5f5f5</color>
+</resources>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="E:\jxw\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\jars\libs\internal_impl-22.2.0.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
+        <dex dex="E:\jxw\app\build\intermediates\pre-dexed\debug\internal_impl-22.2.0-6f2485c257ffa91ee379d3debca8114da41afbe3.jar" />
+    </item>
+    <item
+        jar="E:\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\22.2.0\support-annotations-22.2.0.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="66b42a1f3eb7676070b7ef7f14b603483aecbee1">
+        <dex dex="E:\jxw\app\build\intermediates\pre-dexed\debug\support-annotations-22.2.0-2580f30025d5ca7b95e22bb9116fb6ccad53e2aa.jar" />
+    </item>
+    <item
+        jar="C:\Users\liangxg\.gradle\caches\modules-2\files-2.1\com.nostra13.universalimageloader\universal-image-loader\1.9.4\dd9eeb557650c4ad7394df23f0f5cf27a7cfc697\universal-image-loader-1.9.4.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="dd9eeb557650c4ad7394df23f0f5cf27a7cfc697">
+        <dex dex="E:\jxw\app\build\intermediates\pre-dexed\debug\universal-image-loader-1.9.4-491ff698cc0dc4b153fc3e9405c5f6081173df1f.jar" />
+    </item>
+    <item
+        jar="E:\jxw\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
+        <dex dex="E:\jxw\app\build\intermediates\pre-dexed\debug\classes-1222001d02947f6e069e73d83d52423242657d40.jar" />
+    </item>
+    <item
+        jar="E:\jxw\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
+        <dex dex="E:\jxw\app\build\intermediates\pre-dexed\debug\classes-a9fe31cfdf421f94042ac2b85a33db8667ca565b.jar" />
+    </item>
+    <item
+        jar="C:\Users\liangxg\.gradle\caches\modules-2\files-2.1\com.loopj.android\android-async-http\1.4.7\cd78109020f9ec803ef4e652c17ee4615b03e20a\android-async-http-1.4.7.jar"
+        jumboMode="false"
+        revision="23.0.0"
+        sha1="cd78109020f9ec803ef4e652c17ee4615b03e20a">
+        <dex dex="E:\jxw\app\build\intermediates\pre-dexed\debug\android-async-http-1.4.7-f11783ba4330f26287b9e062ab73df0ba217247d.jar" />
+    </item>
+
+</items>

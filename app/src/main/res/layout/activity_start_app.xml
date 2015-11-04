@@ -1,0 +1,66 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:background="@color/grag_bg"
+    android:layout_height="match_parent">
+
+   
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/buttom_rl"
+        android:layout_alignParentBottom="true"
+        android:layout_height="116dp">
+
+            <ImageView
+                android:id="@+id/logo_view"
+                android:layout_marginLeft="16dp"
+                android:background="@mipmap/ic_launcher"
+                android:layout_centerVertical="true"
+                android:scaleType="centerCrop"
+                android:layout_width="56dp"
+                android:layout_height="56dp"></ImageView>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:orientation="vertical"
+                android:layout_toRightOf="@id/logo_view"
+                android:layout_marginLeft="8dp"
+                android:layout_alignTop="@id/logo_view"
+                >
+                <!--口号-->
+                <TextView
+                    android:id="@+id/slogan_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black_transparent_87"
+                    android:text="上靖西网，掌握靖西资讯！"
+                    />
+
+                <!--版权-->
+                <TextView
+                    android:id="@+id/copyright_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:layout_marginTop="4dp"
+                    android:textColor="@color/black_transparent_54"
+                    android:text="© 2013-2015 Jingxi.net co.All Rights Reserved"
+                    />
+
+            </LinearLayout>
+    </RelativeLayout>
+    <!--背景图-->
+    <ImageView
+        android:id="@+id/img_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:layout_above="@id/buttom_rl"
+        >
+
+
+    </ImageView>
+</RelativeLayout>
