@@ -16,7 +16,7 @@ import com.xiwang.jxw.util.ImgLoadUtil;
 import com.xiwang.jxw.util.IntentUtil;
 
 /**
- * @author liangxg
+ * @author lxg776
  * @description
  * @date 2015/11/2
  * @modifier
