@@ -5,8 +5,11 @@ import com.loopj.android.http.RequestParams;
 import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.xiwang.jxw.R;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.config.ServerConfig;
+import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.executor.RequestExecutor;
 import com.xiwang.jxw.network.AppHttpClient;
 
@@ -24,9 +27,7 @@ public class BaseBiz {
      * @param params
      */
     public static void getRequest(final String url, final RequestParams params, final RequestHandle handle){
-        RequestExecutor.addTask(new Runnable() {
-            @Override
-            public void run() {
+
                 ResponseBean cacheData = handle.getRequestCache();
                 if (cacheData != null) {
                     handle.onRequestCache(cacheData);
@@ -38,12 +39,15 @@ public class BaseBiz {
                         ResponseBean responseBean = new ResponseBean();
                         try {
                             JSONObject jsonObject = new JSONObject(responseStr);
-                            responseBean.setInfo(jsonObject.optString("info"));
-                            responseBean.setStatus(jsonObject.optString("status"));
+                            responseBean.setInfo(jsonObject.optString("msg"));
+                            responseBean.setStatus(jsonObject.optString("code"));
                             responseBean.setObject(jsonObject.optString("data"));
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            responseBean.setStatus(ServerConfig.JSON_DATA_ERROR);
+                            responseBean.setInfo(TApplication.context.getResources().getString(R.string.exception_local_json_message));
+                            handle.onFail(responseBean);
                         }
+                        handle.onSuccess(responseBean);
                     }
 
                     @Override
@@ -54,8 +58,7 @@ public class BaseBiz {
                         handle.onFail(responseBean);
                     }
                 });
-            }
-        });
+
 
     }
 

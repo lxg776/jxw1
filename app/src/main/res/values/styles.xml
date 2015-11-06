@@ -25,4 +25,20 @@ by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
 
 
     </style>
+
+    <!-- 横线 -->
+    <style name="line_view_w">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:background">@color/gray_500</item>
+    </style>
+
+    <!-- 没有背景的Dialog -->
+    <style name="NobackDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
 </resources>

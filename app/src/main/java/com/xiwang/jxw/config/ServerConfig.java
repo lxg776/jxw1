@@ -18,6 +18,8 @@ public class ServerConfig {
 	public static final String RESPONSE_STATUS_SUCCESS = "10000";
 	/** 本地上传失败 */
 	public static final String EXCEPTION_UPLOAD_ERROR_STATUS = "805";
+	/** json数据解析错误 */
+	public static final String JSON_DATA_ERROR="204";
 
 	// **************************失败状态码*****************************//
 	/** 注册需要手机号码 */
@@ -55,12 +57,13 @@ public class ServerConfig {
 
 	/** Api服务器地址 */
 	// public final static String SERVER_API_URL = "http://www.brightoilonline.cn/b2b/";
-	public final static String SERVER_API_URL = "http://192.168.202.67/b2b/";
+	public final static String SERVER_API_URL = "http://m.jingxi.net/";
 	// public final static String SERVER_API_URL = "http://192.168.202.75/b2b/";
 	// public final static String SERVER_API_URL = "http://192.168.202.75/b2b/";
 	// public final static String SERVER_API_URL = "http://www.brightoilonline.cn/b2b/";
-
 	// public final static String SERVER_API_URL = "http://192.168.200.178/b2b/";
+	/** 启动界面图片 */
+	public final static String START_APP_IMG="getapp.php?a=openimg";
 
 	/** 文件服务器地址 */
 	public final static String SERVER_FILE_URL = "http://buddyfile.t.com";
