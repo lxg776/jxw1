@@ -10,10 +10,15 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseActivity;
+import com.xiwang.jxw.base.BaseBiz;
+import com.xiwang.jxw.bean.ResponseBean;
+import com.xiwang.jxw.bean.StartAppBean;
+import com.xiwang.jxw.biz.SystemBiz;
 import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.util.HandlerUtil;
 import com.xiwang.jxw.util.ImgLoadUtil;
 import com.xiwang.jxw.util.IntentUtil;
+import com.xiwang.jxw.util.SpUtil;
 
 /**
  * @author liangxg
@@ -69,12 +74,39 @@ public class StartAppActivity extends BaseActivity {
 
     @Override
     protected void init() {
-        ImgLoadUtil.displayImage(imgUrl, img_view, displayOptions, listener);
+
+        SystemBiz.getStartAppImage(new BaseBiz.RequestHandle() {
+            @Override
+            public void onSuccess(ResponseBean responseBean) {
+                StartAppBean bean= (StartAppBean) responseBean.getObject();
+                imgUrl=bean.getImgurl();
+                SpUtil.setObject(context, getString(R.string.start_app_img), responseBean);
+            }
+
+            @Override
+            public void onFail(ResponseBean responseBean) {
+                img_view.setBackgroundDrawable(getResources().getDrawable(R.mipmap.start_app_img));
+            }
+            @Override
+            public ResponseBean getRequestCache() {
+                return (ResponseBean) SpUtil.getObject(context, getString(R.string.start_app_img));
+            }
+
+            @Override
+            public void onRequestCache(ResponseBean result) {
+                StartAppBean bean= (StartAppBean) result.getObject();
+                imgUrl=bean.getImgurl();
+                ImgLoadUtil.displayImage(imgUrl, img_view, displayOptions, listener);
+            }
+        });
+
+
+
 
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                IntentUtil.gotoActivity(context,MainActivity.class);
+                IntentUtil.gotoActivityAndFinish(context,MainActivity.class);
             }
         },3000);
     }
