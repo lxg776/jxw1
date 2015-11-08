@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+
+    >
     <include layout="@layout/tootbar_main"></include>
     <FrameLayout
         android:id="@+id/content_frame"
@@ -15,7 +17,7 @@
 
     <View
 
-        style="@style/line_view_w"
+        style="@style/line_view_w2"
         />
 
     <LinearLayout

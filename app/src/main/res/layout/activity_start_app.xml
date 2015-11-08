@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:background="@color/grag_bg"
+    android:background="@color/gray_100"
     android:layout_height="match_parent">
 
    
@@ -23,6 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="16dp"
+                android:paddingTop="8dp"
                 android:orientation="vertical"
                 android:layout_toRightOf="@id/logo_view"
                 android:layout_marginLeft="8dp"

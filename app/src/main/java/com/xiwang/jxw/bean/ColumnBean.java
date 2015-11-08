@@ -17,9 +17,15 @@ public class ColumnBean extends BaseBean{
     /** 数据链接*/
     private String dataUrl;
     /** 显示类型*/
-    private String showType;
+    private String showType=TYPE_NEWSLIST;
     /** 排序*/
     private int index;
+
+
+    public static String TYPE_NEWSLIST="newsList";
+    public static String TYPE_WEB="newsList";
+
+
 
     @Override
     protected void init(JSONObject jSon) throws JSONException {

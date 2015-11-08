@@ -8,8 +8,8 @@ import android.util.Log;
 /**
  * LogUtil
  *
- * @author Çğ·ï¹â
- * @description ÈÕÖ¾¹¤¾ßÀà
+ * @author liangxg
+ * @description æ—¥å¿—å·¥å…·ç±»
  * @date 2015-3-3
  * @modifier victor
  */
@@ -67,7 +67,7 @@ public class LogUtil {
         String fullClassName = stackTrace.getClassName();
         if (null == msg) {
             int lineNumber = stackTrace.getLineNumber();
-            throw new IllegalArgumentException(fullClassName + "µÚ " + lineNumber + " ĞĞ·½·¨²ÎÊı²»ÄÜÎªnull£¡");
+            throw new IllegalArgumentException(fullClassName + "ç¬¬ " + lineNumber + " è¡Œæ–¹æ³•å‚æ•°ä¸èƒ½ä¸ºnullï¼");
         }
         return fullClassName.substring(fullClassName.lastIndexOf(".") + 1);
     }

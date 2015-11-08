@@ -12,9 +12,9 @@ by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
             backward-compatibility can go here.
         -->
 
-        <item name="colorPrimaryDark">@color/orange_500</item>
+        <item name="colorPrimaryDark">@color/orange_700</item>
         <item name="colorPrimary">@color/orange_500</item>
-        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowBackground">@color/gray_50</item>
         <item name="actionMenuTextColor">@color/black_transparent_54</item>
         <item name="android:textColorPrimary">@color/white</item>
     </style>
@@ -30,7 +30,13 @@ by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     <style name="line_view_w">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">0.5dp</item>
-        <item name="android:background">@color/gray_500</item>
+        <item name="android:background">#e0e0e0</item>
+    </style>
+
+    <style name="line_view_w2">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:background">#bdbdbd</item>
     </style>
 
     <!-- 没有背景的Dialog -->

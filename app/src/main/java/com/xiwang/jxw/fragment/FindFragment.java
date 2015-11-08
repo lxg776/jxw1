@@ -8,7 +8,7 @@ import com.xiwang.jxw.base.BaseFragment;
 
 /**
  * @author liangxg
- * @description ·¢ÏÖfragment
+ * @description å‘ç°fragment
  * @date 2015/9/24
  * @modifier
  */

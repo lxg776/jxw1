@@ -4,9 +4,9 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/gray_100"
-    android:minHeight="?attr/actionBarSize"
-    android:title="lxg776"
+    android:background="@color/orange_500"
+    android:minHeight="56dp"
+    android:title="@string/app_name"
     >
 </android.support.v7.widget.Toolbar>
 

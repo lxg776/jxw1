@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:minHeight="72dp"
+    android:paddingBottom="8dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:paddingTop="8dp">
+
+
+
+        <LinearLayout
+            android:id="@+id/left_content_ll"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <!--标题-->
+            <TextView
+                android:id="@+id/subject_tv"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:maxLines="2"
+                android:text="英超历史第一神人震惊世界"
+                android:textColor="@color/black_transparent_87"
+                android:textSize="16sp" />
+            <!--图片集-->
+            <LinearLayout
+                android:id="@+id/images_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="gone"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    android:background="@mipmap/ic_launcher" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_weight="1"
+                    android:background="@mipmap/ic_launcher" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_weight="1"
+                    android:background="@mipmap/ic_launcher" />
+            </LinearLayout>
+
+            <!--热点 作者 浏览数 回复数-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <!--推荐 热点-->
+                <TextView
+                    android:id="@+id/tag_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:background="@color/orange_500"
+                    android:gravity="center"
+                    android:minWidth="30dp"
+                    android:padding="2dp"
+                    android:text="热点"
+                    android:visibility="gone"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+                <!--作者-->
+                <TextView
+                    android:id="@+id/author_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/tag_tv"
+                    android:gravity="center"
+                    android:minWidth="30dp"
+                    android:padding="2dp"
+                    android:text="龙潭守护者"
+                    android:textColor="@color/black_transparent_54"
+                    android:textSize="12sp" />
+
+
+                <!--评论数-->
+
+                <TextView
+                    android:id="@+id/replies_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_alignParentRight="true"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:text="48"
+                    android:textColor="@color/black_transparent_54"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/replies_hint_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/replies_tv"
+                    android:gravity="center"
+                    android:minWidth="30dp"
+
+                    android:padding="2dp"
+                    android:text="评论"
+                    android:textColor="@color/black_transparent_54"
+                    android:textSize="12sp" />
+
+
+                <!--浏览数-->
+
+                <TextView
+                    android:id="@+id/hits_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:layout_toLeftOf="@id/replies_hint_tv"
+                    android:gravity="center"
+                    android:padding="2dp"
+                    android:text="88"
+                    android:textColor="@color/black_transparent_54"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/hits_hint_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/hits_tv"
+                    android:gravity="center"
+                    android:minWidth="30dp"
+                    android:padding="2dp"
+                    android:text="浏览"
+                    android:textColor="@color/black_transparent_54"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+
+
+
+
+    <!--标题图片-->
+    <ImageView
+        android:id="@+id/image_iv"
+        android:layout_width="110dp"
+        android:layout_height="80dp"
+
+        android:layout_marginLeft="16dp"
+        android:background="@mipmap/ic_launcher"
+        android:visibility="gone" />
+
+</LinearLayout>

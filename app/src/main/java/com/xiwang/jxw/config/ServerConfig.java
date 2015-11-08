@@ -58,6 +58,8 @@ public class ServerConfig {
 	/** Api服务器地址 */
 	// public final static String SERVER_API_URL = "http://www.brightoilonline.cn/b2b/";
 	public final static String SERVER_API_URL = "http://m.jingxi.net/";
+	/** 图片根地址 */
+	public final static String IMAGE_BASE_URL = "http://images.jingxi.net/";
 	// public final static String SERVER_API_URL = "http://192.168.202.75/b2b/";
 	// public final static String SERVER_API_URL = "http://192.168.202.75/b2b/";
 	// public final static String SERVER_API_URL = "http://www.brightoilonline.cn/b2b/";

@@ -25,7 +25,7 @@ import com.xiwang.jxw.R;
 public class ProcessDialogUtil {
 
 	/** 等待提示框对象 */
-	public static Dialog progressDialog=null;
+	public static ProgressDialog progressDialog=null;
 
 	/**
 	 * 显示等待提示框
@@ -53,7 +53,7 @@ public class ProcessDialogUtil {
 			progressDialog = null;
 		}
 		
-		progressDialog = new Dialog(context, R.style.NobackDialog);
+		progressDialog = new ProgressDialog(context, R.style.NobackDialog);
 		View view = View.inflate(context, R.layout.dialog_loading, null);
 		TextView loading_txt = (TextView) view.findViewById(R.id.loading_txt);
 		loading_txt.setText(processMsg);

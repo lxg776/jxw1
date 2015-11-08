@@ -31,8 +31,8 @@ public class ListBean extends BaseBean {
 	private int count;
 	/** 当前面 */
 	private int page;
-	/** 页大小 */
-	private int rows;
+	/** 总页数 */
+	private int pages;
 
 	/** 列表数据 */
 	private ArrayList<? extends BaseBean> modelList;
@@ -51,14 +51,14 @@ public class ListBean extends BaseBean {
 	protected void init(JSONObject jSon) throws JSONException {
 		count = jSon.optInt("count", 0);
 		page = jSon.optInt("page", 0);
-		rows = jSon.optInt("rows", 0);
-		modelList = toModelList(jSon.optString("dataList"), clazz);
+		pages = jSon.optInt("pages", 0);
+		modelList = toModelList(jSon.optString("list"), clazz);
 	}
 	
 	protected void init(String jSon , String key) throws JSONException {
 		count = 0;
 		page = 0;
-		rows =  0;
+		pages =  0;
 		modelList = toModelList(jSon, clazz);
 	}
 
@@ -78,12 +78,12 @@ public class ListBean extends BaseBean {
 		this.page = page;
 	}
 
-	public int getRows() {
-		return rows;
+	public int getPages() {
+		return pages;
 	}
 
-	public void setRows(int rows) {
-		this.rows = rows;
+	public void setPages(int pages) {
+		this.pages = pages;
 	}
 
 	public ArrayList<? extends BaseBean> getModelList() {
@@ -96,7 +96,7 @@ public class ListBean extends BaseBean {
 
 	@Override
 	public String toString() {
-		return "ListBean [clazz=" + clazz + ", count=" + count + ", page=" + page + ", rows=" + rows + ", modelList=" + modelList + "]";
+		return "ListBean [clazz=" + clazz + ", count=" + count + ", page=" + page + ", pages=" + pages + ", modelList=" + modelList + "]";
 	}
 
 	

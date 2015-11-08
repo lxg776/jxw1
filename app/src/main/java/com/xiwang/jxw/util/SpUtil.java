@@ -26,6 +26,10 @@ public class SpUtil {
 	/** 应用第一次开启 */
 	public static final String FIRST_INTO = "first_into";
 
+
+
+
+
 	/**
 	 * 获取一个操作sp数据的实例
 	 * 

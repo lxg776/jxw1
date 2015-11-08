@@ -80,7 +80,7 @@ public class MainActivity extends BaseActivity {
     protected void findViews() {
         /** 设置toolbar*/
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setLogo(R.mipmap.ic_launcher);
+        //toolbar.setLogo(R.mipmap.logo_white);
         toolbar.setTitle(getResources().getString(R.string.app_name));
         setSupportActionBar(toolbar);
 
