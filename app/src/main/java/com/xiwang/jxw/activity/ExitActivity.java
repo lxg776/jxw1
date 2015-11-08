@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 /**
- * ×÷Õß: lxg776 on 2015/8/28.
+ * ä½œè€…: lxg776 on 2015/8/28.
  */
 public class ExitActivity extends Activity{
 
@@ -19,7 +19,7 @@ public class ExitActivity extends Activity{
         // TODO Auto-generated method stub
         super.onNewIntent(intent);
         finish();
-        //ÍË³ö
+        //é€€å‡º
         if ((Intent.FLAG_ACTIVITY_CLEAR_TOP & intent.getFlags()) != 0) {
             finish();
         }
