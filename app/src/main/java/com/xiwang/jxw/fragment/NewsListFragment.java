@@ -1,10 +1,15 @@
 package com.xiwang.jxw.fragment;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.xiwang.jxw.R;
+import com.xiwang.jxw.activity.NewsDetailActivity;
 import com.xiwang.jxw.adapter.HomeNewsListAdapter;
+import com.xiwang.jxw.adapter.OnitemClicklistener;
 import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.base.BaseFragment;
 import com.xiwang.jxw.bean.ColumnBean;
@@ -12,6 +17,7 @@ import com.xiwang.jxw.bean.ListBean;
 import com.xiwang.jxw.bean.NewsBean;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.biz.HomeBiz;
+import com.xiwang.jxw.util.IntentUtil;
 import com.xiwang.jxw.util.SpUtil;
 import com.xiwang.jxw.widget.RefreshLayout;
 
@@ -35,6 +41,9 @@ public class NewsListFragment extends BaseFragment implements RefreshLayout.OnLo
 
     View foot_view;
 
+    public NewsListFragment(){
+
+    }
 
 
     public NewsListFragment(ColumnBean columnBean){
@@ -77,11 +86,25 @@ public class NewsListFragment extends BaseFragment implements RefreshLayout.OnLo
     protected void widgetListener() {
         refreshLayout.setOnLoadListener(this);
         refreshLayout.setOnRefreshListener(this);
+
+
+        adapter.setOnitemClicklistener(new OnitemClicklistener() {
+            @Override
+            public void onitemClick(View view, int position) {
+                if (position <= adapter.getNewsBeanList().size()-1) {
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(getString(R.string.send_news), adapter.getItem(position));
+                    IntentUtil.gotoActivity(context, NewsDetailActivity.class, bundle);
+                }}
+        });
+
+
+
     }
 
     @Override
     protected void init() {
-        loadData(1,true,true);
+        loadData(1, true, true);
     }
 
     /**

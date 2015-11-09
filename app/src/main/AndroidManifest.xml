@@ -42,6 +42,14 @@
             android:name=".activity.ExitActivity"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.NoDisplay" />
+
+        <!--新闻详情-->
+        <activity
+            android:name=".activity.NewsDetailActivity"
+            android:theme="@style/AppTheme"
+            >
+        </activity>
+
     </application>
 
 </manifest>

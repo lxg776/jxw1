@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
@@ -32,7 +33,16 @@ public class HomeNewsListAdapter extends BaseAdapter{
     List<NewsBean> newsBeanList;
     /** 上下文*/
     Context context;
+    /** item点击事件*/
+    OnitemClicklistener onitemClicklistener;
 
+    public OnitemClicklistener getOnitemClicklistener() {
+        return onitemClicklistener;
+    }
+
+    public void setOnitemClicklistener(OnitemClicklistener onitemClicklistener) {
+        this.onitemClicklistener = onitemClicklistener;
+    }
 
     /** 加载图片的监听*/
     ImageLoadingListener listener =new SimpleImageLoadingListener(){
@@ -91,7 +101,7 @@ public class HomeNewsListAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, final ViewGroup parent) {
         ViewHoder hoder=null;
         NewsBean newsBean=getItem(position);
         if(convertView==null){
@@ -119,6 +129,15 @@ public class HomeNewsListAdapter extends BaseAdapter{
             hoder.image_iv.setVisibility(View.GONE);
         }
 
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                if(null!=onitemClicklistener){
+                    onitemClicklistener.onitemClick(v,position);
+                }
+
+            }
+        });
 
 
         return convertView;
