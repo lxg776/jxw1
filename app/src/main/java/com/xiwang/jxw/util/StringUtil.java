@@ -1,5 +1,10 @@
 package com.xiwang.jxw.util;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+
 /**
  * 字符串工具类
  * Created by sunshine on 15/11/8.
@@ -16,5 +21,19 @@ public class StringUtil {
         }
         return  false;
 
+    }
+
+    /**
+     * 输入流转换成字符串
+     * @param is
+     * @return
+     */
+    public   static   String   inputStream2String(InputStream   is)   throws   IOException{
+        ByteArrayOutputStream   baos   =   new ByteArrayOutputStream();
+        int   i=-1;
+        while((i=is.read())!=-1){
+            baos.write(i);
+        }
+        return   baos.toString();
     }
 }

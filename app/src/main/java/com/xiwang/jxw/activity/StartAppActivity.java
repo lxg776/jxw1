@@ -80,7 +80,7 @@ public class StartAppActivity extends BaseActivity {
             public void onSuccess(ResponseBean responseBean) {
                 StartAppBean bean= (StartAppBean) responseBean.getObject();
                 imgUrl=bean.getImgurl();
-                ImgLoadUtil.displayImage(ServerConfig.IMAGE_BASE_URL+imgUrl, img_view, displayOptions, listener);
+                ImgLoadUtil.displayImage(imgUrl, img_view, displayOptions, listener);
                 SpUtil.setObject(context, getString(R.string.start_app_img), responseBean);
             }
 
@@ -97,7 +97,7 @@ public class StartAppActivity extends BaseActivity {
             public void onRequestCache(ResponseBean result) {
                 StartAppBean bean= (StartAppBean) result.getObject();
                 imgUrl=bean.getImgurl();
-                ImgLoadUtil.displayImage(ServerConfig.IMAGE_BASE_URL+imgUrl, img_view, displayOptions, listener);
+                ImgLoadUtil.displayImage(imgUrl, img_view, displayOptions, listener);
             }
         });
         mHandler.postDelayed(new Runnable() {

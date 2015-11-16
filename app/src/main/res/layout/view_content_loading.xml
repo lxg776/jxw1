@@ -6,23 +6,44 @@
     android:gravity="center"
     >
 
-
     <LinearLayout
         android:id="@+id/content_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
 
-        ></LinearLayout>
+        </LinearLayout>
 
 
-    <ImageView
-        android:id="@+id/loading_iv"
-        android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/loading_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@mipmap/logo_wait"
-        android:scaleType="center"
-        />
+        android:orientation="vertical"
+        android:gravity="center"
+
+        >
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Mine.ProgressBar"
+            android:id="@+id/progress_bar"
+            />
+
+        <ImageView
+            android:id="@+id/loading_iv"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/logo_wait"
+            android:scaleType="center"
+            android:layout_marginTop="8dp"
+            />
+    </LinearLayout>
+
+
+
 
 
 </RelativeLayout>

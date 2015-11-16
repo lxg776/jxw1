@@ -66,6 +66,9 @@ public class ServerConfig {
 	// public final static String SERVER_API_URL = "http://192.168.200.178/b2b/";
 	/** 启动界面图片 */
 	public final static String START_APP_IMG="getapp.php?a=openimg";
+	/** 帖子详情接口 */
+	public final static String NEWS_DETAIL="getapp.php?a=read";
+
 
 	/** 文件服务器地址 */
 	public final static String SERVER_FILE_URL = "http://buddyfile.t.com";

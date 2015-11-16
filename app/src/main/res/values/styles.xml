@@ -26,6 +26,10 @@ by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
 
     </style>
 
+    <style name="Mine.ProgressBar" parent="Base.Widget.AppCompat.ProgressBar">
+
+    </style>
+
     <!-- 横线 -->
     <style name="line_view_w">
         <item name="android:layout_width">fill_parent</item>
