@@ -14,7 +14,7 @@ public class ExitActivity extends Activity{
         super.onCreate(savedInstanceState);
         finish();
     }
-
+//13737635991
     protected void onNewIntent(Intent intent) {
         // TODO Auto-generated method stub
         super.onNewIntent(intent);

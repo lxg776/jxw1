@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:minHeight="72dp"
-    android:paddingBottom="8dp"
-    android:paddingLeft="8dp"
-    android:paddingRight="8dp"
-    android:paddingTop="8dp">
+    android:orientation="vertical">
 
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="80dp"
+        android:orientation="horizontal"
+        android:paddingBottom="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="8dp">
 
 
         <LinearLayout
@@ -33,8 +39,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:visibility="gone"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="0dp"
@@ -60,8 +66,7 @@
             <!--热点 作者 浏览数 回复数-->
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="wrap_content">
                 <!--推荐 热点-->
                 <TextView
                     android:id="@+id/tag_tv"
@@ -73,9 +78,9 @@
                     android:minWidth="30dp"
                     android:padding="2dp"
                     android:text="热点"
-                    android:visibility="gone"
                     android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:visibility="gone" />
                 <!--作者-->
                 <TextView
                     android:id="@+id/author_tv"
@@ -147,17 +152,22 @@
         </LinearLayout>
 
 
+        <!--标题图片-->
+        <ImageView
+            android:id="@+id/image_iv"
+            android:layout_width="110dp"
+            android:layout_height="80dp"
 
+            android:layout_marginLeft="16dp"
+            android:background="@mipmap/ic_launcher"
+            android:visibility="gone" />
 
-
-    <!--标题图片-->
-    <ImageView
-        android:id="@+id/image_iv"
-        android:layout_width="110dp"
-        android:layout_height="80dp"
-
-        android:layout_marginLeft="16dp"
-        android:background="@mipmap/ic_launcher"
-        android:visibility="gone" />
-
+    </LinearLayout>
+    
+    <View
+        android:background="@color/black_transparent_26"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_height="0.5dp"></View>
 </LinearLayout>

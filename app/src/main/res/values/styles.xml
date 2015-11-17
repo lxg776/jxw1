@@ -30,6 +30,13 @@ by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
 
     </style>
 
+    <style name="Mine.ProgressBar16" parent="Base.Widget.AppCompat.ProgressBar">
+        <item name="android:minWidth">16dp</item>
+        <item name="android:maxWidth">16dp</item>
+        <item name="android:minHeight">16dp</item>
+        <item name="android:maxHeight">16dp</item>
+    </style>
+
     <!-- 横线 -->
     <style name="line_view_w">
         <item name="android:layout_width">fill_parent</item>

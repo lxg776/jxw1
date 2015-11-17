@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.xiwang.jxw.bean.ColumnBean;
+import com.xiwang.jxw.bean.NewsBean;
 import com.xiwang.jxw.fragment.NewsListFragment;
 
 import java.util.HashMap;
@@ -32,7 +33,7 @@ public class HomePagerAdapter extends FragmentPagerAdapter{
         if(mapFragement.containsKey(columnBeanList.get(position))){
             return mapFragement.get(columnBeanList.get(position));
         }else{
-            NewsListFragment fragment=new NewsListFragment(columnBeanList.get(position));
+            NewsListFragment fragment= NewsListFragment.newInstance(columnBeanList.get(position));
             mapFragement.put(columnBeanList.get(position),fragment);
             return  fragment;
         }
@@ -55,4 +56,6 @@ public class HomePagerAdapter extends FragmentPagerAdapter{
         return  null;
 
     }
+
+
 }

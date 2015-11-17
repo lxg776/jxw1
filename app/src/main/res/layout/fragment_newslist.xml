@@ -13,7 +13,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/listView"
-            android:dividerHeight="1px"
+            android:dividerHeight="0dp"
+            android:divider="@color/trans"
             android:footerDividersEnabled="false"
             ></ListView>
 

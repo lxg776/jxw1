@@ -44,10 +44,13 @@ public abstract class BaseActivity extends AppCompatActivity {
 		startAnimation();
 		findViews();
 		initGetData();
+		initActionBar();
 		widgetListener();
 		init();
 		registerReceiver();
 	}
+
+	protected abstract void initActionBar();
 
 
 

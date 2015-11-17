@@ -54,7 +54,9 @@ public class BaseBiz {
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                         ResponseBean responseBean = new ResponseBean();
                         responseBean.setStatus(statusCode + "");
-                        responseBean.setInfo(new String(responseBody));
+                        if(null!=responseBody){
+                            responseBean.setInfo(new String(responseBody));
+                        }
                         handle.onFail(responseBean);
                     }
                 });

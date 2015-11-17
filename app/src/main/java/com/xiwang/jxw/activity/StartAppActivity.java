@@ -63,6 +63,11 @@ public class StartAppActivity extends BaseActivity {
     };
 
     @Override
+    protected void initActionBar() {
+
+    }
+
+    @Override
     protected int getContentViewId() {
         return R.layout.activity_start_app;
     }

@@ -1,12 +1,16 @@
 package com.xiwang.jxw.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.activity.NewsDetailActivity;
+import com.xiwang.jxw.activity.TestActivity;
 import com.xiwang.jxw.adapter.HomeNewsListAdapter;
 import com.xiwang.jxw.adapter.OnitemClicklistener;
 import com.xiwang.jxw.base.BaseBiz;
@@ -16,11 +20,14 @@ import com.xiwang.jxw.bean.ListBean;
 import com.xiwang.jxw.bean.NewsBean;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.biz.HomeBiz;
+import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.util.IntentUtil;
 import com.xiwang.jxw.util.SpUtil;
 import com.xiwang.jxw.widget.RefreshLayout;
 
 import java.util.List;
+
+import me.zhanghai.android.materialprogressbar.IndeterminateProgressDrawable;
 
 /**
  * 新闻列表部分
@@ -37,8 +44,19 @@ public class NewsListFragment extends BaseFragment implements RefreshLayout.OnLo
     ListView listView;
     /** 当前页数*/
     int currentPage=1;
-
+    /** 加载更多*/
     View foot_view;
+    /** 加载更多 progressbar*/
+    ProgressBar indeterminate_progress_library;
+    /** 加载更多 文本*/
+    TextView text_more;
+
+
+    public static NewsListFragment newInstance( ColumnBean columnBean) {
+        NewsListFragment fragment = new NewsListFragment();
+        fragment.setColumnBean(columnBean);
+        return fragment;
+    }
 
     public NewsListFragment(){
 
@@ -65,11 +83,19 @@ public class NewsListFragment extends BaseFragment implements RefreshLayout.OnLo
     @Override
     protected void findViews() {
          refreshLayout=findViewById(R.id.refreshLayout);
-         refreshLayout.setColorSchemeColors(R.color.orange_500,R.color.orange_700);
+         refreshLayout.setColorSchemeColors(getResources().getColor(R.color.orange_500));
 
          listView=findViewById(R.id.listView);
          adapter=new HomeNewsListAdapter(context);
-         foot_view=View.inflate(context,R.layout.listview_footer_view,null);
+         foot_view=View.inflate(context, R.layout.listview_footer_view, null);
+        text_more= (TextView) foot_view.findViewById(R.id.text_more);
+        if(TApplication.sdk>android.os.Build.VERSION_CODES.HONEYCOMB){
+            indeterminate_progress_library = (ProgressBar) foot_view.findViewById(R.id.load_progress_bar);
+            IndeterminateProgressDrawable drawable=new IndeterminateProgressDrawable(context);
+            drawable.setTint(context.getResources().getColor(R.color.orange_500));
+            indeterminate_progress_library.setIndeterminateDrawable(drawable);
+        }
+         foot_view.setVisibility(View.GONE);
          listView.addFooterView(foot_view);
          listView.setAdapter(adapter);
          refreshLayout.setChildView(listView);
@@ -85,16 +111,23 @@ public class NewsListFragment extends BaseFragment implements RefreshLayout.OnLo
     protected void widgetListener() {
         refreshLayout.setOnLoadListener(this);
         refreshLayout.setOnRefreshListener(this);
-
-
         adapter.setOnitemClicklistener(new OnitemClicklistener() {
             @Override
             public void onitemClick(View view, int position) {
-                if (position <= adapter.getNewsBeanList().size()-1) {
+                if (position <= adapter.getNewsBeanList().size() - 1) {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable(getString(R.string.send_news), adapter.getItem(position));
+                    bundle.putSerializable(getString(R.string.send_column), columnBean);
                     IntentUtil.gotoActivity(context, NewsDetailActivity.class, bundle);
-                }}
+                }
+            }
+        });
+
+        foot_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadData(currentPage + 1, false, false);
+            }
         });
 
 
@@ -111,14 +144,14 @@ public class NewsListFragment extends BaseFragment implements RefreshLayout.OnLo
      */
     @Override
     public void onLoad() {
-        loadData(currentPage+1,false,false);
+        loadData(currentPage + 1, false, false);
     }
     /**
      * 下拉刷新
      */
     @Override
     public void onRefresh() {
-        loadData(1,false,false);
+        loadData(1, false, false);
     }
 
     /**
@@ -129,9 +162,14 @@ public class NewsListFragment extends BaseFragment implements RefreshLayout.OnLo
      */
     private void loadData(final int page, final boolean isCache,boolean startLoading){
 
-        if(startLoading){
+        if(startLoading&&page==1){
             refreshLayout.setRefreshing(true);
         }
+        if(page>1){
+            text_more.setText(R.string.more_loading);
+            indeterminate_progress_library.setVisibility(View.VISIBLE);
+        }
+
 
         HomeBiz.getHomeNewsList(columnBean.getDataUrl(), page, new BaseBiz.RequestHandle() {
             @Override
@@ -143,6 +181,15 @@ public class NewsListFragment extends BaseFragment implements RefreshLayout.OnLo
                 } else {
                     adapter.getNewsBeanList().addAll((List<NewsBean>) listBean.getModelList());
                 }
+                if(currentPage!=listBean.getPages()){
+                    refreshLayout.setOnLoadListener(null);
+                    foot_view.setVisibility(View.VISIBLE);
+
+                }else{
+                    foot_view.setVisibility(View.GONE);
+                    //listView.removeFooterView(foot_view);
+                }
+
                 finishLoad();
             }
 
@@ -176,9 +223,12 @@ public class NewsListFragment extends BaseFragment implements RefreshLayout.OnLo
      * 加载完成
      */
     private void finishLoad(){
-        adapter.notifyDataSetChanged();
+
         refreshLayout.setRefreshing(false);
         refreshLayout.setLoading(false);
+        text_more.setText(R.string.loadmore);
+        indeterminate_progress_library.setVisibility(View.GONE);
+        adapter.notifyDataSetChanged();
     }
 
 

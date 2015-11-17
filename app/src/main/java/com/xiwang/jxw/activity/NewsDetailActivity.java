@@ -1,7 +1,12 @@
 package com.xiwang.jxw.activity;
 
+import android.graphics.Bitmap;
+import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.View;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -9,6 +14,7 @@ import com.xiwang.jxw.R;
 import com.xiwang.jxw.adapter.CommentListAdapter;
 import com.xiwang.jxw.base.BaseActivity;
 import com.xiwang.jxw.base.BaseBiz;
+import com.xiwang.jxw.bean.ColumnBean;
 import com.xiwang.jxw.bean.NewsBean;
 import com.xiwang.jxw.bean.NewsDetailBean;
 import com.xiwang.jxw.bean.ResponseBean;
@@ -18,7 +24,6 @@ import com.xiwang.jxw.util.StringUtil;
 import com.xiwang.jxw.util.ToastUtil;
 import com.xiwang.jxw.widget.LoadingLayout;
 import com.xiwang.jxw.widget.RefreshLayout;
-
 import java.io.IOException;
 
 /**
@@ -33,6 +38,10 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
 
     /** 传进来的 newsitem数据*/
     NewsBean newsBean;
+    /** 传进来的栏目数据 */
+    ColumnBean columnBean;
+
+
     /** 详情实体*/
     NewsDetailBean detailBean;
 
@@ -53,6 +62,25 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
 
     int currentPage=1;
 
+    Toolbar toolbar;
+
+
+
+    @Override
+    protected void initActionBar() {
+        toolbar= (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(columnBean.getName());
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.back_btn));
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+    }
+
     @Override
     protected int getContentViewId() {
         return R.layout.activity_news_detail;
@@ -66,18 +94,14 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         headView=View.inflate(context,R.layout.view_news_detail_head, null);
         refreshLayout= (RefreshLayout) findViewById(R.id.refreshLayout);
         listView= (ListView) findViewById(R.id.listView);
-        webView= (WebView) findViewById(R.id.webView);
-        author_tv= (TextView) findViewById(R.id.author_tv);
-        publish_tv= (TextView) findViewById(R.id.publish_tv);
-        author_headimg_iv= (ImageView) findViewById(R.id.author_headimg_iv);
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                content_rl.setLoadView(false);
-            }
-        }, 3000);
+        webView= (WebView) headView.findViewById(R.id.webView);
+        author_tv= (TextView) headView.findViewById(R.id.author_tv);
+        publish_tv= (TextView) headView.findViewById(R.id.publish_tv);
+        author_headimg_iv= (ImageView) headView.findViewById(R.id.author_headimg_iv);
+        listView.addHeaderView(headView, null, false);
+        refreshLayout.setChildView(listView);
 
-        listView.addHeaderView(headView,null,false);
+
     }
 
     @Override
@@ -125,7 +149,9 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
     @Override
     protected void initGetData() {
         newsBean= (NewsBean) getIntent().getSerializableExtra(getString(R.string.send_news));
+        columnBean=(ColumnBean)getIntent().getSerializableExtra(getString(R.string.send_column));
         listAdapter=new CommentListAdapter(this);
+        listView.setAdapter(listAdapter);
     }
 
     /**
@@ -142,8 +168,12 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         }
         htmlStr=htmlStr.replace("#content#",detailBean.getContent());
         htmlStr=htmlStr.replace("#subject#",detailBean.getSubject());
+        htmlStr=  htmlStr.replaceAll("href=.*?\"", "");
+
         webView.getSettings().setDefaultTextEncodingName("utf-8") ;
         webView.loadData(htmlStr, "text/html", "utf-8");
+        //webView.loadUrl("http://www.sznews.com");
+
         author_tv.setText(detailBean.getAuthor());
         publish_tv.setText(detailBean.getPostdate());
         author_headimg_iv.setBackgroundDrawable(getResources().getDrawable(R.mipmap.ic_launcher));
@@ -170,6 +200,10 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         listAdapter.notifyDataSetChanged();
         refreshLayout.setRefreshing(false);
         refreshLayout.setLoading(false);
+        webView.getSettings().setSupportZoom(false);
+
+
+
     }
 
 
@@ -177,6 +211,37 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
     protected void widgetListener() {
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setOnLoadListener(this);
+
+        /** 屏蔽掉长按事件 因为webview长按时将会调用系统的复制控件*/
+        webView.setOnLongClickListener(new View.OnLongClickListener() {
+
+            @Override
+            public boolean onLongClick(View v) {
+                return true;
+            }
+        });
+
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return super.shouldOverrideUrlLoading(view, url);
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+            }
+
+            @Override
+            public boolean shouldOverrideKeyEvent(WebView view, KeyEvent event) {
+                return super.shouldOverrideKeyEvent(view, event);
+            }
+        });
     }
 
     @Override
@@ -189,3 +254,5 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         loadNetData(currentPage+1,true);
     }
 }
+
+

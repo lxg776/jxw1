@@ -44,8 +44,7 @@ public class LoadingLayout extends RelativeLayout{
         if(TApplication.sdk>android.os.Build.VERSION_CODES.HONEYCOMB){
             ProgressBar indeterminate_progress_library= (ProgressBar) contentView.findViewById(R.id.progress_bar);
             IndeterminateProgressDrawable drawable=new IndeterminateProgressDrawable(context);
-
-
+            drawable.setTint(context.getResources().getColor(R.color.orange_500));
             indeterminate_progress_library.setIndeterminateDrawable(drawable);
         }
 

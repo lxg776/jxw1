@@ -58,7 +58,8 @@ public class CommentListAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
-        NewsDetailCommentBean bean;
+        NewsDetailCommentBean bean=getItem(position);
+
         if(null==convertView){
             convertView=View.inflate(context, R.layout.item_newsdetail_comment,null);
             holder=new ViewHolder();
@@ -66,9 +67,11 @@ public class CommentListAdapter extends BaseAdapter{
             holder.publish_tv= (TextView) convertView.findViewById(R.id.publish_tv);
             holder.content_tv= (TextView) convertView.findViewById(R.id.content_tv);
             holder.author_headimg_iv= (ImageView) convertView.findViewById(R.id.author_headimg_iv);
+            convertView.setTag(holder);
+        }else{
+            holder= (ViewHolder) convertView.getTag();
         }
-        bean=getItem(position);
-        holder= (ViewHolder) convertView.getTag();
+
         holder.author_tv.setText(bean.getAuthor());
         holder.publish_tv.setText(bean.getPostdate());
         holder.content_tv.setText(bean.getContent());

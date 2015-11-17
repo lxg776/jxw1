@@ -278,7 +278,10 @@ public class MainActivity extends BaseActivity {
     };
 
 
+    @Override
+    protected void initActionBar() {
 
+    }
 
     /**
      *双击退出应用

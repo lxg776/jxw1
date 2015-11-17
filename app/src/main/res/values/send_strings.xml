@@ -4,6 +4,7 @@
     
      <!-- **********************数据传输模块*********************** -->
     <string name="send_news">send_news</string>
+    <string name="send_column">send_column</string>
 
 
 

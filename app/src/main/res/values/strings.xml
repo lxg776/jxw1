@@ -5,4 +5,9 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_base">BaseActivity</string>
     <string name="press_again_exit">再按一次退出应用</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="more_loading">加载中...</string>
+    <string name="loadmore">加载更多...</string>
 </resources>
