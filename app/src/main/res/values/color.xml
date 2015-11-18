@@ -148,6 +148,7 @@
     <color name="black_transparent_87">#dd000000</color>
     <color name="black_transparent_54">#8a000000</color>
     <color name="black_transparent_26">#42000000</color>
+    <color name="black_transparent_14">#21000000</color>
     <!-- 灰色背景 -->
     <color name="grag_bg">#eeeeee</color>
     <color name="bule_50">#fff3e0</color>

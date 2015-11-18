@@ -37,7 +37,7 @@ public class HorizontalRadioView extends RelativeLayout {
 	}
 
 	private void init(Context context, AttributeSet attrs) {
-		View contentView = View.inflate(context, R.layout.view_my_radio, null);
+		View contentView = View.inflate(context, R.layout.view_horizontal_radio, null);
 		text = (TextView) contentView.findViewById(R.id.myRadio_txt);
 		img = (ImageView) contentView.findViewById(R.id.myRadio_img);
 		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MyRadioView);

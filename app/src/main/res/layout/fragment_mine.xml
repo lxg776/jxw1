@@ -1,9 +1,173 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent" tools:context="com.bo.frame.fragment.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="我的〉" />
+    <!--个人资料-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="96dp"
+        android:background="@color/white"
+        android:layout_marginTop="16dp"
+        android:padding="16dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:id="@+id/ziliao_ll"
+        android:clickable="true"
+        >
 
-</FrameLayout>
+        <ImageView
+            android:id="@+id/user_headimg_iv"
+            android:layout_width="56dp"
+            android:layout_height="56dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:orientation="vertical"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="16dp"
+            >
+
+            <TextView
+                android:id="@+id/user_tv"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="L先生"
+                android:textColor="@color/black_transparent_87"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/sign_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="个性签名"
+                android:textColor="@color/black_transparent_54"
+                android:layout_marginBottom="4dp"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:orientation="vertical"
+        android:background="@color/white"
+
+        >
+        <TextView
+            android:id="@+id/collect_ll"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:drawableLeft="@mipmap/wd_collect"
+            android:text="收藏"
+            android:padding="16dp"
+            android:gravity="center_vertical"
+            android:background="@drawable/white_btn"
+            />
+
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@color/black_transparent_14"
+            ></View>
+        <!--提到我的-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/white_btn"
+            android:paddingLeft="16dp"
+            android:id="@+id/tidao_ll"
+            android:clickable="true"
+            >
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@mipmap/wd_tidao"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_transparent_54"
+                android:textSize="16sp"
+                android:layout_marginLeft="16dp"
+                android:text="提到我的"
+                />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@color/black_transparent_14"
+            ></View>
+
+        <!--我的发布-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/white_btn"
+            android:paddingLeft="16dp"
+            android:id="@+id/fabu_ll"
+            android:clickable="true"
+            >
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@mipmap/wd_fabu"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_transparent_54"
+                android:textSize="16sp"
+                android:layout_marginLeft="16dp"
+                android:text="我的发布"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <!--系统设置-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="24dp"
+        android:paddingLeft="16dp"
+        android:background="@drawable/white_btn"
+        android:id="@+id/setting_ll"
+        android:clickable="true"
+        >
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@mipmap/wd_setting"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black_transparent_54"
+            android:textSize="16sp"
+            android:layout_marginLeft="16dp"
+            android:text="系统设置"
+            />
+    </LinearLayout>
+
+</LinearLayout>

@@ -4,11 +4,11 @@ import android.graphics.Bitmap;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
-import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -22,6 +22,7 @@ import com.xiwang.jxw.bean.NewsBean;
 import com.xiwang.jxw.bean.NewsDetailBean;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.biz.NewsBiz;
+import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.util.ImgLoadUtil;
 import com.xiwang.jxw.util.SpUtil;
 import com.xiwang.jxw.util.StringUtil;
@@ -30,6 +31,8 @@ import com.xiwang.jxw.widget.HorizontalRadioView;
 import com.xiwang.jxw.widget.LoadingLayout;
 import com.xiwang.jxw.widget.RefreshLayout;
 import java.io.IOException;
+
+import me.zhanghai.android.materialprogressbar.IndeterminateProgressDrawable;
 
 /**
  * 帖子详情界面
@@ -72,6 +75,12 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
     int currentPage=1;
     /** 顶部导航*/
     Toolbar toolbar;
+    /** 底部加载更多 布局*/
+    View foot_view;
+    /** 底部加载更多 文本*/
+    TextView text_more;
+    /** 底部加载更多 ProgressBar*/
+    ProgressBar indeterminate_progress_library;
 
     /** 图片的异步显示的选项*/
     DisplayImageOptions options=ImgLoadUtil.getUserOptions();
@@ -113,11 +122,22 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         publish_tv= (TextView) headView.findViewById(R.id.publish_tv);
         author_headimg_iv= (ImageView) headView.findViewById(R.id.author_headimg_iv);
         listView.addHeaderView(headView, null, false);
-        refreshLayout.setChildView(listView);
-
         like_rv= (HorizontalRadioView) findViewById(R.id.like_rv);
         not_like_rv= (HorizontalRadioView) findViewById(R.id.not_like_rv);
         message_rv= (HorizontalRadioView) findViewById(R.id.message_rv);
+
+        foot_view=View.inflate(context, R.layout.listview_footer_view, null);
+        text_more= (TextView) foot_view.findViewById(R.id.text_more);
+        if(TApplication.sdk>android.os.Build.VERSION_CODES.HONEYCOMB){
+            indeterminate_progress_library = (ProgressBar) foot_view.findViewById(R.id.load_progress_bar);
+            IndeterminateProgressDrawable drawable=new IndeterminateProgressDrawable(context);
+            drawable.setTint(context.getResources().getColor(R.color.orange_500));
+            indeterminate_progress_library.setIndeterminateDrawable(drawable);
+        }
+        foot_view.setVisibility(View.GONE);
+        listView.addFooterView(foot_view);
+        refreshLayout.setChildView(listView);
+        refreshLayout.setColorSchemeColors(getResources().getColor(R.color.orange_500));
 
 
     }
@@ -132,6 +152,14 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
      * @param page 页数
      */
     private void loadNetData(final int page, final boolean loadCache){
+
+
+
+        if(page>1){
+            text_more.setText(R.string.more_loading);
+            indeterminate_progress_library.setVisibility(View.VISIBLE);
+        }
+
         NewsBiz.getNewsDetail(newsBean.getTid(),currentPage, new BaseBiz.RequestHandle() {
             @Override
             public void onSuccess(ResponseBean responseBean) {
@@ -222,9 +250,10 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         listAdapter.notifyDataSetChanged();
         refreshLayout.setRefreshing(false);
         refreshLayout.setLoading(false);
-        webView.getSettings().setSupportZoom(false);
 
 
+        text_more.setText(R.string.loadmore);
+        indeterminate_progress_library.setVisibility(View.GONE);
 
     }
 
@@ -233,7 +262,7 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
     protected void widgetListener() {
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setOnLoadListener(this);
-
+        webView.getSettings().setSupportZoom(false);
         /** 屏蔽掉长按事件 因为webview长按时将会调用系统的复制控件*/
         webView.setOnLongClickListener(new View.OnLongClickListener() {
 

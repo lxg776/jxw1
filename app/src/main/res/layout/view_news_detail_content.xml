@@ -32,28 +32,36 @@
             android:layout_width="0px"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            app:img0="@mipmap/main_mine_0"
-            app:img1="@mipmap/main_mine_1"
+            app:img0="@mipmap/dig0"
+            app:img1="@mipmap/dig1"
             app:text="88" />
-
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent"
+                android:background="@color/black_transparent_26"
+                ></View>
         <com.xiwang.jxw.widget.HorizontalRadioView
             android:id="@+id/not_like_rv"
             android:layout_width="0px"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            app:img0="@mipmap/main_mine_0"
-            app:img1="@mipmap/main_mine_1"
+            app:img0="@mipmap/poor0"
+            app:img1="@mipmap/poor1"
             app:text="8" />
-
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/black_transparent_26"
+            ></View>
 
         <com.xiwang.jxw.widget.HorizontalRadioView
             android:id="@+id/message_rv"
             android:layout_width="0px"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            app:img0="@mipmap/main_mine_0"
-            app:img1="@mipmap/main_mine_1"
-            app:text="我的" />
+            app:img0="@mipmap/replies"
+            app:img1="@mipmap/replies"
+            app:text="123" />
     </LinearLayout>
 
 </LinearLayout>
