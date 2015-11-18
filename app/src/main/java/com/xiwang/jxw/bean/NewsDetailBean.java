@@ -41,6 +41,104 @@ public class NewsDetailBean extends BaseBean {
      * 浏览数
      */
     private String hits;
+    /** 点赞数*/
+    private String dig;
+    /** 点差数*/
+    private String poor;
+    /** 电话号码查看数（意向数）*/
+    private String telhits;
+     /** 电话号码*/
+    private String phone;
+    /** 联系人*/
+    private String cname;
+
+    /**
+     * 分享id
+     */
+    private String sid;
+    /**
+     * QQ号
+     */
+    private String qq;
+
+    private String fromtype;
+    /**
+     * 作者头像
+     */
+    private String face;
+
+
+    public String getDig() {
+        return dig;
+    }
+
+    public void setDig(String dig) {
+        this.dig = dig;
+    }
+
+    public String getPoor() {
+        return poor;
+    }
+
+    public void setPoor(String poor) {
+        this.poor = poor;
+    }
+
+    public String getTelhits() {
+        return telhits;
+    }
+
+    public void setTelhits(String telhits) {
+        this.telhits = telhits;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getSid() {
+        return sid;
+    }
+
+    public void setSid(String sid) {
+        this.sid = sid;
+    }
+
+    public String getQq() {
+        return qq;
+    }
+
+    public void setQq(String qq) {
+        this.qq = qq;
+    }
+
+    public String getFromtype() {
+        return fromtype;
+    }
+
+    public void setFromtype(String fromtype) {
+        this.fromtype = fromtype;
+    }
+
+    public String getFace() {
+        return face;
+    }
+
+    public void setFace(String face) {
+        this.face = face;
+    }
+
+    public String getCname() {
+        return cname;
+    }
+
+    public void setCname(String cname) {
+        this.cname = cname;
+    }
 
     public String getSubject() {
         return subject;
@@ -146,6 +244,15 @@ public class NewsDetailBean extends BaseBean {
 
     @Override
     protected void init(JSONObject jSon) throws JSONException {
+        setDig(jSon.optString("dig"));
+        setPoor(jSon.optString("poor"));
+        setFace(jSon.optString("face"));
+        setPhone(jSon.optString("phone"));
+        setFromtype(jSon.optString("fromtype"));
+        setSid(jSon.optString("sid"));
+        setTelhits(jSon.optString("telhits"));
+        setQq(jSon.optString("qq"));
+        setCname(jSon.optString("cname"));
         setContent(jSon.optString("content"));
         setAuthor(jSon.optString("author"));
         setPostdate(jSon.optString("postdate"));

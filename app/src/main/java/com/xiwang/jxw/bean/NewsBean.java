@@ -26,6 +26,12 @@ public class NewsBean extends BaseBean{
     private String image;
 
 
+
+
+
+
+
+
     public String getTid() {
         return tid;
     }

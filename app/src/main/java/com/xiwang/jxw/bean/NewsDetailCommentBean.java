@@ -16,12 +16,20 @@ public class NewsDetailCommentBean extends BaseBean {
     private String subject;
     private String authorid;
     private String content;
+    /** 发帖日期*/
     private String postdate;
-    private String anonymous;
+
     private String ifshield;
     private String groupid;
+    /** 某楼，如三楼、四楼*/
     private String id;
+    /** 评论者*/
     private String author;
+    /** 头像*/
+    private String face;
+    /** 是否匿名*/
+    private String anonymous;
+
 
     @Override
     protected void init(JSONObject jSon) throws JSONException {
@@ -36,6 +44,15 @@ public class NewsDetailCommentBean extends BaseBean {
             setGroupid(jSon.optString("groupid"));
             setId(jSon.optString("id"));
             setAuthor(jSon.getString("author"));
+            setFace(jSon.optString("face"));
+    }
+
+    public String getFace() {
+        return face;
+    }
+
+    public void setFace(String face) {
+        this.face = face;
     }
 
     public String getAid() {

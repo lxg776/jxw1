@@ -6,8 +6,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.bean.NewsDetailCommentBean;
+import com.xiwang.jxw.util.ImgLoadUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +28,11 @@ public class CommentListAdapter extends BaseAdapter{
     List<NewsDetailCommentBean> commentBeanList=new ArrayList<NewsDetailCommentBean>();
     /** 上下文*/
     Context context;
+
+    /** 图片的异步显示的选项*/
+    DisplayImageOptions options=ImgLoadUtil.getUserOptions();
+    /** 加载监听*/
+    ImageLoadingListener loadingListener=ImgLoadUtil.defaultLoadingListener();
 
     public List<NewsDetailCommentBean> getCommentBeanList() {
         return commentBeanList;
@@ -71,10 +80,10 @@ public class CommentListAdapter extends BaseAdapter{
         }else{
             holder= (ViewHolder) convertView.getTag();
         }
-
         holder.author_tv.setText(bean.getAuthor());
         holder.publish_tv.setText(bean.getPostdate());
         holder.content_tv.setText(bean.getContent());
+        ImgLoadUtil.getInstance().displayImage(bean.getFace(), holder.author_headimg_iv, options, loadingListener);
         return convertView;
     }
 

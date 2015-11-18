@@ -1,6 +1,7 @@
 package com.xiwang.jxw.util;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
@@ -9,10 +10,12 @@ import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.xiwang.jxw.R;
 
@@ -63,11 +66,9 @@ public class ImgLoadUtil {
     public static void displayImage(String Uri,ImageView imageView){
         getInstance().displayImage(Uri,imageView,defaultDisplayOptions);
     }
-
     public static void displayImage(String Uri,ImageView imageView,DisplayImageOptions options,ImageLoadingListener listener){
         getInstance().displayImage(Uri,imageView,options,listener);
     }
-
     /**
      * 返回一个异步加载instance
      * @return
@@ -89,5 +90,56 @@ public class ImgLoadUtil {
                     .cacheOnDisc(true)                          // 设置下载的图片是否缓存在SD卡中
                     .displayer(new RoundedBitmapDisplayer(20))  // 设置成圆角图片
                     .build();                                   // 创建配置过得DisplayImageOption对象
+
+    /**
+     * 获取 用户的图片 DisplayImageOptions
+     * @return
+     */
+    public static DisplayImageOptions getUserOptions(){
+        DisplayImageOptions newsDetailDisplayOptions = new DisplayImageOptions.Builder() // 使用DisplayImageOptions.Builder()创建DisplayImageOptions
+
+                .showStubImage(R.mipmap.defualt_user_icon)          // 设置图片下载期间显示的图片
+                .showImageForEmptyUri(R.mipmap.defualt_user_icon)  // 设置图片Uri为空或是错误的时候显示的图片
+                .showImageOnFail(R.mipmap.defualt_user_icon)       // 设置图片加载或解码过程中发生错误显示的图片
+                .cacheInMemory(true)                        // 设置下载的图片是否缓存在内存中
+                .cacheOnDisc(true)                          // 设置下载的图片是否缓存在SD卡中
+                .displayer(new RoundedBitmapDisplayer(20))  // 设置成圆角图片
+                .build();                                   // 创建配置过得DisplayImageOption对象
+        return newsDetailDisplayOptions;
+    }
+
+    /**
+     * 获取默认的 LoadingListener
+     * @return
+     */
+    public static ImageLoadingListener defaultLoadingListener(){
+      ImageLoadingListener defaultListener =new SimpleImageLoadingListener(){
+
+            public void onLoadingStarted(String imageUri, ImageView view) {
+                super.onLoadingStarted(imageUri, view);
+            }
+
+
+            public void onLoadingFailed(String imageUri, ImageView view, FailReason failReason) {
+                super.onLoadingFailed(imageUri, view, failReason);
+            }
+
+
+            public void onLoadingComplete(String imageUri, ImageView view, Bitmap loadedImage) {
+                super.onLoadingComplete(imageUri, view, loadedImage);
+                view.setImageBitmap(loadedImage);
+            }
+
+
+            public void onLoadingCancelled(String imageUri, ImageView view) {
+                super.onLoadingCancelled(imageUri, view);
+            }
+        };
+        return  defaultListener;
+    }
+
+
+
+
 
 }

@@ -10,6 +10,9 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.adapter.CommentListAdapter;
 import com.xiwang.jxw.base.BaseActivity;
@@ -19,9 +22,11 @@ import com.xiwang.jxw.bean.NewsBean;
 import com.xiwang.jxw.bean.NewsDetailBean;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.biz.NewsBiz;
+import com.xiwang.jxw.util.ImgLoadUtil;
 import com.xiwang.jxw.util.SpUtil;
 import com.xiwang.jxw.util.StringUtil;
 import com.xiwang.jxw.util.ToastUtil;
+import com.xiwang.jxw.widget.HorizontalRadioView;
 import com.xiwang.jxw.widget.LoadingLayout;
 import com.xiwang.jxw.widget.RefreshLayout;
 import java.io.IOException;
@@ -35,16 +40,12 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
     private WebView webView;
     /** 内容布局*/
     private LoadingLayout content_rl;
-
     /** 传进来的 newsitem数据*/
     NewsBean newsBean;
     /** 传进来的栏目数据 */
     ColumnBean columnBean;
-
-
     /** 详情实体*/
     NewsDetailBean detailBean;
-
     /** 作者tv*/
     TextView author_tv;
     /** 发布时间*/
@@ -53,18 +54,31 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
     ImageView author_headimg_iv;
     /** 下拉刷新和上来更多控件*/
     RefreshLayout refreshLayout;
+
+    /** 点赞 按钮*/
+    HorizontalRadioView like_rv;
+    /** 点不赞 按钮*/
+    HorizontalRadioView not_like_rv;
+    /** 评论 按钮*/
+    HorizontalRadioView message_rv;
+
     /** 评论列表*/
     ListView listView;
     /** 发布人布局*/
     View headView;
     /** 评论列表 适配器*/
     CommentListAdapter listAdapter;
-
+    /** 当前评论的页数*/
     int currentPage=1;
-
+    /** 顶部导航*/
     Toolbar toolbar;
 
-
+    /** 图片的异步显示的选项*/
+    DisplayImageOptions options=ImgLoadUtil.getUserOptions();
+    /** 加载监听*/
+    ImageLoadingListener loadingListener=ImgLoadUtil.defaultLoadingListener();
+    /** -1表示没点赞和点差/0表示点赞/1表示点差*/
+    int likefla=-1;
 
     @Override
     protected void initActionBar() {
@@ -100,6 +114,10 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         author_headimg_iv= (ImageView) headView.findViewById(R.id.author_headimg_iv);
         listView.addHeaderView(headView, null, false);
         refreshLayout.setChildView(listView);
+
+        like_rv= (HorizontalRadioView) findViewById(R.id.like_rv);
+        not_like_rv= (HorizontalRadioView) findViewById(R.id.not_like_rv);
+        message_rv= (HorizontalRadioView) findViewById(R.id.message_rv);
 
 
     }
@@ -166,8 +184,8 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         } catch (IOException e) {
             e.printStackTrace();
         }
-        htmlStr=htmlStr.replace("#content#",detailBean.getContent());
-        htmlStr=htmlStr.replace("#subject#",detailBean.getSubject());
+        htmlStr=htmlStr.replace("#content#", detailBean.getContent());
+        htmlStr=htmlStr.replace("#subject#", detailBean.getSubject());
         htmlStr=  htmlStr.replaceAll("href=.*?\"", "");
 
         webView.getSettings().setDefaultTextEncodingName("utf-8") ;
@@ -177,8 +195,12 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         author_tv.setText(detailBean.getAuthor());
         publish_tv.setText(detailBean.getPostdate());
         author_headimg_iv.setBackgroundDrawable(getResources().getDrawable(R.mipmap.ic_launcher));
-
+        ImgLoadUtil.getInstance().displayImage(detailBean.getFace(), author_headimg_iv, options, loadingListener);
         showCommentList(detailBean);
+
+        like_rv.setText(detailBean.getDig());
+        not_like_rv.setText(detailBean.getPoor());
+        message_rv.setText(detailBean.getReplies());
     }
     /**
      * 显示新闻评论
