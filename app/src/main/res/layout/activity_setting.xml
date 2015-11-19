@@ -1,0 +1,135 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/tootbar_common"></include>
+
+    <View
+        style="@style/line_view_w"
+        ></View>
+    <!--清理缓存-->
+    <RelativeLayout
+        android:layout_marginTop="16dp"
+        style="@style/setting_rl"
+        android:id="@+id/clear_rl"
+        >
+        <TextView
+           style="@style/common_text1"
+            android:text="清理缓存"
+            android:layout_centerVertical="true"
+            />
+
+        <View
+            android:id="@+id/clear_icon"
+            style="@style/icon_24"
+            android:background="@mipmap/right_arrow"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            ></View>
+
+        <TextView
+            android:layout_toLeftOf="@id/clear_icon"
+            style="@style/common_text1"
+            android:text="30.4M"
+            android:layout_marginRight="8dp"
+            android:layout_centerVertical="true"
+            />
+
+    </RelativeLayout>
+
+
+    <!--推送设置-->
+    <RelativeLayout
+        android:layout_marginTop="16dp"
+        style="@style/setting_rl"
+        android:id="@+id/push_rl"
+        android:background="@color/white"
+        >
+        <TextView
+            style="@style/common_text1"
+            android:text="推送设置"
+            android:layout_centerVertical="true"
+             />
+
+        <View
+            android:id="@+id/push_icon"
+            style="@style/icon_24"
+            android:padding="8dp"
+            android:background="@mipmap/push_switch_on"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            ></View>
+
+    </RelativeLayout>
+
+
+    <!--版本更新-->
+    <RelativeLayout
+        android:layout_marginTop="16dp"
+        style="@style/setting_rl"
+        android:id="@+id/update_version_rl"
+        >
+        <TextView
+            style="@style/common_text1"
+            android:text="版本更新"
+            android:layout_centerVertical="true"
+            />
+
+        <View
+            android:id="@+id/update_icon"
+            style="@style/icon_24"
+            android:background="@mipmap/right_arrow"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            ></View>
+
+        <TextView
+            android:layout_toLeftOf="@id/update_icon"
+            style="@style/common_text1"
+            android:text="更新版本1.41"
+            android:layout_marginRight="8dp"
+            android:layout_centerVertical="true"
+            android:textColor="@color/pink_700"
+            android:id="@+id/version_text"
+            />
+
+    </RelativeLayout>
+
+
+    <!--版权信息-->
+    <RelativeLayout
+        android:layout_marginTop="16dp"
+        style="@style/setting_rl"
+        android:id="@+id/copyright_rl"
+        >
+        <TextView
+            style="@style/common_text1"
+            android:text="版本信息"
+            android:layout_centerVertical="true"
+            />
+
+        <View
+        
+            style="@style/icon_24"
+            android:background="@mipmap/right_arrow"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            ></View>
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:layout_marginTop="24dp"
+        android:id="@+id/quit_tv"
+        android:background="@color/orange_500"
+        android:text="退出当前账号"
+     style="@style/common_btn1"/>
+
+
+</LinearLayout>

@@ -1,9 +1,262 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent" tools:context="com.bo.frame.fragment.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="发布" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal"
 
-</FrameLayout>
+        >
+        <!--发帖-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:id="@+id/fabu_btn"
+            >
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/orange500_circle"
+                android:id="@+id/fabu_iv"
+                />
+            <TextView
+                style="@style/common_text1"
+                android:text="发帖"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/black_transparent_87"
+                android:textSize="14sp"
+                />
+        </LinearLayout>
+
+        <!--发帖-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:id="@+id/ershou_btn"
+            >
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/bule700_circle"
+
+                />
+            <TextView
+                style="@style/common_text1"
+                android:text="二手交易"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/black_transparent_87"
+                android:textSize="14sp"
+                />
+        </LinearLayout>
+
+        <!--招聘启事-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:id="@+id/zhaopin_btn"
+            >
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/pink700_circle"
+                android:textSize="14sp"
+                />
+            <TextView
+                style="@style/common_text1"
+                android:text="招聘启事"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/black_transparent_87"
+                android:textSize="14sp"
+                />
+        </LinearLayout>
+    </LinearLayout>
+    <View
+       style="@style/line_view_w"
+        android:layout_marginTop="16dp"
+        ></View>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+
+        >
+        <!--求职-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:id="@+id/qiuzhi_btn"
+            >
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/bule500_circle"
+
+                />
+            <TextView
+                style="@style/common_text1"
+                android:text="求职"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/black_transparent_87"
+                android:textSize="14sp"
+                />
+        </LinearLayout>
+
+        <!--出租-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:id="@+id/chuzu_btn"
+            >
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/orange700_circle"
+
+                />
+            <TextView
+                style="@style/common_text1"
+                android:text="房屋出租"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/black_transparent_87"
+                android:textSize="14sp"
+                />
+        </LinearLayout>
+
+        <!-- 求租-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:id="@+id/qiuzu_btn"
+            >
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/red500_circle"
+
+                />
+            <TextView
+                style="@style/common_text1"
+                android:text="求租"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/black_transparent_87"
+                android:textSize="14sp"
+                />
+        </LinearLayout>
+    </LinearLayout>
+    <View
+        style="@style/line_view_w"
+        android:layout_marginTop="16dp"
+        ></View>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+
+        >
+        <!--二手房源-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:id="@+id/ershoufang_btn"
+            >
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/orange700_circle"
+
+                />
+            <TextView
+                style="@style/common_text1"
+                android:text="二手房"
+                android:layout_marginTop="8dp"
+                android:textSize="14sp"
+                android:textColor="@color/black_transparent_87"
+
+                />
+        </LinearLayout>
+
+        <!--地皮-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:id="@+id/dipi_btn"
+            >
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/orange700_circle"
+
+                />
+            <TextView
+                style="@style/common_text1"
+                android:text="商铺地皮"
+                android:textSize="14sp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/black_transparent_87"
+
+                />
+        </LinearLayout>
+
+        <!-- 商铺/地皮-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="invisible"
+            >
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/red500_circle"
+
+                />
+            <TextView
+                style="@style/common_text1"
+                android:text="商铺/地皮"
+                android:textSize="14sp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/black_transparent_87"
+
+                />
+        </LinearLayout>
+    </LinearLayout>
+    <View
+        style="@style/line_view_w"
+        android:layout_marginTop="16dp"
+        ></View>
+
+</LinearLayout>
