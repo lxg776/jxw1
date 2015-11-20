@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- 默认时的背景图片-->
-    <item android:drawable="@color/white" />
-    <!-- 非触摸模式下获得焦点并单击时的背景图片 -->
-    <!-- 没有焦点时的背景图片 -->
-    <item android:state_window_focused="false"
-        android:drawable="@color/black_transparent_26" />
-    <!--选中时的图片背景-->
-    <item android:state_selected="true"   android:drawable="@color/black_transparent_26"/>
+    <item android:drawable="@color/gray_100" android:state_pressed="true"/>
+    <item android:drawable="@color/white"/>
 </selector>

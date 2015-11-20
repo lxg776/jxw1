@@ -1,9 +1,217 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent" tools:context="com.bo.frame.fragment.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="发现" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        android:background="@color/white"
+        >
+        <!--租房-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/white_btn"
+            android:paddingLeft="16dp"
+            android:id="@+id/zufang_ll"
+            android:clickable="true"
+            >
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@mipmap/wd_collect"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_transparent_54"
+                android:textSize="16sp"
+                android:layout_marginLeft="16dp"
+                android:text="靖西租房"
+               />
+        </LinearLayout>
 
-</FrameLayout>
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@color/black_transparent_14"
+            ></View>
+        <!--楼盘-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/white_btn"
+            android:paddingLeft="16dp"
+            android:id="@+id/loupan_ll"
+            android:clickable="true"
+            >
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@mipmap/wd_tidao"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_transparent_54"
+                android:textSize="16sp"
+                android:layout_marginLeft="16dp"
+                android:text="靖西楼盘"
+               />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        android:background="@color/white"
+
+        >
+        <!--租房-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/white_btn"
+            android:paddingLeft="16dp"
+            android:id="@+id/ershou_shangpin_ll"
+            android:clickable="true"
+            >
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@mipmap/wd_collect"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_transparent_54"
+                android:textSize="16sp"
+                android:layout_marginLeft="16dp"
+                android:text="二手商品"
+                />
+        </LinearLayout>
+
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@color/black_transparent_14"
+            ></View>
+        <!--楼盘-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/white_btn"
+            android:paddingLeft="16dp"
+            android:id="@+id/shangpu_dipi_ll"
+            android:clickable="true"
+            >
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@mipmap/wd_tidao"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_transparent_54"
+                android:textSize="16sp"
+                android:layout_marginLeft="16dp"
+                android:text="商铺/地皮/二手房"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        android:background="@color/white"
+        >
+        <!--租房-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/white_btn"
+            android:paddingLeft="16dp"
+            android:id="@+id/zhaopin_ll"
+            android:clickable="true"
+            >
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@mipmap/wd_collect"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_transparent_54"
+                android:textSize="16sp"
+                android:layout_marginLeft="16dp"
+                android:text="招聘信息"
+              />
+        </LinearLayout>
+
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@color/black_transparent_14"
+            ></View>
+        <!--二手商品-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/white_btn"
+            android:paddingLeft="16dp"
+            android:id="@+id/qiuzi_ll"
+            android:clickable="true"
+            >
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@mipmap/wd_tidao"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_transparent_54"
+                android:textSize="16sp"
+                android:layout_marginLeft="16dp"
+                android:text="求职信息"
+               />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -61,7 +61,7 @@ by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
 
     <!-- 设置  样式1 -->
 
-    <style name="setting_rl" parent="@android:style/Theme.Dialog">
+    <style name="setting_rl">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
         <item name="android:paddingLeft">16dp</item>
@@ -70,7 +70,7 @@ by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     </style>
 
     <!-- 通用 文本样式1  -->
-    <style name="common_text1" parent="@android:style/Theme.Dialog">
+    <style name="common_text1" >
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">16sp</item>
@@ -79,13 +79,13 @@ by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     </style>
 
     <!-- 通用 文本样式1  -->
-    <style name="icon_24" parent="@android:style/Theme.Dialog">
+    <style name="icon_24">
         <item name="android:layout_width">24dp</item>
         <item name="android:layout_height">24dp</item>
     </style>
 
     <!-- 通用 按钮样式1  -->
-    <style name="common_btn1" parent="@android:style/Theme.Dialog">
+    <style name="common_btn1" >
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
         <item name="android:gravity">center</item>
