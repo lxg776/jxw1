@@ -130,7 +130,7 @@
             <ImageView
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                android:background="@drawable/orange700_circle"
+                android:background="@drawable/orange500_circle"
 
                 />
             <TextView
@@ -216,7 +216,7 @@
             <ImageView
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                android:background="@drawable/orange700_circle"
+                android:background="@drawable/bule700_circle"
 
                 />
             <TextView

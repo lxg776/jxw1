@@ -68,6 +68,8 @@ public class ServerConfig {
 	public final static String START_APP_IMG="getapp.php?a=openimg";
 	/** 帖子详情接口 */
 	public final static String NEWS_DETAIL="getapp.php?a=read";
+	/** 登录接口 */
+	public final static String USER_LOGIN="getapp.php?a=login";
 
 
 	/** 文件服务器地址 */

@@ -1,10 +1,13 @@
 package com.xiwang.jxw.fragment;
 
+import android.graphics.drawable.Drawable;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseFragment;
+import com.xiwang.jxw.util.DisplayUtil;
 
 
 /**
@@ -49,6 +52,19 @@ public class PublishFragment extends BaseFragment {
         qiuzu_btn=findViewById(R.id.qiuzu_btn);
         ershoufang_btn=findViewById(R.id.ershoufang_btn);
         dipi_btn=findViewById(R.id.dipi_btn);
+
+        setDrawable(fabu_btn,getResources().getDrawable(R.mipmap.f_fabu));
+        setDrawable(ershou_btn, getResources().getDrawable(R.mipmap.f_goods));
+        setDrawable(zhaopin_btn,getResources().getDrawable(R.mipmap.f_zhaopin));
+        setDrawable(qiuzhi_btn, getResources().getDrawable(R.mipmap.f_qiuzhi));
+        setDrawable(chuzu_btn,getResources().getDrawable(R.mipmap.f_rent_home));
+        setDrawable(qiuzu_btn,getResources().getDrawable(R.mipmap.f_qiuzu));
+        setDrawable(ershoufang_btn,getResources().getDrawable(R.mipmap.f_home));
+        setDrawable(dipi_btn,getResources().getDrawable(R.mipmap.f_dipi));
+
+
+
+
     }
 
     @Override
@@ -63,6 +79,17 @@ public class PublishFragment extends BaseFragment {
 
     @Override
     protected void init() {
+
+    }
+
+
+
+    private void setDrawable(LinearLayout ll,Drawable drawable){
+        drawable.setBounds(0, 0, DisplayUtil.dip2px(context, 28), DisplayUtil.dip2px(context, 28));
+        ImageView imageView= (ImageView) ll.getChildAt(0);
+        imageView.setImageDrawable(drawable);
+        imageView.setScaleType(ImageView.ScaleType.CENTER);
+
 
     }
 }
