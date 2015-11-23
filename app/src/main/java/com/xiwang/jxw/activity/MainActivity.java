@@ -11,10 +11,13 @@ import android.widget.Toast;
 
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseActivity;
+import com.xiwang.jxw.config.IntentConfig;
+import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.fragment.FindFragment;
 import com.xiwang.jxw.fragment.HomeFragment;
 import com.xiwang.jxw.fragment.MineFragment;
 import com.xiwang.jxw.fragment.PublishFragment;
+import com.xiwang.jxw.util.IntentUtil;
 import com.xiwang.jxw.widget.MyRadioView;
 
 import java.util.ArrayList;
@@ -255,9 +258,7 @@ public class MainActivity extends BaseActivity {
 //                    return;
 //                }
 //            }
-            radio_current.setCheck(false);
-            radio_current = myRadioView;
-            radio_current.setCheck(true);
+
             switch (v.getId()) {
                 case R.id.main_rv:
                     switchView(FRAGMENT_HOME);
@@ -269,11 +270,23 @@ public class MainActivity extends BaseActivity {
                     switchView(FRAGMENT_PUBLISH);
                     break;
                 case R.id.mine_rv:
-                    switchView(FRAGMENT_MINE);
+
+                    if(TApplication.mUser!=null){
+                        switchView(FRAGMENT_MINE);
+                    }else{
+                        //跳转登录界面
+                        IntentUtil.gotoActivityForResult(context, LoginActivity.class, IntentConfig.LOGIN_CODE);
+                        return;
+                    }
+
                     break;
                 default:
                     break;
             }
+
+            radio_current.setCheck(false);
+            radio_current = myRadioView;
+            radio_current.setCheck(true);
         }
     };
 
@@ -312,7 +325,19 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-
-
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode==IntentConfig.LOGIN_CODE){
+            if(requestCode==RESULT_OK){
+                /**
+                 * 跳转我的
+                 */
+                switchView(FRAGMENT_MINE);
+                radio_current.setCheck(false);
+                radio_current = mine_rv;
+                radio_current.setCheck(true);
+            }
+        }
+         super.onActivityResult(requestCode, resultCode, data);
+    }
 }

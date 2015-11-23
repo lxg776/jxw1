@@ -39,7 +39,7 @@ public class ProcessDialogUtil {
 	 * 
 	 * @param context
 	 *            上下文
-	 * @param text
+	 * @param processMsg
 	 *            提示文本信息
 	 * @param cancelable
 	 *            提示框是否可取消 true 可取消， false 不可取消
@@ -52,18 +52,22 @@ public class ProcessDialogUtil {
 			}
 			progressDialog = null;
 		}
-		
-		progressDialog = new ProgressDialog(context, R.style.NobackDialog);
-		View view = View.inflate(context, R.layout.dialog_loading, null);
-		TextView loading_txt = (TextView) view.findViewById(R.id.loading_txt);
-		loading_txt.setText(processMsg);
-		progressDialog.setContentView(view);
-		WindowManager.LayoutParams params = progressDialog.getWindow().getAttributes();
-		params.width = WindowManager.LayoutParams.MATCH_PARENT;
-		params.height = WindowManager.LayoutParams.MATCH_PARENT;
-		progressDialog.getWindow().setAttributes(params);
-		progressDialog.setCancelable(cancelable);
-		progressDialog.show();
+		try{
+			progressDialog = new ProgressDialog(context, R.style.NobackDialog);
+			View view = View.inflate(context, R.layout.dialog_loading, null);
+			TextView loading_txt = (TextView) view.findViewById(R.id.loading_txt);
+			loading_txt.setText(processMsg);
+			progressDialog.setContentView(view);
+			WindowManager.LayoutParams params = progressDialog.getWindow().getAttributes();
+			params.width = WindowManager.LayoutParams.MATCH_PARENT;
+			params.height = WindowManager.LayoutParams.MATCH_PARENT;
+			progressDialog.getWindow().setAttributes(params);
+			progressDialog.setCancelable(cancelable);
+			progressDialog.show();
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+
 
 	}
 	

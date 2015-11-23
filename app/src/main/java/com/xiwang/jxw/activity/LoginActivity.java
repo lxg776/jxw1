@@ -1,6 +1,7 @@
 package com.xiwang.jxw.activity;
 
 
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
@@ -34,9 +35,22 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
     /** 登录按钮*/
     TextView login_btn;
+
+    /** 标题栏*/
+    Toolbar toolbar;
+
     @Override
     protected void initActionBar() {
-
+        toolbar= (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("登录");
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.back_btn));
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override
@@ -63,7 +77,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     protected void widgetListener() {
-
+        login_btn.setOnClickListener(this);
     }
 
     /**

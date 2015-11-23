@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseFragment;
+import com.xiwang.jxw.event.LoginEvent;
 import com.xiwang.jxw.util.DisplayUtil;
 import com.xiwang.jxw.util.ToastUtil;
 
@@ -81,5 +82,11 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
                 case R.id.tidao_ll:
                     break;
             }
+    }
+
+    public void onEvent(LoginEvent event) {
+
+
+
     }
 }
