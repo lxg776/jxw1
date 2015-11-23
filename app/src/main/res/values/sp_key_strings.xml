@@ -6,6 +6,7 @@
     <string name="start_app_img">start_app_img</string>
     <string name="home_newslist">home_newslist</string>
     <string name="cache_newsdetail">cache_newsdetail</string>
+    <string name="cache_user">cache_user</string>
 
 
 </resources>

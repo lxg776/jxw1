@@ -19,6 +19,7 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 
+import com.xiwang.jxw.bean.UserBean;
 import com.xiwang.jxw.fileds.DataFields;
 import com.xiwang.jxw.network.AppHttpClient;
 import com.xiwang.jxw.util.ImgLoadUtil;
@@ -66,6 +67,8 @@ public class TApplication extends Application  {
 	public static String token;
 	public static SpUtil sp ;
 
+
+	public static UserBean mUser;
 
 	@Override
 	public void onCreate() {

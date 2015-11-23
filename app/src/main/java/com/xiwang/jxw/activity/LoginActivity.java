@@ -1,9 +1,24 @@
 package com.xiwang.jxw.activity;
 
 
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.TextView;
+
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseActivity;
+import com.xiwang.jxw.base.BaseBiz;
+import com.xiwang.jxw.bean.ResponseBean;
+import com.xiwang.jxw.bean.UserBean;
+import com.xiwang.jxw.biz.UserBiz;
+import com.xiwang.jxw.config.TApplication;
+import com.xiwang.jxw.event.LoginEvent;
+import com.xiwang.jxw.util.ProcessDialogUtil;
+import com.xiwang.jxw.util.SpUtil;
+import com.xiwang.jxw.util.ToastUtil;
 import com.xiwang.jxw.widget.DeleteEditText;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * @author lxg776
@@ -11,13 +26,14 @@ import com.xiwang.jxw.widget.DeleteEditText;
  * @date 2015/11/2
  * @modifier
  */
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity implements View.OnClickListener{
     /** 用户名*/
     DeleteEditText username_edt;
-
     /** 密码*/
     DeleteEditText pwd_edt;
 
+    /** 登录按钮*/
+    TextView login_btn;
     @Override
     protected void initActionBar() {
 
@@ -32,6 +48,7 @@ public class LoginActivity extends BaseActivity {
     protected void findViews() {
         username_edt= (DeleteEditText) findViewById(R.id.username_edt);
         pwd_edt= (DeleteEditText) findViewById(R.id.pwd_edt);
+        login_btn= (TextView) findViewById(R.id.login_btn);
     }
 
     @Override
@@ -47,5 +64,77 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void widgetListener() {
 
+    }
+
+    /**
+     * 校验输入
+     * @return
+     */
+    private boolean checkInput(){
+        String userName=username_edt.getText().toString();
+        String pwd=pwd_edt.getText().toString();
+        if(TextUtils.isEmpty(userName)){
+            ToastUtil.showToast(context, getString(R.string.login_username_notnull));
+            return false;
+        }
+        if(TextUtils.isEmpty(pwd)){
+            ToastUtil.showToast(context,getString(R.string.login_pwd_notnull));
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 用户登录
+     */
+    private void userLogin(){
+        if(checkInput()){
+            String userName=username_edt.getText().toString();
+            final String pwd=pwd_edt.getText().toString();
+            ProcessDialogUtil.showDialog(context,"数据加载中...",false);
+            UserBiz.login(userName, pwd, new BaseBiz.RequestHandle() {
+                @Override
+                public void onSuccess(ResponseBean responseBean) {
+                    TApplication.mUser= (UserBean) responseBean.getObject();
+                    TApplication.mUser.setPwd(pwd);
+                    /** 保存用户*/
+                    SpUtil.setObject(context,getString(R.string.cache_user),TApplication.mUser);
+                    /** 发出登录成功通知*/
+                    EventBus.getDefault().post(new LoginEvent(true));
+                    ProcessDialogUtil.dismissDialog();
+                    setResult(RESULT_OK);
+                    finish();
+                }
+
+                @Override
+                public void onFail(ResponseBean responseBean) {
+
+                    ProcessDialogUtil.dismissDialog();
+                    ToastUtil.showToast(context,responseBean.getInfo());
+                }
+
+                @Override
+                public ResponseBean getRequestCache() {
+                    return null;
+                }
+
+                @Override
+                public void onRequestCache(ResponseBean result) {
+
+                }
+            });
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            /** 登录*/
+            case  R.id.login_btn:
+            {
+                userLogin();
+            }
+                break;
+        }
     }
 }

@@ -21,6 +21,11 @@ import com.xiwang.jxw.network.AppHttpClient;
  * @modifier
  */
 public class BaseBiz {
+
+
+    public static final String SUCCESS_CODE="200";
+
+
     /**
      * 发送http get请求
      * @param url
@@ -47,7 +52,13 @@ public class BaseBiz {
                             responseBean.setInfo(TApplication.context.getResources().getString(R.string.exception_local_json_message));
                             handle.onFail(responseBean);
                         }
-                        handle.onSuccess(responseBean);
+
+                        if(isSuccess(responseBean.getStatus())){
+                            handle.onSuccess(responseBean);
+                        }else
+                        {
+                            handle.onSuccess(responseBean);
+                        }
                     }
 
                     @Override
@@ -103,6 +114,16 @@ public class BaseBiz {
                 });
             }
         });
+    }
+
+
+    public static boolean isSuccess(String code){
+        if(SUCCESS_CODE.equals(code)){
+            return true;
+        }else
+        {
+            return  false;
+        }
     }
 
 

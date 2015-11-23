@@ -11,4 +11,6 @@
     <string name="more_loading">加载中...</string>
     <string name="loadmore">加载更多...</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="login_username_notnull">用户名不能为空</string>
+    <string name="login_pwd_notnull">密码不能为空</string>
 </resources>

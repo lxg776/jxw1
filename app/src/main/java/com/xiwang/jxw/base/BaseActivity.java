@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 
+import de.greenrobot.event.EventBus;
+
 
 /**
  * 基类Activity
@@ -43,8 +45,11 @@ public abstract class BaseActivity extends AppCompatActivity {
 		setContentView(view);
 		startAnimation();
 		findViews();
-		initGetData();
 		initActionBar();
+		if (useEventBus()) {
+			EventBus.getDefault().register(this);
+		}
+		initGetData();
 		widgetListener();
 		init();
 		registerReceiver();
@@ -254,8 +259,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 	@Override
 	protected void onDestroy() {
 		unregisterReceiver(receiver);
+		if (useEventBus()) {
+			EventBus.getDefault().unregister(this);
+		}
 		super.onDestroy();
 	}
+
 	
 
 }

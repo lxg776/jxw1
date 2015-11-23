@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import de.greenrobot.event.EventBus;
 
 
 /**
@@ -44,6 +45,9 @@ public abstract class BaseFragment extends Fragment {
 		view_Parent = getViews();
 
 		findViews();
+		if (useEventBus()) {
+			EventBus.getDefault().register(this);
+		}
 		initGetData();
 		widgetListener();
 		init();
@@ -110,8 +114,18 @@ public abstract class BaseFragment extends Fragment {
 	@Override
 	public void onDestroy() {
 		getActivity().unregisterReceiver(receiver);
+		if (useEventBus()) {
+			EventBus.getDefault().unregister(this);
+		}
 		super.onDestroy();
 	}
+
+
+
+	protected boolean useEventBus() {
+		return false;
+	}
+
 
 	/**
 	 * 广播监听回调
