@@ -57,13 +57,13 @@ public class ProcessDialogUtil {
 			View view = View.inflate(context, R.layout.dialog_loading, null);
 			TextView loading_txt = (TextView) view.findViewById(R.id.loading_txt);
 			loading_txt.setText(processMsg);
-			progressDialog.setContentView(view);
 			WindowManager.LayoutParams params = progressDialog.getWindow().getAttributes();
 			params.width = WindowManager.LayoutParams.MATCH_PARENT;
 			params.height = WindowManager.LayoutParams.MATCH_PARENT;
 			progressDialog.getWindow().setAttributes(params);
 			progressDialog.setCancelable(cancelable);
 			progressDialog.show();
+			progressDialog.setContentView(view);
 		}catch (Exception e){
 			e.printStackTrace();
 		}

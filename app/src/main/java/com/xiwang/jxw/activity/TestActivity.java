@@ -1,12 +1,9 @@
 package com.xiwang.jxw.activity;
-
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ListView;
-
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.adapter.HomeNewsListAdapter;
-import com.xiwang.jxw.adapter.HomePagerAdapter;
 import com.xiwang.jxw.base.BaseActivity;
 import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.bean.ColumnBean;
@@ -15,7 +12,6 @@ import com.xiwang.jxw.bean.NewsBean;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.biz.HomeBiz;
 import com.xiwang.jxw.util.SpUtil;
-
 import java.util.List;
 
 /**

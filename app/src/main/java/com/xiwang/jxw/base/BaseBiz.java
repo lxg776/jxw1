@@ -12,6 +12,7 @@ import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.executor.RequestExecutor;
 import com.xiwang.jxw.network.AppHttpClient;
+import com.xiwang.jxw.util.LogUtil;
 
 /**
  * 基本的网络事务
@@ -37,40 +38,50 @@ public class BaseBiz {
                 if (cacheData != null) {
                     handle.onRequestCache(cacheData);
                 }
-                AppHttpClient.get(ServerConfig.SERVER_API_URL + url, params, new AsyncHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        String responseStr = new String(responseBody);
-                        ResponseBean responseBean = new ResponseBean();
-                        try {
-                            JSONObject jsonObject = new JSONObject(responseStr);
-                            responseBean.setInfo(jsonObject.optString("msg"));
-                            responseBean.setStatus(jsonObject.optString("code"));
-                            responseBean.setObject(jsonObject.optString("data"));
-                        } catch (JSONException e) {
-                            responseBean.setStatus(ServerConfig.JSON_DATA_ERROR);
-                            responseBean.setInfo(TApplication.context.getResources().getString(R.string.exception_local_json_message));
-                            handle.onFail(responseBean);
-                        }
 
-                        if(isSuccess(responseBean.getStatus())){
-                            handle.onSuccess(responseBean);
-                        }else
-                        {
-                            handle.onSuccess(responseBean);
-                        }
-                    }
+        AsyncHttpResponseHandler handler =new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String responseStr = new String(responseBody);
+                ResponseBean responseBean = new ResponseBean();
 
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        ResponseBean responseBean = new ResponseBean();
-                        responseBean.setStatus(statusCode + "");
-                        if(null!=responseBody){
-                            responseBean.setInfo(new String(responseBody));
-                        }
-                        handle.onFail(responseBean);
-                    }
-                });
+                try {
+                    LogUtil.d(responseStr);
+                    JSONObject jsonObject = new JSONObject(responseStr);
+                    responseBean.setInfo(jsonObject.optString("msg"));
+                    responseBean.setStatus(jsonObject.optString("code"));
+                    responseBean.setObject(jsonObject.optString("data"));
+                } catch (JSONException e) {
+                    responseBean.setStatus(ServerConfig.JSON_DATA_ERROR);
+                    responseBean.setInfo(TApplication.context.getResources().getString(R.string.exception_local_json_message));
+                    handle.onFail(responseBean);
+                }
+
+                if(isSuccess(responseBean.getStatus())){
+                    handle.onSuccess(responseBean);
+                }else
+                {
+                    handle.onFail(responseBean);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                ResponseBean responseBean = new ResponseBean();
+                responseBean.setStatus(statusCode + "");
+                if(null!=responseBody){
+                    responseBean.setInfo(new String(responseBody));
+                }
+                handle.onFail(responseBean);
+            }
+        };
+        if(params==null){
+            AppHttpClient.get(ServerConfig.SERVER_API_URL + url,handler);
+        }else{
+            AppHttpClient.get(ServerConfig.SERVER_API_URL + url, params, handler);
+        }
+
+
 
 
     }

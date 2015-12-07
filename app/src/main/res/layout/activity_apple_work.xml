@@ -1,0 +1,47 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/tootbar_common"></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        >
+        <com.xiwang.jxw.widget.MyInputEditView
+            android:layout_width="match_parent"
+            app:topHinttext="姓名"
+            app:inputHinttext="姓名"
+            app:default_lColor="@color/black_transparent_54"
+            android:layout_height="wrap_content">
+        </com.xiwang.jxw.widget.MyInputEditView>
+
+        <com.xiwang.jxw.widget.MyInputEditView
+            android:layout_width="match_parent"
+            app:topHinttext="联系电话"
+            app:inputHinttext="联系电话"
+            android:layout_marginTop="8dp"
+            app:default_lColor="@color/black_transparent_54"
+            android:layout_height="wrap_content">
+        </com.xiwang.jxw.widget.MyInputEditView>
+
+
+        <com.xiwang.jxw.widget.MyDatePickView
+            android:layout_width="match_parent"
+            android:layout_marginTop="8dp"
+            android:layout_height="wrap_content">
+        </com.xiwang.jxw.widget.MyDatePickView>
+
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

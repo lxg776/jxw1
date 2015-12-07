@@ -5,7 +5,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
-
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseActivity;
 import com.xiwang.jxw.base.BaseBiz;
@@ -18,7 +17,6 @@ import com.xiwang.jxw.util.ProcessDialogUtil;
 import com.xiwang.jxw.util.SpUtil;
 import com.xiwang.jxw.util.ToastUtil;
 import com.xiwang.jxw.widget.DeleteEditText;
-
 import de.greenrobot.event.EventBus;
 
 /**
@@ -32,10 +30,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     DeleteEditText username_edt;
     /** 密码*/
     DeleteEditText pwd_edt;
-
     /** 登录按钮*/
     TextView login_btn;
-
     /** 标题栏*/
     Toolbar toolbar;
 

@@ -70,7 +70,8 @@ public class ServerConfig {
 	public final static String NEWS_DETAIL="getapp.php?a=read";
 	/** 登录接口 */
 	public final static String USER_LOGIN="getapp.php?a=login";
-
+	/** 获取栏目接口 */
+	public final static String MENUTOP_TOP="getapp.php?a=menutop";
 
 	/** 文件服务器地址 */
 	public final static String SERVER_FILE_URL = "http://buddyfile.t.com";

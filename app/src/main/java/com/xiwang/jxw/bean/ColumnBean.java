@@ -20,6 +20,9 @@ public class ColumnBean extends BaseBean{
     private String showType=TYPE_NEWSLIST;
     /** 排序*/
     private int index;
+    /** 栏目id*/
+    private String fid;
+
 
 
     public static String TYPE_NEWSLIST="newsList";
@@ -29,9 +32,18 @@ public class ColumnBean extends BaseBean{
 
     @Override
     protected void init(JSONObject jSon) throws JSONException {
-
+        setFid(jSon.optString("fid"));
+        setName(jSon.optString("name"));
+        setDataUrl("getapp.php?a=thread&fid="+fid);
     }
 
+    public String getFid() {
+        return fid;
+    }
+
+    public void setFid(String fid) {
+        this.fid = fid;
+    }
 
     public String getName() {
         return name;

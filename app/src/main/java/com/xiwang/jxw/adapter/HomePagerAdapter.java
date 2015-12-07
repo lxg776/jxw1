@@ -22,7 +22,10 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
     boolean[] fragmentsUpdateFlag ;
     public void setColumnBeanList(List<ColumnBean> columnBeanList) {
         this.columnBeanList = columnBeanList;
-        fragmentsUpdateFlag  = new boolean[columnBeanList.size()];
+        if(null!=columnBeanList){
+            fragmentsUpdateFlag  = new boolean[columnBeanList.size()];
+        }
+
     }
 
     public HomePagerAdapter(FragmentManager fm) {
@@ -49,7 +52,10 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
     }
     @Override
     public int getCount() {
-        return columnBeanList.size();
+        if(null!=columnBeanList){
+            return  columnBeanList.size();
+        }
+        return 0;
     }
 
     @Override

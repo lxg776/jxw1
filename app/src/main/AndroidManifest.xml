@@ -37,6 +37,7 @@
         <activity
             android:name=".activity.MainActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" >
         </activity>
 
@@ -44,25 +45,39 @@
         <activity
             android:name=".activity.ExitActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoDisplay" />
 
         <!-- 新闻详情 -->
         <activity
             android:name=".activity.NewsDetailActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" >
         </activity>
 
         <!-- 新闻详情 -->
         <activity
             android:name=".activity.TestActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" >
         </activity>
 
         <!-- 登录Activity -->
         <activity
             android:name=".activity.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+
+
+        <!-- 登录Activity -->
+        <activity
+            android:name=".activity.ApplyWorkActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_login" >
         </activity>
+
     </application>
 
 </manifest>

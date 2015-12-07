@@ -11,14 +11,18 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseActivity;
 import com.xiwang.jxw.base.BaseBiz;
+import com.xiwang.jxw.bean.ColumnBean;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.bean.StartAppBean;
+import com.xiwang.jxw.biz.HomeBiz;
 import com.xiwang.jxw.biz.SystemBiz;
 import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.util.HandlerUtil;
 import com.xiwang.jxw.util.ImgLoadUtil;
 import com.xiwang.jxw.util.IntentUtil;
 import com.xiwang.jxw.util.SpUtil;
+
+import java.util.List;
 
 /**
  * @author lxg776
@@ -91,7 +95,7 @@ public class StartAppActivity extends BaseActivity {
 
             @Override
             public void onFail(ResponseBean responseBean) {
-                img_view.setBackgroundDrawable(getResources().getDrawable(R.mipmap.start_app_img));
+                //img_view.setBackgroundDrawable(getResources().getDrawable(R.mipmap.start_app_img));
             }
             @Override
             public ResponseBean getRequestCache() {
@@ -108,9 +112,37 @@ public class StartAppActivity extends BaseActivity {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                IntentUtil.gotoActivityAndFinish(context,MainActivity.class);
+                IntentUtil.gotoActivityAndFinish(context, MainActivity.class);
             }
-        },5000);
+        }, 3000);
+        /**
+         * 获取栏目
+         */
+        HomeBiz.getHomeMenu(new BaseBiz.RequestHandle() {
+            @Override
+            public void onSuccess(ResponseBean responseBean) {
+
+                    List<ColumnBean> columnBeanList= (List<ColumnBean>) responseBean.getObject();
+                    SpUtil.setObject(context,getString(R.string.cache_menu),columnBeanList);
+            }
+
+            @Override
+            public void onFail(ResponseBean responseBean) {
+
+            }
+
+            @Override
+            public ResponseBean getRequestCache() {
+                return null;
+            }
+
+            @Override
+            public void onRequestCache(ResponseBean result) {
+
+            }
+        });
+
+
     }
 
     @Override

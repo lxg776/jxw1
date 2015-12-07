@@ -24,6 +24,16 @@ public class DeleteEditText extends EditText implements OnFocusChangeListener, T
 	private boolean hasFoucs;
 	/** 文本监听 */
 	private OnTextChangeListener onTextChangeListener;
+	/** 横线 */
+	LineChangeListener lineChangeListener;
+
+	public LineChangeListener getLineChangeListener() {
+		return lineChangeListener;
+	}
+
+	public void setLineChangeListener(LineChangeListener lineChangeListener) {
+		this.lineChangeListener = lineChangeListener;
+	}
 
 	public void setOnTextChangeListener(OnTextChangeListener onTextChangeListener) {
 		this.onTextChangeListener = onTextChangeListener;
@@ -104,8 +114,14 @@ public class DeleteEditText extends EditText implements OnFocusChangeListener, T
 		this.hasFoucs = hasFocus;
 		if (hasFocus) {
 			setClearIconVisible(getText().length() > 0);
+			if(null!=lineChangeListener){
+				lineChangeListener.change();
+			}
 		} else {
 			setClearIconVisible(false);
+			if(null!=lineChangeListener){
+				lineChangeListener.back();
+			}
 		}
 	}
 
@@ -202,5 +218,13 @@ public class DeleteEditText extends EditText implements OnFocusChangeListener, T
 		public void afterChange(Editable s);
 
 		public void onTextChanged(CharSequence s, int start, int count, int after);
+	}
+
+
+	public interface LineChangeListener {
+		public void change();
+
+		public void back();
+
 	}
 }

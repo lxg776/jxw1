@@ -6,6 +6,7 @@ import com.xiwang.jxw.R;
 import com.xiwang.jxw.adapter.HomePagerAdapter;
 import com.xiwang.jxw.base.BaseFragment;
 import com.xiwang.jxw.bean.ColumnBean;
+import com.xiwang.jxw.util.SpUtil;
 import com.xiwang.jxw.widget.MyJazzyViewPager;
 import com.xiwang.jxw.widget.PagerSlidingTabStrip;
 
@@ -65,43 +66,48 @@ public class HomeFragment extends BaseFragment {
      * 初始化栏目数据
      */
     private void initTabsData(){
-        ColumnBean c1=new ColumnBean();
-        c1.setDataUrl("getapp.php?a=thread&fid=2");
-        c1.setName("新鲜事");
-        columnBeanList.add(c1);
+
+        columnBeanList= (List<ColumnBean>) SpUtil.getObject(context,getString(R.string.cache_menu));
 
 
 
-        ColumnBean c2=new ColumnBean();
-        c2.setDataUrl("getapp.php?a=thread&fid=2");
-        c2.setName("新闻");
-        columnBeanList.add(c2);
-
-        ColumnBean c3=new ColumnBean();
-        c3.setDataUrl("getapp.php?a=thread&fid=2");
-        c3.setName("供求");
-        columnBeanList.add(c3);
-
-        ColumnBean c4=new ColumnBean();
-        c4.setDataUrl("getapp.php?a=thread&fid=2");
-        c4.setName("房产");
-        columnBeanList.add(c4);
-
-        ColumnBean c5=new ColumnBean();
-        c5.setDataUrl("getapp.php?a=thread&fid=2");
-        c5.setName("交友");
-        columnBeanList.add(c5);
-
-
-        ColumnBean c6=new ColumnBean();
-        c6.setDataUrl("getapp.php?a=thread&fid=2");
-        c6.setName("求职");
-        columnBeanList.add(c6);
-
-        ColumnBean c7=new ColumnBean();
-        c7.setDataUrl("getapp.php?a=thread&fid=2");
-        c7.setName("景点旅游");
-        columnBeanList.add(c7);
+//        ColumnBean c1=new ColumnBean();
+//        c1.setDataUrl("getapp.php?a=thread&fid=2");
+//        c1.setName("新鲜事");
+//        columnBeanList.add(c1);
+//
+//
+//
+//        ColumnBean c2=new ColumnBean();
+//        c2.setDataUrl("getapp.php?a=thread&fid=2");
+//        c2.setName("新闻");
+//        columnBeanList.add(c2);
+//
+//        ColumnBean c3=new ColumnBean();
+//        c3.setDataUrl("getapp.php?a=thread&fid=2");
+//        c3.setName("供求");
+//        columnBeanList.add(c3);
+//
+//        ColumnBean c4=new ColumnBean();
+//        c4.setDataUrl("getapp.php?a=thread&fid=2");
+//        c4.setName("房产");
+//        columnBeanList.add(c4);
+//
+//        ColumnBean c5=new ColumnBean();
+//        c5.setDataUrl("getapp.php?a=thread&fid=2");
+//        c5.setName("交友");
+//        columnBeanList.add(c5);
+//
+//
+//        ColumnBean c6=new ColumnBean();
+//        c6.setDataUrl("getapp.php?a=thread&fid=2");
+//        c6.setName("求职");
+//        columnBeanList.add(c6);
+//
+//        ColumnBean c7=new ColumnBean();
+//        c7.setDataUrl("getapp.php?a=thread&fid=2");
+//        c7.setName("景点旅游");
+//        columnBeanList.add(c7);
 
         adapter=new HomePagerAdapter(getFragmentManager());
         adapter.setColumnBeanList(columnBeanList);

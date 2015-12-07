@@ -44,12 +44,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 		mHandler=new Handler();
 		setContentView(view);
 		startAnimation();
-		findViews();
-		initActionBar();
 		if (useEventBus()) {
 			EventBus.getDefault().register(this);
 		}
+		findViews();
 		initGetData();
+		initActionBar();
 		widgetListener();
 		init();
 		registerReceiver();

@@ -37,4 +37,13 @@
         <attr name="pstsTextAllCaps" format="boolean" />
     </declare-styleable>
 
+
+    <!-- 首页TAB -->
+    <declare-styleable name="MyInputEditView">
+        <attr name="topHinttext" format="reference|string" />
+        <attr name="inputHinttext" format="reference|string" />
+        <attr name = "default_lColor" format = "color" />
+        <attr name = "change_lColor" format = "color" />
+    </declare-styleable>
+
 </resources>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="出生年月"
+        android:id="@+id/hint_tv"
+        android:textColor="@color/black_transparent_26"
+        />
+    <TextView
+        android:id="@+id/date_tv"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:singleLine="true"
+        android:hint="出生年月"
+        android:gravity="center_vertical"
+        android:textColor="@color/black_transparent_26"
+        android:textColorHint="@color/black_transparent_26"
+        android:background="@color/trans"
+        android:textSize="16sp"
+        android:paddingRight="16dp"
+        />
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/view_line"
+        ></View>
+
+</LinearLayout>
