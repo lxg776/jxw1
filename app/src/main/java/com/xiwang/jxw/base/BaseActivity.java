@@ -37,8 +37,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 	public Handler mHandler;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
+		//requestWindowFeature(Window.FEATURE_NO_TITLE);
 		context=this;
 		View view = View.inflate(context, getContentViewId(), null);
 		mHandler=new Handler();

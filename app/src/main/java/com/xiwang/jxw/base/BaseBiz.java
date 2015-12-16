@@ -39,14 +39,18 @@ public class BaseBiz {
                     handle.onRequestCache(cacheData);
                 }
 
+            LogUtil.d(url);
+            if(null!=params){
+                LogUtil.d(params.toString());
+            }
         AsyncHttpResponseHandler handler =new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String responseStr = new String(responseBody);
                 ResponseBean responseBean = new ResponseBean();
-
+                LogUtil.d("data:"+responseStr);
                 try {
-                    LogUtil.d(responseStr);
+
                     JSONObject jsonObject = new JSONObject(responseStr);
                     responseBean.setInfo(jsonObject.optString("msg"));
                     responseBean.setStatus(jsonObject.optString("code"));

@@ -3,7 +3,6 @@ package com.xiwang.jxw.activity;
 import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.ImageView;
-
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
@@ -17,10 +16,10 @@ import com.xiwang.jxw.bean.StartAppBean;
 import com.xiwang.jxw.biz.HomeBiz;
 import com.xiwang.jxw.biz.SystemBiz;
 import com.xiwang.jxw.config.ServerConfig;
-import com.xiwang.jxw.util.HandlerUtil;
 import com.xiwang.jxw.util.ImgLoadUtil;
 import com.xiwang.jxw.util.IntentUtil;
 import com.xiwang.jxw.util.SpUtil;
+import com.xiwang.jxw.widget.PercentView;
 
 import java.util.List;
 
@@ -35,6 +34,8 @@ public class StartAppActivity extends BaseActivity {
     ImageView img_view;
     /** 图片路径*/
     String imgUrl;
+    PercentView pv;
+
 
     /** 图片显示的配置*/
     DisplayImageOptions displayOptions = new DisplayImageOptions.Builder() // 使用DisplayImageOptions.Builder()创建DisplayImageOptions
@@ -79,6 +80,10 @@ public class StartAppActivity extends BaseActivity {
     @Override
     protected void findViews() {
         img_view= (ImageView) findViewById(R.id.img_view);
+        pv= (PercentView) findViewById(R.id.pv);
+
+
+
     }
 
     @Override
@@ -87,8 +92,8 @@ public class StartAppActivity extends BaseActivity {
         SystemBiz.getStartAppImage(new BaseBiz.RequestHandle() {
             @Override
             public void onSuccess(ResponseBean responseBean) {
-                StartAppBean bean= (StartAppBean) responseBean.getObject();
-                imgUrl=bean.getImgurl();
+                StartAppBean bean = (StartAppBean) responseBean.getObject();
+                imgUrl = bean.getImgurl();
                 ImgLoadUtil.displayImage(imgUrl, img_view, displayOptions, listener);
                 SpUtil.setObject(context, getString(R.string.start_app_img), responseBean);
             }
@@ -97,6 +102,7 @@ public class StartAppActivity extends BaseActivity {
             public void onFail(ResponseBean responseBean) {
                 //img_view.setBackgroundDrawable(getResources().getDrawable(R.mipmap.start_app_img));
             }
+
             @Override
             public ResponseBean getRequestCache() {
                 return (ResponseBean) SpUtil.getObject(context, getString(R.string.start_app_img));
@@ -104,15 +110,15 @@ public class StartAppActivity extends BaseActivity {
 
             @Override
             public void onRequestCache(ResponseBean result) {
-                StartAppBean bean= (StartAppBean) result.getObject();
-                imgUrl=bean.getImgurl();
+                StartAppBean bean = (StartAppBean) result.getObject();
+                imgUrl = bean.getImgurl();
                 ImgLoadUtil.displayImage(imgUrl, img_view, displayOptions, listener);
             }
         });
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                IntentUtil.gotoActivityAndFinish(context, MainActivity.class);
+                IntentUtil.gotoActivityAndFinish(context, ApplyWorkActivity.class);
             }
         }, 3000);
         /**
@@ -122,8 +128,8 @@ public class StartAppActivity extends BaseActivity {
             @Override
             public void onSuccess(ResponseBean responseBean) {
 
-                    List<ColumnBean> columnBeanList= (List<ColumnBean>) responseBean.getObject();
-                    SpUtil.setObject(context,getString(R.string.cache_menu),columnBeanList);
+                List<ColumnBean> columnBeanList = (List<ColumnBean>) responseBean.getObject();
+                SpUtil.setObject(context, getString(R.string.cache_menu), columnBeanList);
             }
 
             @Override
@@ -141,6 +147,40 @@ public class StartAppActivity extends BaseActivity {
 
             }
         });
+//
+//        final Runnable runnable = new Runnable(){
+//            @Override
+//            public void run() {
+//                // TODO Auto-generated method stub
+//                // 在此处添加执行的代码
+//                pv.setPercent(pv.getPercent() + 1);
+//                if(pv.getPercent()<100){
+//                    mHandler.postDelayed(this, 500);// 150是延时时长
+//                }else{
+//                    mHandler.removeCallbacks(this);
+//                }
+//
+//            }
+//        };
+//
+//
+//        pv.setPercentlistener(new PercentView.PercentListener() {
+//            @Override
+//            public void finish() {
+//
+//            }
+//
+//            @Override
+//            public void onPercent(int percent) {
+//
+//            }
+//        });
+//        mHandler.postDelayed(runnable,500);
+
+
+
+
+
 
 
     }
@@ -154,4 +194,6 @@ public class StartAppActivity extends BaseActivity {
     protected void widgetListener() {
 
     }
+
+
 }

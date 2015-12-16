@@ -2,6 +2,9 @@ package com.xiwang.jxw.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
@@ -18,6 +21,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.xiwang.jxw.R;
+import com.xiwang.jxw.config.TApplication;
 
 import java.io.File;
 
@@ -102,7 +106,8 @@ public class ImgLoadUtil {
                 .showImageForEmptyUri(R.mipmap.defualt_user_icon)  // 设置图片Uri为空或是错误的时候显示的图片
                 .showImageOnFail(R.mipmap.defualt_user_icon)       // 设置图片加载或解码过程中发生错误显示的图片
                 .cacheInMemory(true)                        // 设置下载的图片是否缓存在内存中
-                .cacheOnDisc(true)                          // 设置下载的图片是否缓存在SD卡中
+                .cacheOnDisc(true)
+                                      // 设置下载的图片是否缓存在SD卡中
                 .displayer(new RoundedBitmapDisplayer(20))  // 设置成圆角图片
                 .build();                                   // 创建配置过得DisplayImageOption对象
         return newsDetailDisplayOptions;
@@ -136,6 +141,35 @@ public class ImgLoadUtil {
             }
         };
         return  defaultListener;
+    }
+
+
+    /**
+     * 从内存卡中异步加载本地图片
+     *
+     * @param uri
+     * @param imageView
+     */
+    public static void displayFromSDCard(final Context context,String uri, final ImageView imageView,DisplayImageOptions options) {
+
+        AlbumBitmapCacheHelper.getInstance().addPathToShowlist(uri);
+        Bitmap bitmap = AlbumBitmapCacheHelper.getInstance().getBitmap(uri, 255, 255, new AlbumBitmapCacheHelper.ILoadImageCallback() {
+            @Override
+            public void onLoadImageCallBack(Bitmap bitmap, String path1, Object... objects) {
+                if (bitmap == null) {
+                    return;
+                }
+                BitmapDrawable bd = new BitmapDrawable(context.getResources(), bitmap);
+                imageView.setImageDrawable(bd);
+            }
+        });
+        if (bitmap != null){
+            BitmapDrawable bd = new BitmapDrawable(context.getResources(), bitmap);
+            imageView.setBackgroundDrawable(bd);
+        }else{
+            imageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.ic_product_9));
+        }
+
     }
 
 

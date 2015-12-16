@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#fafafa"
+    >
+    <!--标题-->
+    <TextView
+        android:id="@+id/title_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textSize="20sp"
+        android:textColor="@color/black_transparent_87"
+        android:text="选择标题"
+        />
+    <!--选择的列表-->
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:divider="@color/view_line"
+        android:dividerHeight="0.5dp"
+        android:cacheColorHint="@color/trans"
+        android:layout_height="wrap_content">
+    </ListView>
+
+
+    <!--底部列表-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttom_rl"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/done_tv"
+            android:text="确定"
+            android:padding="16dp"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/bule_700"
+            android:textSize="16sp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cancel_tv"
+            android:text="取消"
+            android:padding="16dp"
+            android:layout_toLeftOf="@id/done_tv"
+            android:textSize="16sp"
+            android:textColor="@color/black_transparent_26"
+            />
+    </RelativeLayout>
+
+</LinearLayout>

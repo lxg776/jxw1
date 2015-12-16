@@ -40,6 +40,7 @@ import com.xiwang.jxw.R;
 import com.xiwang.jxw.bean.ImageDirectoryModel;
 import com.xiwang.jxw.bean.SingleImageModel;
 import com.xiwang.jxw.config.TApplication;
+import com.xiwang.jxw.event.PickImageEvent;
 import com.xiwang.jxw.util.AlbumBitmapCacheHelper;
 import com.xiwang.jxw.util.CommonUtil;
 import com.xiwang.jxw.util.DisplayUtil;
@@ -52,24 +53,28 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+import de.greenrobot.event.EventBus;
+
 /**
  * @author: zzp
  * @since: 2015-06-10
- * Description: ·ÂÎ¢ĞÅÑ¡È¡ÊÖ»úËùÓĞÍ¼Æ¬£¬»òÕßÅÄÕÕ½çÃæ
+ * Description: ä»¿å¾®ä¿¡é€‰å–æ‰‹æœºæ‰€æœ‰å›¾ç‰‡ï¼Œæˆ–è€…æ‹ç…§ç•Œé¢
  */
 public class PickOrTakeImageActivity extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener,
         AbsListView.OnScrollListener, View.OnTouchListener{
 
-    /** °´Ê±¼äÅÅĞòµÄËùÓĞÍ¼Æ¬list */
+    /** æŒ‰æ—¶é—´æ’åºçš„æ‰€æœ‰å›¾ç‰‡list */
     private ArrayList<SingleImageModel> allImages;
-    /** °´Ä¿Â¼ÅÅĞòµÄËùÓĞÍ¼Æ¬list */
+    /** æŒ‰ç›®å½•æ’åºçš„æ‰€æœ‰å›¾ç‰‡list */
     private ArrayList<SingleImageDirectories> imageDirectories;
-    /** Ñ¡ÖĞÍ¼Æ¬µÄĞÅÏ¢ */
+    /** é€‰ä¸­å›¾ç‰‡çš„ä¿¡æ¯ */
     ArrayList<String> picklist = new ArrayList<String>();
 
     private MyHandler handler;
 
-    /** µ±Ç°ÏÔÊ¾µÄÎÄ¼ş¼ĞÂ·¾¶£¬È«²¿-- -1 */
+    String fromTag;
+
+    /** å½“å‰æ˜¾ç¤ºçš„æ–‡ä»¶å¤¹è·¯å¾„ï¼Œå…¨éƒ¨-- -1 */
     private int currentShowPosition;
 
     private GridView gridView = null;
@@ -89,10 +94,10 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
     private LayoutInflater inflater = null;
     private GridViewAdapter adapter;
 
-    //ÅÄÕÕµÄÎÄ¼şµÄÎÄ¼şÃû
+    //æ‹ç…§çš„æ–‡ä»¶çš„æ–‡ä»¶å
     String tempPath = null;
 
-    /** Ñ¡ÔñÎÄ¼ş¼ĞµÄµ¯³ö¿ò */
+    /** é€‰æ‹©æ–‡ä»¶å¤¹çš„å¼¹å‡ºæ¡† */
 //    private PopupWindow window;
     private RelativeLayout rl_choose_directory;
     private ListView listView;
@@ -105,15 +110,15 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
 //    private TranslateAnimation animation;
 //    private TranslateAnimation reverseanimation;
 
-    /** Ã¿ÕÅÍ¼Æ¬ĞèÒªÏÔÊ¾µÄ¸ß¶ÈºÍ¿í¶È */
+    /** æ¯å¼ å›¾ç‰‡éœ€è¦æ˜¾ç¤ºçš„é«˜åº¦å’Œå®½åº¦ */
     private int perWidth;
 
-    /** Ñ¡ÔñÍ¼Æ¬µÄÊıÁ¿×ÜÊı£¬Ä¬ÈÏÎª9 */
+    /** é€‰æ‹©å›¾ç‰‡çš„æ•°é‡æ€»æ•°ï¼Œé»˜è®¤ä¸º9 */
     private int picNums = 9;
-    /** µ±Ç°Ñ¡ÖĞµÄÍ¼Æ¬ÊıÁ¿ */
+    /** å½“å‰é€‰ä¸­çš„å›¾ç‰‡æ•°é‡ */
     private int currentPicNums = 0;
 
-    /** ×îĞÂÒ»ÕÅÍ¼Æ¬µÄÊ±¼ä */
+    /** æœ€æ–°ä¸€å¼ å›¾ç‰‡çš„æ—¶é—´ */
     private long lastPicTime = 0;
 
     public static final String EXTRA_NUMS = "extra_nums";
@@ -126,6 +131,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_or_take_image_activity);
+        fromTag=getIntent().getStringExtra(getResources().getString(R.string.send_tag));
         initView();
         initData();
     }
@@ -209,7 +215,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
 //        LinearLayout parent = new LinearLayout(this);
 //        parent.addView(listView);
 
-        //²»Ê¹ÓÃpopupwindow·½°¸
+        //ä¸ä½¿ç”¨popupwindowæ–¹æ¡ˆ
 //        window = new PopupWindow();
 //        window.setWidth(AppContext.getInstance().getScreenWidth());
 //        window.setHeight(CommonUtil.dip2px(this, 300));
@@ -225,7 +231,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
             }
         });
 
-        ((TextView)findViewById(R.id.tv_title)).setText("Ñ¡ÔñÍ¼Æ¬");
+        ((TextView)findViewById(R.id.tv_title)).setText("é€‰æ‹©å›¾ç‰‡");
 
         btn_choose_finish = (Button) findViewById(R.id.btn_choose_finish);
         btn_choose_finish.setOnClickListener(new View.OnClickListener() {
@@ -244,7 +250,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
         imageDirectories = new ArrayList<>();
 
         handler = new MyHandler(this);
-        //Ä¬ÈÏÏÔÊ¾È«²¿Í¼Æ¬
+        //é»˜è®¤æ˜¾ç¤ºå…¨éƒ¨å›¾ç‰‡
         currentShowPosition = -1;
         adapter = new GridViewAdapter();
 
@@ -256,7 +262,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
         rl_choose_directory.setOnClickListener(this);
         tv_choose_image_directory.setOnClickListener(this);
         tv_preview.setOnClickListener(this);
-        //¼ÆËãÃ¿ÕÅÍ¼Æ¬Ó¦¸ÃÏÔÊ¾µÄ¿í¶È
+        //è®¡ç®—æ¯å¼ å›¾ç‰‡åº”è¯¥æ˜¾ç¤ºçš„å®½åº¦
         perWidth = (((WindowManager) (TApplication.context.getSystemService(Context.WINDOW_SERVICE))).getDefaultDisplay().getWidth() - DisplayUtil.dip2px(this, 4))/3;
 
         picNums = getIntent().getIntExtra(EXTRA_NUMS, 9);
@@ -266,20 +272,20 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
             v_line.setVisibility(View.GONE);
             btn_choose_finish.setVisibility(View.GONE);
         }else{
-            btn_choose_finish.setText("Íê³É");
+            btn_choose_finish.setText("å®Œæˆ");
         }
     }
 
     /**
-     * 6.0°æ±¾Ö®ºóĞèÒª¶¯Ì¬ÉêÇëÈ¨ÏŞ
+     * 6.0ç‰ˆæœ¬ä¹‹åéœ€è¦åŠ¨æ€ç”³è¯·æƒé™
      */
     private void getAllImages(){
-        //Ê¹ÓÃ¼æÈİ¿â¾ÍÎŞĞèÅĞ¶ÏÏµÍ³°æ±¾
+        //ä½¿ç”¨å…¼å®¹åº“å°±æ— éœ€åˆ¤æ–­ç³»ç»Ÿç‰ˆæœ¬
 //        int hasWriteContactsPermission = ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
 //        if (hasWriteContactsPermission == PackageManager.PERMISSION_GRANTED) {
 //            startGetImageThread();
 //        }
-//        //ĞèÒªµ¯³ödialogÈÃÓÃ»§ÊÖ¶¯¸³ÓèÈ¨ÏŞ
+//        //éœ€è¦å¼¹å‡ºdialogè®©ç”¨æˆ·æ‰‹åŠ¨èµ‹äºˆæƒé™
 //        else{
 //            ActivityCompat.requestPermissions(PickOrTakeImageActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, CODE_FOR_WRITE_PERMISSION);
 //        }
@@ -287,15 +293,15 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
     }
 
     /**
-     * ´ÓÊÖ»úÖĞ»ñÈ¡ËùÓĞµÄÊÖ»úÍ¼Æ¬
+     * ä»æ‰‹æœºä¸­è·å–æ‰€æœ‰çš„æ‰‹æœºå›¾ç‰‡
      */
-        private void startGetImageThread(){
+    private void startGetImageThread(){
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
                 ContentResolver contentResolver = getContentResolver();
-                //»ñÈ¡jpegºÍpng¸ñÊ½µÄÎÄ¼ş£¬²¢ÇÒ°´ÕÕÊ±¼ä½øĞĞµ¹Ğò
+                //è·å–jpegå’Œpngæ ¼å¼çš„æ–‡ä»¶ï¼Œå¹¶ä¸”æŒ‰ç…§æ—¶é—´è¿›è¡Œå€’åº
                 Cursor cursor = contentResolver.query(uri, null, MediaStore.Images.Media.MIME_TYPE + "=\"image/jpeg\" or " +
                         MediaStore.Images.Media.MIME_TYPE + "=\"image/png\"", null, MediaStore.Images.Media.DATE_MODIFIED+" desc");
                 if (cursor != null){
@@ -315,7 +321,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
                         }
                         allImages.add(singleImageModel);
 
-                        //´æÈë°´ÕÕÄ¿Â¼·ÖÅäµÄlist
+                        //å­˜å…¥æŒ‰ç…§ç›®å½•åˆ†é…çš„list
                         String path = singleImageModel.path;
                         String parentPath = new File(path).getParent();
                         putImageToParentDirectories(parentPath, path, singleImageModel.date, singleImageModel.id);
@@ -331,20 +337,20 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
 //        if (requestCode == CODE_FOR_WRITE_PERMISSION){
 //            if (permissions[0].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 //                &&grantResults[0] == PackageManager.PERMISSION_GRANTED){
-//                //ÓÃ»§Í¬ÒâÊ¹ÓÃwrite
+//                //ç”¨æˆ·åŒæ„ä½¿ç”¨write
 //                startGetImageThread();
 //            }else{
-//                //ÓÃ»§²»Í¬Òâ£¬ÏòÓÃ»§Õ¹Ê¾¸ÃÈ¨ÏŞ×÷ÓÃ
+//                //ç”¨æˆ·ä¸åŒæ„ï¼Œå‘ç”¨æˆ·å±•ç¤ºè¯¥æƒé™ä½œç”¨
 //                if (!ActivityCompat.sh(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 //                    AlertDialog dialog = new AlertDialog.Builder(this)
-//                            .setMessage("¸ÃÏà²áĞèÒª¸³Óè·ÃÎÊ´æ´¢µÄÈ¨ÏŞ£¬²»¿ªÆô½«ÎŞ·¨Õı³£¹¤×÷£¡")
-//                            .setPositiveButton("È·¶¨", new DialogInterface.OnClickListener() {
+//                            .setMessage("è¯¥ç›¸å†Œéœ€è¦èµ‹äºˆè®¿é—®å­˜å‚¨çš„æƒé™ï¼Œä¸å¼€å¯å°†æ— æ³•æ­£å¸¸å·¥ä½œï¼")
+//                            .setPositiveButton("ç¡®å®š", new DialogInterface.OnClickListener() {
 //                                @Override
 //                                public void onClick(DialogInterface dialog, int which) {
 //                                    finish();
 //                                }
 //                            })
-//                            .setNegativeButton("È¡Ïû", new DialogInterface.OnClickListener() {
+//                            .setNegativeButton("å–æ¶ˆ", new DialogInterface.OnClickListener() {
 //                                @Override
 //                                public void onClick(DialogInterface dialog, int which) {
 //                                    finish();
@@ -421,7 +427,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         AlbumBitmapCacheHelper.getInstance().removeAllThreads();
-        //µã»÷µÄÈ«²¿Í¼Æ¬
+        //ç‚¹å‡»çš„å…¨éƒ¨å›¾ç‰‡
         if(!(currentShowPosition == i-1)){
             currentShowPosition = i-1;
             reloadDataByChooseDirectory();
@@ -429,7 +435,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
     }
 
     /**
-     * ÖØĞÂ¼ÓÔØµ±Ç°Ò³ÃæÊı¾İ
+     * é‡æ–°åŠ è½½å½“å‰é¡µé¢æ•°æ®
      */
     private void reloadDataByChooseDirectory(){
         if(currentShowPosition == -1){
@@ -437,7 +443,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
         }else {
             tv_choose_image_directory.setText(new File(imageDirectories.get(currentShowPosition).directoryPath).getName());
         }
-        //È¥³ıµ±Ç°ÕıÔÚ¼ÓÔØµÄËùÓĞÍ¼Æ¬£¬ÖØĞÂ¿ªÊ¼
+        //å»é™¤å½“å‰æ­£åœ¨åŠ è½½çš„æ‰€æœ‰å›¾ç‰‡ï¼Œé‡æ–°å¼€å§‹
         AlbumBitmapCacheHelper.getInstance().removeAllThreads();
         gridView.setAdapter(adapter);
         gridView.smoothScrollToPosition(0);
@@ -467,7 +473,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
                 reverseanimation.start();
             }
         }else {
-            //Àë¿ª´ËÒ³ÃæÖ®ºó¼Ç×¡ÒªÇå¿ÕcacheÄÚ´æ
+            //ç¦»å¼€æ­¤é¡µé¢ä¹‹åè®°ä½è¦æ¸…ç©ºcacheå†…å­˜
             AlbumBitmapCacheHelper.getInstance().clearCache();
             super.onBackPressed();
         }
@@ -489,7 +495,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
     @Override
     public void onScroll(AbsListView absListView, int i, int i1, int i2) {
         firstVisibleItem = i;
-        //±£Ö¤µ±Ñ¡ÔñÈ«²¿ÎÄ¼ş¼ĞµÄÊ±ºò£¬ÏÔÊ¾µÄÊ±¼äÎªµÚÒ»¸öÍ¼Æ¬£¬ÅÅ³ıµÚÒ»¸öÅÄÕÕÍ¼Æ¬
+        //ä¿è¯å½“é€‰æ‹©å…¨éƒ¨æ–‡ä»¶å¤¹çš„æ—¶å€™ï¼Œæ˜¾ç¤ºçš„æ—¶é—´ä¸ºç¬¬ä¸€ä¸ªå›¾ç‰‡ï¼Œæ’é™¤ç¬¬ä¸€ä¸ªæ‹ç…§å›¾ç‰‡
         if (currentShowPosition == -1 && firstVisibleItem > 0)
             firstVisibleItem --;
         if(lastPicTime != getImageDirectoryModelDateFromMapById(firstVisibleItem)) {
@@ -545,14 +551,14 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
     }
 
     /**
-     * gridviewÊÊÅäÆ÷
+     * gridviewé€‚é…å™¨
      */
     private class GridViewAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
             int size = 0;
-            //Èç¹ûÏÔÊ¾È«²¿Í¼Æ¬,ÔòµÚÒ»ÏîÎª
+            //å¦‚æœæ˜¾ç¤ºå…¨éƒ¨å›¾ç‰‡,åˆ™ç¬¬ä¸€é¡¹ä¸º
             if(currentShowPosition == -1){
                 size = allImages.size() + 1;
             }else{
@@ -573,7 +579,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
 
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
-            //µÚÒ»¸öÒªÏÔÊ¾ÅÄÉãÕÕÆ¬Í¼Æ¬
+            //ç¬¬ä¸€ä¸ªè¦æ˜¾ç¤ºæ‹æ‘„ç…§ç‰‡å›¾ç‰‡
             if (currentShowPosition == -1 && i==0){
                 view = new ImageView(PickOrTakeImageActivity.this);
                 ((ImageView)view).setBackgroundResource(R.drawable.take_pic);
@@ -586,10 +592,10 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
                 view.setLayoutParams(new GridView.LayoutParams(perWidth, perWidth));
                 return view;
             }
-            //ÔÚ´Ë´¦Ö±½Ó½øĞĞ´¦Àí×îºÃ£¬ÄÜ¹»Ê¡È¥ÆäËû²¿·ÖµÄ´¦Àí£¬ÆäËû²¿·ÖÖ±½Ó¿ÉÒÔÊ¹ÓÃÔ­À´µÄÊı¾İ½á¹¹
+            //åœ¨æ­¤å¤„ç›´æ¥è¿›è¡Œå¤„ç†æœ€å¥½ï¼Œèƒ½å¤Ÿçœå»å…¶ä»–éƒ¨åˆ†çš„å¤„ç†ï¼Œå…¶ä»–éƒ¨åˆ†ç›´æ¥å¯ä»¥ä½¿ç”¨åŸæ¥çš„æ•°æ®ç»“æ„
             if (currentShowPosition == -1)
                 i--;
-            //ÆäËû²¿·ÖµÄ´¦Àí
+            //å…¶ä»–éƒ¨åˆ†çš„å¤„ç†
             final String path = getImageDirectoryModelUrlFromMapById(i);
             lastPicTime = getImageDirectoryModelDateFromMapById(i);
             if(view==null || view.getTag()==null){
@@ -606,13 +612,13 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
                 holder.iv_content.setOnClickListener(listener);
                 holder.iv_pick_or_not.setOnClickListener(listener);
                 view.setTag(holder);
-                //ÒªÔÚÕâ½øĞĞÉèÖÃ£¬ÔÚÍâÃæÉèÖÃ»áµ¼ÖÂµÚÒ»¸öÏîµã»÷Ğ§¹ûÒì³£
+                //è¦åœ¨è¿™è¿›è¡Œè®¾ç½®ï¼Œåœ¨å¤–é¢è®¾ç½®ä¼šå¯¼è‡´ç¬¬ä¸€ä¸ªé¡¹ç‚¹å‡»æ•ˆæœå¼‚å¸¸
                 view.setLayoutParams(new GridView.LayoutParams(perWidth, perWidth));
             }
             final GridViewHolder holder = (GridViewHolder) view.getTag();
-            //Ò»¶¨²»ÒªÍü¼Ç¸üĞÂposition
+            //ä¸€å®šä¸è¦å¿˜è®°æ›´æ–°position
             holder.position = i;
-            //Èç¹û¸ÃÍ¼Æ¬±»Ñ¡ÖĞ£¬Ôò½²×´Ì¬±äÎªÑ¡ÖĞ×´Ì¬
+            //å¦‚æœè¯¥å›¾ç‰‡è¢«é€‰ä¸­ï¼Œåˆ™è®²çŠ¶æ€å˜ä¸ºé€‰ä¸­çŠ¶æ€
             if (getImageDirectoryModelStateFromMapById(i)){
                 holder.v_gray_masking.setVisibility(View.VISIBLE);
                 holder.iv_pick_or_not.setImageResource(R.drawable.image_choose);
@@ -620,7 +626,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
                 holder.v_gray_masking.setVisibility(View.GONE);
                 holder.iv_pick_or_not.setImageResource(R.drawable.image_not_chose);
             }
-            //ÓÅ»¯ÏÔÊ¾Ğ§¹û
+            //ä¼˜åŒ–æ˜¾ç¤ºæ•ˆæœ
             if(holder.iv_content.getTag() != null) {
                 String remove = (String) holder.iv_content.getTag();
                 AlbumBitmapCacheHelper.getInstance().removePathFromShowlist(remove);
@@ -657,7 +663,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
     }
 
     /**
-     * µ÷ÓÃÏµÍ³Ïà»ú½øĞĞÅÄÕÕ
+     * è°ƒç”¨ç³»ç»Ÿç›¸æœºè¿›è¡Œæ‹ç…§
      */
     private void takePic(){
         String name = "temp";
@@ -678,7 +684,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
     }
 
     /**
-     * Õ¹Ê¾¶¥²¿µÄÊ±¼ä
+     * å±•ç¤ºé¡¶éƒ¨çš„æ—¶é—´
      */
     private void showTimeLine(long date){
         alphaAnimation.cancel();
@@ -687,7 +693,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
     }
 
     /**
-     * ¼ÆËãÕÕÆ¬µÄ¾ßÌåÊ±¼ä
+     * è®¡ç®—ç…§ç‰‡çš„å…·ä½“æ—¶é—´
      * @param time
      * @return
      */
@@ -697,7 +703,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
         c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
         int mDayWeek = c.get(Calendar.DAY_OF_WEEK);
         mDayWeek -- ;
-        //Ï°¹ßĞÔµÄ»¹ÊÇ¶¨ÖÜÒ»ÎªµÚÒ»Ìì
+        //ä¹ æƒ¯æ€§çš„è¿˜æ˜¯å®šå‘¨ä¸€ä¸ºç¬¬ä¸€å¤©
         if (mDayWeek == 0)
             mDayWeek = 7;
         int mWeek = c.get(Calendar.WEEK_OF_MONTH);
@@ -705,11 +711,11 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
         int mMinute = c.get(Calendar.MINUTE);
 
         if((System.currentTimeMillis()-time) < (mHour*60 + mMinute)*60*1000){
-            return "½ñÌì";
+            return "ä»Šå¤©";
         }else if((System.currentTimeMillis()-time) < (mDayWeek)*24*60*60*1000){
-            return "±¾ÖÜ";
+            return "æœ¬å‘¨";
         }else if((System.currentTimeMillis()-time) < ((long)((mWeek-1)*7+mDayWeek))*24*60*60*1000){
-            return "Õâ¸öÔÂ";
+            return "è¿™ä¸ªæœˆ";
         }else{
             SimpleDateFormat format = new SimpleDateFormat("yyyy/MM", java.util.Locale.getDefault());
             return format.format(time);
@@ -764,14 +770,14 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
             holder.position = i;
             holder.tv_directory_name.setTag(i);
             String path = null;
-            //È«²¿Í¼Æ¬
+            //å…¨éƒ¨å›¾ç‰‡
             if(getItemViewType(i) == 0){
                 holder.tv_directory_name.setText(getString(R.string.all_pic) + "   ");
                 int size = 0;
                 for (SingleImageDirectories directories : imageDirectories)
                     size += directories.images.getImageCounts();
-                holder.tv_directory_nums.setText(size +"ÕÅ");
-                //»ñÈ¡µÚ0¸öÎ»ÖÃµÄÍ¼Æ¬£¬¼´µÚÒ»ÕÅÍ¼Æ¬Õ¹Ê¾
+                holder.tv_directory_nums.setText(size +"å¼ ");
+                //è·å–ç¬¬0ä¸ªä½ç½®çš„å›¾ç‰‡ï¼Œå³ç¬¬ä¸€å¼ å›¾ç‰‡å±•ç¤º
                 path = imageDirectories.get(0).images.getImagePath(0);
                 if(currentShowPosition == -1){
                     holder.iv_directory_check.setTag("picked");
@@ -781,7 +787,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
                     holder.iv_directory_check.setVisibility(View.INVISIBLE);
                 }
             }else{
-                holder.tv_directory_nums.setText(imageDirectories.get(i-1).images.getImageCounts() +"ÕÅ");
+                holder.tv_directory_nums.setText(imageDirectories.get(i-1).images.getImageCounts() +"å¼ ");
                 if(currentShowPosition == i-1){
                     holder.iv_directory_check.setTag("picked");
                     holder.iv_directory_check.setVisibility(View.VISIBLE);
@@ -790,7 +796,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
                     holder.iv_directory_check.setVisibility(View.INVISIBLE);
                 }
                 holder.tv_directory_name.setText(new File(imageDirectories.get(i-1).directoryPath).getName()+"   ");
-                //»ñÈ¡µÚ0¸öÎ»ÖÃµÄÍ¼Æ¬£¬¼´µÚÒ»ÕÅÍ¼Æ¬Õ¹Ê¾
+                //è·å–ç¬¬0ä¸ªä½ç½®çš„å›¾ç‰‡ï¼Œå³ç¬¬ä¸€å¼ å›¾ç‰‡å±•ç¤º
                 path = imageDirectories.get(i-1).images.getImagePath(0);
             }
             if(path == null)
@@ -837,10 +843,10 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
     }
 
     /**
-     * ¸ù¾İid»ñÈ¡mapÖĞÏà¶ÔÓ¦µÄÍ¼Æ¬Â·¾¶
+     * æ ¹æ®idè·å–mapä¸­ç›¸å¯¹åº”çš„å›¾ç‰‡è·¯å¾„
      */
     private String getImageDirectoryModelUrlFromMapById(int position){
-        //Èç¹ûÊÇÑ¡ÔñµÄÈ«²¿Í¼Æ¬
+        //å¦‚æœæ˜¯é€‰æ‹©çš„å…¨éƒ¨å›¾ç‰‡
         if(currentShowPosition == -1){
             return allImages.get(position).path;
         }else{
@@ -849,13 +855,13 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
     }
 
     /**
-     * ¸ù¾İid»ñÈ¡mapÖĞÏà¶ÔÓ¦µÄÍ¼Æ¬Ê±¼ä
+     * æ ¹æ®idè·å–mapä¸­ç›¸å¯¹åº”çš„å›¾ç‰‡æ—¶é—´
      */
     private long getImageDirectoryModelDateFromMapById(int position){
         if (allImages.size() ==0){
             return System.currentTimeMillis();
         }
-        //Èç¹ûÊÇÑ¡ÔñµÄÈ«²¿Í¼Æ¬
+        //å¦‚æœæ˜¯é€‰æ‹©çš„å…¨éƒ¨å›¾ç‰‡
         if(currentShowPosition == -1){
             return allImages.get(position).date;
         }else{
@@ -864,10 +870,10 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
     }
 
     /**
-     * ¸ù¾İid»ñÈ¡mapÖĞÏà¶ÔÓ¦µÄÍ¼Æ¬Ñ¡ÖĞ×´Ì¬
+     * æ ¹æ®idè·å–mapä¸­ç›¸å¯¹åº”çš„å›¾ç‰‡é€‰ä¸­çŠ¶æ€
      */
     private boolean getImageDirectoryModelStateFromMapById(int position){
-        //Èç¹ûÊÇÑ¡ÔñµÄÈ«²¿Í¼Æ¬
+        //å¦‚æœæ˜¯é€‰æ‹©çš„å…¨éƒ¨å›¾ç‰‡
         if(currentShowPosition == -1){
             return allImages.get(position).isPicked;
         }else{
@@ -876,11 +882,11 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
     }
 
     /**
-     * ×ª±ä¸ÃÎ»ÖÃÍ¼Æ¬µÄÑ¡ÖĞ×´Ì¬
+     * è½¬å˜è¯¥ä½ç½®å›¾ç‰‡çš„é€‰ä¸­çŠ¶æ€
      * @param position
      */
     private void toggleImageDirectoryModelStateFromMapById(int position){
-        //Èç¹ûÊÇÑ¡ÔñµÄÈ«²¿Í¼Æ¬
+        //å¦‚æœæ˜¯é€‰æ‹©çš„å…¨éƒ¨å›¾ç‰‡
         if(currentShowPosition == -1){
             allImages.get(position).isPicked = !allImages.get(position).isPicked;
             for (SingleImageDirectories directories : imageDirectories){
@@ -896,7 +902,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
     }
 
     /**
-     * ´øholderµÄ¼àÌıÆ÷
+     * å¸¦holderçš„ç›‘å¬å™¨
      */
     private class OnclickListenerWithHolder implements View.OnClickListener{
         GridViewHolder holder;
@@ -913,7 +919,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
                 if (picNums > 1) {
                     Intent intent = new Intent();
                     intent.setClass(PickOrTakeImageActivity.this, PickBigImagesActivity.class);
-                    //TODO ÕâÀïÓÉÓÚÉæ¼°µ½intent´«µİµÄÊı¾İ²»ÄÜÌ«´óµÄÎÊÌâ£¬ËùÒÔÈç¹ûĞèÒª£¬ÕâÀïĞèÒª½øĞĞÁíÍâµÄ´¦Àí£¬Ğ´Èëµ½ÄÚ´æ»òÕßĞ´Èëµ½ÎÄ¼şÖĞ
+                    //TODO è¿™é‡Œç”±äºæ¶‰åŠåˆ°intentä¼ é€’çš„æ•°æ®ä¸èƒ½å¤ªå¤§çš„é—®é¢˜ï¼Œæ‰€ä»¥å¦‚æœéœ€è¦ï¼Œè¿™é‡Œéœ€è¦è¿›è¡Œå¦å¤–çš„å¤„ç†ï¼Œå†™å…¥åˆ°å†…å­˜æˆ–è€…å†™å…¥åˆ°æ–‡ä»¶ä¸­
                     intent.putExtra(PickBigImagesActivity.EXTRA_DATA, getAllImagesFromCurrentDirectory());
                     intent.putExtra(PickBigImagesActivity.EXTRA_ALL_PICK_DATA, picklist);
                     intent.putExtra(PickBigImagesActivity.EXTRA_CURRENT_PIC, position);
@@ -974,7 +980,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
                 AlbumBitmapCacheHelper.getInstance().resizeCache();
                 if(resultCode == RESULT_OK && data != null) {
                     ArrayList<String> temp = (ArrayList<String>) data.getSerializableExtra("pick_data");
-                    //Èç¹û·µ»ØµÄlistÖĞº¬¸Ãpath£¬µ«ÊÇpicklist²»º¬ÓĞ¸Ãpath£¬Ñ¡ÖĞ
+                    //å¦‚æœè¿”å›çš„listä¸­å«è¯¥pathï¼Œä½†æ˜¯picklistä¸å«æœ‰è¯¥pathï¼Œé€‰ä¸­
                     for (String path : temp){
                         if (!picklist.contains(path)){
                             View v = gridView.findViewWithTag(path);
@@ -986,7 +992,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
                             currentPicNums ++;
                         }
                     }
-                    //Èç¹û·µ»ØµÄlistÖĞ²»º¬¸Ãpath£¬µ«ÊÇpicklistº¬ÓĞ¸Ãpath,²»Ñ¡ÖĞ
+                    //å¦‚æœè¿”å›çš„listä¸­ä¸å«è¯¥pathï¼Œä½†æ˜¯picklistå«æœ‰è¯¥path,ä¸é€‰ä¸­
                     for (String path : picklist){
                         if (!temp.contains(path)){
                             View v = gridView.findViewWithTag(path);
@@ -1017,16 +1023,16 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
                 break;
             case CODE_FOR_TAKE_PIC:
                 if (resultCode == RESULT_OK){
-                    //ÁÙÊ±ÎÄ¼şµÄÎÄ¼şÃû
-                    Toast.makeText(this, "ÅÄÕÕµÄÍ¼Æ¬ " + tempPath, Toast.LENGTH_LONG).show();
+                    //ä¸´æ—¶æ–‡ä»¶çš„æ–‡ä»¶å
+                    Toast.makeText(this, "æ‹ç…§çš„å›¾ç‰‡ " + tempPath, Toast.LENGTH_LONG).show();
 
-                    //É¨Ãè×îĞÂµÄÍ¼Æ¬½øÏà²á
+                    //æ‰«ææœ€æ–°çš„å›¾ç‰‡è¿›ç›¸å†Œ
                     Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                     Uri uri = Uri.fromFile(new File(tempPath));
                     intent.setData(uri);
                     sendBroadcast(intent);
 
-                    //ÖØĞÂÀ­È¡×îĞÂÊı¾İ¿âÎÄ¼ş
+                    //é‡æ–°æ‹‰å–æœ€æ–°æ•°æ®åº“æ–‡ä»¶
                     getAllImages();
                 }
                 break;
@@ -1036,7 +1042,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
     }
 
     /**
-     * µã»÷Íê³É°´Å¥Ö®ºó½«Í¼Æ¬µÄµØÖ··µ»Øµ½ÉÏÒ»¸öÒ³Ãæ
+     * ç‚¹å‡»å®ŒæˆæŒ‰é’®ä¹‹åå°†å›¾ç‰‡çš„åœ°å€è¿”å›åˆ°ä¸Šä¸€ä¸ªé¡µé¢
      */
     private void returnDataAndClose(){
         AlbumBitmapCacheHelper.getInstance().clearCache();
@@ -1044,26 +1050,31 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
             Toast.makeText(this, getString(R.string.not_choose_any_pick), Toast.LENGTH_SHORT).show();
             return;
         }
-        StringBuilder sb = new StringBuilder();
-        for (String model : picklist){
-            sb.append(model+"\n");
-        }
-        TextView textview = new TextView(this);
-        textview.setText(sb);
-        Dialog dialog = new Dialog(this);
-        dialog.setTitle("½á¹û");
-        dialog.setContentView(textview);
-        dialog.show();
-        if (picNums == 1)
-            picklist.clear();
+//        StringBuilder sb = new StringBuilder();
+//        for (String model : picklist){
+//            sb.append(model+"\n");
+//        }
+//        TextView textview = new TextView(this);
+//        textview.setText(sb);
+//        Dialog dialog = new Dialog(this);
+//        dialog.setTitle("ç»“æœ");
+//        dialog.setContentView(textview);
+//        dialog.show();
+
 //        Intent data = new Intent();
 //        data.putExtra("data", list);
 //        setResult(RESULT_OK, data);
 //        finish();
+
+        sendPickList();
+
+        if (picNums == 1)
+            picklist.clear();
+
     }
 
     /**
-     * ÉèÖÃ¸ÃÍ¼Æ¬µÄÑ¡ÖĞ×´Ì¬
+     * è®¾ç½®è¯¥å›¾ç‰‡çš„é€‰ä¸­çŠ¶æ€
      */
     private void setPickStateFromHashMap(String path, boolean isPick){
         for (SingleImageDirectories directories : imageDirectories){
@@ -1079,7 +1090,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
     }
 
     /**
-     * »ñÈ¡ËùÓĞµÄÑ¡ÖĞÍ¼Æ¬
+     * è·å–æ‰€æœ‰çš„é€‰ä¸­å›¾ç‰‡
      */
     private ArrayList<SingleImageModel> getChoosePicFromList(){
         ArrayList<SingleImageModel> list = new ArrayList<SingleImageModel>();
@@ -1091,7 +1102,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
     }
 
     /**
-     * »ñÈ¡µ±Ç°Ñ¡ÖĞÎÄ¼ş¼ĞÖĞ¸øµÄËùÓĞÍ¼Æ¬
+     * è·å–å½“å‰é€‰ä¸­æ–‡ä»¶å¤¹ä¸­ç»™çš„æ‰€æœ‰å›¾ç‰‡
      */
     private ArrayList<SingleImageModel> getAllImagesFromCurrentDirectory(){
         ArrayList<SingleImageModel> list = new ArrayList<SingleImageModel>();
@@ -1108,7 +1119,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
     }
 
     /**
-     * ½«Í¼Æ¬²åÈëµ½¶ÔÓ¦parentPathÂ·¾¶µÄÎÄ¼ş¼ĞÖĞ
+     * å°†å›¾ç‰‡æ’å…¥åˆ°å¯¹åº”parentPathè·¯å¾„çš„æ–‡ä»¶å¤¹ä¸­
      */
     private void putImageToParentDirectories(String parentPath, String path, long date, long id){
         ImageDirectoryModel model = getModelFromKey(parentPath);
@@ -1132,12 +1143,20 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
     }
 
     /**
-     * Ò»¸öÎÄ¼ş¼ĞÖĞµÄÍ¼Æ¬Êı¾İÊµÌå
+     * ä¸€ä¸ªæ–‡ä»¶å¤¹ä¸­çš„å›¾ç‰‡æ•°æ®å®ä½“
      */
     private class SingleImageDirectories{
-        /** ¸¸Ä¿Â¼µÄÂ·¾¶ */
+        /** çˆ¶ç›®å½•çš„è·¯å¾„ */
         public String directoryPath;
-        /** Ä¿Â¼ÏÂµÄËùÓĞÍ¼Æ¬ÊµÌå */
+        /** ç›®å½•ä¸‹çš„æ‰€æœ‰å›¾ç‰‡å®ä½“ */
         public ImageDirectoryModel images;
+    }
+
+    /**
+     * é€šçŸ¥æ§ä»¶é€‰ä¸­çš„å›¾ç‰‡
+     */
+    public void sendPickList(){
+        EventBus.getDefault().post(new PickImageEvent(fromTag,picklist));
+        finish();
     }
 }

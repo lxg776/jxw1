@@ -43,12 +43,12 @@ public class MyInputEditView extends LinearLayout {
         hint_tv = (TextView) contentView.findViewById(R.id.hint_tv);
         view_line=contentView.findViewById(R.id.line);
 
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MyInputEditView);
-        hint_tv.setText(getTypeArrayText(a, R.styleable.MyInputEditView_topHinttext));
-        input_edt.setHint(getTypeArrayText(a, R.styleable.MyInputEditView_inputHinttext));
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MyDialogView);
+        hint_tv.setText(getTypeArrayText(a, R.styleable.MyDialogView_topHinttext));
+        input_edt.setHint(getTypeArrayText(a, R.styleable.MyDialogView_inputHinttext));
 
-        default_line_c=a.getColor(R.styleable.MyInputEditView_default_lColor, getResources().getColor(R.color.black_transparent_26));
-        change_line_c=a.getColor(R.styleable.MyInputEditView_change_lColor, getResources().getColor(R.color.orange_500));
+        default_line_c=a.getColor(R.styleable.MyDialogView_default_lColor, getResources().getColor(R.color.black_transparent_26));
+        change_line_c=a.getColor(R.styleable.MyDialogView_change_lColor, getResources().getColor(R.color.orange_500));
 
         view_line.setBackgroundColor(default_line_c);
 

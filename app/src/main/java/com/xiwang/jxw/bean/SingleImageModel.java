@@ -11,6 +11,14 @@ public class SingleImageModel implements Serializable {
     public boolean isPicked;
     public long date;
     public long id;
+
+    public String type=TYPE_IMG;
+
+
+    public static final String  TYPE_IMG="img";
+    public static final String  TYPE_BUTTON="button";
+
+
     public SingleImageModel(String path, boolean isPicked, long date, long id){
         this.path = path;
         this.isPicked = isPicked;

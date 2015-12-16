@@ -30,16 +30,16 @@ public class UserBiz {
         params.put("username",userName);
         params.put("password",pwd);
 
-        BaseBiz.getRequest(ServerConfig.USER_LOGIN, params, new BaseBiz.RequestHandle() {
+        BaseBiz.postRequest(ServerConfig.USER_LOGIN, params, new BaseBiz.RequestHandle() {
 
             @Override
             public void onSuccess(ResponseBean responseBean) {
 
-                String string= (String) responseBean.getObject();
+                String string = (String) responseBean.getObject();
                 try {
-                    responseBean.setObject(BaseBean.newInstance(UserBean.class,string));
+                    responseBean.setObject(BaseBean.newInstance(UserBean.class, string));
                     handle.onSuccess(responseBean);
-                }catch (JSONException e){
+                } catch (JSONException e) {
                     responseBean.setStatus(ServerConfig.JSON_DATA_ERROR);
                     responseBean.setInfo(TApplication.context.getResources().getString(R.string.exception_local_json_message));
                     handle.onFail(responseBean);

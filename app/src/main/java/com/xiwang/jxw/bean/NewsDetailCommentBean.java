@@ -30,21 +30,30 @@ public class NewsDetailCommentBean extends BaseBean {
     /** 是否匿名*/
     private String anonymous;
 
+    private AuthorBean userinfo;
+
+    public AuthorBean getUserinfo() {
+        return userinfo;
+    }
+
+    public void setUserinfo(AuthorBean userinfo) {
+        this.userinfo = userinfo;
+    }
 
     @Override
     protected void init(JSONObject jSon) throws JSONException {
             setAid(jSon.optString("aid"));
             setPid(jSon.optString("pid"));
             setSubject(jSon.optString("subject"));
-            setAuthorid(jSon.optString("authorid"));
+
             setContent(jSon.optString("content"));
             setPostdate(jSon.optString("postdate"));
             setAnonymous(jSon.optString("anonymous"));
             setIfshield(jSon.optString("ifshield"));
             setGroupid(jSon.optString("groupid"));
             setId(jSon.optString("id"));
-            setAuthor(jSon.getString("author"));
-            setFace(jSon.optString("face"));
+
+            setUserinfo((AuthorBean) BaseBean.newInstance(AuthorBean.class, jSon.optString("userinfo")));
     }
 
     public String getFace() {

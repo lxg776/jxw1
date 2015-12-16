@@ -36,12 +36,39 @@
         <com.xiwang.jxw.widget.MyDatePickView
             android:layout_width="match_parent"
             android:layout_marginTop="8dp"
+            android:id="@+id/datePick"
+            app:topHinttext="日期选择"
+            app:inputHinttext="姓名"
+            app:default_lColor="@color/black_transparent_54"
             android:layout_height="wrap_content">
         </com.xiwang.jxw.widget.MyDatePickView>
 
 
+        <com.xiwang.jxw.widget.MyTextSelectView
+            android:layout_width="match_parent"
+            android:layout_marginTop="8dp"
+            android:id="@+id/xinzi_select"
+            app:topHinttext="期望薪资"
+            app:inputHinttext="期望薪资"
+            app:default_lColor="@color/black_transparent_54"
+            app:dialog_title="薪资选择"
+            android:layout_height="wrap_content">
+        </com.xiwang.jxw.widget.MyTextSelectView>
+
+
+
 
     </LinearLayout>
+
+    <com.xiwang.jxw.widget.UploadImgGridView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:minHeight="80dp"
+        android:id="@+id/uploadVIew"
+        android:horizontalSpacing="16dp"
+        android:verticalSpacing="8dp"
+        android:numColumns="4"
+        ></com.xiwang.jxw.widget.UploadImgGridView>
 
 
 </LinearLayout>

@@ -2,6 +2,8 @@ package com.xiwang.jxw.util;
 
 import android.os.Environment;
 
+import com.xiwang.jxw.config.TApplication;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -61,7 +63,7 @@ public class CommonUtil {
         if (isExistSDcard())
             path = Environment.getExternalStorageDirectory().getPath() + "/albumSelect";
         else
-            path = AppContext.getInstance().getFilesDir().getPath();
+            path = TApplication.context.getFilesDir().getPath();
         if (!path.endsWith("/"))
             path = path + "/";
         return path;

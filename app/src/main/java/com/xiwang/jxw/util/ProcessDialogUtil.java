@@ -61,6 +61,7 @@ public class ProcessDialogUtil {
 			params.width = WindowManager.LayoutParams.MATCH_PARENT;
 			params.height = WindowManager.LayoutParams.MATCH_PARENT;
 			progressDialog.getWindow().setAttributes(params);
+
 			progressDialog.setCancelable(cancelable);
 			progressDialog.show();
 			progressDialog.setContentView(view);

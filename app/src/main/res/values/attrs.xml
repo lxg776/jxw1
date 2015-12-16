@@ -39,11 +39,21 @@
 
 
     <!-- 首页TAB -->
-    <declare-styleable name="MyInputEditView">
+    <declare-styleable name="MyDialogView">
         <attr name="topHinttext" format="reference|string" />
         <attr name="inputHinttext" format="reference|string" />
         <attr name = "default_lColor" format = "color" />
         <attr name = "change_lColor" format = "color" />
+        <attr name = "dialog_title" format = "reference|string" />
+
     </declare-styleable>
+
+
+    <!-- 首页TAB -->
+    <declare-styleable name="PercentView">
+        <attr name = "background_color" format = "color" />
+        <attr name = "draw_color" format = "color" />
+    </declare-styleable>
+
 
 </resources>

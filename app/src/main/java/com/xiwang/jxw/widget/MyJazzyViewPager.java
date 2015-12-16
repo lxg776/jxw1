@@ -44,15 +44,15 @@ public class MyJazzyViewPager extends ViewPager
 	{
 
 //		Log.e(TAG, "position=" + position+", positionOffset = "+positionOffset+" ,positionOffsetPixels =  " + positionOffsetPixels+" , currentPos = " + getCurrentItem());
-		
+
 		//滑动特别小的距离时，我们认为没有动，可有可无的判断
 		float effectOffset = isSmall(positionOffset) ? 0 : positionOffset;
-		
+
 		//获取左边的View
 		mLeft = findViewFromObject(position);
 		//获取右边的View
 		mRight = findViewFromObject(position + 1);
-		
+
 		// 添加切换动画效果
 		//animateStack(mLeft, mRight, effectOffset, positionOffsetPixels);
 		super.onPageScrolled(position, positionOffset, positionOffsetPixels);
@@ -65,7 +65,7 @@ public class MyJazzyViewPager extends ViewPager
 
 	/**
 	 * 通过过位置获得对应的View
-	 * 
+	 *
 	 * @param position
 	 * @return
 	 */

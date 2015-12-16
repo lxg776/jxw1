@@ -25,26 +25,26 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author: zzp
  * @since: 2015-06-10
- * Description: Ïà²áÒ³¼ÓÔØÍ¼Æ¬£¬Ê¡ÄÚ´æ£¬·ÀÖ¹oom
+ * Description: ç›¸å†Œé¡µåŠ è½½å›¾ç‰‡ï¼Œçœå†…å­˜ï¼Œé˜²æ­¢oom
  */
 public class AlbumBitmapCacheHelper {
-    //Ïß³Ì°²È«µÄµ¥ÀıÄ£Ê½
+    //çº¿ç¨‹å®‰å…¨çš„å•ä¾‹æ¨¡å¼
     private volatile static AlbumBitmapCacheHelper instance = null;
     private LruCache<String, Bitmap> cache;
     /**
-     * ÓÃÀ´ÓÅ»¯Í¼Æ¬µÄÕ¹Ê¾Ğ§¹û£¬±£´æµ±Ç°ÏÔÊ¾µÄÍ¼Æ¬path
+     * ç”¨æ¥ä¼˜åŒ–å›¾ç‰‡çš„å±•ç¤ºæ•ˆæœï¼Œä¿å­˜å½“å‰æ˜¾ç¤ºçš„å›¾ç‰‡path
      */
     private ArrayList<String> currentShowString;
 //    private ContentResolver cr;
 
     private AlbumBitmapCacheHelper() {
-        //·ÖÅä1/4µÄÔËĞĞÊ±ÄÚ´æ¸øÍ¼Æ¬ÏÔÊ¾
+        //åˆ†é…1/4çš„è¿è¡Œæ—¶å†…å­˜ç»™å›¾ç‰‡æ˜¾ç¤º
         final int memory = (int) (Runtime.getRuntime().maxMemory() / 1024 / 4);
 
         cache = new LruCache<String, Bitmap>(memory) {
             @Override
             protected int sizeOf(String key, Bitmap value) {
-                //»ñÈ¡Ã¿ÕÅbitmap´óĞ¡
+                //è·å–æ¯å¼ bitmapå¤§å°
                 return value.getRowBytes() * value.getHeight() / 1024;
             }
         };
@@ -54,7 +54,7 @@ public class AlbumBitmapCacheHelper {
     }
 
     /**
-     * ÊÍ·ÅËùÓĞµÄÄÚ´æ
+     * é‡Šæ”¾æ‰€æœ‰çš„å†…å­˜
      */
     public void releaseAllSizeCache(){
         cache.evictAll();
@@ -70,7 +70,7 @@ public class AlbumBitmapCacheHelper {
     }
 
     /**
-     * Ñ¡ÔñÍê±Ï£¬Ö±½ÓÊÍ·Å»º´æËùÕ¼µÄÄÚ´æ
+     * é€‰æ‹©å®Œæ¯•ï¼Œç›´æ¥é‡Šæ”¾ç¼“å­˜æ‰€å çš„å†…å­˜
      */
     public void clearCache() {
         cache.evictAll();
@@ -90,17 +90,17 @@ public class AlbumBitmapCacheHelper {
     }
 
     /**
-     * Í¨¹ıÍ¼Æ¬µÄpath»Øµ÷¸ÃÍ¼Æ¬µÄbitmap
+     * é€šè¿‡å›¾ç‰‡çš„pathå›è°ƒè¯¥å›¾ç‰‡çš„bitmap
      *
-     * @param path     Í¼Æ¬µØÖ·
-     * @param width    ĞèÒªÏÔÊ¾Í¼Æ¬µÄ¿í¶È£¬0´ú±íÏÔÊ¾ÍêÕûÍ¼Æ¬
-     * @param height   ĞèÒªÏÔÊ¾Í¼Æ¬µÄ¸ß¶È£¬0´ú±íÏÔÊ¾ÍêÕûÍ¼Æ¬
-     * @param callback ¼ÓÔØbitmap³É¹¦»Øµ÷
-     * @param objects  ÓÃÀ´Ö±½Ó·µ»Ø±êÊ¶
+     * @param path     å›¾ç‰‡åœ°å€
+     * @param width    éœ€è¦æ˜¾ç¤ºå›¾ç‰‡çš„å®½åº¦ï¼Œ0ä»£è¡¨æ˜¾ç¤ºå®Œæ•´å›¾ç‰‡
+     * @param height   éœ€è¦æ˜¾ç¤ºå›¾ç‰‡çš„é«˜åº¦ï¼Œ0ä»£è¡¨æ˜¾ç¤ºå®Œæ•´å›¾ç‰‡
+     * @param callback åŠ è½½bitmapæˆåŠŸå›è°ƒ
+     * @param objects  ç”¨æ¥ç›´æ¥è¿”å›æ ‡è¯†
      */
     public Bitmap getBitmap(final String path, int width, int height, final ILoadImageCallback callback, Object... objects){
         Bitmap bitmap = getBitmapFromCache(path, width, height);
-        //Èç¹ûÄÜ¹»´Ó»º´æÖĞ»ñÈ¡·ûºÏÒªÇóµÄÍ¼Æ¬£¬ÔòÖ±½Ó»Øµ÷
+        //å¦‚æœèƒ½å¤Ÿä»ç¼“å­˜ä¸­è·å–ç¬¦åˆè¦æ±‚çš„å›¾ç‰‡ï¼Œåˆ™ç›´æ¥å›è°ƒ
         if (bitmap != null) {
             Log.e("zhao", "get bitmap from cache");
         } else {
@@ -114,7 +114,7 @@ public class AlbumBitmapCacheHelper {
 //    ExecutorService tpe = Executors.newFixedThreadPool(1);
 
     /**
-     * Í¨¹ıpath»ñÈ¡Í¼Æ¬bitmap
+     * é€šè¿‡pathè·å–å›¾ç‰‡bitmap
      */
     private void decodeBitmapFromPath(final String path, final int width, final int height, final ILoadImageCallback callback, final Object... objects) throws OutOfMemoryError {
         final Handler handler = new Handler() {
@@ -123,7 +123,7 @@ public class AlbumBitmapCacheHelper {
                 callback.onLoadImageCallBack((Bitmap) msg.obj, path, objects);
             }
         };
-        //·ÀÖ¹Ö÷Ïß³Ì¿¨¶Ù
+        //é˜²æ­¢ä¸»çº¿ç¨‹å¡é¡¿
         tpe.execute(new Runnable() {
             @Override
             public void run() {
@@ -131,7 +131,7 @@ public class AlbumBitmapCacheHelper {
                     return;
                 }
                 Bitmap bitmap = null;
-                //·µ»Ø´óÍ¼,ÆÁÄ»¿í¶ÈÎª×¼
+                //è¿”å›å¤§å›¾,å±å¹•å®½åº¦ä¸ºå‡†
                 if (width == 0 || height == 0) {
                     BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inJustDecodeBounds = true;
@@ -145,28 +145,28 @@ public class AlbumBitmapCacheHelper {
                         bitmap = BitmapFactory.decodeFile(path, options);
                     }
                 } else {
-                    //·µ»ØĞ¡Í¼£¬µÚÒ»²½£¬´ÓtempÄ¿Â¼ÏÂÈ¡¸ÃÍ¼Æ¬Ö¸¶¨´óĞ¡µÄ»º´æ£¬Èç¹ûÈ¡²»µ½£¬
-                    // µÚ¶ş²½£¬¼ÆËãsamplesize,Èç¹ûsamplesize > 4,
-                    // µÚÈı²½Ôò½«Ñ¹ËõºóµÄÍ¼Æ¬´æÈëtempÄ¿Â¼ÏÂ£¬ÒÔ±ãÏÂ´Î¿ìËÙÈ¡³ö
+                    //è¿”å›å°å›¾ï¼Œç¬¬ä¸€æ­¥ï¼Œä»tempç›®å½•ä¸‹å–è¯¥å›¾ç‰‡æŒ‡å®šå¤§å°çš„ç¼“å­˜ï¼Œå¦‚æœå–ä¸åˆ°ï¼Œ
+                    // ç¬¬äºŒæ­¥ï¼Œè®¡ç®—samplesize,å¦‚æœsamplesize > 4,
+                    // ç¬¬ä¸‰æ­¥åˆ™å°†å‹ç¼©åçš„å›¾ç‰‡å­˜å…¥tempç›®å½•ä¸‹ï¼Œä»¥ä¾¿ä¸‹æ¬¡å¿«é€Ÿå–å‡º
                     String hash = CommonUtil.md5(path+"_"+width+"_"+height);
                     File file = new File(CommonUtil.getDataPath());
                     if (!file.exists())
                         file.mkdirs();
-                    //ÁÙÊ±ÎÄ¼şµÄÎÄ¼şÃû
+                    //ä¸´æ—¶æ–‡ä»¶çš„æ–‡ä»¶å
                     String tempPath = CommonUtil.getDataPath() + hash + ".temp";
                     File picFile = new File(path);
                     File tempFile = new File(tempPath);
-                    //Èç¹û¸ÃÎÄ¼ş´æÔÚ,²¢ÇÒtempÎÄ¼şµÄ´´½¨Ê±¼äÒªÔ­ÎÄ¼şÖ®ºó
+                    //å¦‚æœè¯¥æ–‡ä»¶å­˜åœ¨,å¹¶ä¸”tempæ–‡ä»¶çš„åˆ›å»ºæ—¶é—´è¦åŸæ–‡ä»¶ä¹‹å
                     if (tempFile.exists() && (picFile.lastModified() <= tempFile.lastModified()))
                         bitmap = BitmapFactory.decodeFile(tempPath);
-                    //ÎŞ·¨ÔÚÁÙÊ±ÎÄ¼şµÄËõÂÔÍ¼Ä¿Â¼ÕÒµ½¸ÃÍ¼Æ¬£¬ÓÚÊÇÖ´ĞĞµÚ¶ş²½
+                    //æ— æ³•åœ¨ä¸´æ—¶æ–‡ä»¶çš„ç¼©ç•¥å›¾ç›®å½•æ‰¾åˆ°è¯¥å›¾ç‰‡ï¼Œäºæ˜¯æ‰§è¡Œç¬¬äºŒæ­¥
                     if (bitmap == null) {
                         BitmapFactory.Options options = new BitmapFactory.Options();
                         options.inJustDecodeBounds = true;
                         BitmapFactory.decodeFile(path, options);
                         options.inSampleSize = computeScale(options, width, height);
                         options.inJustDecodeBounds = false;
-                        //»ñÈ¡ÊÖ»ú×Ô´øËõÂÔÍ¼,ËÙ¶ÈÒÀ¾ÉºÜÂı£¬ËùÒÔ¸Ã·½°¸·ÅÆú
+                        //è·å–æ‰‹æœºè‡ªå¸¦ç¼©ç•¥å›¾,é€Ÿåº¦ä¾æ—§å¾ˆæ…¢ï¼Œæ‰€ä»¥è¯¥æ–¹æ¡ˆæ”¾å¼ƒ
 //                    if(objects.length != 0){
 //                        long start = System.currentTimeMillis();
 //                        bitmap = MediaStore.Images.Thumbnails.getThumbnail(cr, Long.parseLong(objects[0].toString()),
@@ -180,7 +180,7 @@ public class AlbumBitmapCacheHelper {
                         if (bitmap != null && cache!=null) {
                             bitmap = centerSquareScaleBitmap(bitmap, ((bitmap.getWidth() > bitmap.getHeight()) ? bitmap.getHeight() : bitmap.getWidth()));
                         }
-                        //µÚÈı²½,Èç¹ûËõ·Å±ÈÀı´óÓÚ4£¬¸ÃÍ¼µÄ¼ÓÔØ»á·Ç³£Âı£¬ËùÒÔ½«¸ÃÍ¼±£´æµ½ÁÙÊ±Ä¿Â¼ÏÂÒÔ±ãÏÂ´ÎµÄ¿ìËÙ¼ÓÔØ
+                        //ç¬¬ä¸‰æ­¥,å¦‚æœç¼©æ”¾æ¯”ä¾‹å¤§äº4ï¼Œè¯¥å›¾çš„åŠ è½½ä¼šéå¸¸æ…¢ï¼Œæ‰€ä»¥å°†è¯¥å›¾ä¿å­˜åˆ°ä¸´æ—¶ç›®å½•ä¸‹ä»¥ä¾¿ä¸‹æ¬¡çš„å¿«é€ŸåŠ è½½
                         if (options.inSampleSize>=4 && bitmap!=null) {
                             try {
                                 file = new File(tempPath);
@@ -204,7 +204,7 @@ public class AlbumBitmapCacheHelper {
                         }
 //                    }
                     }else{
-                        //´ÓtempÄ¿Â¼¼ÓÔØ³öÀ´µÄÍ¼Æ¬Ò²Òª·ÅÈëµ½cacheÖĞ
+                        //ä»tempç›®å½•åŠ è½½å‡ºæ¥çš„å›¾ç‰‡ä¹Ÿè¦æ”¾å…¥åˆ°cacheä¸­
                         if (bitmap != null && cache!=null) {
                             bitmap = centerSquareScaleBitmap(bitmap, ((bitmap.getWidth() > bitmap.getHeight()) ? bitmap.getHeight() : bitmap.getWidth()));
                         }
@@ -220,9 +220,9 @@ public class AlbumBitmapCacheHelper {
     }
 
     /**
-     * @param bitmap     Ô­Í¼
-     * @param edgeLength Ï£ÍûµÃµ½µÄÕı·½ĞÎ²¿·ÖµÄ±ß³¤
-     * @return Ëõ·Å½ØÈ¡ÕıÖĞ²¿·ÖºóµÄÎ»Í¼¡£
+     * @param bitmap     åŸå›¾
+     * @param edgeLength å¸Œæœ›å¾—åˆ°çš„æ­£æ–¹å½¢éƒ¨åˆ†çš„è¾¹é•¿
+     * @return ç¼©æ”¾æˆªå–æ­£ä¸­éƒ¨åˆ†åçš„ä½å›¾ã€‚
      */
     public static Bitmap centerSquareScaleBitmap(Bitmap bitmap, int edgeLength) {
         if (null == bitmap || edgeLength <= 0) {
@@ -232,7 +232,7 @@ public class AlbumBitmapCacheHelper {
         int widthOrg = bitmap.getWidth();
         int heightOrg = bitmap.getHeight();
 
-        //´ÓÍ¼ÖĞ½ØÈ¡ÕıÖĞ¼äµÄÕı·½ĞÎ²¿·Ö¡£
+        //ä»å›¾ä¸­æˆªå–æ­£ä¸­é—´çš„æ­£æ–¹å½¢éƒ¨åˆ†ã€‚
         int xTopLeft = (widthOrg - edgeLength) / 2;
         int yTopLeft = (heightOrg - edgeLength) / 2;
 
@@ -249,53 +249,53 @@ public class AlbumBitmapCacheHelper {
     }
 
     /**
-     * ¼ÆËãËõ·Å±ÈÀı
+     * è®¡ç®—ç¼©æ”¾æ¯”ä¾‹
      */
     private int computeScale(BitmapFactory.Options options, int width, int height) {
         if (options == null) return 1;
         int widthScale = (int)((float) options.outWidth / (float) width);
         int heightScale = (int)((float) options.outHeight / (float) height);
-        //Ñ¡ÔñËõ·Å±ÈÀı½Ï´óµÄÄÇ¸ö
+        //é€‰æ‹©ç¼©æ”¾æ¯”ä¾‹è¾ƒå¤§çš„é‚£ä¸ª
         int scale = (widthScale > heightScale ? widthScale : heightScale);
         if (scale < 1) scale = 1;
         return scale;
     }
 
     /**
-     * »ñÈ¡lrucacheÖĞµÄÍ¼Æ¬£¬Èç¹û¸ÃÍ¼Æ¬µÄ¿í¶ÈºÍ³¤¶ÈÎŞ·¨ºÍĞèÒªµÄÏà·û£¬Ôò·µ»Ønull
+     * è·å–lrucacheä¸­çš„å›¾ç‰‡ï¼Œå¦‚æœè¯¥å›¾ç‰‡çš„å®½åº¦å’Œé•¿åº¦æ— æ³•å’Œéœ€è¦çš„ç›¸ç¬¦ï¼Œåˆ™è¿”å›null
      *
-     * @param path   Í¼Æ¬µØÖ·,key
-     * @param width  ĞèÒªµÄÍ¼Æ¬¿í¶È
-     * @param height ĞèÒªµÄÍ¼Æ¬³¤¶È
-     * @return Í¼Æ¬value
+     * @param path   å›¾ç‰‡åœ°å€,key
+     * @param width  éœ€è¦çš„å›¾ç‰‡å®½åº¦
+     * @param height éœ€è¦çš„å›¾ç‰‡é•¿åº¦
+     * @return å›¾ç‰‡value
      */
     private Bitmap getBitmapFromCache(final String path, int width, int height) {
         return cache.get(path +"_"+ width +"_"+height);
     }
 
     /**
-     * ½«ÒªÕ¹Ê¾µÄpath¼ÓÈëµ½list
+     * å°†è¦å±•ç¤ºçš„pathåŠ å…¥åˆ°list
      */
     public void addPathToShowlist(String path) {
         currentShowString.add(path);
     }
 
     /**
-     * ´ÓÕ¹Ê¾listÖĞÉ¾³ı¸Ãpath
+     * ä»å±•ç¤ºlistä¸­åˆ é™¤è¯¥path
      */
     public void removePathFromShowlist(String path) {
         currentShowString.remove(path);
     }
 
     /**
-     * ¼ÓÔØÍ¼Æ¬³É¹¦µÄ½Ó¿Ú»Øµ÷
+     * åŠ è½½å›¾ç‰‡æˆåŠŸçš„æ¥å£å›è°ƒ
      */
     public interface ILoadImageCallback {
         void onLoadImageCallBack(Bitmap bitmap, String path, Object... objects);
     }
 
     /**
-     * ÒÆ³ö¸ÃthreadsÖĞµÄËùÓĞÏß³Ì
+     * ç§»å‡ºè¯¥threadsä¸­çš„æ‰€æœ‰çº¿ç¨‹
      */
     public void removeAllThreads() {
         currentShowString.clear();

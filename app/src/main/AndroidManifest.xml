@@ -71,9 +71,23 @@
         </activity>
 
 
-        <!-- 登录Activity -->
+        <!-- 发布Activity -->
         <activity
             android:name=".activity.ApplyWorkActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_login" >
+        </activity>
+
+        <!-- 选择多张图片 -->
+        <activity
+            android:name=".activity.PickOrTakeImageActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_login" >
+        </activity>
+
+        <!-- 选择多张图片 -->
+        <activity
+            android:name=".activity.PickBigImagesActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_login" >
         </activity>

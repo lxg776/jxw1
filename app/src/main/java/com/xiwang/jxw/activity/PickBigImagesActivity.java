@@ -37,6 +37,8 @@ public class PickBigImagesActivity extends Activity implements ViewPager.OnPageC
 
     private ArrayList<SingleImageModel> allimages;
     ArrayList<String> picklist;
+
+
     /** 当前选中的图片 */
     private int currentPic;
 
@@ -60,8 +62,18 @@ public class PickBigImagesActivity extends Activity implements ViewPager.OnPageC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_big_images);
+
+
         initFindView();
         initData();
+    }
+
+
+    @Override
+    protected void onDestroy() {
+
+
+        super.onDestroy();
     }
 
     protected void initFindView() {

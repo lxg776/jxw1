@@ -11,8 +11,11 @@ import com.xiwang.jxw.bean.ListBean;
 import com.xiwang.jxw.bean.NewsBean;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.biz.HomeBiz;
+import com.xiwang.jxw.event.PickImageEvent;
 import com.xiwang.jxw.util.SpUtil;
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by sunshine on 15/11/15.
@@ -122,4 +125,6 @@ public class TestActivity extends BaseActivity{
         });
 
     }
+
+
 }

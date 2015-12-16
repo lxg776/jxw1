@@ -220,7 +220,7 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         webView.loadData(htmlStr, "text/html", "utf-8");
         //webView.loadUrl("http://www.sznews.com");
 
-        author_tv.setText(detailBean.getAuthor());
+        author_tv.setText(detailBean.getUserinfo().getAuthor());
         publish_tv.setText(detailBean.getPostdate());
         author_headimg_iv.setBackgroundDrawable(getResources().getDrawable(R.mipmap.ic_launcher));
         ImgLoadUtil.getInstance().displayImage(detailBean.getFace(), author_headimg_iv, options, loadingListener);

@@ -8,12 +8,12 @@ import java.util.ArrayList;
 /**
  * @author: zzp
  * @since: 2015-06-11
- * Description: Ò»¸öÍ¼Æ¬ÎÄ¼ş¼Ğ¶ÔÓ¦ÊµÌå
+ * Description: ä¸€ä¸ªå›¾ç‰‡æ–‡ä»¶å¤¹å¯¹åº”å®ä½“
  */
 public class ImageDirectoryModel implements Serializable {
 
 
-    /** Í¼Æ¬µÄÂ·¾¶,¶ÔÓ¦Í¼Æ¬ÊÇ·ñ±»Ñ¡ÖĞµÄÊı×é */
+    /** å›¾ç‰‡çš„è·¯å¾„,å¯¹åº”å›¾ç‰‡æ˜¯å¦è¢«é€‰ä¸­çš„æ•°ç»„ */
     private ArrayList<SingleImageModel> images;
 
     public ImageDirectoryModel(){
@@ -25,8 +25,8 @@ public class ImageDirectoryModel implements Serializable {
     }
 
     /**
-     * °ÑÒ»ÕÅÍ¼Æ¬pathÌí¼Ó½øÕâ¸öÎÄ¼ş¼ĞÖĞ
-     * @param path Í¼Æ¬µØÖ·
+     * æŠŠä¸€å¼ å›¾ç‰‡pathæ·»åŠ è¿›è¿™ä¸ªæ–‡ä»¶å¤¹ä¸­
+     * @param path å›¾ç‰‡åœ°å€
      */
     public void addImage(String path, long date, long id){
         SingleImageModel image = new SingleImageModel(path, false, date, id);
@@ -38,8 +38,8 @@ public class ImageDirectoryModel implements Serializable {
     }
 
     /**
-     * ½«Ò»ÕÅÍ¼Æ¬´Ó¸ÃÎÄ¼ş¼ĞÖĞÉ¾³ı
-     * @param path Í¼Æ¬µØÖ·
+     * å°†ä¸€å¼ å›¾ç‰‡ä»è¯¥æ–‡ä»¶å¤¹ä¸­åˆ é™¤
+     * @param path å›¾ç‰‡åœ°å€
      */
     public void removeImage(String path){
         for (SingleImageModel image : images){
@@ -51,8 +51,8 @@ public class ImageDirectoryModel implements Serializable {
     }
 
     /**
-     * Ñ¡ÖĞ¸ÃÍ¼Æ¬
-     * @param path Í¼Æ¬µØÖ·
+     * é€‰ä¸­è¯¥å›¾ç‰‡
+     * @param path å›¾ç‰‡åœ°å€
      */
     public void setImage(String path){
         for (SingleImageModel image : images){
@@ -67,8 +67,8 @@ public class ImageDirectoryModel implements Serializable {
     }
 
     /**
-     * ²»Ñ¡ÖĞ¸ÃÍ¼Æ¬
-     * @param path Í¼Æ¬µØÖ·
+     * ä¸é€‰ä¸­è¯¥å›¾ç‰‡
+     * @param path å›¾ç‰‡åœ°å€
      */
     public void unsetImage(String path){
         for (SingleImageModel image : images){
@@ -83,7 +83,7 @@ public class ImageDirectoryModel implements Serializable {
     }
 
     /**
-     * ×ª±äÍ¼Æ¬µÄÑ¡ÖĞ×´Ì¬
+     * è½¬å˜å›¾ç‰‡çš„é€‰ä¸­çŠ¶æ€
      */
     public void toggleSetImage(int position){
         SingleImageModel model = images.get(position);
@@ -91,7 +91,7 @@ public class ImageDirectoryModel implements Serializable {
     }
 
     /**
-     * ×ª±äÍ¼Æ¬µÄÑ¡ÖĞ×´Ì¬
+     * è½¬å˜å›¾ç‰‡çš„é€‰ä¸­çŠ¶æ€
      */
     public void toggleSetImage(String path){
         for (SingleImageModel model : images){
@@ -103,30 +103,30 @@ public class ImageDirectoryModel implements Serializable {
     }
 
     /**
-     * ·µ»Ø¸ÃÎÄ¼ş¼ĞµÄËùÓĞÎÄ¼şÊıÁ¿
+     * è¿”å›è¯¥æ–‡ä»¶å¤¹çš„æ‰€æœ‰æ–‡ä»¶æ•°é‡
      */
     public int getImageCounts(){
         return images.size();
     }
 
     /**
-     * ¸ù¾İÍ¼Æ¬µÄÎ»ÖÃ·µ»Ø¸ÃÍ¼Æ¬µÄurl
-     * @param position Í¼Æ¬Î»ÖÃ
+     * æ ¹æ®å›¾ç‰‡çš„ä½ç½®è¿”å›è¯¥å›¾ç‰‡çš„url
+     * @param position å›¾ç‰‡ä½ç½®
      */
     public String getImagePath(int position){
         return images.get(position).path;
     }
 
     /**
-     * ¸ù¾İÍ¼Æ¬µÄÎ»ÖÃ·µ»Ø¸ÃÍ¼Æ¬ÊÇ·ñ±»Ñ¡ÖĞ
-     * @param position Í¼Æ¬Î»ÖÃ
+     * æ ¹æ®å›¾ç‰‡çš„ä½ç½®è¿”å›è¯¥å›¾ç‰‡æ˜¯å¦è¢«é€‰ä¸­
+     * @param position å›¾ç‰‡ä½ç½®
      */
     public boolean getImagePickOrNot(int position){
         return  images.get(position).isPicked;
     }
 
     /**
-     * ¸ÃÎÄ¼ş¼ĞÖĞÊÇ·ñÓĞÑ¡ÖĞµÄÍ¼Æ¬
+     * è¯¥æ–‡ä»¶å¤¹ä¸­æ˜¯å¦æœ‰é€‰ä¸­çš„å›¾ç‰‡
      */
     public boolean hasChoosePic(){
         for (SingleImageModel model : images){

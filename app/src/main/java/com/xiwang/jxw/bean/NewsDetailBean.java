@@ -29,10 +29,7 @@ public class NewsDetailBean extends BaseBean {
      * 发布日期
      */
     private String postdate;
-    /**
-     * 作者
-     */
-    private String author;
+
     /**
      * 回复数
      */
@@ -45,12 +42,8 @@ public class NewsDetailBean extends BaseBean {
     private String dig;
     /** 点差数*/
     private String poor;
-    /** 电话号码查看数（意向数）*/
-    private String telhits;
-     /** 电话号码*/
-    private String phone;
-    /** 联系人*/
-    private String cname;
+
+
 
     /**
      * 分享id
@@ -66,6 +59,16 @@ public class NewsDetailBean extends BaseBean {
      * 作者头像
      */
     private String face;
+
+    /**
+     * 作者信息
+     */
+    private AuthorBean userinfo;
+
+    /**
+     * 联系方式
+     */
+    private ContactBean contact;
 
 
     public String getDig() {
@@ -84,21 +87,6 @@ public class NewsDetailBean extends BaseBean {
         this.poor = poor;
     }
 
-    public String getTelhits() {
-        return telhits;
-    }
-
-    public void setTelhits(String telhits) {
-        this.telhits = telhits;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
 
     public String getSid() {
         return sid;
@@ -130,14 +118,6 @@ public class NewsDetailBean extends BaseBean {
 
     public void setFace(String face) {
         this.face = face;
-    }
-
-    public String getCname() {
-        return cname;
-    }
-
-    public void setCname(String cname) {
-        this.cname = cname;
     }
 
     public String getSubject() {
@@ -172,13 +152,6 @@ public class NewsDetailBean extends BaseBean {
         this.postdate = postdate;
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
 
     public String getReplies() {
         return replies;
@@ -242,19 +215,30 @@ public class NewsDetailBean extends BaseBean {
         this.shareurl = shareurl;
     }
 
+    public AuthorBean getUserinfo() {
+        return userinfo;
+    }
+
+    public void setUserinfo(AuthorBean userinfo) {
+        this.userinfo = userinfo;
+    }
+
+    public ContactBean getContact() {
+        return contact;
+    }
+
+    public void setContact(ContactBean contact) {
+        this.contact = contact;
+    }
+
     @Override
     protected void init(JSONObject jSon) throws JSONException {
         setDig(jSon.optString("dig"));
         setPoor(jSon.optString("poor"));
-        setFace(jSon.optString("face"));
-        setPhone(jSon.optString("phone"));
         setFromtype(jSon.optString("fromtype"));
         setSid(jSon.optString("sid"));
-        setTelhits(jSon.optString("telhits"));
-        setQq(jSon.optString("qq"));
-        setCname(jSon.optString("cname"));
         setContent(jSon.optString("content"));
-        setAuthor(jSon.optString("author"));
+
         setPostdate(jSon.optString("postdate"));
         setTid(jSon.optString("tid"));
         setReplies(jSon.optString("replies"));
@@ -264,6 +248,10 @@ public class NewsDetailBean extends BaseBean {
         setPages(jSon.optString("pages"));
         setPage(jSon.optString("page"));
         setTotal(jSon.optString("total"));
+        setUserinfo((AuthorBean) BaseBean.newInstance(AuthorBean.class, jSon.optString("userinfo")));
+        setContact((ContactBean) BaseBean.newInstance(ContactBean.class,jSon.optString("contact")));
+
+
         setCommentList((ArrayList<NewsDetailCommentBean>) BaseBean.toModelList(jSon.optString("list"),NewsDetailCommentBean.class));
     }
 }
