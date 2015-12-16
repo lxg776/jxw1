@@ -1,5 +1,6 @@
 package com.xiwang.jxw.activity;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -92,6 +93,8 @@ public class MainActivity extends BaseActivity {
         publish_rl=(MyRadioView)findViewById(R.id.publish_rl);
         mine_rv=(MyRadioView)findViewById(R.id.mine_rv);
 
+        FragmentManager fm=getFragmentManager();
+        fm.popBackStackImmediate("123",3);
 
 
     }

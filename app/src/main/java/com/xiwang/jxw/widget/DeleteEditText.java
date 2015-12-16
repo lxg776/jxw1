@@ -1,7 +1,9 @@
 package com.xiwang.jxw.widget;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -26,7 +28,10 @@ public class DeleteEditText extends EditText implements OnFocusChangeListener, T
 	private OnTextChangeListener onTextChangeListener;
 	/** 横线 */
 	LineChangeListener lineChangeListener;
+	/** 延迟获取文本*/
+	DelayGetTextListener delayGetTextListener;
 
+	int delayTime=3*1000;
 	public LineChangeListener getLineChangeListener() {
 		return lineChangeListener;
 	}
@@ -137,6 +142,9 @@ public class DeleteEditText extends EditText implements OnFocusChangeListener, T
 		setCompoundDrawables(getCompoundDrawables()[0], getCompoundDrawables()[1], right, getCompoundDrawables()[3]);
 	}
 
+
+
+	String lastDelayText="";
 	/**
 	 * 
 	 * 当输入框里面内容发生变化的时候回调的方法
@@ -148,7 +156,7 @@ public class DeleteEditText extends EditText implements OnFocusChangeListener, T
 	 * @param after
 	 */
 	@Override
-	public void onTextChanged(CharSequence s, int start, int count, int after) {
+	public void onTextChanged(final CharSequence s, int start, int count, int after) {
 		if (hasFoucs) {
 			setClearIconVisible(s.length() > 0);
 		}
@@ -156,7 +164,26 @@ public class DeleteEditText extends EditText implements OnFocusChangeListener, T
 		if (onTextChangeListener != null) {
 			onTextChangeListener.onTextChanged(s, start, count, after);
 		}
+		if(delayGetTextListener!=null){
+			if(mHandle==null){
+				mHandle=new Handler();
+				delayRunable=new Runnable() {
+					@Override
+					public void run() {
+							if(s!=null&&!lastDelayText.equals(s.toString())&&!"".equals(s.toString())){
+								delayGetTextListener.getDelayText(s.toString());
+								lastDelayText=s.toString();
+							}
+					}
+				};
+			}
+			mHandle.removeCallbacks(delayRunable);
+			mHandle.postDelayed(delayRunable,delayTime);
+		}
+
 	}
+	Handler mHandle;
+	Runnable delayRunable;
 
 	@Override
 	public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -227,4 +254,13 @@ public class DeleteEditText extends EditText implements OnFocusChangeListener, T
 		public void back();
 
 	}
+
+	/**
+	 * 延迟获取文本
+	 */
+	public interface DelayGetTextListener{
+		public void getDelayText(String text);
+	}
+
+
 }
