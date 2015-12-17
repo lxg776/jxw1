@@ -60,15 +60,17 @@
 
     </LinearLayout>
 
-    <com.xiwang.jxw.widget.UploadImgGridView
+    <com.xiwang.jxw.widget.UploadImgView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:minHeight="80dp"
         android:id="@+id/uploadVIew"
-        android:horizontalSpacing="16dp"
-        android:verticalSpacing="8dp"
-        android:numColumns="4"
-        ></com.xiwang.jxw.widget.UploadImgGridView>
+        app:horizontalSpacing="8dp"
+        app:verticalSpacing="8dp"
+        app:numColumns="4"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        ></com.xiwang.jxw.widget.UploadImgView>
 
 
 </LinearLayout>

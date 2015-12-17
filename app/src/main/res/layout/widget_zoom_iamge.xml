@@ -3,10 +3,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/white">
-    <com.zhao.album.ZoomImageView
+    <com.xiwang.jxw.widget.ZoomImageView
         android:id="@+id/zoom_image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </com.zhao.album.ZoomImageView>
+    </com.xiwang.jxw.widget.ZoomImageView>
 </RelativeLayout>

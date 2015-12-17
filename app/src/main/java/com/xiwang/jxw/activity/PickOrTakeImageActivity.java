@@ -136,6 +136,11 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
         initData();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     protected void initView() {
         gridView = (GridView) findViewById(R.id.gv_content);

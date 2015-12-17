@@ -49,11 +49,19 @@
     </declare-styleable>
 
 
-    <!-- 首页TAB -->
+    <!-- 加载控件-->
     <declare-styleable name="PercentView">
         <attr name = "background_color" format = "color" />
         <attr name = "draw_color" format = "color" />
     </declare-styleable>
 
-
+    <!-- 上传图片控件 -->
+    <declare-styleable name="UploadImgView">
+        <attr name = "horizontalSpacing" format = "dimension" />
+        <attr name = "verticalSpacing" format = "dimension" />
+        <attr name = "tag" format = "reference|string" />
+        <attr name = "child_with" format = "dimension" />
+        <attr name = "child_height" format = "dimension" />
+        <attr name = "numColumns" format = "integer" />
+    </declare-styleable>
 </resources>
