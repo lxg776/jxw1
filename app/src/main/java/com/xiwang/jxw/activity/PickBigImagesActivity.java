@@ -121,9 +121,9 @@ public class PickBigImagesActivity extends Activity implements ViewPager.OnPageC
         setTitle((currentPic + 1) + "/" + getImagesCount());
         //如果该图片被选中
         if (getChooseStateFromList(currentPic)){
-            iv_choose_state.setBackgroundResource(R.drawable.image_choose);
+            iv_choose_state.setBackgroundResource(R.mipmap.image_choose);
         }else{
-            iv_choose_state.setBackgroundResource(R.drawable.image_not_chose);
+            iv_choose_state.setBackgroundResource(R.mipmap.image_not_chose);
         }
 
         adapter = new MyViewPagerAdapter();
@@ -141,9 +141,9 @@ public class PickBigImagesActivity extends Activity implements ViewPager.OnPageC
     public void onPageSelected(int position) {
         //如果该图片被选中
         if (getChooseStateFromList(position)){
-            iv_choose_state.setBackgroundResource(R.drawable.image_choose);
+            iv_choose_state.setBackgroundResource(R.mipmap.image_choose);
         }else{
-            iv_choose_state.setBackgroundResource(R.drawable.image_not_chose);
+            iv_choose_state.setBackgroundResource(R.mipmap.image_not_chose);
         }
         currentPic = position;
         ((TextView)findViewById(R.id.tv_title)).setText((currentPic + 1) + "/" + getImagesCount());
@@ -165,7 +165,7 @@ public class PickBigImagesActivity extends Activity implements ViewPager.OnPageC
             }
             picklist.add(getPathFromList(currentPic));
             last_pics --;
-            iv_choose_state.setBackgroundResource(R.drawable.image_choose);
+            iv_choose_state.setBackgroundResource(R.mipmap.image_choose);
             if(last_pics == total_pics-1){
                 btn_choose_finish.setTextColor(getResources().getColor(R.color.white));
             }
@@ -173,7 +173,7 @@ public class PickBigImagesActivity extends Activity implements ViewPager.OnPageC
         }else{
             picklist.remove(getPathFromList(currentPic));
             last_pics ++;
-            iv_choose_state.setBackgroundResource(R.drawable.image_not_chose);
+            iv_choose_state.setBackgroundResource(R.mipmap.image_not_chose);
             if(last_pics == total_pics){
                 btn_choose_finish.setTextColor(getResources().getColor(R.color.orange_500));
                 btn_choose_finish.setText(getString(R.string.choose_pic_finish));

@@ -626,10 +626,10 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
             //如果该图片被选中，则讲状态变为选中状态
             if (getImageDirectoryModelStateFromMapById(i)){
                 holder.v_gray_masking.setVisibility(View.VISIBLE);
-                holder.iv_pick_or_not.setImageResource(R.drawable.image_choose);
+                holder.iv_pick_or_not.setImageResource(R.mipmap.image_choose);
             }else{
                 holder.v_gray_masking.setVisibility(View.GONE);
-                holder.iv_pick_or_not.setImageResource(R.drawable.image_not_chose);
+                holder.iv_pick_or_not.setImageResource(R.mipmap.image_not_chose);
             }
             //优化显示效果
             if(holder.iv_content.getTag() != null) {
@@ -947,7 +947,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
                         return;
                     }
                     picklist.add(getImageDirectoryModelUrlFromMapById(holder.position));
-                    holder.iv_pick_or_not.setImageResource(R.drawable.image_choose);
+                    holder.iv_pick_or_not.setImageResource(R.mipmap.image_choose);
                     holder.v_gray_masking.setVisibility(View.VISIBLE);
                     currentPicNums++;
                     if (currentPicNums == 1) {
@@ -957,7 +957,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
                     btn_choose_finish.setText(String.format(getString(R.string.choose_pic_finish_with_num), currentPicNums, picNums));
                 } else {
                     picklist.remove(getImageDirectoryModelUrlFromMapById(holder.position));
-                    holder.iv_pick_or_not.setImageResource(R.drawable.image_not_chose);
+                    holder.iv_pick_or_not.setImageResource(R.mipmap.image_not_chose);
                     holder.v_gray_masking.setVisibility(View.GONE);
                     currentPicNums--;
                     if (currentPicNums == 0) {
@@ -991,7 +991,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
                             View v = gridView.findViewWithTag(path);
                             if(v != null) {
                                 ((ViewGroup) (v.getParent())).findViewById(R.id.v_gray_masking).setVisibility(View.VISIBLE);
-                                ((ImageView) ((ViewGroup) (v.getParent())).findViewById(R.id.iv_pick_or_not)).setImageResource(R.drawable.image_choose);
+                                ((ImageView) ((ViewGroup) (v.getParent())).findViewById(R.id.iv_pick_or_not)).setImageResource(R.mipmap.image_choose);
                             }
                             setPickStateFromHashMap(path, true);
                             currentPicNums ++;
@@ -1003,7 +1003,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
                             View v = gridView.findViewWithTag(path);
                             if(v != null) {
                                 ((ViewGroup) (v.getParent())).findViewById(R.id.v_gray_masking).setVisibility(View.GONE);
-                                ((ImageView) ((ViewGroup) (v.getParent())).findViewById(R.id.iv_pick_or_not)).setImageResource(R.drawable.image_not_chose);
+                                ((ImageView) ((ViewGroup) (v.getParent())).findViewById(R.id.iv_pick_or_not)).setImageResource(R.mipmap.image_not_chose);
                             }
                             currentPicNums --;
                             setPickStateFromHashMap(path, false);
