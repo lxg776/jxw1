@@ -8,11 +8,13 @@ import android.widget.TextView;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseActivity;
 import com.xiwang.jxw.base.BaseBiz;
+import com.xiwang.jxw.base.BaseSubmitActivity;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.bean.UserBean;
 import com.xiwang.jxw.biz.UserBiz;
 import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.event.LoginEvent;
+import com.xiwang.jxw.util.CheckUtil;
 import com.xiwang.jxw.util.ProcessDialogUtil;
 import com.xiwang.jxw.util.SpUtil;
 import com.xiwang.jxw.util.ToastUtil;
@@ -25,7 +27,7 @@ import de.greenrobot.event.EventBus;
  * @date 2015/11/2
  * @modifier
  */
-public class LoginActivity extends BaseActivity implements View.OnClickListener{
+public class LoginActivity extends BaseSubmitActivity implements View.OnClickListener{
     /** 用户名*/
     DeleteEditText username_edt;
     /** 密码*/
@@ -54,6 +56,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         return R.layout.activity_login;
     }
 
+
+
     @Override
     protected void findViews() {
         username_edt= (DeleteEditText) findViewById(R.id.username_edt);
@@ -80,15 +84,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
      * 校验输入
      * @return
      */
-    private boolean checkInput(){
+    protected boolean checkInput(){
         String userName=username_edt.getText().toString();
         String pwd=pwd_edt.getText().toString();
-        if(TextUtils.isEmpty(userName)){
-            ToastUtil.showToast(context, getString(R.string.login_username_notnull));
+        if(!CheckUtil.isEmpty(context,getResources().getString(R.string.login_username),userName)){
             return false;
         }
-        if(TextUtils.isEmpty(pwd)){
-            ToastUtil.showToast(context,getString(R.string.login_pwd_notnull));
+        if(!CheckUtil.isEmpty(context,getResources().getString(R.string.login_pwd),pwd)){
             return false;
         }
         return true;
@@ -97,8 +99,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     /**
      * 用户登录
      */
-    private void userLogin(){
-        if(checkInput()){
+    protected void submit(){
+            super.submit();
             String userName=username_edt.getText().toString();
             final String pwd=pwd_edt.getText().toString();
             ProcessDialogUtil.showDialog(context,"数据加载中...",false);
@@ -133,7 +135,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
                 }
             });
-        }
+
     }
 
     @Override
@@ -142,7 +144,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
             /** 登录*/
             case  R.id.login_btn:
             {
-                userLogin();
+                submit();
             }
                 break;
         }

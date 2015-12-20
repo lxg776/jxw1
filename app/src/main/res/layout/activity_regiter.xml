@@ -1,0 +1,127 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.xiwang.jxw.activity.LoginActivity">
+    <include layout="@layout/tootbar_common"></include>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_marginTop="24dp"
+        android:orientation="vertical"
+        >
+        <com.xiwang.jxw.widget.DeleteEditText
+            android:id="@+id/username_edt"
+
+            android:hint="用户名/手机号"
+            style="@style/etd_1"
+           />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@color/black_transparent_26"
+            ></View>
+
+        <com.xiwang.jxw.widget.DeleteEditText
+            android:id="@+id/email_edt"
+            android:hint="E-mail"
+            style="@style/etd_1"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@color/black_transparent_26"
+            ></View>
+
+        <com.xiwang.jxw.widget.DeleteEditText
+            android:id="@+id/pwd_edt"
+            android:hint="设置密码"
+            android:password="true"
+            style="@style/etd_1"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@color/black_transparent_26"
+            ></View>
+
+        <com.xiwang.jxw.widget.DeleteEditText
+            android:id="@+id/re_pwd_edt"
+            style="@style/etd_1"
+            android:hint="确认密码"
+            android:password="true"
+
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+
+            android:background="@color/black_transparent_26"
+            ></View>
+    </LinearLayout>
+    <!--是否同意条款 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center_vertical"
+        >
+        <View
+            android:id="@+id/check_btn"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="16dp"
+            android:background="@drawable/no_checked_btn"
+            ></View>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black_transparent_26"
+            android:text="我已经阅读并同意接收"
+            android:layout_marginLeft="4dp"
+            android:textSize="14sp"
+            />
+        <!--协议按钮-->
+        <TextView
+            android:id="@+id/xieyi_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@color/bule_500"
+            android:text="西网的服务协议"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="4dp"
+            android:textSize="14sp"
+            />
+
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/black_transparent_26"
+        ></View>
+    <!--注册按钮-->
+    <TextView
+        android:id="@+id/regiter_btn"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/origan_btn"
+
+        android:text="注 册"
+        android:textSize="16sp"
+        android:clickable="true"
+        android:textColor="@color/white"
+        android:gravity="center"
+        />
+
+
+</LinearLayout>

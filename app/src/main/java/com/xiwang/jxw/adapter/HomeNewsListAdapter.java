@@ -2,26 +2,22 @@ package com.xiwang.jxw.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.bean.NewsBean;
-import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.util.ImgLoadUtil;
-import com.xiwang.jxw.util.StringUtil;
+import com.xiwang.jxw.util.CheckUtil;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -122,7 +118,7 @@ public class HomeNewsListAdapter extends BaseAdapter{
         hoder.author_tv.setText(newsBean.getAuthor());
         hoder.hits_tv.setText(newsBean.getHits());
         hoder.replies_tv.setText(newsBean.getReplies());
-        if(!StringUtil.isEmpty(newsBean.getImage())){
+        if(!TextUtils.isEmpty(newsBean.getImage())){
             hoder.image_iv.setVisibility(View.VISIBLE);
             ImgLoadUtil.displayImage(newsBean.getImage(), hoder.image_iv, ImgLoadUtil.defaultDisplayOptions, listener);
         }else{

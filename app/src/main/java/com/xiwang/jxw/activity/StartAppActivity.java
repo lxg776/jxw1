@@ -118,7 +118,7 @@ public class StartAppActivity extends BaseActivity {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                IntentUtil.gotoActivityAndFinish(context, ApplyWorkActivity.class);
+                IntentUtil.gotoActivityAndFinish(context, MainActivity.class);
             }
         }, 3000);
         /**

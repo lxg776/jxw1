@@ -15,15 +15,9 @@
         >
         <com.xiwang.jxw.widget.DeleteEditText
             android:id="@+id/username_edt"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
+
             android:hint="用户名/手机号"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:singleLine="true"
-            android:textColor="@color/black_transparent_54"
-            android:textColorHint="@color/black_transparent_54"
-            android:background="@color/trans"
+            style="@style/etd_1"
            />
 
         <View
@@ -35,16 +29,8 @@
             ></View>
         <com.xiwang.jxw.widget.DeleteEditText
             android:id="@+id/pwd_edt"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
             android:hint="密码"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:singleLine="true"
-            android:password="true"
-            android:textColor="@color/black_transparent_87"
-            android:textColorHint="@color/black_transparent_54"
-            android:background="@color/trans"
+            style="@style/etd_1"
             />
 
     </LinearLayout>
@@ -63,4 +49,25 @@
         android:textColor="@color/white"
         android:gravity="center"
         />
+
+    <!--快速登录 -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/register_btn"
+            android:text="快速注册>>"
+            style="@style/text_btn"
+            />
+
+    <!--快速登录 -->
+
+        <TextView
+            android:id="@+id/tx_login_btn"
+            android:text="腾讯登录>>"
+            style="@style/text_btn"
+            android:layout_alignParentRight="true"
+            />
+
+    </RelativeLayout>
 </LinearLayout>

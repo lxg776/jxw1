@@ -72,6 +72,14 @@
             >
         </activity>
 
+        <!-- 登录Activity -->
+        <activity
+            android:name=".activity.RegisterActivity"
+            android:label="@string/title_activity_login"
+            android:screenOrientation="portrait"
+            >
+        </activity>
+
 
         <!-- 发布Activity -->
         <activity
@@ -87,7 +95,7 @@
             android:label="@string/title_activity_login" >
         </activity>
 
-        <!-- 选择多张图片 -->
+        <!-- 选择多张图片预览效果 -->
         <activity
             android:name=".activity.PickBigImagesActivity"
             android:screenOrientation="portrait"

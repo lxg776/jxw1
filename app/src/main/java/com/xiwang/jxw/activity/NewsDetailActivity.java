@@ -25,7 +25,7 @@ import com.xiwang.jxw.biz.NewsBiz;
 import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.util.ImgLoadUtil;
 import com.xiwang.jxw.util.SpUtil;
-import com.xiwang.jxw.util.StringUtil;
+import com.xiwang.jxw.util.CheckUtil;
 import com.xiwang.jxw.util.ToastUtil;
 import com.xiwang.jxw.widget.HorizontalRadioView;
 import com.xiwang.jxw.widget.LoadingLayout;
@@ -208,7 +208,7 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         detailBean= (NewsDetailBean) responseBean.getObject();
         String htmlStr="";
         try {
-            htmlStr = StringUtil.inputStream2String(getAssets().open("news_temp.html"));
+            htmlStr = CheckUtil.inputStream2String(getAssets().open("news_temp.html"));
         } catch (IOException e) {
             e.printStackTrace();
         }
