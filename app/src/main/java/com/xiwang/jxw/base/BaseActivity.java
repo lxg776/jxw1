@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 
@@ -35,6 +36,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 	/** handler */
 	public Handler mHandler;
+
+	/**标题栏 */
+	protected  Toolbar toolbar;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

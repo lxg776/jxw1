@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             app:topHinttext="姓名"
             app:inputHinttext="姓名"
-            app:default_lColor="@color/black_transparent_54"
+            app:default_lColor="@color/orange_500"
             android:layout_height="wrap_content">
         </com.xiwang.jxw.widget.MyInputEditView>
 

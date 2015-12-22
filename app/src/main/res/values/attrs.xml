@@ -45,7 +45,7 @@
         <attr name = "default_lColor" format = "color" />
         <attr name = "change_lColor" format = "color" />
         <attr name = "dialog_title" format = "reference|string" />
-
+        <attr name = "is_hint" format = "boolean" />
     </declare-styleable>
 
 

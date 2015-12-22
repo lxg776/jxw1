@@ -15,6 +15,7 @@ import com.xiwang.jxw.biz.UserBiz;
 import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.event.LoginEvent;
 import com.xiwang.jxw.util.CheckUtil;
+import com.xiwang.jxw.util.IntentUtil;
 import com.xiwang.jxw.util.ProcessDialogUtil;
 import com.xiwang.jxw.util.SpUtil;
 import com.xiwang.jxw.util.ToastUtil;
@@ -34,8 +35,9 @@ public class LoginActivity extends BaseSubmitActivity implements View.OnClickLis
     DeleteEditText pwd_edt;
     /** 登录按钮*/
     TextView login_btn;
-    /** 标题栏*/
-    Toolbar toolbar;
+
+    /** 注册按钮*/
+    TextView register_btn;
 
     @Override
     protected void initActionBar() {
@@ -63,6 +65,7 @@ public class LoginActivity extends BaseSubmitActivity implements View.OnClickLis
         username_edt= (DeleteEditText) findViewById(R.id.username_edt);
         pwd_edt= (DeleteEditText) findViewById(R.id.pwd_edt);
         login_btn= (TextView) findViewById(R.id.login_btn);
+        register_btn= (TextView) findViewById(R.id.register_btn);
     }
 
     @Override
@@ -78,6 +81,7 @@ public class LoginActivity extends BaseSubmitActivity implements View.OnClickLis
     @Override
     protected void widgetListener() {
         login_btn.setOnClickListener(this);
+        register_btn.setOnClickListener(this);
     }
 
     /**
@@ -146,6 +150,11 @@ public class LoginActivity extends BaseSubmitActivity implements View.OnClickLis
             {
                 submit();
             }
+                break;
+            /** 注册*/
+            case R.id.register_btn:
+                IntentUtil.gotoActivity(context,RegisterActivity.class);
+
                 break;
         }
     }

@@ -113,11 +113,12 @@ public class UploadImgView extends RelativeLayout{
 
         //添加add按钮
         View addBtn=View.inflate(context,R.layout.item_upload_image,null);
-        addBtn.setBackgroundResource(R.drawable.upload_img_btn);
-        ImageView img_iv= (ImageView) addBtn.findViewById(R.id.img_iv);
-        Drawable drawable=context.getResources().getDrawable(R.mipmap.add_icon_gray);
-        drawable.setBounds(0, 0, DisplayUtil.dip2px(context, 48), DisplayUtil.dip2px(context, 48));
-        img_iv.setImageDrawable(drawable);
+        addBtn.setBackgroundDrawable(getResources().getDrawable(R.mipmap.add_icon_gray));
+//        addBtn.setBackgroundResource(R.drawable.upload_img_btn);
+//        ImageView img_iv= (ImageView) addBtn.findViewById(R.id.img_iv);
+//        Drawable drawable=context.getResources().getDrawable(R.mipmap.add_icon_gray);
+//        drawable.setBounds(0, 0, DisplayUtil.dip2px(context, 48), DisplayUtil.dip2px(context, 48));
+//        img_iv.setImageDrawable(drawable);
         addBtn.setId(beginId++);
         addBtn.setOnClickListener(new OnClickListener() {
             @Override

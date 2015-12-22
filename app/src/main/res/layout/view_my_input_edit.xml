@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:singleLine="true"
-        android:textColor="@color/black_transparent_54"
+        android:textColor="@color/black_transparent_87"
         android:textColorHint="@color/black_transparent_26"
         android:background="@color/trans"
         android:paddingRight="16dp"

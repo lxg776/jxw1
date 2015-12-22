@@ -30,6 +30,8 @@ public class MyTextSelectView extends LinearLayout {
 
     int default_line_c;
     int change_line_c;
+    boolean is_hint;
+
     /** 下拉的文本*/
     String [] showItemes;
 
@@ -63,9 +65,17 @@ public class MyTextSelectView extends LinearLayout {
 
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MyDialogView);
-        hint_tv.setText(getTypeArrayText(a, R.styleable.MyDialogView_topHinttext));
+        hint_tv.setHint(getTypeArrayText(a, R.styleable.MyDialogView_topHinttext));
         text_tv.setHint(getTypeArrayText(a, R.styleable.MyDialogView_inputHinttext));
         titleText=getTypeArrayText(a, R.styleable.MyDialogView_dialog_title);
+
+        is_hint=a.getBoolean(R.styleable.MyDialogView_is_hint, true);
+        if(is_hint){
+            hint_tv.setVisibility(View.VISIBLE);
+        }else{
+            hint_tv.setVisibility(View.GONE);
+        }
+
 
         default_line_c=a.getColor(R.styleable.MyDialogView_default_lColor, getResources().getColor(R.color.black_transparent_26));
         change_line_c=a.getColor(R.styleable.MyDialogView_change_lColor, getResources().getColor(R.color.orange_500));

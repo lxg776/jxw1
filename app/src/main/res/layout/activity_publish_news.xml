@@ -1,0 +1,67 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/tootbar_common"></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_marginTop="16dp"
+        android:paddingBottom="24dp"
+        >
+        <!--分类选择-->
+        <com.xiwang.jxw.widget.MyTextSelectView
+            app:is_hint="false"
+            app:inputHinttext="选择分类"
+            style="@style/etd_2"
+            android:id="@+id/type_select_tv"
+            >
+        </com.xiwang.jxw.widget.MyTextSelectView>
+
+        <!--输入标题-->
+        <com.xiwang.jxw.widget.MyInputEditView
+            android:layout_marginTop="8dp"
+            app:topHinttext="标题"
+            app:inputHinttext="输入标题"
+            style="@style/etd_2"
+            android:id="@+id/title_edt"
+            >
+        </com.xiwang.jxw.widget.MyInputEditView>
+
+
+        <!--输入内容-->
+        <EditText
+            android:id="@+id/content_edt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="80dp"
+            android:padding="16dp"
+            android:hint="说点什么？"
+            android:textColor="@color/black_transparent_87"
+            android:textColorHint="@color/black_transparent_26"
+            android:background="@color/trans"
+            android:gravity="top"
+            />
+
+        <!--图片上传-->
+        <com.xiwang.jxw.widget.UploadImgView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:minHeight="80dp"
+            android:id="@+id/uploadView"
+            app:horizontalSpacing="8dp"
+            app:verticalSpacing="8dp"
+            app:numColumns="4"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            ></com.xiwang.jxw.widget.UploadImgView>
+
+    </LinearLayout>
+
+</LinearLayout>

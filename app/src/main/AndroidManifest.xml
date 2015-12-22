@@ -72,7 +72,7 @@
             >
         </activity>
 
-        <!-- 登录Activity -->
+        <!-- 注册Activity -->
         <activity
             android:name=".activity.RegisterActivity"
             android:label="@string/title_activity_login"
@@ -101,6 +101,24 @@
             android:screenOrientation="portrait"
             android:label="@string/title_activity_login" >
         </activity>
+
+        <!-- 服务协议 -->
+        <activity
+            android:name=".activity.ServiceProtocolActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_login" >
+        </activity>
+
+
+        <!-- 发帖 -->
+        <activity
+            android:name=".activity.PublishNewsActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_login" >
+        </activity>
+
+
+
 
     </application>
 
