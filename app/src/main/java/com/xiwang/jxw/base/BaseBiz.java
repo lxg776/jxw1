@@ -104,6 +104,9 @@ public class BaseBiz {
                 if (cacheData != null) {
                     handle.onRequestCache(cacheData);
                 }
+
+
+
                 AppHttpClient.post(ServerConfig.SERVER_API_URL + url, params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {

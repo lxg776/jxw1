@@ -10,25 +10,20 @@ import android.media.Image;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
-import com.orhanobut.dialogplus.ViewHolder;
+
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.activity.PickOrTakeImageActivity;
+import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.bean.SingleImageModel;
-import com.xiwang.jxw.config.TApplication;
+import com.xiwang.jxw.biz.SystemBiz;
 import com.xiwang.jxw.event.PickImageEvent;
 import com.xiwang.jxw.util.AlbumBitmapCacheHelper;
 import com.xiwang.jxw.util.DisplayUtil;
-import com.xiwang.jxw.util.ImgLoadUtil;
 import com.xiwang.jxw.util.IntentUtil;
-
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +40,8 @@ public class UploadImgView extends RelativeLayout{
     Context context;
     /** 选择的图片*/
     List<String> imageModelList;
+    /** 成功上传的图片*/
+    List<String> uploadImageUrlList;
     /** 标识*/
     String tag="uploadimgGridView";
     int beginId=1001;
@@ -92,6 +89,7 @@ public class UploadImgView extends RelativeLayout{
     private void init(final Context context,AttributeSet attrs){
         this.context=context;
         imageModelList=new ArrayList<String>();
+        uploadImageUrlList=new ArrayList<String>();
         SingleImageModel button=new SingleImageModel();
         imageModelList.add(SingleImageModel.TYPE_BUTTON);
         if(useEventBus()){
@@ -178,9 +176,34 @@ public class UploadImgView extends RelativeLayout{
         View view=View.inflate(context,R.layout.item_upload_image,null);
         view.setId(beginId++);
         ImageView img_iv= (ImageView) view.findViewById(R.id.img_iv);
+
         displayFromSDCard(context, img_iv, path);
         addView(view,0,getRelationLayout());
 
+    }
+
+    private void uploadImage(String path,View view){
+        PercentView progress_view= (PercentView) view.findViewById(R.id.progress_view);
+        ImageView img_iv= (ImageView) view.findViewById(R.id.img_iv);
+        try {
+            SystemBiz.uploadImg(path, new SystemBiz.UploadImgListener() {
+                @Override
+                public void onSuccess(ResponseBean responseBean) {
+                    progress_view.setVisibility(View.GONE);
+                }
+                @Override
+                public void onFail(ResponseBean responseBean) {
+                    img_iv.setBackgroundDrawable(getResources().getDrawable(R.mipmap.ic_launcher));
+                }
+                @Override
+                public void onProgress(int progress) {
+                    progress_view.setPercent(progress);
+                }
+            });
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            img_iv.setBackgroundDrawable(getResources().getDrawable(R.mipmap.ic_launcher));
+        }
     }
 
 
@@ -235,7 +258,7 @@ public class UploadImgView extends RelativeLayout{
                     return;
                 }
                 BitmapDrawable bd = new BitmapDrawable(context.getResources(), bitmap);
-                imageView.setImageDrawable(bd);
+                imageView.setBackgroundDrawable(bd);
             }
         });
         if (bitmap != null){

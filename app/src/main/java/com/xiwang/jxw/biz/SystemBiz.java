@@ -1,5 +1,7 @@
 package com.xiwang.jxw.biz;
 
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.bean.BaseBean;
@@ -7,14 +9,77 @@ import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.bean.StartAppBean;
 import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.config.TApplication;
+import com.xiwang.jxw.network.AppHttpClient;
+import com.xiwang.jxw.util.LogUtil;
 
+import org.apache.http.Header;
 import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 
 /**
  * 系统逻辑
  * Created by sunshine on 15/11/6.
  */
 public class SystemBiz {
+        /**
+         * 上传图片
+         * @param path
+         * @param handle
+         * @throws FileNotFoundException
+         */
+        public static void uploadImg(String path,final UploadImgListener handle) throws FileNotFoundException {
+            RequestParams params=new RequestParams();
+            params.put("type","media");
+            File file =new File(path);
+            if(!file.exists()){
+                return;
+            }
+            params.put("file",file);
+            AppHttpClient.post(ServerConfig.SERVER_API_URL + ServerConfig.UPLOAD_IMG, params, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    String responseStr = new String(responseBody);
+                    ResponseBean responseBean = new ResponseBean();
+                    LogUtil.d("data:" + responseStr);
+                    try {
+                        JSONObject jsonObject = new JSONObject(responseStr);
+                        responseBean.setInfo(jsonObject.optString("msg"));
+                        responseBean.setStatus(jsonObject.optString("code"));
+                        responseBean.setObject(jsonObject.optString("data"));
+                    } catch (JSONException e) {
+                        responseBean.setStatus(ServerConfig.JSON_DATA_ERROR);
+                        responseBean.setInfo(TApplication.context.getResources().getString(R.string.exception_local_json_message));
+                        handle.onFail(responseBean);
+                    }
+                    if(BaseBiz.isSuccess(responseBean.getStatus())){
+                        handle.onSuccess(responseBean);
+                    }else
+                    {
+                        handle.onFail(responseBean);
+                    }
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    ResponseBean responseBean = new ResponseBean();
+                    responseBean.setStatus(statusCode + "");
+                    if(null!=responseBody){
+                        responseBean.setInfo(new String(responseBody));
+                    }
+                    handle.onFail(responseBean);
+                }
+                @Override
+                public void onProgress(long bytesWritten, long totalSize) {
+                    super.onProgress(bytesWritten, totalSize);
+                    int progress= (int) (bytesWritten*100/totalSize);
+                    handle.onProgress(progress);
+                }
+            });
+        }
+
 
         public static void getStartAppImage(final BaseBiz.RequestHandle handle){
 
@@ -53,4 +118,13 @@ public class SystemBiz {
 
         }
 
+
+    /**
+     * 上传图片监听
+     */
+    public static interface  UploadImgListener{
+        public void onSuccess(ResponseBean responseBean);
+        public void onFail(ResponseBean responseBean);
+        public void onProgress(int progress);
+    }
 }
