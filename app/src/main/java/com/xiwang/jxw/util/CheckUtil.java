@@ -28,9 +28,9 @@ public class CheckUtil {
        if(TextUtils.isEmpty(value)){
             String hintString=String.format(context.getResources().getString(R.string.input_notnull),key);
              ToastUtil.showToast(context,hintString);
-            return  false;
+            return  true;
        }
-        return  true;
+        return  false;
 
     }
 

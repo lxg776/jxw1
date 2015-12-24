@@ -25,6 +25,7 @@ public class MyInputEditView extends LinearLayout {
     int default_line_c;
     /** 改变背景*/
     int change_line_c;
+    boolean is_hint;
 
     public MyInputEditView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -49,7 +50,7 @@ public class MyInputEditView extends LinearLayout {
 
         default_line_c=a.getColor(R.styleable.MyDialogView_default_lColor, getResources().getColor(R.color.black_transparent_26));
         change_line_c=a.getColor(R.styleable.MyDialogView_change_lColor, getResources().getColor(R.color.orange_500));
-
+        is_hint=a.getBoolean(R.styleable.MyDialogView_is_hint,true);
         view_line.setBackgroundColor(default_line_c);
 
         input_edt.setLineChangeListener(new DeleteEditText.LineChangeListener() {
@@ -62,7 +63,11 @@ public class MyInputEditView extends LinearLayout {
                 view_line.setBackgroundColor(default_line_c);
             }
         });
-
+        if(is_hint){
+            hint_tv.setVisibility(View.VISIBLE);
+        }else{
+            hint_tv.setVisibility(View.GONE);
+        }
 
 
 

@@ -73,8 +73,6 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
     CommentListAdapter listAdapter;
     /** 当前评论的页数*/
     int currentPage=1;
-    /** 顶部导航*/
-    Toolbar toolbar;
     /** 底部加载更多 布局*/
     View foot_view;
     /** 底部加载更多 文本*/

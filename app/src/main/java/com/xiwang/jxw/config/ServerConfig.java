@@ -60,6 +60,11 @@ public class ServerConfig {
 	public final static String SERVER_API_URL = "http://m.jingxi.net/";
 	/** 图片根地址 */
 	public final static String IMAGE_BASE_URL = "http://images.jingxi.net/";
+	/** 西网服务协议 */
+	public final static String PROTOCOL_URL = "http://www.baidu.com";
+
+
+
 	// public final static String SERVER_API_URL = "http://192.168.202.75/b2b/";
 	// public final static String SERVER_API_URL = "http://192.168.202.75/b2b/";
 	// public final static String SERVER_API_URL = "http://www.brightoilonline.cn/b2b/";

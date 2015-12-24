@@ -6,8 +6,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.xiwang.jxw.R;
+import com.xiwang.jxw.activity.PublishNewsActivity;
 import com.xiwang.jxw.base.BaseFragment;
 import com.xiwang.jxw.util.DisplayUtil;
+import com.xiwang.jxw.util.IntentUtil;
 
 
 /**
@@ -16,7 +18,7 @@ import com.xiwang.jxw.util.DisplayUtil;
  * @date 2015/9/24
  * @modifier
  */
-public class PublishFragment extends BaseFragment {
+public class PublishFragment extends BaseFragment implements View.OnClickListener{
     /** 发帖按钮*/
     LinearLayout fabu_btn;
     /** 二手交易*/
@@ -74,7 +76,7 @@ public class PublishFragment extends BaseFragment {
 
     @Override
     protected void widgetListener() {
-
+        fabu_btn.setOnClickListener(this);
     }
 
     @Override
@@ -91,5 +93,14 @@ public class PublishFragment extends BaseFragment {
         imageView.setScaleType(ImageView.ScaleType.CENTER);
 
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.fabu_btn:
+                IntentUtil.gotoActivity(context, PublishNewsActivity.class);
+                break;
+        }
     }
 }

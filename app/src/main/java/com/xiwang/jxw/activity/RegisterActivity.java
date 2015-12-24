@@ -3,11 +3,13 @@ package com.xiwang.jxw.activity;
 
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseActivity;
 import com.xiwang.jxw.base.BaseSubmitActivity;
 import com.xiwang.jxw.util.CheckUtil;
+import com.xiwang.jxw.util.IntentUtil;
 import com.xiwang.jxw.util.ToastUtil;
 import com.xiwang.jxw.widget.DeleteEditText;
 
@@ -17,7 +19,7 @@ import com.xiwang.jxw.widget.DeleteEditText;
  * @date 2015/11/2
  * @modifier
  */
-public class RegisterActivity extends BaseSubmitActivity {
+public class RegisterActivity extends BaseSubmitActivity implements View.OnClickListener{
     /**用户名 */
     DeleteEditText username_edt;
     /**密码 */
@@ -26,8 +28,16 @@ public class RegisterActivity extends BaseSubmitActivity {
     DeleteEditText re_pwd_edt;
     /**email */
     DeleteEditText email_edt;
-    /**标题栏 */
-    Toolbar toolbar;
+
+    /**条款*/
+    View check_btn;
+    /**是否同意条款*/
+    boolean isAgreeTerms=false;
+    /**注册按钮*/
+    TextView regiter_btn;
+    /**服务协议按钮*/
+    TextView xieyi_btn;
+
 
     @Override
     protected void initActionBar() {
@@ -43,6 +53,18 @@ public class RegisterActivity extends BaseSubmitActivity {
         });
     }
 
+    /**
+     * 改变同意条款按钮
+     */
+    private void changeCheckView(){
+        if(isAgreeTerms){
+            check_btn.setBackgroundDrawable(getResources().getDrawable(R.mipmap.image_choose));
+        }else{
+            check_btn.setBackgroundDrawable(getResources().getDrawable(R.drawable.no_checked_btn));
+        }
+    }
+
+
     @Override
     protected int getContentViewId() {
         return R.layout.activity_regiter;
@@ -54,7 +76,9 @@ public class RegisterActivity extends BaseSubmitActivity {
         pwd_edt= (DeleteEditText) findViewById(R.id.pwd_edt);
         re_pwd_edt= (DeleteEditText) findViewById(R.id.re_pwd_edt);
         email_edt= (DeleteEditText) findViewById(R.id.email_edt);
-
+        check_btn=findViewById(R.id.check_btn);
+        regiter_btn= (TextView) findViewById(R.id.regiter_btn);
+        xieyi_btn= (TextView) findViewById(R.id.xieyi_btn);
     }
 
     @Override
@@ -69,7 +93,9 @@ public class RegisterActivity extends BaseSubmitActivity {
 
     @Override
     protected void widgetListener() {
-
+        check_btn.setOnClickListener(this);
+        regiter_btn.setOnClickListener(this);
+        xieyi_btn.setOnClickListener(this);
     }
 
     @Override
@@ -94,6 +120,10 @@ public class RegisterActivity extends BaseSubmitActivity {
             ToastUtil.showToast(context,"两次密码输入不一致！");
             return false;
         }
+        if(!isAgreeTerms){
+            ToastUtil.showToast(context,"请先同意西网服务协议");
+            return false;
+        }
 
         return true;
     }
@@ -106,5 +136,30 @@ public class RegisterActivity extends BaseSubmitActivity {
         super.submit();
 
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            /**
+             * 同意注册条款
+             */
+            case R.id.check_btn:
+                isAgreeTerms=!isAgreeTerms;
+                changeCheckView();
+                break;
+            /**
+             * 注册
+             */
+            case  R.id.regiter_btn:
+                submit();
+                break;
+            /**
+             * 查看服务协议
+             */
+            case  R.id.xieyi_btn:
+                IntentUtil.gotoActivity(context,ServiceProtocolActivity.class);
+                break;
+        }
     }
 }
