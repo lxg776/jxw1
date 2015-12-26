@@ -184,8 +184,8 @@ public class UploadImgView extends RelativeLayout{
     }
 
     private void uploadImage(String path,View view){
-        PercentView progress_view= (PercentView) view.findViewById(R.id.progress_view);
-        ImageView img_iv= (ImageView) view.findViewById(R.id.img_iv);
+       final PercentView progress_view= (PercentView) view.findViewById(R.id.progress_view);
+        final ImageView img_iv= (ImageView) view.findViewById(R.id.img_iv);
         try {
             SystemBiz.uploadImg(path, new SystemBiz.UploadImgListener() {
                 @Override
