@@ -2,6 +2,7 @@ package com.xiwang.jxw.util;
 
 import android.os.Environment;
 
+import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.config.TApplication;
 
 import java.io.ByteArrayOutputStream;
@@ -17,6 +18,12 @@ import java.security.NoSuchAlgorithmException;
  * @modifier
  */
 public class CommonUtil {
+
+
+    public static String getAboutAbsoluteImgUrl(String imgUrl){
+        return ServerConfig.IMAGE_BASE_URL +imgUrl;
+    }
+
 
     /**
      * md5加密

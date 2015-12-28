@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.xiwang.jxw.activity.LoginActivity">
     <include layout="@layout/tootbar_common"></include>
 
@@ -40,6 +41,20 @@
             android:layout_marginRight="16dp"
             android:background="@color/black_transparent_26"
             ></View>
+
+
+        <com.xiwang.jxw.widget.MyTextSelectView
+            android:layout_width="match_parent"
+            android:id="@+id/sex_select"
+            app:inputHinttext="性别"
+            app:default_lColor="@color/black_transparent_26"
+            app:dialog_title="性别"
+            app:is_hint="false"
+            app:input_height="48dp"
+            app:textSize="16dp"
+            android:layout_height="wrap_content">
+        </com.xiwang.jxw.widget.MyTextSelectView>
+
 
         <com.xiwang.jxw.widget.DeleteEditText
             android:id="@+id/pwd_edt"

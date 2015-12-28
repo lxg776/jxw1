@@ -64,10 +64,15 @@ public class MyTextSelectView extends LinearLayout {
         text_tv.setCompoundDrawables(null, null, rightArrow, null);
 
 
+
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MyDialogView);
         hint_tv.setHint(getTypeArrayText(a, R.styleable.MyDialogView_topHinttext));
         text_tv.setHint(getTypeArrayText(a, R.styleable.MyDialogView_inputHinttext));
         titleText=getTypeArrayText(a, R.styleable.MyDialogView_dialog_title);
+       // text_tv.setTextSize(a.getDimension(R.styleable.MyDialogView_textSize,16));
+        text_tv.getLayoutParams().height=a.getDimensionPixelSize(R.styleable.MyDialogView_input_height, DisplayUtil.dip2px(context, 40));
+
+
 
         is_hint=a.getBoolean(R.styleable.MyDialogView_is_hint, true);
         if(is_hint){

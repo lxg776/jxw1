@@ -43,6 +43,8 @@
         <attr name="topHinttext" format="reference|string" />
         <attr name="inputHinttext" format="reference|string" />
         <attr name = "default_lColor" format = "color" />
+        <attr name = "textSize" format = "dimension" />
+        <attr name = "input_height" format = "dimension" />
         <attr name = "change_lColor" format = "color" />
         <attr name = "dialog_title" format = "reference|string" />
         <attr name = "is_hint" format = "boolean" />

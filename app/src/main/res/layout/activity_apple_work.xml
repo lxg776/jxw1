@@ -19,6 +19,7 @@
             android:layout_width="match_parent"
             app:topHinttext="姓名"
             app:inputHinttext="姓名"
+            android:visibility="gone"
             app:default_lColor="@color/orange_500"
             android:layout_height="wrap_content">
         </com.xiwang.jxw.widget.MyInputEditView>
@@ -28,6 +29,7 @@
             app:topHinttext="联系电话"
             app:inputHinttext="联系电话"
             android:layout_marginTop="8dp"
+            android:visibility="gone"
             app:default_lColor="@color/black_transparent_54"
             android:layout_height="wrap_content">
         </com.xiwang.jxw.widget.MyInputEditView>
@@ -39,6 +41,7 @@
             android:id="@+id/datePick"
             app:topHinttext="日期选择"
             app:inputHinttext="姓名"
+            android:visibility="gone"
             app:default_lColor="@color/black_transparent_54"
             android:layout_height="wrap_content">
         </com.xiwang.jxw.widget.MyDatePickView>
@@ -52,25 +55,31 @@
             app:inputHinttext="期望薪资"
             app:default_lColor="@color/black_transparent_54"
             app:dialog_title="薪资选择"
+            android:visibility="gone"
             android:layout_height="wrap_content">
         </com.xiwang.jxw.widget.MyTextSelectView>
 
 
-
+        <ImageButton
+            android:id="@+id/action_insert_image"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@null"
+            android:contentDescription="@null"
+            android:src="@mipmap/add_icon_gray"
+            />
+        <jp.wasabeef.richeditor.RichEditor
+            android:id="@+id/editor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            />
 
     </LinearLayout>
 
-    <com.xiwang.jxw.widget.UploadImgView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:minHeight="80dp"
-        android:id="@+id/uploadVIew"
-        app:horizontalSpacing="8dp"
-        app:verticalSpacing="8dp"
-        app:numColumns="4"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        ></com.xiwang.jxw.widget.UploadImgView>
+
+
+
 
 
 </LinearLayout>

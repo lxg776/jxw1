@@ -62,8 +62,8 @@ public class ServerConfig {
 	public final static String IMAGE_BASE_URL = "http://images.jingxi.net/";
 	/** 西网服务协议 */
 	public final static String PROTOCOL_URL = "http://www.baidu.com";
-
-
+	/** 获取用户信息*/
+	public final static String MYINFO_URL="getapp.php?a=myinfo";
 
 	// public final static String SERVER_API_URL = "http://192.168.202.75/b2b/";
 	// public final static String SERVER_API_URL = "http://192.168.202.75/b2b/";
@@ -75,6 +75,8 @@ public class ServerConfig {
 	public final static String NEWS_DETAIL="getapp.php?a=read";
 	/** 登录接口 */
 	public final static String USER_LOGIN="getapp.php?a=login";
+	/** 注册接口 */
+	public final static String USER_REG="getapp.php?a=reg";
 	/** 获取栏目接口 */
 	public final static String MENUTOP_TOP="getapp.php?a=menutop";
 	/** 图片上传接口 */
@@ -101,30 +103,7 @@ public class ServerConfig {
 	/** 登录 */
 	public static final String METHOD_VWEIFY = "index.php/b2bphone/user/verify_phone";
 
-	/** 注册 */
-	public static final String METHOD_REGISTER = "index.php/b2bphone/user/registered";
-	/** 找回密码 */
-	public static final String METHOD_RETRIEVE_PWD = "index.php/b2bphone/user/backPassword";
-	/** 修改登录密码 */
-	public static final String METHOD_EDIT_PWD = "index.php/b2bphone/user/editPwd";
-	/** 修改交易密码 */
-	public static final String METHOD_DEAL_PWD = "index.php/b2bphone/manage/setTradeCode";
-	// /** 忘记登录密码 */
-	// public static final String METHOD_TRADE_PWD = "index.php/b2bphone/user/setTradeCode";
-	/** 忘记登录密码 验证手机号 */
-	public static final String METHOD_TRADE_PWD_PHONE = "index.php/b2bphone/user/question_list";
-	/** 忘记登录密码 验证密保 */
-	public static final String METHOD_TRADE_PWD_PROTECTION = "index.php/b2bphone/user/verify";
-	/** 忘记登录密码 设置密码 */
-	public static final String METHOD_TRADE_PWD_SET = "index.php/b2bphone/user/setPassword";
-	/** 设置密保问题的 密保列表 */
-	public static final String METHOD_GET_READY = "index.php/b2bphone/common/manageReady";
-	/** 设置密保问题 */
-	public static final String METHOD_SET_SAFETY = "index.php/b2bphone/manage/setSafety";
-	/** 测试数据 */
-	public static final String METHOD_SET_TEXT = "index.php/b2bphone/index/test";
-	/** 验证手机号 */
-	public static final String METHOD_USER_CHECK_MOBILE = "index.php/b2bphone/user/vcode";
+
 
 	/*************************** 企业账户 ****************************/
 	/** 企业账户是否认证 */

@@ -10,6 +10,10 @@ import com.xiwang.jxw.widget.MyInputEditView;
 import com.xiwang.jxw.widget.MyTextSelectView;
 import com.xiwang.jxw.widget.UploadImgView;
 
+import java.util.List;
+
+import jp.wasabeef.richeditor.RichEditor;
+
 /**
  * 发帖界面
  * Created by sunshine on 15/12/22.
@@ -25,7 +29,8 @@ public class PublishNewsActivity extends BaseSubmitActivity{
     EditText content_edt;
     /** 图片上传*/
     UploadImgView uploadView;
-
+    /** 富媒体*/
+    private RichEditor mEditor;
 
     @Override
     protected boolean checkInput() {
@@ -58,6 +63,34 @@ public class PublishNewsActivity extends BaseSubmitActivity{
         title_edt= (MyInputEditView) findViewById(R.id.title_edt);
         content_edt= (EditText) findViewById(R.id.content_edt);
         uploadView= (UploadImgView) findViewById(R.id.uploadView);
+        title_edt.setVisibility(View.GONE);
+        content_edt.setVisibility(View.GONE);
+        type_select_tv.setVisibility(View.GONE);
+
+
+
+        mEditor= (RichEditor) findViewById(R.id.editor);
+        mEditor.setEditorHeight(200);
+        mEditor.setEditorFontSize(22);
+        //mEditor.setEditorFontColor(Color.RED);
+        //mEditor.setEditorBackgroundColor(Color.BLUE);
+        //mEditor.setBackgroundColor(Color.BLUE);
+        //mEditor.setBackgroundResource(R.drawable.bg);
+        mEditor.setPadding(10, 10, 10, 10);
+        mEditor.setPlaceholder("Insert text here...");
+
+
+
+        uploadView.setPickImageListener(new UploadImgView.PickImageListener() {
+            @Override
+            public void onImageSelect(List<String> picklist) {
+                if(null!=picklist&&picklist.size()>0){
+                    for(String url:picklist){
+                        mEditor.insertImage(url,"tag");
+                    }
+                }
+            }
+        });
     }
 
     @Override

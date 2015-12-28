@@ -12,6 +12,7 @@ import com.xiwang.jxw.util.CheckUtil;
 import com.xiwang.jxw.util.IntentUtil;
 import com.xiwang.jxw.util.ToastUtil;
 import com.xiwang.jxw.widget.DeleteEditText;
+import com.xiwang.jxw.widget.MyTextSelectView;
 
 /**
  * @author lxg776
@@ -28,6 +29,8 @@ public class RegisterActivity extends BaseSubmitActivity implements View.OnClick
     DeleteEditText re_pwd_edt;
     /**email */
     DeleteEditText email_edt;
+    /**性别选择 */
+    MyTextSelectView sex_select;
 
     /**条款*/
     View check_btn;
@@ -79,6 +82,7 @@ public class RegisterActivity extends BaseSubmitActivity implements View.OnClick
         check_btn=findViewById(R.id.check_btn);
         regiter_btn= (TextView) findViewById(R.id.regiter_btn);
         xieyi_btn= (TextView) findViewById(R.id.xieyi_btn);
+        sex_select= (MyTextSelectView) findViewById(R.id.sex_select);
     }
 
     @Override
@@ -107,6 +111,11 @@ public class RegisterActivity extends BaseSubmitActivity implements View.OnClick
         if(CheckUtil.isEmpty(context,"email",email_edt.getText().toString())){
             return false;
         }
+        if(!CheckUtil.checkEmail(context,email_edt.getText().toString())){
+            return false;
+        }
+
+
         String pwd=pwd_edt.getText().toString();
         String re_pwd=re_pwd_edt.getText().toString();
 
@@ -134,6 +143,9 @@ public class RegisterActivity extends BaseSubmitActivity implements View.OnClick
     @Override
     protected void submit() {
         super.submit();
+        String username=username_edt.getText().toString();
+        String pwd=pwd_edt.getText().toString();
+        String email=email_edt.getText().toString();
 
 
     }

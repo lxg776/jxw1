@@ -17,12 +17,15 @@ import com.xiwang.jxw.R;
 import com.xiwang.jxw.adapter.CommentListAdapter;
 import com.xiwang.jxw.base.BaseActivity;
 import com.xiwang.jxw.base.BaseBiz;
+import com.xiwang.jxw.bean.AuthorBean;
 import com.xiwang.jxw.bean.ColumnBean;
 import com.xiwang.jxw.bean.NewsBean;
 import com.xiwang.jxw.bean.NewsDetailBean;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.biz.NewsBiz;
+import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.config.TApplication;
+import com.xiwang.jxw.util.CommonUtil;
 import com.xiwang.jxw.util.ImgLoadUtil;
 import com.xiwang.jxw.util.SpUtil;
 import com.xiwang.jxw.util.CheckUtil;
@@ -158,29 +161,30 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
             indeterminate_progress_library.setVisibility(View.VISIBLE);
         }
 
-        NewsBiz.getNewsDetail(newsBean.getTid(),currentPage, new BaseBiz.RequestHandle() {
+        NewsBiz.getNewsDetail(newsBean.getTid(), currentPage, new BaseBiz.RequestHandle() {
             @Override
             public void onSuccess(ResponseBean responseBean) {
-                currentPage=page;
-                if(page==1){
+                currentPage = page;
+                if (page == 1) {
                     //如果是第一页加载显示详情
                     showNewsDetail(responseBean);
-                }else{
-                    NewsDetailBean bean= (NewsDetailBean) responseBean.getObject();
+                } else {
+                    NewsDetailBean bean = (NewsDetailBean) responseBean.getObject();
                     showCommentList(bean);
                 }
             }
+
             @Override
             public void onFail(ResponseBean responseBean) {
-                ToastUtil.showToast(context,responseBean.getInfo());
+                ToastUtil.showToast(context, responseBean.getInfo());
             }
 
             @Override
             public ResponseBean getRequestCache() {
-                if(loadCache&&page==1){
-                    return  (ResponseBean)SpUtil.getObject(context,getString(R.string.cache_newsdetail)+newsBean.getTid());
+                if (loadCache && page == 1) {
+                    return (ResponseBean) SpUtil.getObject(context, getString(R.string.cache_newsdetail) + newsBean.getTid());
                 }
-                return  null;
+                return null;
             }
 
             @Override
@@ -218,16 +222,31 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         webView.loadData(htmlStr, "text/html", "utf-8");
         //webView.loadUrl("http://www.sznews.com");
 
-        author_tv.setText(detailBean.getUserinfo().getAuthor());
-        publish_tv.setText(detailBean.getPostdate());
-        author_headimg_iv.setBackgroundDrawable(getResources().getDrawable(R.mipmap.ic_launcher));
-        ImgLoadUtil.getInstance().displayImage(detailBean.getFace(), author_headimg_iv, options, loadingListener);
+
+        showAuthor();
         showCommentList(detailBean);
 
         like_rv.setText(detailBean.getDig());
         not_like_rv.setText(detailBean.getPoor());
         message_rv.setText(detailBean.getReplies());
     }
+
+    /**
+     * 显示作者信息
+     */
+    private void showAuthor(){
+        AuthorBean authorBean=detailBean.getUserinfo();
+        if(null!=authorBean){
+            author_tv.setText(authorBean.getAuthor());
+            publish_tv.setText(detailBean.getPostdate());
+            ImgLoadUtil.getInstance().displayImage(CommonUtil.getAboutAbsoluteImgUrl(authorBean.getFace()), author_headimg_iv, options, loadingListener);
+        }
+
+
+
+    }
+
+
     /**
      * 显示新闻评论
      */

@@ -110,7 +110,7 @@ public class PercentView extends View {
      */
     public void setPercent(int percent){
 
-        if(percent>100){
+        if(percent>=100){
             this.percent=100;
         }
         if(percent<0){

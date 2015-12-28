@@ -3,6 +3,7 @@ package com.xiwang.jxw.fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -169,54 +170,56 @@ public class NewsListFragment extends BaseFragment implements RefreshLayout.OnLo
             text_more.setText(R.string.more_loading);
             indeterminate_progress_library.setVisibility(View.VISIBLE);
         }
+        if(null!=columnBean){
+            String dataUrl=columnBean.getDataUrl();
+            if(!TextUtils.isEmpty(dataUrl)){
+                HomeBiz.getHomeNewsList(dataUrl, page, new BaseBiz.RequestHandle() {
+                    @Override
+                    public void onSuccess(ResponseBean responseBean) {
+                        ListBean listBean = (ListBean) responseBean.getObject();
+                        currentPage = page;
+                        if (currentPage == 1) {
+                            adapter.setNewsBeanList((List<NewsBean>) listBean.getModelList());
+                        } else {
+                            adapter.getNewsBeanList().addAll((List<NewsBean>) listBean.getModelList());
+                        }
+                        if(currentPage!=listBean.getPages()){
+                            refreshLayout.setOnLoadListener(null);
+                            foot_view.setVisibility(View.VISIBLE);
 
+                        }else{
+                            foot_view.setVisibility(View.GONE);
+                            //listView.removeFooterView(foot_view);
+                        }
 
-        HomeBiz.getHomeNewsList(columnBean.getDataUrl(), page, new BaseBiz.RequestHandle() {
-            @Override
-            public void onSuccess(ResponseBean responseBean) {
-                ListBean listBean = (ListBean) responseBean.getObject();
-                currentPage = page;
-                if (currentPage == 1) {
-                    adapter.setNewsBeanList((List<NewsBean>) listBean.getModelList());
-                } else {
-                    adapter.getNewsBeanList().addAll((List<NewsBean>) listBean.getModelList());
-                }
-                if(currentPage!=listBean.getPages()){
-                    refreshLayout.setOnLoadListener(null);
-                    foot_view.setVisibility(View.VISIBLE);
+                        finishLoad();
+                    }
 
-                }else{
-                    foot_view.setVisibility(View.GONE);
-                    //listView.removeFooterView(foot_view);
-                }
+                    @Override
+                    public void onFail(ResponseBean responseBean) {
 
-                finishLoad();
+                    }
+
+                    @Override
+                    public ResponseBean getRequestCache() {
+                        ResponseBean responseBean = null;
+                        if (isCache && page == 1) {
+                            responseBean = (ResponseBean) SpUtil.getObject(context, getString(R.string.home_newslist) + columnBean.getDataUrl());
+                        }
+                        return responseBean;
+                    }
+
+                    @Override
+                    public void onRequestCache(ResponseBean result) {
+                        if (currentPage == 1) {
+                            ListBean listBean = (ListBean) result.getObject();
+                            adapter.setNewsBeanList((List<NewsBean>) listBean.getModelList());
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+                });
             }
-
-            @Override
-            public void onFail(ResponseBean responseBean) {
-
-            }
-
-            @Override
-            public ResponseBean getRequestCache() {
-                ResponseBean responseBean = null;
-                if (isCache && page == 1) {
-                    responseBean = (ResponseBean) SpUtil.getObject(context, getString(R.string.home_newslist) + columnBean.getDataUrl());
-                }
-                return responseBean;
-            }
-
-            @Override
-            public void onRequestCache(ResponseBean result) {
-                if (currentPage == 1) {
-                    ListBean listBean = (ListBean) result.getObject();
-                    adapter.setNewsBeanList((List<NewsBean>) listBean.getModelList());
-                    adapter.notifyDataSetChanged();
-                }
-            }
-        });
-
+        }
     }
 
     /**

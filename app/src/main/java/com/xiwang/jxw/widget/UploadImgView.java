@@ -57,8 +57,16 @@ public class UploadImgView extends RelativeLayout{
     /**每行有多少个控件 */
     int numColumns;
 
+    /** 选择图片监听*/
+    PickImageListener pickImageListener;
 
+    public PickImageListener getPickImageListener() {
+        return pickImageListener;
+    }
 
+    public void setPickImageListener(PickImageListener pickImageListener) {
+        this.pickImageListener = pickImageListener;
+    }
 
     @Override
     public String getTag() {
@@ -112,6 +120,7 @@ public class UploadImgView extends RelativeLayout{
         //添加add按钮
         View addBtn=View.inflate(context,R.layout.item_upload_image,null);
         addBtn.setBackgroundDrawable(getResources().getDrawable(R.mipmap.add_icon_gray));
+        addBtn.findViewById(R.id.progress_view).setVisibility(GONE);
 //        addBtn.setBackgroundResource(R.drawable.upload_img_btn);
 //        ImageView img_iv= (ImageView) addBtn.findViewById(R.id.img_iv);
 //        Drawable drawable=context.getResources().getDrawable(R.mipmap.add_icon_gray);
@@ -179,7 +188,9 @@ public class UploadImgView extends RelativeLayout{
         ImageView img_iv= (ImageView) view.findViewById(R.id.img_iv);
 
         displayFromSDCard(context, img_iv, path);
-        addView(view,0,getRelationLayout());
+        addView(view, 0, getRelationLayout());
+
+        uploadImage(path,view);
 
     }
 
@@ -195,10 +206,16 @@ public class UploadImgView extends RelativeLayout{
                 @Override
                 public void onFail(ResponseBean responseBean) {
                     img_iv.setBackgroundDrawable(getResources().getDrawable(R.mipmap.ic_launcher));
+                    progress_view.setVisibility(GONE);
                 }
                 @Override
                 public void onProgress(int progress) {
                     progress_view.setPercent(progress);
+                }
+
+                @Override
+                public void onFinish() {
+                    progress_view.setVisibility(GONE);
                 }
             });
         } catch (FileNotFoundException e) {
@@ -224,6 +241,9 @@ public class UploadImgView extends RelativeLayout{
     public void onEvent(PickImageEvent event){
         if(tag.equals(event.fromTag)){
             if(null!=event.picklist&&event.picklist.size()>0){
+                if(null!=pickImageListener){
+                    pickImageListener.onImageSelect(event.picklist);
+                }
                 for(String path:event.picklist){
                     setImagePath(path);
 
@@ -269,5 +289,10 @@ public class UploadImgView extends RelativeLayout{
             imageView.setBackgroundDrawable(context.getResources().getDrawable(R.mipmap.default_loading_img));
         }
 
+    }
+
+
+    public interface PickImageListener{
+            public void onImageSelect(List<String> picklist);
     }
 }

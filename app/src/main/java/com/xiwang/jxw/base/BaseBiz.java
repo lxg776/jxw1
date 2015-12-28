@@ -118,7 +118,15 @@ public class BaseBiz {
                             responseBean.setStatus(jsonObject.optString("status"));
                             responseBean.setObject(jsonObject.optString("data"));
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            responseBean.setStatus(ServerConfig.JSON_DATA_ERROR);
+                            responseBean.setInfo(TApplication.context.getResources().getString(R.string.exception_local_json_message));
+                            handle.onFail(responseBean);
+                        }
+                        if(isSuccess(responseBean.getStatus())){
+                            handle.onSuccess(responseBean);
+                        }else
+                        {
+                            handle.onFail(responseBean);
                         }
                     }
 

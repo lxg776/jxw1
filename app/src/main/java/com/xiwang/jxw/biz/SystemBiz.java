@@ -42,6 +42,7 @@ public class SystemBiz {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     String responseStr = new String(responseBody);
+
                     ResponseBean responseBean = new ResponseBean();
                     LogUtil.d("data:" + responseStr);
                     try {
@@ -75,6 +76,9 @@ public class SystemBiz {
                 public void onProgress(long bytesWritten, long totalSize) {
                     super.onProgress(bytesWritten, totalSize);
                     int progress= (int) (bytesWritten*100/totalSize);
+                    if(progress==100){
+                        handle.onFinish();
+                    }
                     handle.onProgress(progress);
                 }
             });
@@ -126,5 +130,6 @@ public class SystemBiz {
         public void onSuccess(ResponseBean responseBean);
         public void onFail(ResponseBean responseBean);
         public void onProgress(int progress);
+        public void onFinish();
     }
 }

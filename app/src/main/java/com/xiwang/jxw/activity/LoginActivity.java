@@ -107,14 +107,13 @@ public class LoginActivity extends BaseSubmitActivity implements View.OnClickLis
             super.submit();
             String userName=username_edt.getText().toString();
             final String pwd=pwd_edt.getText().toString();
-            ProcessDialogUtil.showDialog(context,"数据加载中...",false);
+            ProcessDialogUtil.showDialog(context,"数据加载中...",true);
             UserBiz.login(userName, pwd, new BaseBiz.RequestHandle() {
                 @Override
                 public void onSuccess(ResponseBean responseBean) {
                     TApplication.mUser= (UserBean) responseBean.getObject();
                     TApplication.mUser.setPwd(pwd);
-                    /** 保存用户*/
-                    SpUtil.setObject(context,getString(R.string.cache_user),TApplication.mUser);
+                    UserBiz.setUserBean(context,TApplication.mUser);
                     /** 发出登录成功通知*/
                     EventBus.getDefault().post(new LoginEvent(true));
                     ProcessDialogUtil.dismissDialog();

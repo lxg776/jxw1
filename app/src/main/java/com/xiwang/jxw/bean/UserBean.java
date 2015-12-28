@@ -20,7 +20,20 @@ public class UserBean extends BaseBean{
     private String face;
     /** ip地址*/
     private String ip;
+    /** 性别*/
+    private String sex;
+    /** 性别显示*/
+    private String sexShow;
+    /** 个人信息*/
+    private UserInfoBean userInfoBean;
 
+    public UserInfoBean getUserInfoBean() {
+        return userInfoBean;
+    }
+
+    public void setUserInfoBean(UserInfoBean userInfoBean) {
+        this.userInfoBean = userInfoBean;
+    }
 
     public String getUid() {
         return uid;
@@ -62,6 +75,32 @@ public class UserBean extends BaseBean{
         this.ip = ip;
     }
 
+    public String getSex() {
+        return sex;
+    }
+
+    public String getSexShow() {
+        return sexShow;
+    }
+
+    public void setSexShow() {
+
+        if("0".equals(sex)){
+            this.sexShow="保密";
+        }else if("1".equals(sex)){
+            this.sexShow="男";
+        }else if("2".equals(sex)){
+            this.sexShow="女";
+        }
+
+    }
+
+    //保密0、男1、女2
+    public void setSex(String sex) {
+        this.sex = sex;
+        setSexShow();
+    }
+
     @Override
     protected void init(JSONObject jSon) throws JSONException {
         setUid(jSon.optString("uid"));
@@ -69,5 +108,6 @@ public class UserBean extends BaseBean{
         setPwd(jSon.optString("pwd"));
         setFace(jSon.optString("face"));
         setIp(jSon.optString("ip"));
+        setSex(jSon.optString("sex"));
     }
 }

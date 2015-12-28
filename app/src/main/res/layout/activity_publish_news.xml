@@ -49,6 +49,15 @@
             android:gravity="top"
             />
 
+        <jp.wasabeef.richeditor.RichEditor
+            android:id="@+id/editor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/gray_100"
+            android:minHeight="100dp"
+            android:gravity="center"
+            />
+
         <!--图片上传-->
         <com.xiwang.jxw.widget.UploadImgView
             android:layout_width="match_parent"

@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.xiwang.jxw.R;
+import com.xiwang.jxw.activity.ApplyWorkActivity;
 import com.xiwang.jxw.activity.PublishNewsActivity;
 import com.xiwang.jxw.base.BaseFragment;
 import com.xiwang.jxw.util.DisplayUtil;
@@ -64,7 +65,7 @@ public class PublishFragment extends BaseFragment implements View.OnClickListene
         setDrawable(ershoufang_btn,getResources().getDrawable(R.mipmap.f_home));
         setDrawable(dipi_btn,getResources().getDrawable(R.mipmap.f_dipi));
 
-
+        
 
 
     }
