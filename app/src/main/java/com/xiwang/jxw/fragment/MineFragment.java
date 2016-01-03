@@ -12,6 +12,7 @@ import com.xiwang.jxw.biz.UserBiz;
 import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.event.LoginEvent;
+import com.xiwang.jxw.event.RegEvent;
 import com.xiwang.jxw.util.CommonUtil;
 import com.xiwang.jxw.util.ImgLoadUtil;
 import com.xiwang.jxw.util.ToastUtil;
@@ -101,6 +102,9 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
         showUserInfo();
     }
     public void onEvent(UserInfoBean event) {
+        showUserInfo();
+    }
+    public void onEvent(RegEvent event) {
         showUserInfo();
     }
 

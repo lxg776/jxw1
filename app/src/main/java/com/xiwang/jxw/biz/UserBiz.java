@@ -208,7 +208,7 @@ public class UserBiz {
         params.put("email",email);
         params.put("sex",sex);
 
-        BaseBiz.postRequest(ServerConfig.USER_REG, params, new BaseBiz.RequestHandle() {
+        BaseBiz.getRequest(ServerConfig.USER_REG, params, new BaseBiz.RequestHandle() {
 
             @Override
             public void onSuccess(ResponseBean responseBean) {

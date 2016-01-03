@@ -6,6 +6,9 @@
     <string name="title_activity_base">BaseActivity</string>
     <string name="press_again_exit">再按一次退出应用</string>
 
+    <string name="loading">加载中...</string>
+
+
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="more_loading">加载中...</string>
@@ -15,6 +18,7 @@
     <string name="login_pwd">密码</string>
 
     <string name="input_notnull">请输入%s</string>
+    <string name="select_notnull">请选择%s</string>
 
 
     <string name="all_pic">全部图片</string>

@@ -6,13 +6,20 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.xiwang.jxw.R;
-import com.xiwang.jxw.base.BaseActivity;
+import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.base.BaseSubmitActivity;
+import com.xiwang.jxw.bean.ResponseBean;
+import com.xiwang.jxw.bean.UserBean;
+import com.xiwang.jxw.biz.UserBiz;
+import com.xiwang.jxw.event.RegEvent;
 import com.xiwang.jxw.util.CheckUtil;
 import com.xiwang.jxw.util.IntentUtil;
+import com.xiwang.jxw.util.ProcessDialogUtil;
 import com.xiwang.jxw.util.ToastUtil;
 import com.xiwang.jxw.widget.DeleteEditText;
 import com.xiwang.jxw.widget.MyTextSelectView;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * @author lxg776
@@ -40,6 +47,9 @@ public class RegisterActivity extends BaseSubmitActivity implements View.OnClick
     TextView regiter_btn;
     /**服务协议按钮*/
     TextView xieyi_btn;
+    /**保密0、男1、女2"*/
+    String sex;
+
 
 
     @Override
@@ -87,7 +97,8 @@ public class RegisterActivity extends BaseSubmitActivity implements View.OnClick
 
     @Override
     protected void init() {
-
+        String []sex_array=getResources().getStringArray(R.array.select_sex);
+        sex_select.setShowItemes(sex_array);
     }
 
     @Override
@@ -100,10 +111,22 @@ public class RegisterActivity extends BaseSubmitActivity implements View.OnClick
         check_btn.setOnClickListener(this);
         regiter_btn.setOnClickListener(this);
         xieyi_btn.setOnClickListener(this);
+        sex_select.setOnItemClickListener(new MyTextSelectView.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int postion) {
+                sex=postion+"";
+            }
+        });
     }
 
     @Override
     protected boolean checkInput() {
+        if(!isAgreeTerms){
+            ToastUtil.showToast(context,"请先同意西网服务协议");
+            return false;
+        }
+
+
        if(CheckUtil.isEmpty(context,"用户名",username_edt.getText().toString())){
            return false;
        }
@@ -115,13 +138,19 @@ public class RegisterActivity extends BaseSubmitActivity implements View.OnClick
             return false;
         }
 
-
+        if(CheckUtil.isSelect(context, "性别", sex)){
+            return false;
+        }
         String pwd=pwd_edt.getText().toString();
         String re_pwd=re_pwd_edt.getText().toString();
 
-        if(CheckUtil.isEmpty(context,"密码",pwd)){
+        if(CheckUtil.isEmpty(context, "密码", pwd)){
             return false;
         }
+
+
+
+
         if(CheckUtil.isEmpty(context,"确认密码",re_pwd)){
             return false;
         }
@@ -129,10 +158,7 @@ public class RegisterActivity extends BaseSubmitActivity implements View.OnClick
             ToastUtil.showToast(context,"两次密码输入不一致！");
             return false;
         }
-        if(!isAgreeTerms){
-            ToastUtil.showToast(context,"请先同意西网服务协议");
-            return false;
-        }
+
 
         return true;
     }
@@ -142,10 +168,42 @@ public class RegisterActivity extends BaseSubmitActivity implements View.OnClick
      */
     @Override
     protected void submit() {
-        super.submit();
+        if(!checkInput()){
+            return;
+        }
         String username=username_edt.getText().toString();
         String pwd=pwd_edt.getText().toString();
         String email=email_edt.getText().toString();
+        ProcessDialogUtil.showDialog(context, getResources().getString(R.string.loading), true);
+        UserBiz.reg(username, pwd, email, sex, new BaseBiz.RequestHandle() {
+            @Override
+            public void onSuccess(ResponseBean responseBean) {
+
+                ToastUtil.showToast(context, responseBean.getInfo());
+                UserBean userBean= (UserBean) responseBean.getObject();
+                UserBiz.setUserBean(context,userBean);
+                ProcessDialogUtil.dismissDialog();
+                /**通知注册成功*/
+                EventBus.getDefault().post(new RegEvent());
+                finish();
+            }
+
+            @Override
+            public void onFail(ResponseBean responseBean) {
+                ToastUtil.showToast(context,responseBean.getInfo());
+                ProcessDialogUtil.dismissDialog();
+            }
+
+            @Override
+            public ResponseBean getRequestCache() {
+                return null;
+            }
+
+            @Override
+            public void onRequestCache(ResponseBean result) {
+
+            }
+        });
 
 
     }

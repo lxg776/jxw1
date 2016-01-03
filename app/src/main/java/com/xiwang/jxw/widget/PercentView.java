@@ -56,7 +56,7 @@ public class PercentView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         /** w h*/
-        drawArc(canvas);
+        drawRect(canvas);
 
 
 

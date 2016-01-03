@@ -2,11 +2,9 @@ package com.xiwang.jxw.activity;
 
 
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 import com.xiwang.jxw.R;
-import com.xiwang.jxw.base.BaseActivity;
 import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.base.BaseSubmitActivity;
 import com.xiwang.jxw.bean.ResponseBean;
@@ -14,10 +12,10 @@ import com.xiwang.jxw.bean.UserBean;
 import com.xiwang.jxw.biz.UserBiz;
 import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.event.LoginEvent;
+import com.xiwang.jxw.event.RegEvent;
 import com.xiwang.jxw.util.CheckUtil;
 import com.xiwang.jxw.util.IntentUtil;
 import com.xiwang.jxw.util.ProcessDialogUtil;
-import com.xiwang.jxw.util.SpUtil;
 import com.xiwang.jxw.util.ToastUtil;
 import com.xiwang.jxw.widget.DeleteEditText;
 import de.greenrobot.event.EventBus;
@@ -107,7 +105,7 @@ public class LoginActivity extends BaseSubmitActivity implements View.OnClickLis
             super.submit();
             String userName=username_edt.getText().toString();
             final String pwd=pwd_edt.getText().toString();
-            ProcessDialogUtil.showDialog(context,"数据加载中...",true);
+            ProcessDialogUtil.showDialog(context,getResources().getString(R.string.loading),false);
             UserBiz.login(userName, pwd, new BaseBiz.RequestHandle() {
                 @Override
                 public void onSuccess(ResponseBean responseBean) {
@@ -156,5 +154,16 @@ public class LoginActivity extends BaseSubmitActivity implements View.OnClickLis
 
                 break;
         }
+    }
+
+    @Override
+    protected boolean useEventBus() {
+        return true;
+    }
+
+
+    public void onEvent(RegEvent event) {
+        /**注册成功结束当前界面*/
+        finish();
     }
 }

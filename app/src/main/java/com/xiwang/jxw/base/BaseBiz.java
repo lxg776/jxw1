@@ -80,9 +80,9 @@ public class BaseBiz {
             }
         };
         if(params==null){
-            AppHttpClient.get(ServerConfig.SERVER_API_URL + url,handler);
+            AppHttpClient.get(url,handler);
         }else{
-            AppHttpClient.get(ServerConfig.SERVER_API_URL + url, params, handler);
+            AppHttpClient.get(url, params, handler);
         }
 
 
@@ -107,7 +107,7 @@ public class BaseBiz {
 
 
 
-                AppHttpClient.post(ServerConfig.SERVER_API_URL + url, params, new AsyncHttpResponseHandler() {
+                AppHttpClient.post(url, params, new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         String responseStr = new String(responseBody);

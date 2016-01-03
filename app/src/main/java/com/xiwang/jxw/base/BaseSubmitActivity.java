@@ -15,7 +15,7 @@ public abstract class BaseSubmitActivity extends BaseActivity{
      * @return
      */
     protected  void  submit(){
-        if(!checkInput()){
+        if(checkInput()){
             return;
         }
     };

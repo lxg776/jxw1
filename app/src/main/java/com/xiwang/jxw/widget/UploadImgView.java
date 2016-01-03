@@ -16,13 +16,18 @@ import android.widget.RelativeLayout;
 
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.activity.PickOrTakeImageActivity;
+import com.xiwang.jxw.bean.BaseBean;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.bean.SingleImageModel;
+import com.xiwang.jxw.bean.UploadImgBean;
 import com.xiwang.jxw.biz.SystemBiz;
 import com.xiwang.jxw.event.PickImageEvent;
 import com.xiwang.jxw.util.AlbumBitmapCacheHelper;
 import com.xiwang.jxw.util.DisplayUtil;
 import com.xiwang.jxw.util.IntentUtil;
+
+import org.json.JSONException;
+
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +46,7 @@ public class UploadImgView extends RelativeLayout{
     /** 选择的图片*/
     List<String> imageModelList;
     /** 成功上传的图片*/
-    List<String> uploadImageUrlList;
+    List<UploadImgBean> uploadImageUrlList;
     /** 标识*/
     String tag="uploadimgGridView";
     int beginId=1001;
@@ -59,6 +64,12 @@ public class UploadImgView extends RelativeLayout{
 
     /** 选择图片监听*/
     PickImageListener pickImageListener;
+
+    public List<UploadImgBean> getUploadImageUrlList() {
+        return uploadImageUrlList;
+    }
+
+
 
     public PickImageListener getPickImageListener() {
         return pickImageListener;
@@ -97,7 +108,7 @@ public class UploadImgView extends RelativeLayout{
     private void init(final Context context,AttributeSet attrs){
         this.context=context;
         imageModelList=new ArrayList<String>();
-        uploadImageUrlList=new ArrayList<String>();
+        uploadImageUrlList=new ArrayList<UploadImgBean>();
         SingleImageModel button=new SingleImageModel();
         imageModelList.add(SingleImageModel.TYPE_BUTTON);
         if(useEventBus()){
@@ -202,6 +213,14 @@ public class UploadImgView extends RelativeLayout{
                 @Override
                 public void onSuccess(ResponseBean responseBean) {
                     progress_view.setVisibility(View.GONE);
+                    try {
+                        UploadImgBean uploadImgBean= (UploadImgBean) BaseBean.newInstance(UploadImgBean.class,(String)responseBean.getObject());
+                        uploadImageUrlList.add(uploadImgBean);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
                 }
                 @Override
                 public void onFail(ResponseBean responseBean) {

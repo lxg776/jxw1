@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".PublishNewsActivity"
     android:orientation="vertical">
 
     <include layout="@layout/tootbar_common"></include>
@@ -36,26 +37,17 @@
 
 
         <!--输入内容-->
-        <EditText
+        <com.xiwang.jxw.widget.RichEditText
             android:id="@+id/content_edt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="80dp"
+            android:minHeight="120dp"
             android:padding="16dp"
             android:hint="说点什么？"
             android:textColor="@color/black_transparent_87"
             android:textColorHint="@color/black_transparent_26"
             android:background="@color/trans"
             android:gravity="top"
-            />
-
-        <jp.wasabeef.richeditor.RichEditor
-            android:id="@+id/editor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/gray_100"
-            android:minHeight="100dp"
-            android:gravity="center"
             />
 
         <!--图片上传-->

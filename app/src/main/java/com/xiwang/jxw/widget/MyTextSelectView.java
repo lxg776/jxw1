@@ -37,6 +37,16 @@ public class MyTextSelectView extends LinearLayout {
 
     /** 显示的标题*/
     String titleText;
+    /**选项监听*/
+    OnItemClickListener onItemClickListener;
+
+    public OnItemClickListener getOnItemClickListener() {
+        return onItemClickListener;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
 
     public String[] getShowItemes() {
         return showItemes;
@@ -112,6 +122,9 @@ public class MyTextSelectView extends LinearLayout {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 text_tv.setText(showItemes[position]);
+                if(onItemClickListener!=null){
+                    onItemClickListener.onItemClick(view,position);
+                }
             }
         }, new DialogUtil.DialogLinstener() {
             @Override
@@ -143,7 +156,9 @@ public class MyTextSelectView extends LinearLayout {
         return txt;
     }
 
-
+    public interface  OnItemClickListener{
+        public  void onItemClick(View view,int postion);
+    }
 
 
 

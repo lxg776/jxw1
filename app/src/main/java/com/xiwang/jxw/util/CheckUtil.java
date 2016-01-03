@@ -34,6 +34,22 @@ public class CheckUtil {
 
     }
 
+    /**
+     * 判断字符串是否为空
+     * @param key 校验的字段
+     * @param value 校验的值
+     * @return
+     */
+    public static boolean isSelect(Context context,String key,String value){
+        if(TextUtils.isEmpty(value)){
+            String hintString=String.format(context.getResources().getString(R.string.select_notnull),key);
+            ToastUtil.showToast(context,hintString);
+            return  true;
+        }
+        return  false;
+
+    }
+
 
 
     /**
@@ -72,7 +88,7 @@ public class CheckUtil {
         }
 
 
-        return true;
+        return flag;
     }
 
     /**

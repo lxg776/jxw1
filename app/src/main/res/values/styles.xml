@@ -15,13 +15,16 @@ by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
         <item name="colorPrimaryDark">@color/orange_700</item>
         <item name="colorPrimary">@color/orange_500</item>
         <item name="android:windowBackground">@color/gray_50</item>
-        <item name="actionMenuTextColor">@color/black_transparent_54</item>
+        <item name="actionMenuTextColor">@color/white</item>
         <item name="android:textColorPrimary">@color/white</item>
+
     </style>
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+
+        <item name="android:actionMenuTextAppearance">@style/MenuTextStyle</item>
 
 
     </style>
@@ -125,6 +128,17 @@ by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
         <item name="default_lColor">@color/black_transparent_26</item>
         <item name="change_lColor">@color/orange_500</item>
 
+    </style>
+
+
+
+
+
+
+
+    <style name="MenuTextStyle">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
 

@@ -70,7 +70,7 @@ public class HomeBiz {
      */
         public static void getHomeNewsList(String url,int page,final BaseBiz.RequestHandle handle){
 
-            url=url+"&page="+page;
+            url=ServerConfig.SERVER_API_URL+url+"&page="+page;
             BaseBiz.getRequest(url, null, new BaseBiz.RequestHandle() {
                 @Override
                 public void onSuccess(ResponseBean responseBean) {

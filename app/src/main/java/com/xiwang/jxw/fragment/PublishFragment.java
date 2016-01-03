@@ -6,7 +6,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.xiwang.jxw.R;
-import com.xiwang.jxw.activity.ApplyWorkActivity;
 import com.xiwang.jxw.activity.PublishNewsActivity;
 import com.xiwang.jxw.base.BaseFragment;
 import com.xiwang.jxw.util.DisplayUtil;
