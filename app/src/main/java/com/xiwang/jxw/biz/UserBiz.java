@@ -29,6 +29,11 @@ import de.greenrobot.event.EventBus;
  */
 public class UserBiz {
 
+
+
+
+
+
     /**
      * 设置用户bean
      * @param context
@@ -104,7 +109,67 @@ public class UserBiz {
                 }
     }
 
+    /**
+     * 用户发帖
+     * @param fid 频道
+     * @param type 类型
+     * @param action 操作
+     * @param tid 跟帖
+     * @param subject 主题
+     * @param content 内容
+     * @param aids 上传的图片
+     * @param handle 操作
+     */
+    public static void faTie(String fid,String type,String action,String tid,String subject,String content,String aids,final BaseBiz.RequestHandle handle){
+        RequestParams params =new RequestParams();
+        if(!TextUtils.isEmpty(fid)){
+            params.put("fid",fid);
+        }
+        if(!TextUtils.isEmpty(type)){
+            params.put("type",type);
+        }
+        if(!TextUtils.isEmpty(tid)){
+            params.put("tid",tid);
+        }
+        if(!TextUtils.isEmpty(subject)){
+            params.put("subject",subject);
+        }
+        if(!TextUtils.isEmpty(content)){
+            params.put("content",subject);
+        }
+        if(!TextUtils.isEmpty(aids)){
+            params.put("aids",aids);
+        }
 
+        BaseBiz.getRequest(ServerConfig.PUBLISH_URL, params, new BaseBiz.RequestHandle() {
+
+            @Override
+            public void onSuccess(ResponseBean responseBean) {
+
+                String string = (String) responseBean.getObject();
+                try {
+                    responseBean.setObject(BaseBean.newInstance(UserInfoBean.class, string));
+                    handle.onSuccess(responseBean);
+                } catch (JSONException e) {
+                    responseBean.setStatus(ServerConfig.JSON_DATA_ERROR);
+                    responseBean.setInfo(TApplication.context.getResources().getString(R.string.exception_local_json_message));
+                    handle.onFail(responseBean);
+                }
+            }
+            @Override
+            public void onFail(ResponseBean responseBean) {
+                handle.onFail(responseBean);
+            }
+            @Override
+            public ResponseBean getRequestCache() {
+                return handle.getRequestCache();
+            }
+            @Override
+            public void onRequestCache(ResponseBean result) {
+                handle.onRequestCache(result);
+            }
+        });
+    }
 
 
     /**

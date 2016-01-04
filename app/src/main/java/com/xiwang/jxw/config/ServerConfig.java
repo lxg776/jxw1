@@ -64,6 +64,10 @@ public class ServerConfig {
 	public final static String PROTOCOL_URL = "http://www.baidu.com";
 	/** 获取用户信息*/
 	public final static String MYINFO_URL="getapp.php?a=myinfo";
+	/**发贴 回帖*/
+	public final static String PUBLISH_URL="appget.php?a=post";
+	/**表情链接*/
+	public final static String SMILES_URL="getapp.php?a=smiles";
 
 	// public final static String SERVER_API_URL = "http://192.168.202.75/b2b/";
 	// public final static String SERVER_API_URL = "http://192.168.202.75/b2b/";
@@ -81,9 +85,8 @@ public class ServerConfig {
 	public final static String MENUTOP_TOP=SERVER_API_URL+"getapp.php?a=menutop";
 	/** 图片上传接口 */
 	public final static String UPLOAD_IMG=SERVER_API_URL+"hack/uploadappimg.php";
-	/** 发帖界面 */
+	/** 发帖接口 */
 	public final static String TOPIC_URL=SERVER_API_URL+"appget.php?a=post";
-
 
 
 

@@ -4,14 +4,11 @@ import com.loopj.android.http.RequestParams;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.bean.BaseBean;
-import com.xiwang.jxw.bean.ListBean;
-import com.xiwang.jxw.bean.NewsBean;
 import com.xiwang.jxw.bean.NewsDetailBean;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.bean.postbean.TopicBean;
 import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.config.TApplication;
-
 import org.json.JSONException;
 
 /**
@@ -22,6 +19,39 @@ import org.json.JSONException;
  * @modifier
  */
 public class NewsBiz {
+
+
+    /**
+     * 获取表情表情
+     * @return
+     */
+    public static void getSmileBean(BaseBiz.RequestHandle handle){
+
+
+        BaseBiz.getRequest(ServerConfig.SMILES_URL, new RequestParams(), new BaseBiz.RequestHandle() {
+            @Override
+            public void onSuccess(ResponseBean responseBean) {
+                    String string= (String) responseBean.getObject();
+
+
+            }
+
+            @Override
+            public void onFail(ResponseBean responseBean) {
+
+            }
+
+            @Override
+            public ResponseBean getRequestCache() {
+                return null;
+            }
+
+            @Override
+            public void onRequestCache(ResponseBean result) {
+
+            }
+        });
+    }
 
 
     /**
