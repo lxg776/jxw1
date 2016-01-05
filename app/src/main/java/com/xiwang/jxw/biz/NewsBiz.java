@@ -6,10 +6,14 @@ import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.bean.BaseBean;
 import com.xiwang.jxw.bean.NewsDetailBean;
 import com.xiwang.jxw.bean.ResponseBean;
+import com.xiwang.jxw.bean.SmileListBean;
 import com.xiwang.jxw.bean.postbean.TopicBean;
 import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.config.TApplication;
 import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * 新闻逻辑
@@ -25,20 +29,29 @@ public class NewsBiz {
      * 获取表情表情
      * @return
      */
-    public static void getSmileBean(BaseBiz.RequestHandle handle){
+    public static void getSmileBean(final BaseBiz.RequestHandle handle){
 
 
         BaseBiz.getRequest(ServerConfig.SMILES_URL, new RequestParams(), new BaseBiz.RequestHandle() {
             @Override
             public void onSuccess(ResponseBean responseBean) {
                     String string= (String) responseBean.getObject();
-
+                    try {
+                        JSONObject jsonObject=new JSONObject(string);
+                        List<SmileListBean> list= (List<SmileListBean>) BaseBean.toModelList(jsonObject.optString("smiles"), SmileListBean.class);
+                        responseBean.setObject(list);
+                    }catch (JSONException e){
+                        responseBean.setStatus(ServerConfig.JSON_DATA_ERROR);
+                        responseBean.setInfo(TApplication.context.getResources().getString(R.string.exception_local_json_message));
+                        handle.onFail(responseBean);
+                    }
+                 handle.onSuccess(responseBean);
 
             }
 
             @Override
             public void onFail(ResponseBean responseBean) {
-
+                handle.onFail(responseBean);
             }
 
             @Override

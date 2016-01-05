@@ -1,7 +1,13 @@
 package com.xiwang.jxw.util;
 
+import android.content.Context;
 import android.os.Environment;
 
+import com.xiwang.jxw.R;
+import com.xiwang.jxw.base.BaseBiz;
+import com.xiwang.jxw.bean.ResponseBean;
+import com.xiwang.jxw.bean.SmileListBean;
+import com.xiwang.jxw.biz.NewsBiz;
 import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.config.TApplication;
 
@@ -10,6 +16,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 /**
  * @author liangxg
@@ -24,6 +31,75 @@ public class CommonUtil {
         return ServerConfig.IMAGE_BASE_URL +imgUrl;
     }
 
+    /**
+     * 设置表情列表
+     * @param context
+     */
+    public static void setSmileList(final Context context){
+        NewsBiz.getSmileBean(new BaseBiz.RequestHandle() {
+            @Override
+            public void onSuccess(ResponseBean responseBean) {
+                List<SmileListBean> list= (List<SmileListBean>) responseBean.getObject();
+                if(list!=null&&list.size()>0){
+                    TApplication.smilesList=list;
+                    SpUtil.setObject(context,context.getResources().getString(R.string.cache_smiles),list);
+                }
+            }
+            @Override
+            public void onFail(ResponseBean responseBean) {
+
+            }
+            @Override
+            public ResponseBean getRequestCache() {
+                return null;
+            }
+            @Override
+            public void onRequestCache(ResponseBean result) {
+
+            }
+        });
+    }
+
+
+    /**
+     * 获取表情列表
+     * @return
+     */
+    public static List<SmileListBean> getSmileList(final Context context){
+        if(TApplication.smilesList!=null&&TApplication.smilesList.size()>0){
+            return TApplication.smilesList;
+        }else{
+           List<SmileListBean> smileListBeans= (List<SmileListBean>) SpUtil.getObject(context,context.getResources().getString(R.string.cache_smiles));
+            TApplication.smilesList=smileListBeans;
+            if(TApplication.smilesList!=null&&TApplication.smilesList.size()>0){
+                return TApplication.smilesList;
+            }else{
+                NewsBiz.getSmileBean(new BaseBiz.RequestHandle() {
+                    @Override
+                    public void onSuccess(ResponseBean responseBean) {
+                        TApplication.smilesList= (List<SmileListBean>) responseBean.getObject();
+                        if(TApplication.smilesList!=null&&TApplication.smilesList.size()>0){
+                            SpUtil.setObject(context,context.getResources().getString(R.string.cache_smiles),TApplication.smilesList);
+                        }
+                    }
+                    @Override
+                    public void onFail(ResponseBean responseBean) {
+
+                    }
+                    @Override
+                    public ResponseBean getRequestCache() {
+                        return null;
+                    }
+                    @Override
+                    public void onRequestCache(ResponseBean result) {
+
+                    }
+                });
+                return TApplication.smilesList;
+            }
+
+        }
+    }
 
     /**
      * md5加密

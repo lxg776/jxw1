@@ -16,6 +16,7 @@ import com.xiwang.jxw.bean.StartAppBean;
 import com.xiwang.jxw.biz.HomeBiz;
 import com.xiwang.jxw.biz.SystemBiz;
 import com.xiwang.jxw.config.ServerConfig;
+import com.xiwang.jxw.util.CommonUtil;
 import com.xiwang.jxw.util.ImgLoadUtil;
 import com.xiwang.jxw.util.IntentUtil;
 import com.xiwang.jxw.util.SpUtil;
@@ -88,7 +89,9 @@ public class StartAppActivity extends BaseActivity {
 
     @Override
     protected void init() {
-
+        /** 设置表情列表*/
+        CommonUtil.setSmileList(context);
+        /** 获取开机界面*/
         SystemBiz.getStartAppImage(new BaseBiz.RequestHandle() {
             @Override
             public void onSuccess(ResponseBean responseBean) {

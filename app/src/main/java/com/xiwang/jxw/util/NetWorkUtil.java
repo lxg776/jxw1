@@ -334,7 +334,7 @@ public class NetWorkUtil {
 			break;
 		case NETWORK_CLASS_WIFI:
 			type = "Wi-Fi";
-			break
+			break;
 		case NETWORK_CLASS_2_G:
 			type = "2G";
 			break;

@@ -3,6 +3,7 @@ package com.xiwang.jxw.config;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import android.app.Application;
 import android.content.Context;
@@ -19,6 +20,7 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 
+import com.xiwang.jxw.bean.SmileListBean;
 import com.xiwang.jxw.bean.UserBean;
 import com.xiwang.jxw.fileds.DataFields;
 import com.xiwang.jxw.network.AppHttpClient;
@@ -61,6 +63,10 @@ public class TApplication extends Application  {
 	public static int authStatus = 0;
 	/** 字体 */
 	public static Typeface face;
+
+	/** 表情集合 */
+	public static List<SmileListBean> smilesList;
+
 
 	public static int sdk = android.os.Build.VERSION.SDK_INT;
 
