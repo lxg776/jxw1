@@ -12,6 +12,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.bean.NewsDetailCommentBean;
 import com.xiwang.jxw.util.ImgLoadUtil;
+import com.xiwang.jxw.widget.RichTextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +75,7 @@ public class CommentListAdapter extends BaseAdapter{
             holder=new ViewHolder();
             holder.author_tv= (TextView) convertView.findViewById(R.id.author_tv);
             holder.publish_tv= (TextView) convertView.findViewById(R.id.publish_tv);
-            holder.content_tv= (TextView) convertView.findViewById(R.id.content_tv);
+            holder.content_tv= (RichTextView) convertView.findViewById(R.id.content_tv);
             holder.author_headimg_iv= (ImageView) convertView.findViewById(R.id.author_headimg_iv);
             convertView.setTag(holder);
         }else{
@@ -82,7 +83,7 @@ public class CommentListAdapter extends BaseAdapter{
         }
         holder.author_tv.setText(bean.getAuthor());
         holder.publish_tv.setText(bean.getPostdate());
-        holder.content_tv.setText(bean.getContent());
+        holder.content_tv.setRichText(bean.getContent());
         ImgLoadUtil.getInstance().displayImage(bean.getFace(), holder.author_headimg_iv, options, loadingListener);
         return convertView;
     }
@@ -93,7 +94,7 @@ public class CommentListAdapter extends BaseAdapter{
         /** 发布时间 */
         private TextView  publish_tv;
         /** 评论内容 */
-        private TextView  content_tv;
+        private RichTextView content_tv;
         /** 头像*/
         private ImageView author_headimg_iv;
     }

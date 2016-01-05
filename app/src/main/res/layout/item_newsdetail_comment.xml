@@ -38,12 +38,11 @@
             android:textColor="@color/black_transparent_26"
             android:textSize="12sp" />
 
-        <TextView
+        <com.xiwang.jxw.widget.RichTextView
             android:id="@+id/content_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="叫朋友同学来玩，问南宁去还要多久？一听坐车要四五个小时，马上问动车呢？"
             android:textColor="@color/black_transparent_54"
             android:textSize="16sp" />
     </LinearLayout>

@@ -63,11 +63,11 @@ public class ServerConfig {
 	/** 西网服务协议 */
 	public final static String PROTOCOL_URL = "http://www.baidu.com";
 	/** 获取用户信息*/
-	public final static String MYINFO_URL="getapp.php?a=myinfo";
+	public final static String MYINFO_URL=SERVER_API_URL+"getapp.php?a=myinfo";
 	/**发贴 回帖*/
-	public final static String PUBLISH_URL="appget.php?a=post";
+	public final static String PUBLISH_URL=SERVER_API_URL+"appget.php?a=post";
 	/**表情链接*/
-	public final static String SMILES_URL="getapp.php?a=smiles";
+	public final static String SMILES_URL=SERVER_API_URL+"getapp.php?a=smiles";
 
 	// public final static String SERVER_API_URL = "http://192.168.202.75/b2b/";
 	// public final static String SERVER_API_URL = "http://192.168.202.75/b2b/";

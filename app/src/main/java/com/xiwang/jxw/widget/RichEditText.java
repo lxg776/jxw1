@@ -170,30 +170,30 @@ public class RichEditText extends EditText {
 			final int matchStringStartIndex = text.indexOf(matchString);
 			final int matchStringEndIndex = matchStringStartIndex + matchString.length();
 			ImageLoader.getInstance().loadImage(localFilePath,getDisplayImageOptions(),new ImageLoadingListener() {
-				
+
 				@Override
 				public void onLoadingStarted(String uri, View arg1) {
 					// TODO Auto-generated method stub
 					//插入一张默认图片
 					addDefaultImage(localFilePath, matchStringStartIndex, matchStringEndIndex);
 				}
-				
+
 				@Override
 				public void onLoadingFailed(String arg0, View arg1, FailReason arg2) {
 					// TODO Auto-generated method stub
-					
+
 				}
-				
+
 				@Override
 				public void onLoadingComplete(String uri, View arg1, Bitmap bitmap) {
 					// TODO Auto-generated method stub
 					addImage(bitmap, uri,matchStringStartIndex,matchStringEndIndex);
 				}
-				
+
 				@Override
 				public void onLoadingCancelled(String arg0, View arg1) {
 					// TODO Auto-generated method stub
-					
+
 				}
 			});
 		}
