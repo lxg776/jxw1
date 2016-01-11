@@ -40,6 +40,8 @@ public class AppHttpClient {
         client.setResponseTimeout(10 * 1000);
         client.getHttpClient().getParams()
                 .setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
+
+
     }
 
     public static void cancelAll(Context context) {

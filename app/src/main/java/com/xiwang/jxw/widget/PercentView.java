@@ -30,6 +30,8 @@ public class PercentView extends View {
     Context context;
     PercentListener percentlistener;
 
+    boolean is_rect;
+
 
     public PercentView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -48,6 +50,7 @@ public class PercentView extends View {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.PercentView);
         backgroundColor=a.getColor(R.styleable.PercentView_background_color, getResources().getColor(R.color.trans50));
         drawColor=a.getColor(R.styleable.PercentView_draw_color, getResources().getColor(R.color.trans));
+        is_rect=a.getBoolean(R.styleable.PercentView_is_rect,true);
         a.recycle();
     }
 
@@ -56,7 +59,12 @@ public class PercentView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         /** w h*/
-        drawRect(canvas);
+        if(is_rect){
+            drawRect(canvas);
+        }else{
+            drawArc(canvas);
+        }
+
 
 
 

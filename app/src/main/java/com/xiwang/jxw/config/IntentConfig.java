@@ -10,4 +10,13 @@ public class IntentConfig {
     public static final int LOGIN_CODE=0x10;
 
 
+    /** 发送连接*/
+    public static final String SEND_URL="sendUrl";
+
+    /** 发送连接*/
+    public static final String SEND_URL_ist="sendUrlList";
+
+    /** 发送标题*/
+    public static final String SEND_TITLE="sendTitle";
+
 }

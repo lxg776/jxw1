@@ -9,4 +9,7 @@
         android:layout_height="match_parent">
 
     </com.xiwang.jxw.widget.ZoomImageView>
+
+
+
 </RelativeLayout>

@@ -55,6 +55,7 @@
     <declare-styleable name="PercentView">
         <attr name = "background_color" format = "color" />
         <attr name = "draw_color" format = "color" />
+        <attr name = "is_rect" format="boolean" />
     </declare-styleable>
 
     <!-- 上传图片控件 -->

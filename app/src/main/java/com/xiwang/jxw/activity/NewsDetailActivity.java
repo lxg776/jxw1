@@ -1,9 +1,11 @@
 package com.xiwang.jxw.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
@@ -23,6 +25,7 @@ import com.xiwang.jxw.bean.NewsBean;
 import com.xiwang.jxw.bean.NewsDetailBean;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.biz.NewsBiz;
+import com.xiwang.jxw.config.IntentConfig;
 import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.util.CommonUtil;
@@ -320,6 +323,22 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
     @Override
     public void onRefresh() {
         loadNetData(currentPage+1,true);
+    }
+
+
+
+    class JsObject {
+        @JavascriptInterface
+        public void toImages(String url) {
+            Intent intent=new Intent(NewsDetailActivity.this,NewsImagesActivity.class);
+            intent.putExtra(IntentConfig.SEND_URL,url);
+            intent.putExtra(IntentConfig.SEND_TITLE,newsBean.getSubject());
+
+
+
+
+
+        }
     }
 }
 

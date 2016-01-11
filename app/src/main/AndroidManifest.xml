@@ -113,6 +113,15 @@
             android:label="@string/title_activity_login" >
         </activity>
 
+        <!-- 新闻图片集合 -->
+        <activity
+            android:name=".activity.NewsImagesActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_login" >
+        </activity>
+
+
+
         <!-- 监听网络变化广播 -->
         <receiver
             android:name=".receiver.NetworkChangeReceiver"

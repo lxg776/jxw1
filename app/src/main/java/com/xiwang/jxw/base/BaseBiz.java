@@ -14,6 +14,8 @@ import com.xiwang.jxw.executor.RequestExecutor;
 import com.xiwang.jxw.network.AppHttpClient;
 import com.xiwang.jxw.util.LogUtil;
 
+import java.io.DataOutputStream;
+
 /**
  * 基本的网络事务
  * @author liangxg
@@ -36,6 +38,8 @@ public class BaseBiz {
 
                 ResponseBean cacheData = handle.getRequestCache();
                 if (cacheData != null) {
+                    DataOutputStream dos;
+                    dos.writeBytes();
                     handle.onRequestCache(cacheData);
                 }
 
