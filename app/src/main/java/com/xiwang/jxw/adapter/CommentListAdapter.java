@@ -11,6 +11,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.bean.NewsDetailCommentBean;
+import com.xiwang.jxw.util.CommonUtil;
 import com.xiwang.jxw.util.ImgLoadUtil;
 import com.xiwang.jxw.widget.RichTextView;
 
@@ -81,10 +82,10 @@ public class CommentListAdapter extends BaseAdapter{
         }else{
             holder= (ViewHolder) convertView.getTag();
         }
-        holder.author_tv.setText(bean.getAuthor());
+        holder.author_tv.setText(bean.getUserinfo().getAuthor());
         holder.publish_tv.setText(bean.getPostdate());
         holder.content_tv.setRichText(bean.getContent());
-        ImgLoadUtil.getInstance().displayImage(bean.getFace(), holder.author_headimg_iv, options, loadingListener);
+        ImgLoadUtil.getInstance().displayImage(CommonUtil.getAboutAbsoluteImgUrl(bean.getUserinfo().getFace()), holder.author_headimg_iv, options, loadingListener);
         return convertView;
     }
 

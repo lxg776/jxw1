@@ -42,7 +42,8 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
         if (mapFragement.containsKey(columnBeanList.get(position))) {
             return mapFragement.get(columnBeanList.get(position));
         } else {
-            NewsListFragment fragment = NewsListFragment.newInstance(columnBeanList.get(position));
+            NewsListFragment fragment = NewsListFragment.newInstance();
+            fragment.setColumnBean(columnBeanList.get(position));
             mapFragement.put(columnBeanList.get(position), fragment);
             return fragment;
         }

@@ -22,7 +22,7 @@ import com.xiwang.jxw.widget.UploadImgView;
 
 import java.util.List;
 
-import jp.wasabeef.richeditor.RichEditor;
+//import jp.wasabeef.richeditor.RichEditor;
 
 /**
  * 发帖界面

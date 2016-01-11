@@ -9,7 +9,7 @@ import com.xiwang.jxw.widget.MyDatePickView;
 import com.xiwang.jxw.widget.MyTextSelectView;
 import com.xiwang.jxw.widget.UploadImgView;
 
-import jp.wasabeef.richeditor.RichEditor;
+//import jp.wasabeef.richeditor.RichEditor;
 
 /**
  * Created by sunshine on 15/12/7.
@@ -21,7 +21,7 @@ public class ApplyWorkActivity extends BaseActivity{
     String tag="ApplyWorkActivity";
     UploadImgView uploadVIew;
 
-    private RichEditor mEditor;
+   // private RichEditor mEditor;
 
     @Override
     protected void initActionBar() {
@@ -41,7 +41,7 @@ public class ApplyWorkActivity extends BaseActivity{
         xinzi_select= (MyTextSelectView) findViewById(R.id.xinzi_select);
         String showItemes[]={"2000~3000","3000~5000","6000以上"};
         xinzi_select.setShowItemes(showItemes);
-        mEditor= (RichEditor) findViewById(R.id.editor);
+       // mEditor= (RichEditor) findViewById(R.id.editor);
     }
 
 
@@ -59,14 +59,14 @@ public class ApplyWorkActivity extends BaseActivity{
     @Override
     protected void widgetListener() {
 
-        findViewById(R.id.action_insert_image).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View v) {
-                mEditor.insertImage("http://www.1honeywan.com/dachshund/image/7.21/7.21_3_thumb.JPG",
-                        "dachshund");
-
-
-            }
-        });
+//        findViewById(R.id.action_insert_image).setOnClickListener(new View.OnClickListener() {
+//            @Override public void onClick(View v) {
+//                mEditor.insertImage("http://www.1honeywan.com/dachshund/image/7.21/7.21_3_thumb.JPG",
+//                        "dachshund");
+//
+//
+//            }
+//        });
 
     }
 

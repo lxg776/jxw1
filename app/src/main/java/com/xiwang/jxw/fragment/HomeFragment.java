@@ -6,6 +6,8 @@ import com.xiwang.jxw.R;
 import com.xiwang.jxw.adapter.HomePagerAdapter;
 import com.xiwang.jxw.base.BaseFragment;
 import com.xiwang.jxw.bean.ColumnBean;
+import com.xiwang.jxw.event.LoginEvent;
+import com.xiwang.jxw.event.MenuEvent;
 import com.xiwang.jxw.util.SpUtil;
 import com.xiwang.jxw.widget.MyJazzyViewPager;
 import com.xiwang.jxw.widget.PagerSlidingTabStrip;
@@ -67,7 +69,7 @@ public class HomeFragment extends BaseFragment {
      */
     private void initTabsData(){
 
-        columnBeanList= (List<ColumnBean>) SpUtil.getObject(context,getString(R.string.cache_menu));
+
 
 
 
@@ -108,16 +110,26 @@ public class HomeFragment extends BaseFragment {
 //        c7.setDataUrl("getapp.php?a=thread&fid=2");
 //        c7.setName("景点旅游");
 //        columnBeanList.add(c7);
-
-        adapter=new HomePagerAdapter(getFragmentManager());
-        adapter.setColumnBeanList(columnBeanList);
-        pager.setAdapter(adapter);
-        tabs.setViewPager(pager);
+        showColumnList();
 
     }
 
+    private void showColumnList(){
+        columnBeanList= (List<ColumnBean>) SpUtil.getObject(context,getString(R.string.cache_menu));
+        if(null!=columnBeanList&&columnBeanList.size()>0){
+            adapter=new HomePagerAdapter(getFragmentManager());
+            adapter.setColumnBeanList(columnBeanList);
+            pager.setAdapter(adapter);
+            tabs.setViewPager(pager);
+        }
+    }
 
+    @Override
+    protected boolean useEventBus() {
+        return true;
+    }
 
-
-
+    public void onEvent(MenuEvent event) {
+        showColumnList();
+    }
 }

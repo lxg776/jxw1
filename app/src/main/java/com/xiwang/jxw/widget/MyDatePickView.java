@@ -100,26 +100,26 @@ public class MyDatePickView extends LinearLayout{
         int day = c.get(Calendar.DAY_OF_MONTH);
         line.setBackgroundColor(change_line_c);
 
-        if(TApplication.sdk>= Build.VERSION_CODES.ICE_CREAM_SANDWICH&&fragmentManager!=null){
-            /**
-             * 大于4.0
-             */
-            com.wdullaer.materialdatetimepicker.date.DatePickerDialog datePickerDialog=com.wdullaer.materialdatetimepicker.date.DatePickerDialog.newInstance(new com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(com.wdullaer.materialdatetimepicker.date.DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-                    date_tv.setText(bulidTime(year, monthOfYear, dayOfMonth));
-                }
-            },year,month,day);
-            datePickerDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-                    line.setBackgroundColor(default_line_c);
-                }
-            });
-
-           datePickerDialog.show(fragmentManager,"日期选择");
-
-        }else{
+//        if(TApplication.sdk>= Build.VERSION_CODES.ICE_CREAM_SANDWICH&&fragmentManager!=null){
+//            /**
+//             * 大于4.0
+//             */
+//            com.wdullaer.materialdatetimepicker.date.DatePickerDialog datePickerDialog=com.wdullaer.materialdatetimepicker.date.DatePickerDialog.newInstance(new com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener() {
+//                @Override
+//                public void onDateSet(com.wdullaer.materialdatetimepicker.date.DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+//                    date_tv.setText(bulidTime(year, monthOfYear, dayOfMonth));
+//                }
+//            },year,month,day);
+//            datePickerDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//                @Override
+//                public void onDismiss(DialogInterface dialog) {
+//                    line.setBackgroundColor(default_line_c);
+//                }
+//            });
+//
+//           datePickerDialog.show(fragmentManager,"日期选择");
+//
+//        }else{
             DatePickerDialog datePickerDialog=new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -137,7 +137,7 @@ public class MyDatePickView extends LinearLayout{
             });
 
             datePickerDialog.show();
-        }
+       // }
     }
 
     /**

@@ -35,7 +35,7 @@ public class StartAppActivity extends BaseActivity {
     ImageView img_view;
     /** 图片路径*/
     String imgUrl;
-    PercentView pv;
+
 
 
     /** 图片显示的配置*/
@@ -81,7 +81,7 @@ public class StartAppActivity extends BaseActivity {
     @Override
     protected void findViews() {
         img_view= (ImageView) findViewById(R.id.img_view);
-        pv= (PercentView) findViewById(R.id.pv);
+
 
 
 
@@ -89,8 +89,7 @@ public class StartAppActivity extends BaseActivity {
 
     @Override
     protected void init() {
-        /** 设置表情列表*/
-        CommonUtil.setSmileList(context);
+
         /** 获取开机界面*/
         SystemBiz.getStartAppImage(new BaseBiz.RequestHandle() {
             @Override
@@ -124,68 +123,6 @@ public class StartAppActivity extends BaseActivity {
                 IntentUtil.gotoActivityAndFinish(context, MainActivity.class);
             }
         }, 3000);
-        /**
-         * 获取栏目
-         */
-        HomeBiz.getHomeMenu(new BaseBiz.RequestHandle() {
-            @Override
-            public void onSuccess(ResponseBean responseBean) {
-
-                List<ColumnBean> columnBeanList = (List<ColumnBean>) responseBean.getObject();
-                SpUtil.setObject(context, getString(R.string.cache_menu), columnBeanList);
-            }
-
-            @Override
-            public void onFail(ResponseBean responseBean) {
-
-            }
-
-            @Override
-            public ResponseBean getRequestCache() {
-                return null;
-            }
-
-            @Override
-            public void onRequestCache(ResponseBean result) {
-
-            }
-        });
-//
-//        final Runnable runnable = new Runnable(){
-//            @Override
-//            public void run() {
-//                // TODO Auto-generated method stub
-//                // 在此处添加执行的代码
-//                pv.setPercent(pv.getPercent() + 1);
-//                if(pv.getPercent()<100){
-//                    mHandler.postDelayed(this, 500);// 150是延时时长
-//                }else{
-//                    mHandler.removeCallbacks(this);
-//                }
-//
-//            }
-//        };
-//
-//
-//        pv.setPercentlistener(new PercentView.PercentListener() {
-//            @Override
-//            public void finish() {
-//
-//            }
-//
-//            @Override
-//            public void onPercent(int percent) {
-//
-//            }
-//        });
-//        mHandler.postDelayed(runnable,500);
-
-
-
-
-
-
-
     }
 
     @Override

@@ -28,7 +28,7 @@ public class CommonUtil {
 
 
     public static String getAboutAbsoluteImgUrl(String imgUrl){
-        return ServerConfig.IMAGE_BASE_URL +imgUrl;
+        return ServerConfig.SERVER_API_URL +imgUrl;
     }
 
     /**

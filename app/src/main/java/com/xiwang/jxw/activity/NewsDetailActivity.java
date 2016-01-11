@@ -247,7 +247,7 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
     }
 
 
-    /**
+    /**attachment/upload/middle/44/2044.jpg?1451383209
      * 显示新闻评论
      */
     private void showCommentList(NewsDetailBean newsDetailBean){

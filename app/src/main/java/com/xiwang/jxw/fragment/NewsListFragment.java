@@ -1,5 +1,6 @@
 package com.xiwang.jxw.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ import me.zhanghai.android.materialprogressbar.IndeterminateProgressDrawable;
  * 新闻列表部分
  * Created by sunshine on 15/11/7.
  */
+@SuppressLint("ValidFragment")
 public class NewsListFragment extends BaseFragment implements RefreshLayout.OnLoadListener,RefreshLayout.OnRefreshListener{
     /** 栏目信息*/
     ColumnBean columnBean;
@@ -52,20 +54,29 @@ public class NewsListFragment extends BaseFragment implements RefreshLayout.OnLo
     /** 加载更多 文本*/
     TextView text_more;
 
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
 
-    public static NewsListFragment newInstance( ColumnBean columnBean) {
+    String param1;
+
+    public static NewsListFragment newInstance() {
         NewsListFragment fragment = new NewsListFragment();
-        fragment.setColumnBean(columnBean);
+        //fragment.setColumnBean(columnBean);
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, "param1");
+        args.putString(ARG_PARAM2, "param2");
+        fragment.setArguments(args);
         return fragment;
     }
 
     public NewsListFragment(){
-
+        super();
     }
 
 
     public NewsListFragment(ColumnBean columnBean){
         this.columnBean=columnBean;
+
     }
 
     public ColumnBean getColumnBean() {

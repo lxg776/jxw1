@@ -22,6 +22,7 @@ import de.greenrobot.event.EventBus;
  * @Copyright: Copyright (c) 2013 Shenzhen Tentinet Technology Co., Ltd. Inc. All rights reserved.
  * 
  */
+
 public abstract class BaseFragment extends Fragment {
 	/** Standard activity result: operation canceled. */
 	protected final int RESULT_CANCELED = 0;
@@ -38,6 +39,10 @@ public abstract class BaseFragment extends Fragment {
 	protected IntentFilter filter;
 
 
+
+		public  BaseFragment(){
+			super();
+		}
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		filter = new IntentFilter();

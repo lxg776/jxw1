@@ -12,19 +12,28 @@ import android.widget.Toast;
 
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseActivity;
+import com.xiwang.jxw.base.BaseBiz;
+import com.xiwang.jxw.bean.ColumnBean;
+import com.xiwang.jxw.bean.ResponseBean;
+import com.xiwang.jxw.biz.HomeBiz;
 import com.xiwang.jxw.config.IntentConfig;
 import com.xiwang.jxw.config.TApplication;
+import com.xiwang.jxw.event.MenuEvent;
 import com.xiwang.jxw.fragment.FindFragment;
 import com.xiwang.jxw.fragment.HomeFragment;
 import com.xiwang.jxw.fragment.MineFragment;
 import com.xiwang.jxw.fragment.PublishFragment;
+import com.xiwang.jxw.util.CommonUtil;
 import com.xiwang.jxw.util.IntentUtil;
+import com.xiwang.jxw.util.SpUtil;
 import com.xiwang.jxw.widget.MyRadioView;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * @author liangxg
@@ -95,7 +104,34 @@ public class MainActivity extends BaseActivity {
 
         FragmentManager fm=getFragmentManager();
         fm.popBackStackImmediate("123",3);
+        /** 设置表情列表*/
+        CommonUtil.setSmileList(context);
 
+
+        /**
+         * 获取栏目
+         */
+        HomeBiz.getHomeMenu(new BaseBiz.RequestHandle() {
+            @Override
+            public void onSuccess(ResponseBean responseBean) {
+                List<ColumnBean> columnBeanList = (List<ColumnBean>) responseBean.getObject();
+                SpUtil.setObject(context, getString(R.string.cache_menu), columnBeanList);
+                EventBus.getDefault().post(new MenuEvent());
+            }
+
+            @Override
+            public void onFail(ResponseBean responseBean) {
+
+            }
+            @Override
+            public ResponseBean getRequestCache() {
+                return null;
+            }
+            @Override
+            public void onRequestCache(ResponseBean result) {
+
+            }
+        });
 
     }
 
