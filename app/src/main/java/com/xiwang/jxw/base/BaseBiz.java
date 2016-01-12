@@ -38,8 +38,6 @@ public class BaseBiz {
 
                 ResponseBean cacheData = handle.getRequestCache();
                 if (cacheData != null) {
-                    DataOutputStream dos;
-                    dos.writeBytes();
                     handle.onRequestCache(cacheData);
                 }
 

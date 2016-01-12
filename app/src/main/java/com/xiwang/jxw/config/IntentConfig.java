@@ -14,7 +14,7 @@ public class IntentConfig {
     public static final String SEND_URL="sendUrl";
 
     /** 发送连接*/
-    public static final String SEND_URL_ist="sendUrlList";
+    public static final String SEND_URL_LIST ="sendUrlList";
 
     /** 发送标题*/
     public static final String SEND_TITLE="sendTitle";

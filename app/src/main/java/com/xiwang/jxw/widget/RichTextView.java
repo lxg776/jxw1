@@ -194,7 +194,7 @@ public class RichTextView extends TextView{
             final int end=matcher.end(0);
             String sId=matcher.group(1);
             String url=getSmilesUrlById(sId);
-            url= "http://www.jingxi.net/"+url;
+
            // String url="http://pic.joke01.com/uppic/13-05/30/30215236.gif";
             if(!TextUtils.isEmpty(url)){
                 /**

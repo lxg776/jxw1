@@ -26,7 +26,6 @@ import com.xiwang.jxw.bean.NewsDetailBean;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.biz.NewsBiz;
 import com.xiwang.jxw.config.IntentConfig;
-import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.util.CommonUtil;
 import com.xiwang.jxw.util.ImgLoadUtil;
@@ -37,6 +36,10 @@ import com.xiwang.jxw.widget.HorizontalRadioView;
 import com.xiwang.jxw.widget.LoadingLayout;
 import com.xiwang.jxw.widget.RefreshLayout;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import me.zhanghai.android.materialprogressbar.IndeterminateProgressDrawable;
 
@@ -92,7 +95,8 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
     ImageLoadingListener loadingListener=ImgLoadUtil.defaultLoadingListener();
     /** -1表示没点赞和点差/0表示点赞/1表示点差*/
     int likefla=-1;
-
+    /**图片列表*/
+    ArrayList<String> imagesUrlList=new ArrayList<String>();
     @Override
     protected void initActionBar() {
         toolbar= (Toolbar) findViewById(R.id.toolbar);
@@ -142,6 +146,9 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         listView.addFooterView(foot_view);
         refreshLayout.setChildView(listView);
         refreshLayout.setColorSchemeColors(getResources().getColor(R.color.orange_500));
+        /**添加js调用activity方法 用于展现图片列表*/
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.addJavascriptInterface(new JsObject(),"jsObject");
 
 
     }
@@ -220,7 +227,8 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         htmlStr=htmlStr.replace("#content#", detailBean.getContent());
         htmlStr=htmlStr.replace("#subject#", detailBean.getSubject());
         htmlStr=  htmlStr.replaceAll("href=.*?\"", "");
-
+        //设置图片列表
+        htmlStr=setImagesListByHtml(imagesUrlList,htmlStr);
         webView.getSettings().setDefaultTextEncodingName("utf-8") ;
         webView.loadData(htmlStr, "text/html", "utf-8");
         //webView.loadUrl("http://www.sznews.com");
@@ -233,6 +241,11 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         not_like_rv.setText(detailBean.getPoor());
         message_rv.setText(detailBean.getReplies());
     }
+    /**正则抽去<img>标签的内容*/
+    private static Pattern IMAGE_TAG_PATTERN = Pattern
+            .compile("\\<img (.*?)\\ />");
+    /**正则抽去<img src= >的内容*/
+    private static Pattern SRC_TAG_PATTERN = Pattern.compile("src=\"(.*?)\"");
 
     /**
      * 显示作者信息
@@ -244,9 +257,31 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
             publish_tv.setText(detailBean.getPostdate());
             ImgLoadUtil.getInstance().displayImage(CommonUtil.getAboutAbsoluteImgUrl(authorBean.getFace()), author_headimg_iv, options, loadingListener);
         }
+    }
 
-
-
+    /**
+     * 设置图片列表的方法
+     * @param imagesUrlList
+     * @param html
+     * @return
+     */
+    private String setImagesListByHtml(List<String> imagesUrlList, String html) {
+        Matcher matcher = IMAGE_TAG_PATTERN.matcher(html);
+        while (matcher.find()) {
+            String src = matcher.group(1);
+            System.out.println(src);
+            Matcher urlMatcher = SRC_TAG_PATTERN.matcher(src);
+            while (urlMatcher.find()) {
+                String onClickEvent = "  onclick=\"toImages('src')\"  ";
+                String url = urlMatcher.group(1);
+                if (!imagesUrlList.contains(url)) {
+                    imagesUrlList.add(url);
+                    onClickEvent = onClickEvent.replace("src", url);
+                    html = html.replaceAll(src, src + onClickEvent);
+                }
+            }
+        }
+        return html;
     }
 
 
@@ -326,18 +361,17 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
     }
 
 
-
+    /**
+     * 网页调用android接口
+     */
     class JsObject {
         @JavascriptInterface
         public void toImages(String url) {
             Intent intent=new Intent(NewsDetailActivity.this,NewsImagesActivity.class);
             intent.putExtra(IntentConfig.SEND_URL,url);
-            intent.putExtra(IntentConfig.SEND_TITLE,newsBean.getSubject());
-
-
-
-
-
+            intent.putStringArrayListExtra(IntentConfig.SEND_URL_LIST, imagesUrlList);
+            intent.putExtra(IntentConfig.SEND_TITLE, newsBean.getSubject());
+            startActivity(intent);
         }
     }
 }
