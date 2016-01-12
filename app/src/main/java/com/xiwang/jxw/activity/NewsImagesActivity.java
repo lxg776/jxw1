@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.xiwang.jxw.R;
@@ -50,7 +51,6 @@ public class NewsImagesActivity extends BaseActivity{
     @Override
     protected void initActionBar() {
         toolbar= (Toolbar) findViewById(R.id.toolbar);
-
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.back_btn));
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -149,31 +149,29 @@ public class NewsImagesActivity extends BaseActivity{
 
         final PercentView progress_view= (PercentView) view.findViewById(R.id.progress_view);
         ImageViewAware imageViewAware=new ImageViewAware(imageView);
-        ImgLoadUtil.getInstance().displayImage(url, imageViewAware, ImgLoadUtil.defaultDisplayOptions, new SimpleImageLoadingListener() {
+        ImgLoadUtil.getInstance().displayImage(url, imageViewAware, ImgLoadUtil.defaultDisplayOptions, new ImageLoadingListener() {
 
-            public void onLoadingStarted(String imageUri, ImageView view) {
-                super.onLoadingStarted(imageUri, view);
+            @Override
+            public void onLoadingStarted(String imageUri, View view) {
 
-                progress_view.setVisibility(View.VISIBLE);
             }
 
-
-            public void onLoadingFailed(String imageUri, ZoomImageView view, FailReason failReason) {
-                super.onLoadingFailed(imageUri, view, failReason);
+            @Override
+            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                progress_view.setVisibility(View.GONE);
             }
 
-
-            public void onLoadingComplete(String imageUri, ZoomImageView view, Bitmap loadedImage) {
-                super.onLoadingComplete(imageUri, view, loadedImage);
+            @Override
+            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                 zoom_img_iv.setSourceImageBitmap(loadedImage, NewsImagesActivity.this);
                 zoom_img_iv.setVisibility(View.VISIBLE);
                 imageView.setVisibility(View.GONE);
                 progress_view.setVisibility(View.GONE);
             }
 
-
-            public void onLoadingCancelled(String imageUri, ZoomImageView view) {
-                super.onLoadingCancelled(imageUri, view);
+            @Override
+            public void onLoadingCancelled(String imageUri, View view) {
+                progress_view.setVisibility(View.VISIBLE);
             }
         }, new ImageLoadingProgressListener() {
 
@@ -197,6 +195,8 @@ public class NewsImagesActivity extends BaseActivity{
         public Object instantiateItem(ViewGroup container, int position) {
             View view=views.get(position);
             currentPostion=position+1;
+            setToolBarTitle(position+1,views.size());
+
             container.addView(view);
             return view;
         }
