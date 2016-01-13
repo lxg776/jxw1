@@ -3,24 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
     >
 
-    <ImageView
+    <com.xiwang.jxw.widget.ZoomImageView
         android:id="@+id/img_iv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-
-        />
-
-    <com.xiwang.jxw.widget.ZoomImageView
-        android:id="@+id/zoom_img_iv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:scaleType="center"
-        android:visibility="gone"
         />
+
+    <!--<com.xiwang.jxw.widget.ZoomImageView-->
+    <!--android:id="@+id/zoom_img_iv"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:scaleType="center"-->
+    <!--android:visibility="gone"-->
+    <!--/>-->
 
     <com.xiwang.jxw.widget.PercentView
         android:id="@+id/progress_view"
@@ -28,5 +26,5 @@
         android:layout_height="wrap_content"
         app:is_rect="false"
         android:visibility="gone"
-        />
+    />
 </RelativeLayout>

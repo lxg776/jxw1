@@ -36,6 +36,7 @@
             android:name=".activity.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
+            android:exported="false"
             android:theme="@style/AppTheme" >
         </activity>
 
@@ -44,12 +45,14 @@
             android:name=".activity.ExitActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
+            android:exported="false"
             android:theme="@android:style/Theme.NoDisplay" />
 
         <!-- 新闻详情 -->
         <activity
             android:name=".activity.NewsDetailActivity"
             android:screenOrientation="portrait"
+            android:exported="false"
             android:theme="@style/AppTheme" >
         </activity>
 
@@ -57,6 +60,7 @@
         <activity
             android:name=".activity.TestActivity"
             android:screenOrientation="portrait"
+            android:exported="false"
             android:theme="@style/AppTheme" >
         </activity>
 
@@ -64,6 +68,7 @@
         <activity
             android:name=".activity.LoginActivity"
             android:label="@string/title_activity_login"
+            android:exported="false"
             android:screenOrientation="portrait"
             >
         </activity>
@@ -72,6 +77,7 @@
         <activity
             android:name=".activity.RegisterActivity"
             android:label="@string/title_activity_login"
+            android:exported="false"
             android:screenOrientation="portrait"
             >
         </activity>
@@ -81,6 +87,7 @@
         <activity
             android:name=".activity.ApplyWorkActivity"
             android:screenOrientation="portrait"
+            android:exported="false"
             android:label="@string/title_activity_login" >
         </activity>
 
@@ -88,6 +95,7 @@
         <activity
             android:name=".activity.PickOrTakeImageActivity"
             android:screenOrientation="portrait"
+            android:exported="false"
             android:label="@string/title_activity_login" >
         </activity>
 
@@ -95,6 +103,7 @@
         <activity
             android:name=".activity.PickBigImagesActivity"
             android:screenOrientation="portrait"
+            android:exported="false"
             android:label="@string/title_activity_login" >
         </activity>
 
@@ -102,6 +111,7 @@
         <activity
             android:name=".activity.ServiceProtocolActivity"
             android:screenOrientation="portrait"
+            android:exported="false"
             android:label="@string/title_activity_login" >
         </activity>
 
@@ -110,6 +120,7 @@
         <activity
             android:name=".activity.PublishNewsActivity"
             android:screenOrientation="portrait"
+            android:exported="false"
             android:label="@string/title_activity_login" >
         </activity>
 
@@ -117,6 +128,7 @@
         <activity
             android:name=".activity.NewsImagesActivity"
             android:screenOrientation="portrait"
+            android:exported="false"
             android:label="@string/title_activity_login" >
         </activity>
 
@@ -130,5 +142,11 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
+
+
+        <meta-data android:value="569615b6e0f55aeacf000acb" android:name="UMENG_APPKEY"></meta-data>
+        <meta-data android:value="android" android:name="UMENG_CHANNEL"/>
+
+
     </application>
 </manifest>

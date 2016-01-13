@@ -16,6 +16,11 @@ public class FindFragment extends BaseFragment {
 
 
     @Override
+    protected String getPageName() {
+        return "发现页面";
+    }
+
+    @Override
     protected View getViews() {
         return View.inflate(context, R.layout.fragment_find, null);
     }

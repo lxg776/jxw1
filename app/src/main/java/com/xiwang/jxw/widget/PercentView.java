@@ -12,7 +12,8 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.xiwang.jxw.R;
-import com.xiwang.jxw.util.LogUtil;
+
+import com.xiwang.jxw.util.Log;
 import com.xiwang.jxw.util.ToastUtil;
 
 /**
@@ -133,7 +134,7 @@ public class PercentView extends View {
             }
         }
         ToastUtil.showToast(context,percent);
-        LogUtil.d(percent + "");
+        Log.d(percent + "");
         invalidate();
     }
 

@@ -1,7 +1,11 @@
 package com.xiwang.jxw.util;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseBiz;
@@ -10,8 +14,12 @@ import com.xiwang.jxw.bean.SmileListBean;
 import com.xiwang.jxw.biz.NewsBiz;
 import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.config.TApplication;
+import com.xiwang.jxw.listener.SaveImageListener;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.security.MessageDigest;
@@ -98,6 +106,59 @@ public class CommonUtil {
                 return TApplication.smilesList;
             }
 
+        }
+    }
+
+    /**
+     * 保存图片到系统相册
+     * @param bmp
+     * @param url
+     * @param listener 回调函数
+     */
+    public static void saveImageToGallery(Context context,Bitmap bmp,String url,SaveImageListener listener) {
+        // 首先保存图片
+        File appDir = new File(Environment.getExternalStorageDirectory(), "Boohee");
+        if (!appDir.exists()) {
+            appDir.mkdir();
+        }
+        String fileName = MD5.GetMD5Code(url) + ".jpg";
+        File file = new File(appDir, fileName);
+        if(file.exists()){
+            if(listener!=null){
+                listener.success("图片已保存.");
+            }
+            return;
+        }
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            if(listener!=null){
+                listener.success("保存失败.");
+            }
+            e.printStackTrace();
+
+
+        } catch (IOException e) {
+            if(listener!=null){
+                listener.success("保存失败.");
+            }
+            e.printStackTrace();
+
+        }
+        // 其次把文件插入到系统图库
+        try {
+            MediaStore.Images.Media.insertImage(context.getContentResolver(),
+                    file.getAbsolutePath(), fileName, null);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        // 最后通知图库更新
+        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://" + file.toString())));
+        if(listener!=null){
+            listener.success( "图片保存至"+appDir.getAbsolutePath());
         }
     }
 

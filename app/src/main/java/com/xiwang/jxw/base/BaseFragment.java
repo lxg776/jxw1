@@ -1,5 +1,6 @@
 package com.xiwang.jxw.base;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.umeng.analytics.MobclickAgent;
+
 import de.greenrobot.event.EventBus;
 
 
@@ -30,23 +34,32 @@ public abstract class BaseFragment extends Fragment {
 	protected final int RESULT_OK = -1;
 	/** Start of user-defined activity results. */
 	protected final int RESULT_FIRST_USER = 1;
-	protected Context context;
+	protected Activity context;
 	/** 父视图 */
 	protected View view_Parent;
 	/** 广播接收器 */
 	protected BroadcastReceiver receiver;
 	/** 广播过滤器 */
 	protected IntentFilter filter;
+	/** 页面名称 */
+	protected String pageName;
 
 
 
-		public  BaseFragment(){
+
+
+	protected abstract String getPageName();
+
+	public void setPageName(String pageName) {
+		this.pageName = pageName;
+	}
+
+	public  BaseFragment(){
 			super();
 		}
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		filter = new IntentFilter();
-		context = getActivity();
 		view_Parent = getViews();
 
 		findViews();
@@ -57,7 +70,14 @@ public abstract class BaseFragment extends Fragment {
 		widgetListener();
 		init();
 		registerReceiver();
+		setPageName(getPageName());
 		super.onCreate(savedInstanceState);
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		this.context=activity;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -142,5 +162,17 @@ public abstract class BaseFragment extends Fragment {
 		// 接受到广播之后做的处理操作
 //		if (BroadcastFilters.ACTION_TEST.equals(intent.getAction())) {
 //		}
+	}
+
+
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onPageStart(getPageName()); //统计页面(仅有Activity的应用中SDK自动调用，不需要单独写。"SplashScreen"为页面名称，可自定义)
+		MobclickAgent.onResume(context);          //统计时长
+	}
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPageEnd(getPageName()); // （仅有Activity的应用中SDK自动调用，不需要单独写）保证 onPageEnd 在onPause 之前调用,因为 onPause 中会保存信息。"SplashScreen"为页面名称，可自定义
+		MobclickAgent.onPause(context);
 	}
 }

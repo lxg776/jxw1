@@ -6,12 +6,13 @@ import android.content.Context;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.xiwang.jxw.util.Log;
 
 import org.apache.http.client.params.ClientPNames;
 
 import java.util.Locale;
 
-import com.xiwang.jxw.util.LogUtil;
+
 
 /**
  * @author qiufg1
@@ -53,35 +54,35 @@ public class AppHttpClient {
 
 
 
-        LogUtil.i(new StringBuilder("GET ").append(url).toString());
+        Log.i(new StringBuilder("GET ").append(url).toString());
     }
 
     public static void get(String url, RequestParams params,
                            AsyncHttpResponseHandler responseHandler) {
         client.get(url, params, responseHandler);
-        LogUtil.i(new StringBuilder("GET ").append(url).append(params).toString());
+        Log.i(new StringBuilder("GET ").append(url).append(params).toString());
     }
 
     public static void post(String url, AsyncHttpResponseHandler responseHandler) {
         client.post(url, responseHandler);
-        LogUtil.i(new StringBuilder("POST ").append(url).toString());
+        Log.i(new StringBuilder("POST ").append(url).toString());
     }
 
     public static void post(String url, RequestParams params,
                             AsyncHttpResponseHandler responseHandler) {
         client.post(url, params, responseHandler);
-        LogUtil.i(new StringBuilder("POST ").append(url).append(params).toString());
+        Log.i(new StringBuilder("POST ").append(url).append(params).toString());
     }
 
     public static void put(String url, AsyncHttpResponseHandler responseHandler) {
         client.put(url, responseHandler);
-        LogUtil.i(new StringBuilder("PUT ").append(url).toString());
+        Log.i(new StringBuilder("PUT ").append(url).toString());
     }
 
     public static void put(String url, RequestParams params,
                            AsyncHttpResponseHandler responseHandler) {
         client.put(url, params, responseHandler);
-        LogUtil.i(new StringBuilder("PUT ").append(url).append(params).toString());
+        Log.i(new StringBuilder("PUT ").append(url).append(params).toString());
     }
 
 

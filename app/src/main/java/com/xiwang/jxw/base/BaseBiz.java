@@ -12,7 +12,8 @@ import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.executor.RequestExecutor;
 import com.xiwang.jxw.network.AppHttpClient;
-import com.xiwang.jxw.util.LogUtil;
+import com.xiwang.jxw.util.Log;
+
 
 import java.io.DataOutputStream;
 
@@ -41,16 +42,16 @@ public class BaseBiz {
                     handle.onRequestCache(cacheData);
                 }
 
-            LogUtil.d(url);
+            Log.d(url);
             if(null!=params){
-                LogUtil.d(params.toString());
+                Log.d(params.toString());
             }
         AsyncHttpResponseHandler handler =new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String responseStr = new String(responseBody);
                 ResponseBean responseBean = new ResponseBean();
-                LogUtil.d("data:"+responseStr);
+                Log.d("data:"+responseStr);
                 try {
 
                     JSONObject jsonObject = new JSONObject(responseStr);

@@ -7,6 +7,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.umeng.analytics.MobclickAgent;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseActivity;
 import com.xiwang.jxw.base.BaseBiz;
@@ -89,7 +90,7 @@ public class StartAppActivity extends BaseActivity {
 
     @Override
     protected void init() {
-
+        MobclickAgent.openActivityDurationTrack(false);
         /** 获取开机界面*/
         SystemBiz.getStartAppImage(new BaseBiz.RequestHandle() {
             @Override

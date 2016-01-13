@@ -2,6 +2,7 @@ package com.xiwang.jxw.fragment;
 
 import android.view.View;
 
+import com.umeng.analytics.MobclickAgent;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.adapter.HomePagerAdapter;
 import com.xiwang.jxw.base.BaseFragment;
@@ -31,6 +32,11 @@ public class HomeFragment extends BaseFragment {
     List<ColumnBean> columnBeanList=new ArrayList<ColumnBean>();
 
     HomePagerAdapter adapter;
+
+    @Override
+    protected String getPageName() {
+        return "首页新闻页面";
+    }
 
     @Override
     protected View getViews() {
@@ -132,4 +138,9 @@ public class HomeFragment extends BaseFragment {
     public void onEvent(MenuEvent event) {
         showColumnList();
     }
+
+
+
+
+
 }

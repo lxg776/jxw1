@@ -42,6 +42,12 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
     private TextView user_tv;
     /** 个性签名*/
     private TextView sign_tv;
+
+    @Override
+    protected String getPageName() {
+        return "我的界面";
+    }
+
     @Override
     protected View getViews() {
         return View.inflate(context, R.layout.fragment_mine, null);

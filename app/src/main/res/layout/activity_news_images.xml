@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".PublishNewsActivity"
-    android:background="@color/background_material_dark"
+    android:background="@color/gray_50"
     android:orientation="vertical">
 
     <include layout="@layout/tootbar_common"></include>
@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:textColor="@color/black_transparent_26"
+            android:textColor="@color/black_transparent_54"
             android:textSize="18sp"
             android:padding="16dp"
             android:id="@+id/title_tv"

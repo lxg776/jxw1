@@ -11,6 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 
+import com.umeng.analytics.MobclickAgent;
+
 import de.greenrobot.event.EventBus;
 
 
@@ -40,6 +42,15 @@ public abstract class BaseActivity extends AppCompatActivity {
 	/**标题栏 */
 	protected  Toolbar toolbar;
 
+	/** 页面名称 */
+	protected String pageName;
+
+	protected abstract String getPageName();
+
+	public void setPageName(String pageName) {
+		this.pageName = pageName;
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -58,12 +69,22 @@ public abstract class BaseActivity extends AppCompatActivity {
 		widgetListener();
 		init();
 		registerReceiver();
+		setPageName(getPageName());
 	}
 
 	protected abstract void initActionBar();
 
 
-
+	public void onResume() {
+		super.onResume();
+		/**友盟统计*/
+		MobclickAgent.onResume(this);
+	}
+	public void onPause() {
+		super.onPause();
+		/**友盟统计*/
+		MobclickAgent.onPause(this);
+	}
 
 	/**
 	 * 界面开始动画 (此处输入方法执行任务.)
@@ -249,17 +270,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 	}
 
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-
-	}
 
 	@Override
 	protected void onDestroy() {

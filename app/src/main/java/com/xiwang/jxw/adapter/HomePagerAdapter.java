@@ -5,7 +5,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import com.xiwang.jxw.bean.ColumnBean;
 import com.xiwang.jxw.fragment.NewsListFragment;
-import com.xiwang.jxw.util.LogUtil;
+import com.xiwang.jxw.util.Log;
+
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +38,7 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
 
 
-        LogUtil.e("position:"+position);
+        Log.e("position:" + position);
 
         if (mapFragement.containsKey(columnBeanList.get(position))) {
             return mapFragement.get(columnBeanList.get(position));

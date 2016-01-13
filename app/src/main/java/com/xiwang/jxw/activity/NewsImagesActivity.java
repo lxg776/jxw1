@@ -16,17 +16,20 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseActivity;
 import com.xiwang.jxw.config.IntentConfig;
+import com.xiwang.jxw.listener.SaveImageListener;
+import com.xiwang.jxw.util.CommonUtil;
 import com.xiwang.jxw.util.ImgLoadUtil;
+import com.xiwang.jxw.util.ToastUtil;
 import com.xiwang.jxw.widget.PercentView;
 import com.xiwang.jxw.widget.ZoomImageView;
-import com.xiwang.jxw.widget.ZoomImageViewAware;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by sunshine on 16/1/11.
@@ -45,8 +48,10 @@ public class NewsImagesActivity extends BaseActivity{
     /**下标*/
     int currentPostion;
 
-
+    /**显示的view*/
     List<View> views=new ArrayList<>();
+    /**保存下载好的bitmap*/
+    Map<String,Bitmap> bitmapMap=new HashMap<String,Bitmap>();
 
     @Override
     protected void initActionBar() {
@@ -59,7 +64,6 @@ public class NewsImagesActivity extends BaseActivity{
                 finish();
             }
         });
-
         /**
          * 保存图片
          */
@@ -68,7 +72,8 @@ public class NewsImagesActivity extends BaseActivity{
             public boolean onMenuItemClick(MenuItem item) {
 
                 if (item.getItemId() == R.id.action_save) {
-
+                    String currentUrl=send_urlList.get(currentPostion-1);
+                    saveImage(currentUrl);
                     return true;
                 }
                 return false;
@@ -102,7 +107,7 @@ public class NewsImagesActivity extends BaseActivity{
                 initView(view,send_urlList.get(i));
                 views.add(view);
             }
-            setToolBarTitle(currentPostion, send_urlList.size());
+
         }
 
 
@@ -110,8 +115,31 @@ public class NewsImagesActivity extends BaseActivity{
 
         MyViewPagerAdapter pagerAdapter=new MyViewPagerAdapter();
         vp_content.setAdapter(pagerAdapter);
-        vp_content.setCurrentItem(currentPostion-1);
+        vp_content.setCurrentItem(currentPostion - 1);
 
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setToolBarTitle(currentPostion, send_urlList.size());
+            }
+        },1000);
+        vp_content.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                currentPostion = position + 1;
+                setToolBarTitle(currentPostion, views.size());
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
 
     }
@@ -145,7 +173,7 @@ public class NewsImagesActivity extends BaseActivity{
 
     private void initView(View view,String url){
         final ImageView imageView = (ImageView) view.findViewById(R.id.img_iv);
-        final ZoomImageView zoom_img_iv = (ZoomImageView) view.findViewById(R.id.zoom_img_iv);
+       // final ZoomImageView zoom_img_iv = (ZoomImageView) view.findViewById(R.id.zoom_img_iv);
 
         final PercentView progress_view= (PercentView) view.findViewById(R.id.progress_view);
         ImageViewAware imageViewAware=new ImageViewAware(imageView);
@@ -163,9 +191,10 @@ public class NewsImagesActivity extends BaseActivity{
 
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                zoom_img_iv.setSourceImageBitmap(loadedImage, NewsImagesActivity.this);
-                zoom_img_iv.setVisibility(View.VISIBLE);
-                imageView.setVisibility(View.GONE);
+                bitmapMap.put(imageUri,loadedImage);
+                ((ZoomImageView) imageView).setSourceImageBitmap(loadedImage, NewsImagesActivity.this);
+                // zoom_img_iv.setVisibility(View.VISIBLE);
+                //  imageView.setVisibility(View.GONE);
                 progress_view.setVisibility(View.GONE);
             }
 
@@ -194,8 +223,7 @@ public class NewsImagesActivity extends BaseActivity{
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             View view=views.get(position);
-            currentPostion=position+1;
-            setToolBarTitle(position+1,views.size());
+
 
             container.addView(view);
             return view;
@@ -211,6 +239,43 @@ public class NewsImagesActivity extends BaseActivity{
         public boolean isViewFromObject(View view, Object object) {
             return view == object;
         }
+    }
+
+    /**
+     * 保存图片至相册
+     */
+    private void saveImage(final String url){
+      final  Bitmap bitmap=bitmapMap.get(url);
+                if(null!=bitmap){
+                    new Thread(){
+                        @Override
+                        public void run() {
+                            CommonUtil.saveImageToGallery(NewsImagesActivity.this,bitmap, url, new SaveImageListener() {
+                                @Override
+                                public void success(final String msg) {
+                                    mHandler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            ToastUtil.showToast(NewsImagesActivity.this, msg);
+                                        }
+                                    });
+
+                                }
+
+                                @Override
+                                public void fail(final String msg) {
+                                    mHandler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            ToastUtil.showToast(NewsImagesActivity.this, msg);
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }.start();
+                }
+
     }
 
 

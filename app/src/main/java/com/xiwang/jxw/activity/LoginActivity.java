@@ -4,6 +4,8 @@ package com.xiwang.jxw.activity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
+
+import com.umeng.analytics.MobclickAgent;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.base.BaseSubmitActivity;
@@ -116,6 +118,8 @@ public class LoginActivity extends BaseSubmitActivity implements View.OnClickLis
                     EventBus.getDefault().post(new LoginEvent(true));
                     ProcessDialogUtil.dismissDialog();
                     setResult(RESULT_OK);
+                    /** 帐号登录，记录友盟*/
+                    MobclickAgent.onProfileSignIn(TApplication.mUser.getUid()+"_"+TApplication.mUser.getUsername());
                     finish();
                 }
 

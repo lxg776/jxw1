@@ -10,7 +10,8 @@ import com.xiwang.jxw.bean.StartAppBean;
 import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.network.AppHttpClient;
-import com.xiwang.jxw.util.LogUtil;
+import com.xiwang.jxw.util.Log;
+
 
 import org.apache.http.Header;
 import org.json.JSONException;
@@ -44,7 +45,7 @@ public class SystemBiz {
                     String responseStr = new String(responseBody);
 
                     ResponseBean responseBean = new ResponseBean();
-                    LogUtil.d("data:" + responseStr);
+                    Log.d("data:" + responseStr);
                     try {
                         JSONObject jsonObject = new JSONObject(responseStr);
                         responseBean.setInfo(jsonObject.optString("msg"));

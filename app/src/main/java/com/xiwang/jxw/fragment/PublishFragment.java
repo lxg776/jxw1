@@ -37,7 +37,10 @@ public class PublishFragment extends BaseFragment implements View.OnClickListene
     LinearLayout dipi_btn;
 
 
-
+    @Override
+    protected String getPageName() {
+        return "发布招聘，求职，帖子";
+    }
 
     @Override
     protected View getViews() {
