@@ -21,6 +21,11 @@ public class ServiceProtocolActivity extends BaseActivity {
     WebView mWebView;
 
     @Override
+    protected String getPageName() {
+        return "注册协议a";
+    }
+
+    @Override
     protected void initActionBar() {
         toolbar= (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("西网服务协议");

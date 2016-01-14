@@ -70,6 +70,11 @@ public class StartAppActivity extends BaseActivity {
     };
 
     @Override
+    protected String getPageName() {
+        return "启动a";
+    }
+
+    @Override
     protected void initActionBar() {
 
     }

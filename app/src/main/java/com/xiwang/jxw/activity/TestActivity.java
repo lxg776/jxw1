@@ -33,6 +33,11 @@ public class TestActivity extends BaseActivity{
 
 
     @Override
+    protected String getPageName() {
+        return "测试a";
+    }
+
+    @Override
     protected void initActionBar() {
 
     }

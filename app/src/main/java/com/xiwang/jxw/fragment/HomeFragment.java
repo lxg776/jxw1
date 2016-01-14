@@ -35,7 +35,7 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected String getPageName() {
-        return "首页新闻页面";
+        return "首页新闻f";
     }
 
     @Override

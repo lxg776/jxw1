@@ -248,24 +248,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 	}
 
-	/**
-	 * 骞挎挱鐩戝惉鍥炶皟
-	 * 
-	 * @version 1.0
-	 * @createTime 2014骞�5鏈�22鏃�,涓嬪崍1:40:30
-	 * @updateTime 2014骞�5鏈�22鏃�,涓嬪崍1:40:30
-	 * @createAuthor CodeApe
-	 * @updateAuthor CodeApe
-	 * @updateInfo (姝ゅ杈撳叆淇敼鍐呭,鑻ユ棤淇敼鍙笉鍐�.)
-	 * 
-	 * @param context
-	 *            涓婁笅鏂�
-	 * @param intent
-	 *            骞挎挱闄勫甫鍐呭
-	 */
+
 	protected void onReceive(Context context, Intent intent) {
 
-		// TODO 鐖剁被闆嗕腑澶勭悊鍏卞悓鐨勮姹�
+
 
 	}
 

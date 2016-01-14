@@ -54,6 +54,11 @@ public class NewsImagesActivity extends BaseActivity{
     Map<String,Bitmap> bitmapMap=new HashMap<String,Bitmap>();
 
     @Override
+    protected String getPageName() {
+        return "详情图片列表a";
+    }
+
+    @Override
     protected void initActionBar() {
         toolbar= (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.back_btn));

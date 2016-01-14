@@ -97,6 +97,15 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
     int likefla=-1;
     /**图片列表*/
     ArrayList<String> imagesUrlList=new ArrayList<String>();
+
+    @Override
+    protected String getPageName() {
+        if(null!=columnBean){
+            return columnBean.getName()+"帖子详情a";
+        }
+        return "帖子详情页面";
+    }
+
     @Override
     protected void initActionBar() {
         toolbar= (Toolbar) findViewById(R.id.toolbar);

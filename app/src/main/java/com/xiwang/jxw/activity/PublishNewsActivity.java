@@ -15,6 +15,7 @@ import com.xiwang.jxw.bean.postbean.TopicBean;
 import com.xiwang.jxw.biz.NewsBiz;
 import com.xiwang.jxw.util.CheckUtil;
 import com.xiwang.jxw.util.ToastUtil;
+import com.xiwang.jxw.widget.DeleteEditText;
 import com.xiwang.jxw.widget.MyInputEditView;
 import com.xiwang.jxw.widget.MyTextSelectView;
 import com.xiwang.jxw.widget.RichEditText;
@@ -34,7 +35,7 @@ public class PublishNewsActivity extends BaseSubmitActivity{
     /** 选择类型*/
     MyTextSelectView type_select_tv;
     /** 标题*/
-    MyInputEditView title_edt;
+    DeleteEditText title_edt;
     /** 内容*/
     RichEditText content_edt;
     /** 图片上传uploadview*/
@@ -85,6 +86,11 @@ public class PublishNewsActivity extends BaseSubmitActivity{
     }
 
     @Override
+    protected String getPageName() {
+        return "发帖a";
+    }
+
+    @Override
     protected void initActionBar() {
         toolbar= (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("发布帖子");
@@ -117,7 +123,7 @@ public class PublishNewsActivity extends BaseSubmitActivity{
     @Override
     protected void findViews() {
         type_select_tv= (MyTextSelectView) findViewById(R.id.type_select_tv);
-        title_edt= (MyInputEditView) findViewById(R.id.title_edt);
+        title_edt= (DeleteEditText) findViewById(R.id.title_edt);
         uploadView= (UploadImgView) findViewById(R.id.uploadView);
         content_edt= (RichEditText) findViewById(R.id.content_edt);
        // title_edt.setVisibility(View.GONE);

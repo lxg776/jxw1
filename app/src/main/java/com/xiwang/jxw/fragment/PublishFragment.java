@@ -39,7 +39,7 @@ public class PublishFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     protected String getPageName() {
-        return "发布招聘，求职，帖子";
+        return "发布招聘，求职，帖子f";
     }
 
     @Override

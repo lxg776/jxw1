@@ -4,64 +4,95 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".PublishNewsActivity"
+    android:background="@color/gray_100"
     android:orientation="vertical">
-
     <include layout="@layout/tootbar_common"></include>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@color/white"
-        android:layout_marginTop="16dp"
+
         android:paddingBottom="24dp"
         >
         <!--分类选择-->
         <com.xiwang.jxw.widget.MyTextSelectView
             app:is_hint="false"
             app:inputHinttext="选择分类"
+            android:layout_marginTop="16dp"
             style="@style/etd_2"
             android:id="@+id/type_select_tv"
+            android:background="@color/white"
             >
         </com.xiwang.jxw.widget.MyTextSelectView>
 
         <!--输入标题-->
-        <com.xiwang.jxw.widget.MyInputEditView
-            android:layout_marginTop="8dp"
-            app:topHinttext="标题"
-            app:inputHinttext="输入标题"
-            style="@style/etd_2"
+        <com.xiwang.jxw.widget.DeleteEditText
             android:id="@+id/title_edt"
+            android:layout_marginTop="8dp"
+            style="@style/etd_1"
+            android:hint="标题"
+            android:layout_height="48dp"
+            android:background="@color/white"
             >
-        </com.xiwang.jxw.widget.MyInputEditView>
+        </com.xiwang.jxw.widget.DeleteEditText>
 
 
         <!--输入内容-->
-        <com.xiwang.jxw.widget.RichEditText
-            android:id="@+id/content_edt"
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="120dp"
-            android:padding="16dp"
-            android:hint="说点什么？"
-            android:textColor="@color/black_transparent_87"
-            android:textColorHint="@color/black_transparent_26"
-            android:background="@color/trans"
-            android:gravity="top"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:paddingBottom="8dp"
+            android:layout_marginTop="8dp"
+            >
+            <com.xiwang.jxw.widget.RichEditText
+                android:id="@+id/content_edt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="120dp"
+                android:padding="16dp"
+                android:hint="说点什么？"
+                android:background="@color/white"
+                android:textColor="@color/black_transparent_87"
+                android:textColorHint="@color/black_transparent_26"
+                android:gravity="top"
+                />
+
+            <!--图片上传-->
+            <com.xiwang.jxw.widget.UploadImgView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:minHeight="80dp"
+                android:id="@+id/uploadView"
+                app:horizontalSpacing="8dp"
+                app:verticalSpacing="8dp"
+                app:numColumns="4"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                ></com.xiwang.jxw.widget.UploadImgView>
+            </LinearLayout>
+
+
+            <ImageView
+                android:id="@+id/emoji_iv"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="8dp"
+                android:src="@mipmap/emoji_icon"
+                />
+        <ImageView
+            android:id="@+id/keyboard_btn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="8dp"
+            android:src="@mipmap/emoji_icon"
             />
 
-        <!--图片上传-->
-        <com.xiwang.jxw.widget.UploadImgView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:minHeight="80dp"
-            android:id="@+id/uploadView"
-            app:horizontalSpacing="8dp"
-            app:verticalSpacing="8dp"
-            app:numColumns="4"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            ></com.xiwang.jxw.widget.UploadImgView>
+
+
 
     </LinearLayout>
 

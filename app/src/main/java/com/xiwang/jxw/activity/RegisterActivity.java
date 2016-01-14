@@ -51,6 +51,10 @@ public class RegisterActivity extends BaseSubmitActivity implements View.OnClick
     String sex;
 
 
+    @Override
+    protected String getPageName() {
+        return "注册a";
+    }
 
     @Override
     protected void initActionBar() {

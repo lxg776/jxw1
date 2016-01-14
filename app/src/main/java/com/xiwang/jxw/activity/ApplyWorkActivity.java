@@ -24,6 +24,11 @@ public class ApplyWorkActivity extends BaseActivity{
    // private RichEditor mEditor;
 
     @Override
+    protected String getPageName() {
+        return "求职a";
+    }
+
+    @Override
     protected void initActionBar() {
 
     }

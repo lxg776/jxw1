@@ -45,7 +45,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
 
     @Override
     protected String getPageName() {
-        return "我的界面";
+        return "我的f";
     }
 
     @Override

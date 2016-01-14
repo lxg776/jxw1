@@ -40,6 +40,11 @@ public class LoginActivity extends BaseSubmitActivity implements View.OnClickLis
     TextView register_btn;
 
     @Override
+    protected String getPageName() {
+        return "登录a";
+    }
+
+    @Override
     protected void initActionBar() {
         toolbar= (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("登录");

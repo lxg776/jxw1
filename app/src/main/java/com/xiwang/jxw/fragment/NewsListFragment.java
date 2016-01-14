@@ -72,7 +72,7 @@ public class NewsListFragment extends BaseFragment implements RefreshLayout.OnLo
     @Override
     protected String getPageName() {
         if(null!=columnBean)
-        return columnBean.getName()+"页面";
+        return columnBean.getName()+"f";
 
         return "newsList";
     }

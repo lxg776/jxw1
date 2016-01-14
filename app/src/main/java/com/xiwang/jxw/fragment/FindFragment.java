@@ -17,7 +17,7 @@ public class FindFragment extends BaseFragment {
 
     @Override
     protected String getPageName() {
-        return "发现页面";
+        return "发现f";
     }
 
     @Override

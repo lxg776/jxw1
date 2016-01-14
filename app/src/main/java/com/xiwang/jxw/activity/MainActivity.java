@@ -331,6 +331,11 @@ public class MainActivity extends BaseActivity {
 
 
     @Override
+    protected String getPageName() {
+        return "主页界面";
+    }
+
+    @Override
     protected void initActionBar() {
 
     }

@@ -9,6 +9,11 @@ import com.xiwang.jxw.base.BaseActivity;
 public class SettingActivity extends BaseActivity{
 
     @Override
+    protected String getPageName() {
+        return "设置界面";
+    }
+
+    @Override
     protected void initActionBar() {
 
     }

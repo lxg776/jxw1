@@ -91,7 +91,6 @@ public class UploadImgView extends RelativeLayout{
     public UploadImgView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
-
     }
 
     public UploadImgView(Context context, AttributeSet attrs, int defStyleAttr) {
