@@ -74,26 +74,6 @@
                 android:layout_marginRight="16dp"
                 ></com.xiwang.jxw.widget.UploadImgView>
             </LinearLayout>
-
-
-            <ImageView
-                android:id="@+id/emoji_iv"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:padding="8dp"
-                android:src="@mipmap/emoji_icon"
-                />
-        <ImageView
-            android:id="@+id/keyboard_btn"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:padding="8dp"
-            android:src="@mipmap/emoji_icon"
-            />
-
-
-
-
     </LinearLayout>
 
 </LinearLayout>

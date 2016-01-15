@@ -20,6 +20,11 @@ public class SmileBean extends BaseBean {
     /** 图片路径*/
     private String  img;
 
+
+    private boolean isDeleteSimile=false;
+
+
+
     public String getId() {
         return id;
     }
@@ -50,6 +55,14 @@ public class SmileBean extends BaseBean {
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    public boolean isDeleteSimile() {
+        return isDeleteSimile;
+    }
+
+    public void setIsDeleteSimile(boolean isDeleteSimile) {
+        this.isDeleteSimile = isDeleteSimile;
     }
 
     @Override

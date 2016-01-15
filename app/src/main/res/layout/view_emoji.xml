@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <!--表情按钮-->
+    <ImageView
+        android:id="@+id/emoji_iv"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:padding="8dp"
+        android:src="@mipmap/emoji_icon"
+        />
+        <!--键盘按钮-->
+    <ImageView
+        android:id="@+id/keyboard_iv"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:padding="8dp"
+        android:visibility="gone"
+        android:src="@mipmap/keyboard_icon"
+        />
+    </LinearLayout>
+        <!--内容页面-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/content_ll"
+        >
+        <!--标签页面-->
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            >
+        </android.support.v4.view.ViewPager>
+        <!--下标标识-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:id="@+id/page_index_ll"
+            android:background="@color/orange_700"
+            android:orientation="horizontal"
+            ></LinearLayout>
+        <!--按钮点击-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:id="@+id/change_ll"
+            android:background="@color/orange_500"
+            android:orientation="horizontal"
+            ></LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>
