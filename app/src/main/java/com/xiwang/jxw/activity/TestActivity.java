@@ -49,19 +49,19 @@ public class TestActivity extends BaseActivity{
 
     @Override
     protected void findViews() {
-        listView= (ListView) findViewById(R.id.listView);
-        adapter =new HomeNewsListAdapter(this);
-
-        columnBean.setDataUrl("getapp.php?a=thread&fid=2");
-        columnBean.setName("新鲜事");
-
-       // headView=View.inflate(context,R.layout.view_news_detail,null);
-        webView= (WebView) headView.findViewById(R.id.webView);
-        listView.addHeaderView(headView);
-
-        //listView.addHeaderView(headView, null, false);
-        listView.setAdapter(adapter);
-        webView.loadUrl("http://www.qq.com");
+//        listView= (ListView) findViewById(R.id.listView);
+//        adapter =new HomeNewsListAdapter(this);
+//
+//        columnBean.setDataUrl("getapp.php?a=thread&fid=2");
+//        columnBean.setName("新鲜事");
+//
+//       // headView=View.inflate(context,R.layout.view_news_detail,null);
+//        webView= (WebView) headView.findViewById(R.id.webView);
+//        listView.addHeaderView(headView);
+//
+//        //listView.addHeaderView(headView, null, false);
+//        listView.setAdapter(adapter);
+//        webView.loadUrl("http://www.qq.com");
     }
 
     @Override

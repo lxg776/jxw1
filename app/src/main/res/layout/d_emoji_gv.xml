@@ -4,9 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     >
-    <GridView
+    <com.xiwang.jxw.widget.AutoGridView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="16dp"
         android:id="@+id/grid_view"
-        ></GridView>
+        android:verticalSpacing="8dp"
+        android:horizontalSpacing="8dp"
+        android:numColumns="7"
+        android:scrollbars="none"
+        ></com.xiwang.jxw.widget.AutoGridView>
 </RelativeLayout>

@@ -9,7 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/listView"
-       ></ListView>ß
+       ></ListView>
+    <com.xiwang.jxw.widget.EmojiView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
+
+    </com.xiwang.jxw.widget.EmojiView>
 
 </LinearLayout>

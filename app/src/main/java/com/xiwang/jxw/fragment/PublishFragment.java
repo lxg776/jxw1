@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.activity.PublishNewsActivity;
+import com.xiwang.jxw.activity.TestActivity;
 import com.xiwang.jxw.base.BaseFragment;
 import com.xiwang.jxw.util.DisplayUtil;
 import com.xiwang.jxw.util.IntentUtil;

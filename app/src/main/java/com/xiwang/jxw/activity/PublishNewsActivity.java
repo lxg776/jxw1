@@ -15,6 +15,7 @@ import com.xiwang.jxw.bean.postbean.TopicBean;
 import com.xiwang.jxw.biz.NewsBiz;
 import com.xiwang.jxw.util.CheckUtil;
 import com.xiwang.jxw.util.ToastUtil;
+import com.xiwang.jxw.widget.AutoRelativeLayout;
 import com.xiwang.jxw.widget.DeleteEditText;
 import com.xiwang.jxw.widget.MyInputEditView;
 import com.xiwang.jxw.widget.MyTextSelectView;
@@ -50,6 +51,8 @@ public class PublishNewsActivity extends BaseSubmitActivity{
         String content=content_edt.getRichText().toString();
         List<UploadImgBean> uploadString=uploadView.getUploadImageUrlList();
         String fid="";
+
+
 
         if(CheckUtil.isEmpty(context,"主题",title)){
             return false;
@@ -146,7 +149,22 @@ public class PublishNewsActivity extends BaseSubmitActivity{
 
     @Override
     protected void widgetListener() {
+        ((AutoRelativeLayout)findViewById(R.id.auto_rl)).setOnLayoutChangeListener(new AutoRelativeLayout.OnLayoutChangeListener() {
+            @Override
+            public void onChange(int old_l, int old_t, int old_r, int old_b, int l, int t, int r, int b) {
+                if (old_b == 0) {
+                    return;
+                }
+                if (old_b > b) {
+                    /** 键盘弹出 背景变模糊 */
+                ToastUtil.showToast(context,"键盘弹出");
 
+                } else {
+                    /** 键盘消失 背景变恢复 */
+                    ToastUtil.showToast(context,"键盘消失");
+                }
+            }
+        });
     }
 
     /**
