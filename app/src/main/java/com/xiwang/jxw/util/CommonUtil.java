@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 
+import com.umeng.analytics.MobclickAgent;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.bean.ResponseBean;
@@ -24,7 +25,9 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author liangxg
@@ -67,6 +70,49 @@ public class CommonUtil {
             }
         });
     }
+
+    /**
+     * 友盟统计事件
+     * @param context
+     * @param eventId
+     */
+    public static void tjEvent(Context context, String eventId){
+        if(TApplication.isUmeng){
+            MobclickAgent.onEvent(context, eventId);
+        }
+    }
+
+
+    /**
+     * 友盟统计事件
+     * @param context
+     * @param pageName fragment页面名称
+     * @param duration 持续事件
+     */
+    public static void onFragmentPage(Context context, String pageName,int duration){
+        if(TApplication.isUmeng){
+            Map<String, String> map_value = new HashMap<String, String>();
+            map_value.put("page" , pageName );
+            MobclickAgent.onEventValue(context, context.getResources().getString(R.string.u_fragment), map_value, duration);
+
+        }
+    }
+
+    /**
+     * 友盟统计事件
+     * @param context
+     * @param pageName fragment页面名称
+     * @param duration 持续事件
+     */
+    public static void onActivityPage(Context context, String pageName,int duration){
+        if(TApplication.isUmeng){
+            Map<String, String> map_value = new HashMap<String, String>();
+            map_value.put("page" , pageName );
+            MobclickAgent.onEventValue(context, context.getResources().getString(R.string.u_activity), map_value, duration);
+        }
+    }
+
+
 
 
     /**

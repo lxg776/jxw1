@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    
+     <!-- **********************友盟关键子*********************** -->
+    <string name="u_fragment">u_fragment</string>
+    <string name="u_activity">u_activity</string>
+
+</resources>

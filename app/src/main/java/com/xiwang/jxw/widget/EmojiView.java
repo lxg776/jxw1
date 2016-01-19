@@ -30,7 +30,7 @@ public class EmojiView extends BaseView {
     /** 表情，键盘切换*/
     ImageView emoji_iv,keyboard_iv;
     /** 表情内容*/
-    LinearLayout content_ll;
+    public LinearLayout content_ll;
     /** 表情vp*/
     ViewPager viewPager;
     /** 更改下标的布局*/
@@ -42,8 +42,16 @@ public class EmojiView extends BaseView {
     /** 下标*/
     List<View> indexView=new ArrayList<View>();
     /**回调*/
-    EmojiListener listener;
+    EmojiListener emojiListener;
 
+
+    public EmojiListener getEmojiListener() {
+        return emojiListener;
+    }
+
+    public void setEmojiListener(EmojiListener emojiListener) {
+        this.emojiListener = emojiListener;
+    }
 
     public EmojiView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -70,30 +78,52 @@ public class EmojiView extends BaseView {
         page_index_ll= (LinearLayout) view_Parent.findViewById(R.id.page_index_ll);
         change_ll= (LinearLayout) view_Parent.findViewById(R.id.change_ll);
     }
+    /**
+     * 显示表情
+     */
+    public void onEmojiShow(){
+        content_ll.setVisibility(View.VISIBLE);
+        keyboard_iv.setVisibility(View.VISIBLE);
+        emoji_iv.setVisibility(View.GONE);
+        if(null!=emojiListener){
+            emojiListener.onEmojiShow();
+        }
+    }
+
+    /**
+     * 隐藏方法
+     */
+    public void onHide(){
+        content_ll.setVisibility(GONE);
+        keyboard_iv.setVisibility(View.GONE);
+        emoji_iv.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * 显示键盘
+     */
+    public void onKeyBoard(){
+        content_ll.setVisibility(View.GONE);
+        keyboard_iv.setVisibility(View.GONE);
+        emoji_iv.setVisibility(View.VISIBLE);
+        if(null!=emojiListener){
+            emojiListener.onKeyBoard();
+        }
+    }
 
     @Override
     protected void widgetListener() {
         emoji_iv.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                content_ll.setVisibility(View.VISIBLE);
-                keyboard_iv.setVisibility(View.VISIBLE);
-                emoji_iv.setVisibility(View.GONE);
-                if(null!=listener){
-                    listener.onEmojiShow();
-                }
+                onEmojiShow();
             }
         });
         keyboard_iv.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                content_ll.setVisibility(View.GONE);
-                keyboard_iv.setVisibility(View.GONE);
-                emoji_iv.setVisibility(View.VISIBLE);
-                if(null!=listener){
-                    listener.onKeyBoard();
-                }
+                onKeyBoard();
             }
         });
         /**
@@ -365,8 +395,8 @@ public class EmojiView extends BaseView {
                 convertView.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(null!=listener){
-                            listener.onClickEmojiView(smileBean);
+                        if(null!=emojiListener){
+                            emojiListener.onClickEmojiView(smileBean);
                         }
                     }
                 });
@@ -397,8 +427,8 @@ public class EmojiView extends BaseView {
                 convertView.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(null!=listener){
-                            listener.onClickEmojiView(smileBean);
+                        if(null!=emojiListener){
+                            emojiListener.onClickEmojiView(smileBean);
                         }
                     }
                 });
@@ -423,11 +453,20 @@ public class EmojiView extends BaseView {
      * 回调监听
      */
    public interface  EmojiListener{
-            /**点击表情view*/
+        /**
+         * 点击表情
+         * @param bean
+         */
             public void onClickEmojiView(SmileBean bean);
-            /**表情显示*/
+
+        /**
+         * 表情显示
+         */
             public void onEmojiShow();
-            /**点击键盘*/
+
+        /**
+         * 点击键盘
+         */
             public void onKeyBoard();
     }
 

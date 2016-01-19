@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.umeng.analytics.MobclickAgent;
+import com.xiwang.jxw.util.CommonUtil;
 
 import de.greenrobot.event.EventBus;
 
@@ -46,7 +47,7 @@ public abstract class BaseFragment extends Fragment {
 
 
 
-
+	long beg;
 
 	protected abstract String getPageName();
 
@@ -163,8 +164,6 @@ public abstract class BaseFragment extends Fragment {
 //		if (BroadcastFilters.ACTION_TEST.equals(intent.getAction())) {
 //		}
 	}
-
-
 	public void onResume() {
 		super.onResume();
 		MobclickAgent.onPageStart(getPageName()); //统计页面(仅有Activity的应用中SDK自动调用，不需要单独写。"SplashScreen"为页面名称，可自定义)
@@ -174,5 +173,7 @@ public abstract class BaseFragment extends Fragment {
 		super.onPause();
 		MobclickAgent.onPageEnd(getPageName()); // （仅有Activity的应用中SDK自动调用，不需要单独写）保证 onPageEnd 在onPause 之前调用,因为 onPause 中会保存信息。"SplashScreen"为页面名称，可自定义
 		MobclickAgent.onPause(context);
+		int distence= (int) ((System.currentTimeMillis()-beg)/1000);
+		CommonUtil.onFragmentPage(context, getPageName(), distence);
 	}
 }

@@ -3,6 +3,7 @@ package com.xiwang.jxw.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
+
 /**
  * 监听布局的的位置变化
  * @author liangxg
@@ -15,10 +16,27 @@ public class AutoRelativeLayout extends RelativeLayout {
 	public int old_t;
 	public int old_r;
 	public int old_b;
-	
 	OnLayoutChangeListener onLayoutChangeListener;
 
-	public AutoRelativeLayout(Context context, AttributeSet attrs, int defStyle) {
+	OnKeyBoardListener keyboardListener;
+
+	/**键盘标识*/
+	public boolean isKeyBoard=false;
+
+
+    int keyBoardHeight;
+
+    int orgin_b;
+
+    public OnKeyBoardListener getKeyboardListener() {
+        return keyboardListener;
+    }
+
+    public void setKeyboardListener(OnKeyBoardListener keyboardListener) {
+        this.keyboardListener = keyboardListener;
+    }
+
+    public AutoRelativeLayout(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		// TODO Auto-generated constructor stub
 	}
@@ -33,17 +51,45 @@ public class AutoRelativeLayout extends RelativeLayout {
 		// TODO Auto-generated constructor stub
 	}
 
+    /**
+     * 获取键盘弹出高度
+     * @return
+     */
+    public int getKeyBoardHeight() {
+        return keyBoardHeight;
+    }
+
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		// TODO Auto-generated method stub
-	
+        if (old_b == 0) {
+            orgin_b=b;
+        }else{
+            if(b==orgin_b){
+                if(null!= keyboardListener){
+                    keyboardListener.onKeyBoardHide();
+                }
+                isKeyBoard=false;
+            }else if(b<orgin_b){
+                isKeyBoard=true;
+                int distence=orgin_b-b;
+                if(distence>keyBoardHeight){
+                    keyBoardHeight=distence;
+                }
+                if(null!= keyboardListener){
+                    keyboardListener.onKeyboardShow(keyBoardHeight);
+                }
+            }
+        }
 		if(null!=onLayoutChangeListener){
 			onLayoutChangeListener.onChange(old_l, old_t, old_r, old_b, l, t, r, b);
-			this.old_l=l;
-			this.old_r=r;
-			this.old_t=t;
-			this.old_b=b;
 		}
+        this.old_l=l;
+        this.old_r=r;
+        this.old_t=t;
+        this.old_b=b;
+
+
 		super.onLayout(changed, l, t, r, b);
 	}
 	
@@ -80,7 +126,22 @@ public class AutoRelativeLayout extends RelativeLayout {
 		 */
 		public void onChange(int old_l, int old_t, int old_r, int old_b, int l, int t, int r, int b);
 	}
-	
+
+
+	/**
+	 * view 位置变化更改监听事件
+	 *
+	 * @Description TODO
+	 * @author liangxg
+	 * @version 1.0
+	 * @date 2013-11-28
+	 *
+	 */
+	public interface OnKeyBoardListener {
+		public void onKeyboardShow(int keyBoardHeight);
+		public void onKeyBoardHide();
+
+	}
 	
 	
 	

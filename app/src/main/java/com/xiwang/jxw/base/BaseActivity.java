@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 
 import com.umeng.analytics.MobclickAgent;
+import com.xiwang.jxw.util.CommonUtil;
 
 import de.greenrobot.event.EventBus;
 
@@ -47,6 +48,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 	protected abstract String getPageName();
 
+	/**页面时长*/
+	long beg;
+
+
 	public void setPageName(String pageName) {
 		this.pageName = pageName;
 	}
@@ -77,11 +82,14 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 	public void onResume() {
 		super.onResume();
+		beg=System.currentTimeMillis();
 		/**友盟统计*/
 		MobclickAgent.onResume(this);
 	}
 	public void onPause() {
 		super.onPause();
+		int distence= (int) ((System.currentTimeMillis()-beg)/1000);
+		CommonUtil.onActivityPage(context,getPageName(),distence);
 		/**友盟统计*/
 		MobclickAgent.onPause(this);
 	}

@@ -1,36 +1,36 @@
 package com.xiwang.jxw.activity;
-
+import android.content.Context;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
+import android.view.inputmethod.InputMethodManager;
 
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.base.BaseSubmitActivity;
 import com.xiwang.jxw.bean.ResponseBean;
+import com.xiwang.jxw.bean.SmileBean;
 import com.xiwang.jxw.bean.UploadImgBean;
 import com.xiwang.jxw.bean.postbean.TopicBean;
 import com.xiwang.jxw.biz.NewsBiz;
 import com.xiwang.jxw.util.CheckUtil;
 import com.xiwang.jxw.util.ToastUtil;
+import com.xiwang.jxw.util.keyboardUtil;
 import com.xiwang.jxw.widget.AutoRelativeLayout;
 import com.xiwang.jxw.widget.DeleteEditText;
-import com.xiwang.jxw.widget.MyInputEditView;
+import com.xiwang.jxw.widget.EmojiView;
 import com.xiwang.jxw.widget.MyTextSelectView;
 import com.xiwang.jxw.widget.RichEditText;
 import com.xiwang.jxw.widget.UploadImgView;
-
 import java.util.List;
 
-//import jp.wasabeef.richeditor.RichEditor;
 
 /**
  * 发帖界面
  * Created by sunshine on 15/12/22.
  */
-
 public class PublishNewsActivity extends BaseSubmitActivity{
 
     /** 选择类型*/
@@ -43,6 +43,12 @@ public class PublishNewsActivity extends BaseSubmitActivity{
     UploadImgView uploadView;
     TopicBean topicBean;
 
+    /**表情控件*/
+    EmojiView emoji_view;
+    /**键盘弹出标识*/
+    boolean keyBoardFla=false;
+    AutoRelativeLayout auto_rl;
+
 
     @Override
     protected boolean checkInput() {
@@ -51,9 +57,6 @@ public class PublishNewsActivity extends BaseSubmitActivity{
         String content=content_edt.getRichText().toString();
         List<UploadImgBean> uploadString=uploadView.getUploadImageUrlList();
         String fid="";
-
-
-
         if(CheckUtil.isEmpty(context,"主题",title)){
             return false;
         }
@@ -63,7 +66,6 @@ public class PublishNewsActivity extends BaseSubmitActivity{
         /**
          * 组装上传数据
          */
-
         topicBean=new TopicBean();
         topicBean.setAction("new");
         topicBean.setContent(content);
@@ -80,11 +82,6 @@ public class PublishNewsActivity extends BaseSubmitActivity{
             }
             topicBean.setAids(sb.toString());
         }
-
-
-
-
-
         return true;
     }
 
@@ -132,7 +129,8 @@ public class PublishNewsActivity extends BaseSubmitActivity{
        // title_edt.setVisibility(View.GONE);
        // content_edt.setVisibility(View.GONE);
         //type_select_tv.setVisibility(View.GONE);
-
+        emoji_view= (EmojiView) findViewById(R.id.emoji_view);
+        auto_rl= (AutoRelativeLayout) findViewById(R.id.auto_rl);
 
 
     }
@@ -149,22 +147,106 @@ public class PublishNewsActivity extends BaseSubmitActivity{
 
     @Override
     protected void widgetListener() {
-        ((AutoRelativeLayout)findViewById(R.id.auto_rl)).setOnLayoutChangeListener(new AutoRelativeLayout.OnLayoutChangeListener() {
-            @Override
-            public void onChange(int old_l, int old_t, int old_r, int old_b, int l, int t, int r, int b) {
-                if (old_b == 0) {
-                    return;
-                }
-                if (old_b > b) {
-                    /** 键盘弹出 背景变模糊 */
-                ToastUtil.showToast(context,"键盘弹出");
+//        content_edt.setOnFocusChangeListener(new android.view.View.
+//                OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (hasFocus) {
+//                    // 此处为得到焦点时的处理内容
+//                    if (auto_rl.isKeyBoard) {
+//                        emoji_view.onKeyBoard();
+//                    }
+//                } else {
+//                    // 此处为失去焦点时的处理内容
+//                }
+//            }
+//        });
 
-                } else {
-                    /** 键盘消失 背景变恢复 */
-                    ToastUtil.showToast(context,"键盘消失");
+        emoji_view.setEmojiListener(new EmojiView.EmojiListener() {
+            @Override
+            public void onClickEmojiView(SmileBean bean) {
+
+            }
+
+            @Override
+            public void onEmojiShow() {
+                onEmojiShow();
+            }
+
+            @Override
+            public void onKeyBoard() {
+             //   onKeyShow();
+            }
+        });
+//        uploadView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                onEmojiHide();
+//            }
+//        });
+
+
+        auto_rl.setKeyboardListener(new AutoRelativeLayout.OnKeyBoardListener() {
+            @Override
+            public void onKeyboardShow(int keyBoardHeight) {
+                    if(content_edt.hasFocus()){
+                        onKeyShow();
+                    }else{
+                        emoji_view.setVisibility(View.GONE);
+                        emoji_view.onHide();
+                    }
+            }
+
+            @Override
+            public void onKeyBoardHide() {
+                if(emoji_view.getVisibility()==View.VISIBLE){
+                    onEmojiHide();
                 }
             }
         });
+    }
+
+    /**
+     *  显示表情
+     */
+    private void onEmojiShow(){
+        emoji_view.setVisibility(View.VISIBLE);
+        type_select_tv.setVisibility(View.GONE);
+        title_edt.setVisibility(View.GONE);
+        keyboardUtil.hideKeyBoard(context, content_edt);
+    }
+
+
+
+
+    /**
+     *  显示键盘
+     */
+    private void onKeyShow(){
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                emoji_view.setVisibility(View.VISIBLE);
+                type_select_tv.setVisibility(View.GONE);
+                title_edt.setVisibility(View.GONE);
+            }
+        }, 500);
+
+        if(!auto_rl.isKeyBoard){
+            keyboardUtil.shhowKeyBoard(context, content_edt);
+        }
+
+    }
+
+    /**
+     * 隐藏表情以及键盘
+     */
+    private void  onEmojiHide(){
+        emoji_view.onHide();
+        emoji_view.setVisibility(View.GONE);
+        type_select_tv.setVisibility(View.VISIBLE);
+        title_edt.setVisibility(View.VISIBLE);
+        keyboardUtil.hideKeyBoard(context, content_edt);
     }
 
     /**
@@ -207,20 +289,5 @@ public class PublishNewsActivity extends BaseSubmitActivity{
         getMenuInflater().inflate(R.menu.menu_finlish, menu);
         return true;
     }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_finish) {
-//            submit();
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
+
 }

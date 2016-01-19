@@ -10,16 +10,8 @@ import android.content.Context;
 import android.graphics.Typeface;
 
 import com.loopj.android.http.AsyncHttpClient;
-import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
-import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.nostra13.universalimageloader.utils.StorageUtils;
-
 import com.xiwang.jxw.bean.SmileListBean;
 import com.xiwang.jxw.bean.UserBean;
 import com.xiwang.jxw.fileds.DataFields;
@@ -75,6 +67,9 @@ public class TApplication extends Application  {
 
 
 	public static UserBean mUser;
+
+
+	public static  boolean isUmeng=true;
 
 	@Override
 	public void onCreate() {
