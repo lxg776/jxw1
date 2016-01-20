@@ -112,6 +112,12 @@ public class CommonUtil {
         }
     }
 
+    public static void uMengClick(Context context,String eventName){
+        Map<String, String> map_value = new HashMap<String, String>();
+        map_value.put("click_event" , eventName );
+        MobclickAgent.onEvent(context,context.getResources().getString(R.string.u_click_event),map_value);
+    }
+
 
 
 

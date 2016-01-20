@@ -2,12 +2,10 @@ package com.xiwang.jxw.fragment;
 
 import android.view.View;
 
-import com.umeng.analytics.MobclickAgent;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.adapter.HomePagerAdapter;
 import com.xiwang.jxw.base.BaseFragment;
 import com.xiwang.jxw.bean.ColumnBean;
-import com.xiwang.jxw.event.LoginEvent;
 import com.xiwang.jxw.event.MenuEvent;
 import com.xiwang.jxw.util.SpUtil;
 import com.xiwang.jxw.widget.MyJazzyViewPager;
@@ -30,7 +28,6 @@ public class HomeFragment extends BaseFragment {
     MyJazzyViewPager pager;
     /** 栏目数组数据*/
     List<ColumnBean> columnBeanList=new ArrayList<ColumnBean>();
-
     HomePagerAdapter adapter;
 
     @Override

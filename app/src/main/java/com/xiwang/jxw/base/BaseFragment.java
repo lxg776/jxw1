@@ -166,6 +166,7 @@ public abstract class BaseFragment extends Fragment {
 	}
 	public void onResume() {
 		super.onResume();
+		beg=System.currentTimeMillis();
 		MobclickAgent.onPageStart(getPageName()); //统计页面(仅有Activity的应用中SDK自动调用，不需要单独写。"SplashScreen"为页面名称，可自定义)
 		MobclickAgent.onResume(context);          //统计时长
 	}

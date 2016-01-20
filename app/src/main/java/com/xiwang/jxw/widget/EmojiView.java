@@ -44,6 +44,16 @@ public class EmojiView extends BaseView {
     /**回调*/
     EmojiListener emojiListener;
 
+    /**表情内容是否显示*/
+    boolean contentFla;
+
+    public boolean isContentFla() {
+        return contentFla;
+    }
+
+    public void setContentFla(boolean contentFla) {
+        this.contentFla = contentFla;
+    }
 
     public EmojiListener getEmojiListener() {
         return emojiListener;
@@ -85,6 +95,7 @@ public class EmojiView extends BaseView {
         content_ll.setVisibility(View.VISIBLE);
         keyboard_iv.setVisibility(View.VISIBLE);
         emoji_iv.setVisibility(View.GONE);
+        contentFla=true;
         if(null!=emojiListener){
             emojiListener.onEmojiShow();
         }
@@ -97,6 +108,7 @@ public class EmojiView extends BaseView {
         content_ll.setVisibility(GONE);
         keyboard_iv.setVisibility(View.GONE);
         emoji_iv.setVisibility(View.VISIBLE);
+        contentFla=false;
     }
 
     /**
@@ -106,6 +118,7 @@ public class EmojiView extends BaseView {
         content_ll.setVisibility(View.GONE);
         keyboard_iv.setVisibility(View.GONE);
         emoji_iv.setVisibility(View.VISIBLE);
+        contentFla=false;
         if(null!=emojiListener){
             emojiListener.onKeyBoard();
         }

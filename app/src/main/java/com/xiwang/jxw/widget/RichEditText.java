@@ -10,6 +10,7 @@ import android.graphics.Matrix;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -20,6 +21,9 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.xiwang.jxw.R;
+import com.xiwang.jxw.bean.SmileBean;
+import com.xiwang.jxw.util.DisplayUtil;
+import com.xiwang.jxw.util.ToastUtil;
 
 public class RichEditText extends EditText {
 
@@ -43,6 +47,50 @@ public class RichEditText extends EditText {
 		// TODO Auto-generated constructor stub
 		this.mContext = context;
 	}
+
+
+	public void addEmoji(final SmileBean smileBean){
+		if(smileBean.isDeleteSimile()){
+			return;
+		}
+		String url=smileBean.getImg();
+		if(!TextUtils.isEmpty(url)){
+			/**
+			 * 异步加载表情
+			 */
+			ImageLoader.getInstance().loadImage(url, getSmilesDisplayImageOptions(), new ImageLoadingListener() {
+
+				@Override
+				public void onLoadingStarted(String uri, View arg1) {
+
+				}
+
+				@Override
+				public void onLoadingFailed(String arg0, View arg1, FailReason arg2) {
+					// TODO Auto-generated method stub
+
+				}
+				@Override
+				public void onLoadingComplete(String uri, View arg1, Bitmap bitmap) {
+					// TODO Auto-generated method stub
+					try {
+						if(null!=bitmap){
+							bitmap=zoomImage(bitmap, DisplayUtil.dip2px(mContext, 24),DisplayUtil.dip2px(mContext,24));
+							addEmoji(bitmap,smileBean.getId());
+							ToastUtil.showToast(mContext,getRichText());
+						}
+					}catch (Exception e){
+						e.printStackTrace();
+					}
+				}
+				@Override
+				public void onLoadingCancelled(String arg0, View arg1) {
+					// TODO Auto-generated method stub
+				}
+			});
+		}
+	}
+
 
 	/**
 	 * 添加一个图片
@@ -81,7 +129,6 @@ public class RichEditText extends EditText {
 	 * @param end
 	 */
 	public void addImage(Bitmap bitmap, String filePath,int start,int end) {
-		Log.i("imgpath", filePath);
 		String pathTag = "<img src=\"" + filePath + "\"/>";
 		SpannableString spanString = new SpannableString(pathTag);
 		// 获取屏幕的宽高
@@ -99,6 +146,24 @@ public class RichEditText extends EditText {
 		editable.delete(start, end);//删除
 		editable.insert(start, spanString); // 设置spanString要添加的位置
 	}
+
+
+	/**
+	 * @param bitmap
+	 */
+	public void addEmoji(Bitmap bitmap, String sid) {
+		final String pathTag="[s:"+sid+"]";
+		SpannableString spanString = new SpannableString(pathTag);
+		ImageSpan imgSpan = new ImageSpan(mContext, bitmap);
+		spanString.setSpan(imgSpan, 0, pathTag.length(),
+				Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//		Editable editable = this.getText(); // 获取edittext内容
+//		editable.delete(start, end);//删除
+//		editable.insert(start, spanString); // 设置spanString要添加的位置
+		this.append(spanString);
+	}
+
+
 	/**
 	 *
 	 * @param filePath
@@ -209,6 +274,18 @@ public class RichEditText extends EditText {
 	        .cacheInMemory(true)
 	        .bitmapConfig(Bitmap.Config.RGB_565)
 	        .considerExifParams(true).build();
+		return options;
+	}
+
+	private DisplayImageOptions getSmilesDisplayImageOptions() {
+		DisplayImageOptions options = new DisplayImageOptions.Builder()
+				.showImageOnLoading(R.mipmap.trans)
+				.showImageForEmptyUri(R.mipmap.trans)
+				.showImageOnFail(R.mipmap.trans)
+				.cacheOnDisk(true)
+				.cacheInMemory(true)
+				.bitmapConfig(Bitmap.Config.RGB_565)
+				.considerExifParams(true).build();
 		return options;
 	}
 	

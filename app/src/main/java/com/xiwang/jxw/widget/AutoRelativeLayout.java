@@ -1,15 +1,14 @@
 package com.xiwang.jxw.widget;
-
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 
 /**
  * 监听布局的的位置变化
  * @author liangxg
  *
  */
-public class AutoRelativeLayout extends RelativeLayout {
+public class AutoRelativeLayout extends LinearLayout {
 	
 	
 	public int old_l;
@@ -27,6 +26,12 @@ public class AutoRelativeLayout extends RelativeLayout {
     int keyBoardHeight;
 
     int orgin_b;
+
+    android.os.Handler  mhandler=new    android.os.Handler();
+
+
+    Runnable runnable;
+
 
     public OnKeyBoardListener getKeyboardListener() {
         return keyboardListener;
@@ -62,13 +67,22 @@ public class AutoRelativeLayout extends RelativeLayout {
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		// TODO Auto-generated method stub
+        if(null!=runnable){
+            mhandler.removeCallbacks(runnable);
+        }
         if (old_b == 0) {
             orgin_b=b;
         }else{
             if(b==orgin_b){
-                if(null!= keyboardListener){
-                    keyboardListener.onKeyBoardHide();
-                }
+                runnable=new Runnable() {
+                    @Override
+                    public void run() {
+                        if(null!= keyboardListener){
+                            keyboardListener.onKeyBoardHide();
+                        }
+                    }
+                };
+
                 isKeyBoard=false;
             }else if(b<orgin_b){
                 isKeyBoard=true;
@@ -76,20 +90,27 @@ public class AutoRelativeLayout extends RelativeLayout {
                 if(distence>keyBoardHeight){
                     keyBoardHeight=distence;
                 }
-                if(null!= keyboardListener){
-                    keyboardListener.onKeyboardShow(keyBoardHeight);
-                }
+                runnable =new Runnable() {
+                    @Override
+                    public void run() {
+                        if(null!= keyboardListener){
+                            keyboardListener.onKeyboardShow(keyBoardHeight);
+                        }
+                    }
+                };
             }
         }
 		if(null!=onLayoutChangeListener){
 			onLayoutChangeListener.onChange(old_l, old_t, old_r, old_b, l, t, r, b);
 		}
+
         this.old_l=l;
         this.old_r=r;
         this.old_t=t;
         this.old_b=b;
-
-
+        if(runnable!=null){
+            mhandler.postDelayed(runnable,150);
+        }
 		super.onLayout(changed, l, t, r, b);
 	}
 	

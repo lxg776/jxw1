@@ -1,11 +1,9 @@
 package com.xiwang.jxw.activity;
-import android.content.Context;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseBiz;
@@ -165,17 +163,18 @@ public class PublishNewsActivity extends BaseSubmitActivity{
         emoji_view.setEmojiListener(new EmojiView.EmojiListener() {
             @Override
             public void onClickEmojiView(SmileBean bean) {
-
+                content_edt.addEmoji(bean);
             }
-
             @Override
             public void onEmojiShow() {
-                onEmojiShow();
+                onEShow();
             }
 
             @Override
             public void onKeyBoard() {
-             //   onKeyShow();
+                if(!auto_rl.isKeyBoard){
+                    keyboardUtil.shhowKeyBoard(context, content_edt);
+                }
             }
         });
 //        uploadView.setOnClickListener(new View.OnClickListener() {
@@ -189,19 +188,20 @@ public class PublishNewsActivity extends BaseSubmitActivity{
         auto_rl.setKeyboardListener(new AutoRelativeLayout.OnKeyBoardListener() {
             @Override
             public void onKeyboardShow(int keyBoardHeight) {
-                    if(content_edt.hasFocus()){
+                    if(content_edt.hasFocus()&&emoji_view.getVisibility()==View.GONE) {
                         onKeyShow();
-                    }else{
-                        emoji_view.setVisibility(View.GONE);
-                        emoji_view.onHide();
+                    }else if(!content_edt.hasFocus()){
+                        onEmojiHide();
+                    }else if(content_edt.hasFocus()&&emoji_view.content_ll.getVisibility()==View.VISIBLE){
+                        onKeyShow();
                     }
             }
 
             @Override
             public void onKeyBoardHide() {
-                if(emoji_view.getVisibility()==View.VISIBLE){
-                    onEmojiHide();
-                }
+                    if(emoji_view.getVisibility()==View.VISIBLE&&emoji_view.content_ll.getVisibility()==View.GONE){
+                            onEmojiHide();
+                    }
             }
         });
     }
@@ -209,11 +209,39 @@ public class PublishNewsActivity extends BaseSubmitActivity{
     /**
      *  显示表情
      */
-    private void onEmojiShow(){
-        emoji_view.setVisibility(View.VISIBLE);
-        type_select_tv.setVisibility(View.GONE);
-        title_edt.setVisibility(View.GONE);
+    private void onEShow(){
+
+
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                emoji_view.setVisibility(View.VISIBLE);
+                type_select_tv.setVisibility(View.GONE);
+                title_edt.setVisibility(View.GONE);
+                uploadView.setVisibility(View.VISIBLE);
+            }
+        },150);
+
         keyboardUtil.hideKeyBoard(context, content_edt);
+    }
+
+    /**
+     * 监听返回按钮
+     * @param keyCode
+     * @param event
+     * @return
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            if(emoji_view.isContentFla()){
+                onEmojiHide();
+                return  true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 
@@ -227,26 +255,27 @@ public class PublishNewsActivity extends BaseSubmitActivity{
             @Override
             public void run() {
                 emoji_view.setVisibility(View.VISIBLE);
+                emoji_view.onKeyBoard();
                 type_select_tv.setVisibility(View.GONE);
                 title_edt.setVisibility(View.GONE);
+                uploadView.setVisibility(View.VISIBLE);
             }
-        }, 500);
-
-        if(!auto_rl.isKeyBoard){
-            keyboardUtil.shhowKeyBoard(context, content_edt);
-        }
-
+        }, 150);
     }
 
     /**
      * 隐藏表情以及键盘
      */
     private void  onEmojiHide(){
-        emoji_view.onHide();
-        emoji_view.setVisibility(View.GONE);
-        type_select_tv.setVisibility(View.VISIBLE);
-        title_edt.setVisibility(View.VISIBLE);
-        keyboardUtil.hideKeyBoard(context, content_edt);
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                emoji_view.onHide();
+                emoji_view.setVisibility(View.GONE);
+                type_select_tv.setVisibility(View.VISIBLE);
+                title_edt.setVisibility(View.VISIBLE);
+            }
+        }, 150);
     }
 
     /**
