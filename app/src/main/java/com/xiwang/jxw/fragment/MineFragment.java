@@ -42,6 +42,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
     private TextView user_tv;
     /** 个性签名*/
     private TextView sign_tv;
+    /** 注销当前帐号*/
+    private LinearLayout quit_ll;
 
     @Override
     protected String getPageName() {
@@ -64,7 +66,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
         sign_tv= (TextView) view_Parent.findViewById(R.id.sign_tv);
         user_tv= (TextView) view_Parent.findViewById(R.id.user_tv);
         user_headimg_iv= (ImageView) view_Parent.findViewById(R.id.user_headimg_iv);
-
+        quit_ll=(LinearLayout)view_Parent.findViewById(R.id.qiuzi_ll);
     }
 
     @Override

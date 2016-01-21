@@ -1,24 +1,24 @@
 package com.xiwang.jxw.biz;
-
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
-
 import com.loopj.android.http.RequestParams;
 import com.xiwang.jxw.R;
+import com.xiwang.jxw.activity.LoginActivity;
 import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.bean.BaseBean;
 import com.xiwang.jxw.bean.ResponseBean;
-import com.xiwang.jxw.bean.StartAppBean;
 import com.xiwang.jxw.bean.UserBean;
 import com.xiwang.jxw.bean.UserInfoBean;
+import com.xiwang.jxw.config.IntentConfig;
 import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.event.UserInfoEvent;
 import com.xiwang.jxw.util.SpUtil;
 import com.xiwang.jxw.util.ToastUtil;
-
 import org.json.JSONException;
-
 import de.greenrobot.event.EventBus;
 
 /**
@@ -29,10 +29,61 @@ import de.greenrobot.event.EventBus;
  */
 public class UserBiz {
 
+    /**
+     * 判断是否登录
+     */
+    public static boolean isLogin(Activity context,Bundle bundle){
+        if(null==getUserBean(context)){
+            Intent intent=new Intent(context, LoginActivity.class);
+            context.startActivityForResult(intent, IntentConfig.LOGIN_CODE, bundle);
+            return false;
+        }
+        return  true;
+    }
 
 
+    /**
+     * 自动登录
+     */
+    public static void autoLogin(final Context context){
+           final  UserBean userBean=getUserBean(context);
+            if(null!=userBean&&TextUtils.isEmpty(userBean.getPwd())){
+                /**
+                 *用户名和密码不为空进行自动登录
+                 */
+                login(userBean.getUsername(), userBean.getPwd(), new BaseBiz.RequestHandle() {
+                    @Override
+                    public void onSuccess(ResponseBean responseBean) {
+
+                    }
+
+                    @Override
+                    public void onFail(ResponseBean responseBean) {
+                        setNullToUser(context);
+                    }
+
+                    @Override
+                    public ResponseBean getRequestCache() {
+                        return null;
+                    }
+
+                    @Override
+                    public void onRequestCache(ResponseBean result) {
+
+                    }
+                });
+
+            }
+    }
 
 
+   public static void setNullToUser(Context context){
+       UserBean userBean=(UserBean)SpUtil.getObject(context,context.getResources().getString(R.string.cache_user));
+       if(null!=userBean){
+           SpUtil.setObject(context, context.getResources().getString(R.string.cache_userName), userBean.getUsername());
+       }
+        setUserBean(context,null);
+   }
 
     /**
      * 设置用户bean
@@ -53,6 +104,9 @@ public class UserBiz {
             }
             TApplication.mUser=userBean;
             SpUtil.setObject(context, context.getResources().getString(R.string.cache_user), userBean);
+        }else{
+            SpUtil.setObject(context, context.getResources().getString(R.string.cache_user), null);
+            TApplication.mUser=null;
         }
     }
 
@@ -306,5 +360,8 @@ public class UserBiz {
         });
 
     }
+
+
+
 
 }

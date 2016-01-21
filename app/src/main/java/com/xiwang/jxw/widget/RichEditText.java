@@ -26,7 +26,7 @@ import com.xiwang.jxw.util.DisplayUtil;
 import com.xiwang.jxw.util.ToastUtil;
 
 public class RichEditText extends EditText {
-
+	private static Pattern SMILES_TAG_PATTERN = Pattern.compile("\\[s:(.*?)\\]");
 	private Context mContext;
 
 	private Editable mEditable;
@@ -149,6 +149,7 @@ public class RichEditText extends EditText {
 
 
 	/**
+	 * 添加表情
 	 * @param bitmap
 	 */
 	public void addEmoji(Bitmap bitmap, String sid) {
@@ -161,6 +162,24 @@ public class RichEditText extends EditText {
 //		editable.delete(start, end);//删除
 //		editable.insert(start, spanString); // 设置spanString要添加的位置
 		this.append(spanString);
+	}
+
+	/**
+	 * 删除表情
+	 */
+	public void deleteEmoji(){
+		String text=getRichText();
+		if(!TextUtils.isEmpty(text)){
+			Matcher matcher = SMILES_TAG_PATTERN.matcher(text);
+			while (matcher.find()) {
+				int start=matcher.start(0);
+				int end=matcher.end(0);
+				if (end ==text.length()) {
+					Editable editable = this.getText(); // 获取edittext内容
+					editable.delete(start, end);//删除
+				}
+			}
+		}
 	}
 
 
@@ -220,6 +239,8 @@ public class RichEditText extends EditText {
 				(int) height, matrix, true);
 		return bitmap;
 	}
+
+
 
 	public void setRichText(String text){
 		this.setText("");

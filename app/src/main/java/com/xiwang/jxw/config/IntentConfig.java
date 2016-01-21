@@ -18,5 +18,14 @@ public class IntentConfig {
 
     /** 发送标题*/
     public static final String SEND_TITLE="sendTitle";
+    /** 发送fragment标识*/
+    public static final String SEND_FRAMGE_TAG="sendFragmentTag";
+    /** bundle*/
+    public static final String SEND_BUNDLE="sendBundle";
+    /** 发送操作*/
+    public static final String SEND_DO="sendDo";
+
+
+
 
 }

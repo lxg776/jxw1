@@ -7,6 +7,7 @@
     <string name="home_newslist">home_newslist</string>
     <string name="cache_newsdetail">cache_newsdetail</string>
     <string name="cache_user">cache_user</string>
+    <string name="cache_userName">cache_userName</string>
     <string name="cache_menu">cache_menu</string>
     <string name="cache_smiles">cache_smiles</string>
 

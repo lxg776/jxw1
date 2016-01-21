@@ -1,4 +1,5 @@
 package com.xiwang.jxw.activity;
+import android.content.Intent;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -163,7 +164,11 @@ public class PublishNewsActivity extends BaseSubmitActivity{
         emoji_view.setEmojiListener(new EmojiView.EmojiListener() {
             @Override
             public void onClickEmojiView(SmileBean bean) {
-                content_edt.addEmoji(bean);
+                if(bean.isDeleteSimile()){
+                    content_edt.deleteEmoji();
+                }else{
+                    content_edt.addEmoji(bean);
+                }
             }
             @Override
             public void onEmojiShow() {
@@ -319,4 +324,8 @@ public class PublishNewsActivity extends BaseSubmitActivity{
         return true;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

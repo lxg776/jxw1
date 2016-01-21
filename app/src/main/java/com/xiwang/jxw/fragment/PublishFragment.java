@@ -1,6 +1,8 @@
 package com.xiwang.jxw.fragment;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -9,6 +11,8 @@ import com.xiwang.jxw.R;
 import com.xiwang.jxw.activity.PublishNewsActivity;
 import com.xiwang.jxw.activity.TestActivity;
 import com.xiwang.jxw.base.BaseFragment;
+import com.xiwang.jxw.biz.UserBiz;
+import com.xiwang.jxw.config.IntentConfig;
 import com.xiwang.jxw.util.DisplayUtil;
 import com.xiwang.jxw.util.IntentUtil;
 
@@ -20,6 +24,11 @@ import com.xiwang.jxw.util.IntentUtil;
  * @modifier
  */
 public class PublishFragment extends BaseFragment implements View.OnClickListener{
+
+
+    public static int DO_FABU=0x23;
+
+
     /** 发帖按钮*/
     LinearLayout fabu_btn;
     /** 二手交易*/
@@ -36,6 +45,8 @@ public class PublishFragment extends BaseFragment implements View.OnClickListene
     LinearLayout ershoufang_btn;
     /** 地皮/商铺信息*/
     LinearLayout dipi_btn;
+
+
 
 
     @Override
@@ -103,8 +114,32 @@ public class PublishFragment extends BaseFragment implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.fabu_btn:
-                IntentUtil.gotoActivity(context, PublishNewsActivity.class);
+                Bundle bundle=new Bundle();
+                bundle.putString(IntentConfig.SEND_FRAMGE_TAG,getTag());
+                bundle.putInt(IntentConfig.SEND_DO,DO_FABU);
+                if(UserBiz.isLogin(context,bundle)){
+                    IntentUtil.gotoActivity(context, PublishNewsActivity.class);
+                }
                 break;
         }
+    }
+
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode==RESULT_OK){
+            /**
+             * 登录成功后
+             */
+            if(requestCode==IntentConfig.LOGIN_CODE&&null!=data){
+                    int do_=data.getIntExtra(IntentConfig.SEND_DO,0);
+                    if(do_==DO_FABU){
+                    IntentUtil.gotoActivity(context, PublishNewsActivity.class);
+                    }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

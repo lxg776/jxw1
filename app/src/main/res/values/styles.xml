@@ -141,6 +141,14 @@ by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="Theme_Transparent" parent="Base.Theme.AppCompat.Light.Dialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <!--<item name="android:windowBackground">@drawable/bg_login_layout</item>-->
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowSoftInputMode">adjustPan</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
 
 
 

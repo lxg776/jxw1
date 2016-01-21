@@ -12,13 +12,6 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="15dp" >
-
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            />
-
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

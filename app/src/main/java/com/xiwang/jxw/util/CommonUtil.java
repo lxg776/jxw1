@@ -1,11 +1,17 @@
 package com.xiwang.jxw.util;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
 import com.xiwang.jxw.R;
@@ -13,8 +19,10 @@ import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.bean.SmileListBean;
 import com.xiwang.jxw.biz.NewsBiz;
+import com.xiwang.jxw.biz.UserBiz;
 import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.config.TApplication;
+import com.xiwang.jxw.intf.LogoutListener;
 import com.xiwang.jxw.listener.SaveImageListener;
 
 import java.io.ByteArrayOutputStream;
@@ -278,5 +286,56 @@ public class CommonUtil {
         else {
             return false;
         }
+    }
+
+    /**
+     * 用户退出登录
+     *
+     * @version 1.0
+     * @createTime 2015-9-10,下午6:18:14
+     * @updateTime 2015-9-10,下午6:18:14
+     * @createAuthor XiaoHuan
+     * @updateAuthor
+     * @updateInfo (此处输入修改内容,若无修改可不写.)
+     * @param context
+     * @param title
+     * @param message
+     */
+    public static void showExitDialog(final Context context, String title, String message, final LogoutListener listener) {
+        RelativeLayout ll = (RelativeLayout) LayoutInflater.from(context)
+                .inflate(R.layout.view_dialog, null);
+        final AlertDialog dlg = new AlertDialog.Builder(
+                new ContextThemeWrapper(context, R.style.Theme_Transparent))
+                .setView(ll).create();
+        TextView txt_title = (TextView) ll.findViewById(R.id.txt_title);
+        TextView txt_message = (TextView) ll.findViewById(R.id.txt_message);
+        TextView btn_affirm = (TextView) ll.findViewById(R.id.btn_affirm);
+        TextView btn_cancel = (TextView) ll.findViewById(R.id.btn_cancel);
+        txt_title.setText(title);
+        txt_message.setText(message);
+        btn_affirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                // TODO Auto-generated method stub
+                dlg.dismiss();
+                UserBiz.setNullToUser(context);
+                if(null!=listener){
+                    listener.confirm();
+                }
+            }
+        });
+        btn_cancel.setOnClickListener(new android.view.View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                // TODO Auto-generated method stub
+                dlg.dismiss();
+                if(null!=listener){
+                    listener.cancel();
+                }
+            }
+        });
+        dlg.setCanceledOnTouchOutside(true);
+        dlg.show();
     }
 }

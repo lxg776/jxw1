@@ -1,7 +1,10 @@
 package com.xiwang.jxw.activity;
 
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -12,12 +15,14 @@ import com.xiwang.jxw.base.BaseSubmitActivity;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.bean.UserBean;
 import com.xiwang.jxw.biz.UserBiz;
+import com.xiwang.jxw.config.IntentConfig;
 import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.event.LoginEvent;
 import com.xiwang.jxw.event.RegEvent;
 import com.xiwang.jxw.util.CheckUtil;
 import com.xiwang.jxw.util.IntentUtil;
 import com.xiwang.jxw.util.ProcessDialogUtil;
+import com.xiwang.jxw.util.SpUtil;
 import com.xiwang.jxw.util.ToastUtil;
 import com.xiwang.jxw.widget.DeleteEditText;
 import de.greenrobot.event.EventBus;
@@ -35,7 +40,6 @@ public class LoginActivity extends BaseSubmitActivity implements View.OnClickLis
     DeleteEditText pwd_edt;
     /** 登录按钮*/
     TextView login_btn;
-
     /** 注册按钮*/
     TextView register_btn;
 
@@ -80,7 +84,10 @@ public class LoginActivity extends BaseSubmitActivity implements View.OnClickLis
 
     @Override
     protected void initGetData() {
-
+        String userName= (String) SpUtil.getObject(this,getString(R.string.cache_userName));
+        if(TextUtils.isEmpty(userName)){
+            username_edt.setText(userName);
+        }
     }
 
     @Override
@@ -118,11 +125,14 @@ public class LoginActivity extends BaseSubmitActivity implements View.OnClickLis
                 public void onSuccess(ResponseBean responseBean) {
                     TApplication.mUser= (UserBean) responseBean.getObject();
                     TApplication.mUser.setPwd(pwd);
-                    UserBiz.setUserBean(context,TApplication.mUser);
+                    UserBiz.setUserBean(context, TApplication.mUser);
                     /** 发出登录成功通知*/
                     EventBus.getDefault().post(new LoginEvent(true));
                     ProcessDialogUtil.dismissDialog();
-                    setResult(RESULT_OK);
+                    Intent intent=new Intent();
+                    Bundle bundle=getIntent().getExtras();
+                    intent.putExtra(IntentConfig.SEND_BUNDLE, bundle);
+                    setResult(RESULT_OK, intent);
                     /** 帐号登录，记录友盟*/
                     MobclickAgent.onProfileSignIn(TApplication.mUser.getUid()+"_"+TApplication.mUser.getUsername());
                     finish();

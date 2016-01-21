@@ -2,9 +2,11 @@ package com.xiwang.jxw.activity;
 
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -373,13 +375,16 @@ public class MainActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode==IntentConfig.LOGIN_CODE){
             if(requestCode==RESULT_OK){
-                /**
-                 * 跳转我的
-                 */
-                switchView(FRAGMENT_MINE);
-                radio_current.setCheck(false);
-                radio_current = mine_rv;
-                radio_current.setCheck(true);
+                if(null!=data){
+                    Bundle bundle=data.getBundleExtra(IntentConfig.SEND_BUNDLE);
+                    String fragmentTag=bundle.getString(IntentConfig.SEND_FRAMGE_TAG);
+                    if(!TextUtils.isEmpty(fragmentTag)){
+                        Fragment fragment=getSupportFragmentManager().findFragmentByTag(fragmentTag);
+                        if(null!=fragment){
+                            fragment.onActivityResult(requestCode,resultCode,data);
+                        }
+                    }
+                }
             }
         }
          super.onActivityResult(requestCode, resultCode, data);
