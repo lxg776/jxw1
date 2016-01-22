@@ -10,5 +10,6 @@
     <string name="cache_userName">cache_userName</string>
     <string name="cache_menu">cache_menu</string>
     <string name="cache_smiles">cache_smiles</string>
+    <string name="cache_threadType_list">cache_threadTypeList</string>
 
 </resources>

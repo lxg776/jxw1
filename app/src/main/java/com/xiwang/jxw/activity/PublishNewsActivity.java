@@ -11,10 +11,12 @@ import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.base.BaseSubmitActivity;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.bean.SmileBean;
+import com.xiwang.jxw.bean.ThreadTypeBean;
 import com.xiwang.jxw.bean.UploadImgBean;
 import com.xiwang.jxw.bean.postbean.TopicBean;
 import com.xiwang.jxw.biz.NewsBiz;
 import com.xiwang.jxw.util.CheckUtil;
+import com.xiwang.jxw.util.CommonUtil;
 import com.xiwang.jxw.util.ToastUtil;
 import com.xiwang.jxw.util.keyboardUtil;
 import com.xiwang.jxw.widget.AutoRelativeLayout;
@@ -23,6 +25,8 @@ import com.xiwang.jxw.widget.EmojiView;
 import com.xiwang.jxw.widget.MyTextSelectView;
 import com.xiwang.jxw.widget.RichEditText;
 import com.xiwang.jxw.widget.UploadImgView;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -47,16 +51,27 @@ public class PublishNewsActivity extends BaseSubmitActivity{
     /**键盘弹出标识*/
     boolean keyBoardFla=false;
     AutoRelativeLayout auto_rl;
-
+    /**主题分类*/
+    ArrayList<ThreadTypeBean> threadTypeList;
+    /**当前选中的主题*/
+    ThreadTypeBean currentThreadType;
 
     @Override
     protected boolean checkInput() {
-        String type="";
+        String type=null;
+        if(null!=currentThreadType){
+            type=currentThreadType.getFid();
+        }
         String title=title_edt.getText().toString();
         String content=content_edt.getRichText().toString();
         List<UploadImgBean> uploadString=uploadView.getUploadImageUrlList();
         String fid="";
-        if(CheckUtil.isEmpty(context,"主题",title)){
+
+        if(CheckUtil.isSelect(context,"类型",type)){
+            return false;
+        }
+
+        if(CheckUtil.isEmpty(context, "主题", title)){
             return false;
         }
         if(CheckUtil.isEmpty(context,"内容",content)){
@@ -136,7 +151,30 @@ public class PublishNewsActivity extends BaseSubmitActivity{
 
     @Override
     protected void init() {
+        initTypeSelectTv(CommonUtil.getThreadTypeList(context),type_select_tv);
 
+    }
+
+    /**
+     * 初始化弹出分类
+     * @param threadTypeList
+     * @param tv
+     */
+    private void initTypeSelectTv( final ArrayList<ThreadTypeBean> threadTypeList, MyTextSelectView tv){
+        type_select_tv.setTitleText("选择分类");
+        if(threadTypeList!=null&&threadTypeList.size()>0){
+            String showItem[]=new String[threadTypeList.size()];
+            for(int i=0;i<showItem.length;i++){
+                showItem[i]=threadTypeList.get(i).getName();
+            }
+            tv.setShowItemes(showItem);
+            tv.setOnItemClickListener(new MyTextSelectView.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int postion) {
+                    currentThreadType=threadTypeList.get(postion);
+                }
+            });
+        }
     }
 
     @Override

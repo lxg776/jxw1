@@ -18,7 +18,9 @@ import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.bean.SmileListBean;
+import com.xiwang.jxw.bean.ThreadTypeBean;
 import com.xiwang.jxw.biz.NewsBiz;
+import com.xiwang.jxw.biz.ThreadTypeBiz;
 import com.xiwang.jxw.biz.UserBiz;
 import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.config.TApplication;
@@ -33,6 +35,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -127,6 +130,48 @@ public class CommonUtil {
     }
 
 
+
+    /**
+     * 获取主题分类
+     * @return
+     */
+    public static ArrayList<ThreadTypeBean> getThreadTypeList(final Context context){
+        if(TApplication.threadTypeList!=null&&TApplication.threadTypeList.size()>0){
+            return TApplication.threadTypeList;
+        }else{
+            ArrayList<ThreadTypeBean> threadTypeList= (ArrayList<ThreadTypeBean>) SpUtil.getObject(context,context.getResources().getString(R.string.cache_threadType_list));
+            TApplication.threadTypeList=threadTypeList;
+            if(TApplication.threadTypeList!=null&&TApplication.threadTypeList.size()>0){
+                return TApplication.threadTypeList;
+            }else{
+                ThreadTypeBiz.getThreadTypes(new BaseBiz.RequestHandle() {
+                    @Override
+                    public void onSuccess(ResponseBean responseBean) {
+                        TApplication.threadTypeList = ( ArrayList<ThreadTypeBean>) responseBean.getObject();
+                        if (TApplication.threadTypeList != null && TApplication.threadTypeList.size() > 0) {
+                            SpUtil.setObject(context, context.getResources().getString(R.string.cache_threadType_list), TApplication.threadTypeList);
+                        }
+                    }
+
+                    @Override
+                    public void onFail(ResponseBean responseBean) {
+
+                    }
+
+                    @Override
+                    public ResponseBean getRequestCache() {
+                        return null;
+                    }
+
+                    @Override
+                    public void onRequestCache(ResponseBean result) {
+
+                    }
+                });
+                return TApplication.threadTypeList;
+            }
+        }
+    }
 
 
     /**

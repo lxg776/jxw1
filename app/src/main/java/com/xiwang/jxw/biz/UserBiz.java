@@ -35,7 +35,8 @@ public class UserBiz {
     public static boolean isLogin(Activity context,Bundle bundle){
         if(null==getUserBean(context)){
             Intent intent=new Intent(context, LoginActivity.class);
-            context.startActivityForResult(intent, IntentConfig.LOGIN_CODE, bundle);
+            intent.putExtras(bundle);
+            context.startActivityForResult(intent, IntentConfig.LOGIN_CODE);
             return false;
         }
         return  true;

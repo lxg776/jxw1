@@ -374,9 +374,9 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode==IntentConfig.LOGIN_CODE){
-            if(requestCode==RESULT_OK){
+            if(resultCode==RESULT_OK){
                 if(null!=data){
-                    Bundle bundle=data.getBundleExtra(IntentConfig.SEND_BUNDLE);
+                    Bundle bundle=data.getExtras();
                     String fragmentTag=bundle.getString(IntentConfig.SEND_FRAMGE_TAG);
                     if(!TextUtils.isEmpty(fragmentTag)){
                         Fragment fragment=getSupportFragmentManager().findFragmentByTag(fragmentTag);

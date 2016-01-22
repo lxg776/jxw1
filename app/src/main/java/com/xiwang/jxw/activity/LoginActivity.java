@@ -131,8 +131,10 @@ public class LoginActivity extends BaseSubmitActivity implements View.OnClickLis
                     ProcessDialogUtil.dismissDialog();
                     Intent intent=new Intent();
                     Bundle bundle=getIntent().getExtras();
-                    intent.putExtra(IntentConfig.SEND_BUNDLE, bundle);
+                    bundle = LoginActivity.this.getIntent().getExtras();
+                    intent.putExtras(bundle);
                     setResult(RESULT_OK, intent);
+
                     /** 帐号登录，记录友盟*/
                     MobclickAgent.onProfileSignIn(TApplication.mUser.getUid()+"_"+TApplication.mUser.getUsername());
                     finish();

@@ -10,9 +10,14 @@ import android.widget.LinearLayout;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.activity.PublishNewsActivity;
 import com.xiwang.jxw.activity.TestActivity;
+import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.base.BaseFragment;
+import com.xiwang.jxw.bean.ResponseBean;
+import com.xiwang.jxw.bean.ThreadTypeBean;
+import com.xiwang.jxw.biz.ThreadTypeBiz;
 import com.xiwang.jxw.biz.UserBiz;
 import com.xiwang.jxw.config.IntentConfig;
+import com.xiwang.jxw.util.CommonUtil;
 import com.xiwang.jxw.util.DisplayUtil;
 import com.xiwang.jxw.util.IntentUtil;
 
@@ -79,10 +84,12 @@ public class PublishFragment extends BaseFragment implements View.OnClickListene
         setDrawable(ershoufang_btn,getResources().getDrawable(R.mipmap.f_home));
         setDrawable(dipi_btn,getResources().getDrawable(R.mipmap.f_dipi));
 
-        
-
 
     }
+
+
+
+
 
     @Override
     public void initGetData() {
@@ -96,7 +103,8 @@ public class PublishFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     protected void init() {
-
+        /**加载主题分类*/
+        CommonUtil.getThreadTypeList(context);
     }
 
 

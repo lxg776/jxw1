@@ -160,7 +160,11 @@ public class MyTextSelectView extends LinearLayout {
         public  void onItemClick(View view,int postion);
     }
 
+    public String getTitleText() {
+        return titleText;
+    }
 
-
-
+    public void setTitleText(String titleText) {
+        this.titleText = titleText;
+    }
 }

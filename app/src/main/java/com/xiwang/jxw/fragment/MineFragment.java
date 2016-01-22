@@ -9,8 +9,6 @@ import com.xiwang.jxw.base.BaseFragment;
 import com.xiwang.jxw.bean.UserBean;
 import com.xiwang.jxw.bean.UserInfoBean;
 import com.xiwang.jxw.biz.UserBiz;
-import com.xiwang.jxw.config.ServerConfig;
-import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.event.LoginEvent;
 import com.xiwang.jxw.event.RegEvent;
 import com.xiwang.jxw.util.CommonUtil;

@@ -68,6 +68,11 @@ public class ServerConfig {
 	public final static String PUBLISH_URL=SERVER_API_URL+"appget.php?a=post";
 	/**表情链接*/
 	public final static String SMILES_URL=SERVER_API_URL+"getapp.php?a=smiles";
+	/**主题分类连接*/
+	public final static String THREAD_TYPE_URL=SERVER_API_URL+"getapp.php?a=threadtype&type=fight&fid=2";
+
+
+
 
 	// public final static String SERVER_API_URL = "http://192.168.202.75/b2b/";
 	// public final static String SERVER_API_URL = "http://192.168.202.75/b2b/";

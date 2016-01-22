@@ -13,6 +13,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.xiwang.jxw.bean.SmileListBean;
+import com.xiwang.jxw.bean.ThreadTypeBean;
 import com.xiwang.jxw.bean.UserBean;
 import com.xiwang.jxw.fileds.DataFields;
 import com.xiwang.jxw.network.AppHttpClient;
@@ -58,6 +59,9 @@ public class TApplication extends Application  {
 
 	/** 表情集合 */
 	public static List<SmileListBean> smilesList;
+
+	/** 表情集合 */
+	public static ArrayList<ThreadTypeBean> threadTypeList;
 
 
 	public static int sdk = android.os.Build.VERSION.SDK_INT;
