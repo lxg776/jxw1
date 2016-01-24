@@ -74,6 +74,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 		widgetListener();
 		init();
 		registerReceiver();
+
+
 		setPageName(getPageName());
 	}
 

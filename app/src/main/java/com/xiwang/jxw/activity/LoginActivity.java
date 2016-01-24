@@ -131,7 +131,7 @@ public class LoginActivity extends BaseSubmitActivity implements View.OnClickLis
                     ProcessDialogUtil.dismissDialog();
                     Intent intent=new Intent();
                     Bundle bundle=getIntent().getExtras();
-                    bundle = LoginActivity.this.getIntent().getExtras();
+                    if (null!=bundle)
                     intent.putExtras(bundle);
                     setResult(RESULT_OK, intent);
 

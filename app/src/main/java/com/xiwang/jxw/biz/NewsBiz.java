@@ -78,9 +78,9 @@ public class NewsBiz {
 
         RequestParams params =new RequestParams();
         params.put("fid",topicBean.getFid());
-        params.put("tid",topicBean.getTid());
+        //params.put("tid",topicBean.getTid());
         params.put("action",topicBean.getAction());
-        params.put("tid",topicBean.getTid());
+      //  params.put("tid",topicBean.getTid());
         params.put("subject",topicBean.getSubject());
         params.put("content",topicBean.getContent());
         params.put("aids",topicBean.getAids());

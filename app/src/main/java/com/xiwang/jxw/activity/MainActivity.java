@@ -18,15 +18,14 @@ import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.bean.ColumnBean;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.biz.HomeBiz;
+import com.xiwang.jxw.biz.UserBiz;
 import com.xiwang.jxw.config.IntentConfig;
-import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.event.MenuEvent;
 import com.xiwang.jxw.fragment.FindFragment;
 import com.xiwang.jxw.fragment.HomeFragment;
 import com.xiwang.jxw.fragment.MineFragment;
 import com.xiwang.jxw.fragment.PublishFragment;
 import com.xiwang.jxw.util.CommonUtil;
-import com.xiwang.jxw.util.IntentUtil;
 import com.xiwang.jxw.util.SpUtil;
 import com.xiwang.jxw.widget.MyRadioView;
 
@@ -104,10 +103,8 @@ public class MainActivity extends BaseActivity {
         publish_rl=(MyRadioView)findViewById(R.id.publish_rl);
         mine_rv=(MyRadioView)findViewById(R.id.mine_rv);
 
-        FragmentManager fm=getFragmentManager();
-        fm.popBackStackImmediate("123",3);
-        /** 设置表情列表*/
-        CommonUtil.setSmileList(context);
+
+
 
 
         /**
@@ -145,6 +142,15 @@ public class MainActivity extends BaseActivity {
         main_rv.setCheck(true);
         radio_current = main_rv;
         switchView(FRAGMENT_HOME);
+
+
+
+        /** 设置表情列表*/
+        CommonUtil.setSmileList(context);
+
+        /** 進行自動登錄*/
+        UserBiz.autoLogin(context);
+
     }
 
     @Override
@@ -234,6 +240,8 @@ public class MainActivity extends BaseActivity {
         homeFragment = new HomeFragment();
         findFragment = new FindFragment();
         publishFragment = new PublishFragment();
+
+
         mineFragmentFragment = new MineFragment();
 
         list_Fragments.add(homeFragment);
@@ -263,7 +271,7 @@ public class MainActivity extends BaseActivity {
             }
             // 获取Fragment的操作对象
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.content_frame, list_Fragments.get(position));
+            transaction.replace(R.id.content_frame, list_Fragments.get(position),position+"fragment");
             if (current_Fragment != -1) {
                 getSupportFragmentManager().popBackStack(position + "", 0);
                 transaction.addToBackStack(position + "");// 将上一个Fragment存回栈，生命周期为stop，不销毁
@@ -311,15 +319,9 @@ public class MainActivity extends BaseActivity {
                     switchView(FRAGMENT_PUBLISH);
                     break;
                 case R.id.mine_rv:
-
-                    if(TApplication.mUser!=null){
-                        switchView(FRAGMENT_MINE);
-                    }else{
-                        //跳转登录界面
-                        IntentUtil.gotoActivityForResult(context, LoginActivity.class, IntentConfig.LOGIN_CODE);
+                    if(!toMinePage()){
                         return;
-                    }
-
+                    };
                     break;
                 default:
                     break;
@@ -330,6 +332,33 @@ public class MainActivity extends BaseActivity {
             radio_current.setCheck(true);
         }
     };
+
+    /**
+     * 跳转我的界面
+     */
+    public boolean toMinePage(){
+        Bundle bundle=new Bundle();
+        bundle.putInt(IntentConfig.SEND_DO,FRAGMENT_MINE);
+        if(UserBiz.isLogin(this,bundle)){
+            switchView(FRAGMENT_MINE);
+            radio_current.setCheck(false);
+            radio_current = mine_rv;
+            radio_current.setCheck(true);
+            return true;
+        }else{
+            return  false;
+        }
+    }
+
+    /**
+     * 跳转主界面
+     */
+    public void toMainPage(){
+        switchView(FRAGMENT_HOME);
+        radio_current.setCheck(false);
+        radio_current = main_rv;
+        radio_current.setCheck(true);
+    }
 
 
     @Override
@@ -377,13 +406,30 @@ public class MainActivity extends BaseActivity {
             if(resultCode==RESULT_OK){
                 if(null!=data){
                     Bundle bundle=data.getExtras();
-                    String fragmentTag=bundle.getString(IntentConfig.SEND_FRAMGE_TAG);
+                    /*
+                     点击发帖出
+                     */
+                    String fragmentTag=bundle.getString(IntentConfig.SEND_FRAMGE_TAG,"");
+                    int do_=bundle.getInt(IntentConfig.SEND_DO,-1);
                     if(!TextUtils.isEmpty(fragmentTag)){
                         Fragment fragment=getSupportFragmentManager().findFragmentByTag(fragmentTag);
                         if(null!=fragment){
                             fragment.onActivityResult(requestCode,resultCode,data);
                         }
                     }
+                     /*
+                     我的按钮
+                     */
+                    else if(do_==FRAGMENT_MINE){
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                toMinePage();
+                            }
+                        },200);
+
+                    }
+
                 }
             }
         }

@@ -42,8 +42,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import pl.droidsonroids.gif.GifDrawable;
-import pl.droidsonroids.gif.GifTextView;
+
 
 
 /**

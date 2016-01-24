@@ -59,18 +59,16 @@ public class PublishNewsActivity extends BaseSubmitActivity{
     @Override
     protected boolean checkInput() {
         String type=null;
+        String fid="";
         if(null!=currentThreadType){
-            type=currentThreadType.getFid();
+            fid=currentThreadType.getFid();
         }
         String title=title_edt.getText().toString();
         String content=content_edt.getRichText().toString();
         List<UploadImgBean> uploadString=uploadView.getUploadImageUrlList();
-        String fid="";
-
-        if(CheckUtil.isSelect(context,"类型",type)){
+        if(CheckUtil.isSelect(context,"分类",fid)){
             return false;
         }
-
         if(CheckUtil.isEmpty(context, "主题", title)){
             return false;
         }
@@ -84,7 +82,7 @@ public class PublishNewsActivity extends BaseSubmitActivity{
         topicBean.setAction("new");
         topicBean.setContent(content);
         topicBean.setFid(fid);
-        topicBean.setType("");
+       // topicBean.setType(type);
         topicBean.setSubject(title);
         if(null!=uploadString&&uploadString.size()>0){
             StringBuffer sb=new StringBuffer();

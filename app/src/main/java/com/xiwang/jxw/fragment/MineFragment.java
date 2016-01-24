@@ -5,12 +5,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.xiwang.jxw.R;
+import com.xiwang.jxw.activity.MainActivity;
 import com.xiwang.jxw.base.BaseFragment;
 import com.xiwang.jxw.bean.UserBean;
 import com.xiwang.jxw.bean.UserInfoBean;
 import com.xiwang.jxw.biz.UserBiz;
 import com.xiwang.jxw.event.LoginEvent;
 import com.xiwang.jxw.event.RegEvent;
+import com.xiwang.jxw.intf.LogoutListener;
 import com.xiwang.jxw.util.CommonUtil;
 import com.xiwang.jxw.util.ImgLoadUtil;
 import com.xiwang.jxw.util.ToastUtil;
@@ -64,7 +66,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
         sign_tv= (TextView) view_Parent.findViewById(R.id.sign_tv);
         user_tv= (TextView) view_Parent.findViewById(R.id.user_tv);
         user_headimg_iv= (ImageView) view_Parent.findViewById(R.id.user_headimg_iv);
-        quit_ll=(LinearLayout)view_Parent.findViewById(R.id.qiuzi_ll);
+        quit_ll=(LinearLayout)view_Parent.findViewById(R.id.quit_ll);
     }
 
     @Override
@@ -79,6 +81,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
         setting_ll.setOnClickListener(this);
         collect_ll.setOnClickListener(this);
         tidao_ll.setOnClickListener(this);
+        quit_ll.setOnClickListener(this);
 
     }
 
@@ -100,6 +103,24 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
                     ToastUtil.showToast(context,"lxg776");
                     break;
                 case R.id.tidao_ll:
+                    break;
+                case R.id.quit_ll:
+                    CommonUtil.showExitDialog(context,"提示","注销当前账号？",new LogoutListener(){
+
+                        @Override
+                        public void confirm() {
+                            /**退出切换到主界面*/
+                            MainActivity activity= (MainActivity) getActivity();
+                            activity.switchView(MainActivity.FRAGMENT_HOME);
+                            activity.toMainPage();
+
+                        }
+
+                        @Override
+                        public void cancel() {
+
+                        }
+                    });
                     break;
             }
     }

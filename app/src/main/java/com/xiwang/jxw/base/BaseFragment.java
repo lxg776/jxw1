@@ -67,6 +67,8 @@ public abstract class BaseFragment extends Fragment {
 		if (useEventBus()) {
 			EventBus.getDefault().register(this);
 		}
+
+
 		initGetData();
 		widgetListener();
 		init();
