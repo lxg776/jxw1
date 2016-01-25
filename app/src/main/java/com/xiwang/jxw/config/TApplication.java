@@ -56,23 +56,14 @@ public class TApplication extends Application  {
 	public static int authStatus = 0;
 	/** 字体 */
 	public static Typeface face;
-
 	/** 表情集合 */
 	public static List<SmileListBean> smilesList;
-
 	/** 表情集合 */
 	public static ArrayList<ThreadTypeBean> threadTypeList;
-
-
 	public static int sdk = android.os.Build.VERSION.SDK_INT;
-
 	public static String token;
 	public static SpUtil sp ;
-
-
 	public static UserBean mUser;
-
-
 	public static  boolean isUmeng=true;
 
 	@Override
@@ -84,7 +75,7 @@ public class TApplication extends Application  {
 		/** 初始化ImageLoad */
 		initImageLoader(context);
 		sp = SpUtil.getSpUtil(DataFields.DATA_MINE, Context.MODE_PRIVATE);
-		AppHttpClient.setHttpClient(new AsyncHttpClient());
+		AppHttpClient.setHttpClient(new AsyncHttpClient(),this);
 
 	}
 	/**

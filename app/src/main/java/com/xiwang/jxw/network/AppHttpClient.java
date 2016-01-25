@@ -1,15 +1,26 @@
 package com.xiwang.jxw.network;
 
+import android.app.Activity;
 import android.content.Context;
+import android.text.TextUtils;
 
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
+import com.xiwang.jxw.R;
+import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.util.Log;
+import com.xiwang.jxw.util.SpUtil;
 
+import org.apache.http.client.CookieStore;
 import org.apache.http.client.params.ClientPNames;
+import org.apache.http.client.protocol.ClientContext;
+import org.apache.http.cookie.Cookie;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -33,7 +44,7 @@ public class AppHttpClient {
         return client;
     }
 
-    public static void setHttpClient(AsyncHttpClient c) {
+    public static void setHttpClient(AsyncHttpClient c,Context context) {
         client = c;
         client.addHeader("Accept-Language", Locale.getDefault().toString());
 //        client.addHeader("Host", HOST);
@@ -41,9 +52,51 @@ public class AppHttpClient {
         client.setResponseTimeout(10 * 1000);
         client.getHttpClient().getParams()
                 .setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
-
-
+        PersistentCookieStore myCookieStore = new PersistentCookieStore(context);
+        client.setCookieStore(myCookieStore);
     }
+
+
+    /**
+     * 清除cookies
+     */
+    public static  void clearCookie(){
+        PersistentCookieStore cookieStore = new PersistentCookieStore(TApplication.context);
+        cookieStore.clear();
+    }
+
+
+//    /**
+//     * 获取标准 Cookie
+//     */
+//    public static String getCookieText(Activity activity) {
+//        PersistentCookieStore myCookieStore = new PersistentCookieStore(activity);
+//        List<Cookie> cookies =  myCookieStore.getCookies();
+//        CookieStore cookies2 = (CookieStore) client.getHttpContext().getAttribute(ClientContext.COOKIE_STORE);//获取AsyncHttpClient中的
+//
+//        Log.d("cookie", "cookies.size() = " + cookies.size());
+//        if(null!=cookies2&&null!=cookies2.getCookies()){
+//            Log.d("cookie2", "cookies.size() = " + cookies2.getCookies().size());
+//        }
+//
+//         //Util.setCookies(cookies);
+//        for (Cookie cookie : cookies) {
+//            Log.d("cookie", cookie.getName() + " = " + cookie.getValue());
+//        }
+//        StringBuffer sb = new StringBuffer();
+//        for (int i = 0; i < cookies.size(); i++) {
+//            Cookie cookie = cookies.get(i);
+//            String cookieName = cookie.getName();
+//            String cookieValue = cookie.getValue();
+//            if (!TextUtils.isEmpty(cookieName)
+//                    && !TextUtils.isEmpty(cookieValue)) {
+//                sb.append(cookieName + "=");
+//                sb.append(cookieValue + ";");
+//            }
+//        }
+//        Log.e("cookie", sb.toString());
+//        return sb.toString();
+//    }
 
     public static void cancelAll(Context context) {
         client.cancelRequests(context, true);

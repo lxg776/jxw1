@@ -15,6 +15,7 @@ import com.xiwang.jxw.bean.ThreadTypeBean;
 import com.xiwang.jxw.bean.UploadImgBean;
 import com.xiwang.jxw.bean.postbean.TopicBean;
 import com.xiwang.jxw.biz.NewsBiz;
+import com.xiwang.jxw.biz.UserBiz;
 import com.xiwang.jxw.util.CheckUtil;
 import com.xiwang.jxw.util.CommonUtil;
 import com.xiwang.jxw.util.ToastUtil;
@@ -150,6 +151,7 @@ public class PublishNewsActivity extends BaseSubmitActivity{
     @Override
     protected void init() {
         initTypeSelectTv(CommonUtil.getThreadTypeList(context),type_select_tv);
+        UserBiz.testCookies();
 
     }
 

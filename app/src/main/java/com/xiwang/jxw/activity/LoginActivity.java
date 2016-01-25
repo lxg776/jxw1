@@ -19,6 +19,7 @@ import com.xiwang.jxw.config.IntentConfig;
 import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.event.LoginEvent;
 import com.xiwang.jxw.event.RegEvent;
+import com.xiwang.jxw.network.AppHttpClient;
 import com.xiwang.jxw.util.CheckUtil;
 import com.xiwang.jxw.util.IntentUtil;
 import com.xiwang.jxw.util.ProcessDialogUtil;

@@ -17,9 +17,11 @@ import com.xiwang.jxw.bean.StartAppBean;
 import com.xiwang.jxw.biz.HomeBiz;
 import com.xiwang.jxw.biz.SystemBiz;
 import com.xiwang.jxw.config.ServerConfig;
+import com.xiwang.jxw.network.AppHttpClient;
 import com.xiwang.jxw.util.CommonUtil;
 import com.xiwang.jxw.util.ImgLoadUtil;
 import com.xiwang.jxw.util.IntentUtil;
+import com.xiwang.jxw.util.NetWorkUtil;
 import com.xiwang.jxw.util.SpUtil;
 import com.xiwang.jxw.widget.PercentView;
 
@@ -129,6 +131,8 @@ public class StartAppActivity extends BaseActivity {
                 IntentUtil.gotoActivityAndFinish(context, MainActivity.class);
             }
         }, 3000);
+
+
     }
 
     @Override

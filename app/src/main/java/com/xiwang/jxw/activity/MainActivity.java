@@ -149,7 +149,7 @@ public class MainActivity extends BaseActivity {
         CommonUtil.setSmileList(context);
 
         /** 進行自動登錄*/
-        UserBiz.autoLogin(context);
+       UserBiz.autoLogin(context);
 
     }
 

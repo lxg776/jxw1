@@ -23,6 +23,7 @@ import com.xiwang.jxw.bean.NewsBean;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.biz.HomeBiz;
 import com.xiwang.jxw.config.TApplication;
+import com.xiwang.jxw.network.AppHttpClient;
 import com.xiwang.jxw.util.IntentUtil;
 import com.xiwang.jxw.util.SpUtil;
 import com.xiwang.jxw.widget.RefreshLayout;
@@ -192,6 +193,7 @@ public class NewsListFragment extends BaseFragment implements RefreshLayout.OnLo
         if(null!=columnBean){
             String dataUrl=columnBean.getDataUrl();
             if(!TextUtils.isEmpty(dataUrl)){
+
                 HomeBiz.getHomeNewsList(dataUrl, page, new BaseBiz.RequestHandle() {
                     @Override
                     public void onSuccess(ResponseBean responseBean) {

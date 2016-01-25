@@ -84,6 +84,9 @@
             android:layout_alignParentBottom="true"
             android:visibility="gone"
             ></com.xiwang.jxw.widget.EmojiView>
+
+
+
     </LinearLayout>
 
 

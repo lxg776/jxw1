@@ -11,5 +11,6 @@
     <string name="cache_menu">cache_menu</string>
     <string name="cache_smiles">cache_smiles</string>
     <string name="cache_threadType_list">cache_threadTypeList</string>
+    <string name="cache_cookies">cache_cookies</string>
 
 </resources>

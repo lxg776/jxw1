@@ -13,6 +13,7 @@ import com.xiwang.jxw.biz.UserBiz;
 import com.xiwang.jxw.event.LoginEvent;
 import com.xiwang.jxw.event.RegEvent;
 import com.xiwang.jxw.intf.LogoutListener;
+import com.xiwang.jxw.network.AppHttpClient;
 import com.xiwang.jxw.util.CommonUtil;
 import com.xiwang.jxw.util.ImgLoadUtil;
 import com.xiwang.jxw.util.ToastUtil;

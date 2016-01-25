@@ -26,6 +26,7 @@ import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.intf.LogoutListener;
 import com.xiwang.jxw.listener.SaveImageListener;
+import com.xiwang.jxw.network.AppHttpClient;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -364,6 +365,8 @@ public class CommonUtil {
                 // TODO Auto-generated method stub
                 dlg.dismiss();
                 UserBiz.setNullToUser(context);
+                /**注销cookies*/
+                AppHttpClient.clearCookie();
                 if(null!=listener){
                     listener.confirm();
                 }

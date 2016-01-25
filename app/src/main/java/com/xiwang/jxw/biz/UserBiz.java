@@ -16,6 +16,7 @@ import com.xiwang.jxw.config.IntentConfig;
 import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.event.UserInfoEvent;
+import com.xiwang.jxw.network.AppHttpClient;
 import com.xiwang.jxw.util.SpUtil;
 import com.xiwang.jxw.util.ToastUtil;
 import org.json.JSONException;
@@ -61,6 +62,7 @@ public class UserBiz {
                     @Override
                     public void onFail(ResponseBean responseBean) {
                         setNullToUser(context);
+                        AppHttpClient.clearCookie();
                     }
 
                     @Override
@@ -75,6 +77,36 @@ public class UserBiz {
                 });
 
             }
+    }
+
+    /**
+     * 测试cookies
+     */
+    public static void testCookies(){
+        String url="http://m.jingxi.net/cookie.php";
+        BaseBiz.getRequest(url, null, new BaseBiz.RequestHandle() {
+            @Override
+            public void onSuccess(ResponseBean responseBean) {
+
+            }
+
+            @Override
+            public void onFail(ResponseBean responseBean) {
+
+            }
+
+            @Override
+            public ResponseBean getRequestCache() {
+                return null;
+            }
+
+            @Override
+            public void onRequestCache(ResponseBean result) {
+
+            }
+        });
+
+
     }
 
 
