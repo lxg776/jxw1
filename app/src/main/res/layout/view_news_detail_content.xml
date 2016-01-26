@@ -23,9 +23,13 @@
     <View
         style="@style/line_view_w2"
         />
+
+    <include layout="@layout/d_newsdetail_buttom"></include>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
+        android:visibility="gone"
         android:layout_height="56dp">
         <com.xiwang.jxw.widget.HorizontalRadioView
             android:id="@+id/like_rv"

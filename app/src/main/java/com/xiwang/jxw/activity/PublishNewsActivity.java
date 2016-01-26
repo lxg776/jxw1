@@ -216,7 +216,7 @@ public class PublishNewsActivity extends BaseSubmitActivity{
             @Override
             public void onKeyBoard() {
                 if(!auto_rl.isKeyBoard){
-                    keyboardUtil.shhowKeyBoard(context, content_edt);
+                    keyboardUtil.showKeyBoard(context, content_edt);
                 }
             }
         });

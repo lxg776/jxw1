@@ -22,7 +22,7 @@ public class keyboardUtil {
 	 * @param context
 	 * @param view
 	 */
-	public static void shhowKeyBoard(Context context,View view) {
+	public static void showKeyBoard(Context context, View view) {
 		InputMethodManager imm =((InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE));
 		imm.showSoftInput(view, 0); 
 		

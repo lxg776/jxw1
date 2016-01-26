@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp"
+    >
+    <!--点赞-->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:id="@+id/dianzan_ll"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:minWidth="60dp"
+        android:padding="8dp"
+        android:background="@drawable/white_bg"
+        >
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@mipmap/dig0"
+            />
+        <TextView
+            android:id="@+id/dianzan_count_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray_500"
+            android:text="0"
+            android:layout_marginLeft="8dp"
+
+            />
+    </LinearLayout>
+
+    <!--点赞的人-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:id="@+id/dianzan_user_btn"
+        android:orientation="horizontal"
+        android:gravity="center_vertical|right"
+        android:padding="8dp"
+        android:background="@drawable/white_bg"
+        android:layout_marginLeft="8dp"
+        >
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/common_text1"
+            android:textSize="16sp"
+            android:id="@+id/dianzan_users_tv"
+            android:textColor="@color/gray_500"
+            android:singleLine="true"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:text="lxg776、龙潭掏粪、龙潭掏粪、龙潭掏粪、龙潭掏粪、龙潭掏粪"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/common_text1"
+            android:textSize="14sp"
+            android:id="@+id/dz_text2"
+            android:layout_marginLeft="2dp"
+            android:textColor="@color/black_transparent_54"
+            android:text="等觉得很赞>>"
+            />
+        </LinearLayout>
+
+</LinearLayout>
+

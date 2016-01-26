@@ -9,6 +9,7 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import com.xiwang.jxw.bean.ColumnBean;
 import com.xiwang.jxw.bean.NewsBean;
 import com.xiwang.jxw.bean.NewsDetailBean;
 import com.xiwang.jxw.bean.ResponseBean;
+import com.xiwang.jxw.bean.SmileBean;
 import com.xiwang.jxw.biz.NewsBiz;
 import com.xiwang.jxw.config.IntentConfig;
 import com.xiwang.jxw.config.TApplication;
@@ -32,9 +34,15 @@ import com.xiwang.jxw.util.ImgLoadUtil;
 import com.xiwang.jxw.util.SpUtil;
 import com.xiwang.jxw.util.CheckUtil;
 import com.xiwang.jxw.util.ToastUtil;
+import com.xiwang.jxw.util.keyboardUtil;
+import com.xiwang.jxw.widget.AutoRelativeLayout;
+import com.xiwang.jxw.widget.EmojiView;
 import com.xiwang.jxw.widget.HorizontalRadioView;
 import com.xiwang.jxw.widget.LoadingLayout;
 import com.xiwang.jxw.widget.RefreshLayout;
+import com.xiwang.jxw.widget.RichEditText;
+import com.xiwang.jxw.widget.pop.CommentPopWindow;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -98,6 +106,28 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
     /**图片列表*/
     ArrayList<String> imagesUrlList=new ArrayList<String>();
 
+    /**评论按钮*/
+    TextView showComment_btn;
+    /**评论的popwindow*/
+    CommentPopWindow commentPopWindow;
+    /**全布局监听键盘事件*/
+    AutoRelativeLayout auto_rl;
+    /**评论内容*/
+    RichEditText comment_edt;
+    EmojiView emoji_view;
+
+    /**
+     * 点赞
+     */
+    /**点赞按钮*/
+    LinearLayout dianzan_ll;
+    /**点赞次数*/
+    TextView dianzan_count_tv;
+    /**点赞名单列表*/
+    TextView dianzan_users_tv;
+    /**点赞详情*/
+    LinearLayout dianzan_user_btn;
+
     @Override
     protected String getPageName() {
         if(null!=columnBean){
@@ -131,6 +161,8 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         content_rl= (LoadingLayout) findViewById(R.id.content_rl);
         content_rl.setLoadView(true);
         content_rl.setContentLayout(View.inflate(context, R.layout.view_news_detail_content, null));
+        auto_rl= (AutoRelativeLayout) findViewById(R.id.auto_rl);
+
         headView=View.inflate(context,R.layout.view_news_detail_head, null);
         refreshLayout= (RefreshLayout) findViewById(R.id.refreshLayout);
         listView= (ListView) findViewById(R.id.listView);
@@ -157,10 +189,20 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         refreshLayout.setColorSchemeColors(getResources().getColor(R.color.orange_500));
         /**添加js调用activity方法 用于展现图片列表*/
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.addJavascriptInterface(new JsObject(),"jsObject");
-
-
+        webView.addJavascriptInterface(new JsObject(), "jsObject");
+        /**评论部分*/
+        showComment_btn= (TextView) findViewById(R.id.showComment_btn);
+        commentPopWindow=new CommentPopWindow(this);
+        commentPopWindow.setOutsideTouchable(true);
+        comment_edt= (RichEditText) findViewById(R.id.comment_edt);
+        emoji_view= (EmojiView) findViewById(R.id.emoji_view);
+        /**点赞部分*/
+        dianzan_ll= (LinearLayout) findViewById(R.id.dianzan_ll);
+        dianzan_count_tv= (TextView) findViewById(R.id.dianzan_count_tv);
+        dianzan_users_tv= (TextView) findViewById(R.id.dianzan_users_tv);
+        dianzan_user_btn= (LinearLayout) findViewById(R.id.dianzan_users_tv);
     }
+
 
     @Override
     protected void init() {
@@ -269,6 +311,31 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
     }
 
     /**
+     * 显示评论布局
+     */
+    private void showCommentView(){
+        findViewById(R.id.comment_before_ll).setVisibility(View.GONE);
+        findViewById(R.id.commenting_ll).setVisibility(View.VISIBLE);
+        comment_edt.requestFocus();
+
+        keyboardUtil.showKeyBoard(this, comment_edt);
+        emoji_view.setVisibility(View.VISIBLE);
+        emoji_view.onKeyBoard();
+
+    }
+
+
+    /**
+     * 显示评论布局
+     */
+    private void hideCommentView(){
+        findViewById(R.id.comment_before_ll).setVisibility(View.VISIBLE);
+        findViewById(R.id.commenting_ll).setVisibility(View.GONE);
+        onEmojiHide();
+    }
+
+
+    /**
      * 设置图片列表的方法
      * @param imagesUrlList
      * @param html
@@ -322,6 +389,69 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
     }
 
 
+    /**
+     *  显示表情
+     */
+    private void onEShow(){
+
+
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                emoji_view.setVisibility(View.VISIBLE);
+            }
+        }, 500);
+
+        keyboardUtil.hideKeyBoard(context, comment_edt);
+    }
+
+    /**
+     * 监听返回按钮
+     * @param keyCode
+     * @param event
+     * @return
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            if(emoji_view.isContentFla()){
+                hideCommentView();
+                return  true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    /**
+     * 隐藏表情以及键盘
+     */
+    private void  onEmojiHide(){
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                emoji_view.onHide();
+                emoji_view.setVisibility(View.GONE);
+            }
+        }, 500);
+    }
+
+    /**
+     *  显示键盘
+     */
+    private void onKeyShow(){
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                emoji_view.setVisibility(View.VISIBLE);
+                emoji_view.onKeyBoard();
+                 showCommentView();
+            }
+        }, 500);
+    }
+
+
     @Override
     protected void widgetListener() {
         refreshLayout.setOnRefreshListener(this);
@@ -335,7 +465,12 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
                 return true;
             }
         });
-
+        showComment_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onKeyShow();
+            }
+        });
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -355,6 +490,56 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
             @Override
             public boolean shouldOverrideKeyEvent(WebView view, KeyEvent event) {
                 return super.shouldOverrideKeyEvent(view, event);
+            }
+        });
+
+
+
+
+        emoji_view.setEmojiListener(new EmojiView.EmojiListener() {
+            @Override
+            public void onClickEmojiView(SmileBean bean) {
+                if (bean.isDeleteSimile()) {
+                    comment_edt.deleteEmoji();
+                } else {
+                    comment_edt.addEmoji(bean);
+                }
+            }
+
+            @Override
+            public void onEmojiShow() {
+                onEShow();
+            }
+
+            @Override
+            public void onKeyBoard() {
+                if (!auto_rl.isKeyBoard) {
+                    keyboardUtil.showKeyBoard(context, comment_edt);
+                }
+            }
+        });
+
+
+        auto_rl.setKeyboardListener(new AutoRelativeLayout.OnKeyBoardListener() {
+            @Override
+            public void onKeyboardShow(int keyBoardHeight) {
+                if(keyBoardHeight>0){
+                    emoji_view.setContentHeight(keyBoardHeight);
+                }
+                if(comment_edt.hasFocus()&&emoji_view.getVisibility()==View.GONE) {
+                    onKeyShow();
+                }else if(!comment_edt.hasFocus()){
+                    onEmojiHide();
+                }else if(comment_edt.hasFocus()&&emoji_view.content_ll.getVisibility()==View.VISIBLE){
+                    onKeyShow();
+                }
+            }
+
+            @Override
+            public void onKeyBoardHide() {
+                if(emoji_view.getVisibility()==View.VISIBLE&&emoji_view.content_ll.getVisibility()==View.GONE){
+                    hideCommentView();
+                }
             }
         });
     }

@@ -61,6 +61,7 @@
             android:name=".activity.TestActivity"
             android:screenOrientation="portrait"
             android:exported="false"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustUnspecified"
             android:theme="@style/AppTheme" >
         </activity>
 

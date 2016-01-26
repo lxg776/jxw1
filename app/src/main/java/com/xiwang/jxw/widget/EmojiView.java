@@ -88,6 +88,11 @@ public class EmojiView extends BaseView {
         page_index_ll= (LinearLayout) view_Parent.findViewById(R.id.page_index_ll);
         change_ll= (LinearLayout) view_Parent.findViewById(R.id.change_ll);
     }
+
+
+    public void setContentHeight(int height){
+        content_ll.getLayoutParams().height=height;
+    }
     /**
      * 显示表情
      */
