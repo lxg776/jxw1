@@ -12,6 +12,7 @@ import com.xiwang.jxw.widget.UploadImgView;
 //import jp.wasabeef.richeditor.RichEditor;
 
 /**
+ * 求职界面
  * Created by sunshine on 15/12/7.
  */
 public class ApplyWorkActivity extends BaseActivity{

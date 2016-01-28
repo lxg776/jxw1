@@ -56,6 +56,16 @@
             android:theme="@style/AppTheme" >
         </activity>
 
+        <!-- 租房详情 -->
+        <activity
+            android:name=".activity.RentalActivity"
+            android:screenOrientation="portrait"
+            android:exported="false"
+            android:theme="@style/AppTheme" >
+        </activity>
+
+
+
         <!-- 新闻详情 -->
         <activity
             android:name=".activity.TestActivity"

@@ -1,14 +1,17 @@
 package com.xiwang.jxw.biz;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+
 import com.loopj.android.http.RequestParams;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.activity.LoginActivity;
 import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.bean.BaseBean;
+import com.xiwang.jxw.bean.DigOrFightBean;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.bean.UserBean;
 import com.xiwang.jxw.bean.UserInfoBean;
@@ -19,7 +22,9 @@ import com.xiwang.jxw.event.UserInfoEvent;
 import com.xiwang.jxw.network.AppHttpClient;
 import com.xiwang.jxw.util.SpUtil;
 import com.xiwang.jxw.util.ToastUtil;
+
 import org.json.JSONException;
+
 import de.greenrobot.event.EventBus;
 
 /**
@@ -33,57 +38,57 @@ public class UserBiz {
     /**
      * 判断是否登录
      */
-    public static boolean isLogin(Activity context,Bundle bundle){
-        if(null==getUserBean(context)){
-            Intent intent=new Intent(context, LoginActivity.class);
+    public static boolean isLogin(Activity context, Bundle bundle) {
+        if (null == getUserBean(context)) {
+            Intent intent = new Intent(context, LoginActivity.class);
             intent.putExtras(bundle);
             context.startActivityForResult(intent, IntentConfig.LOGIN_CODE);
             return false;
         }
-        return  true;
+        return true;
     }
 
 
     /**
      * 自动登录
      */
-    public static void autoLogin(final Context context){
-           final  UserBean userBean=getUserBean(context);
-            if(null!=userBean&&TextUtils.isEmpty(userBean.getPwd())){
-                /**
-                 *用户名和密码不为空进行自动登录
-                 */
-                login(userBean.getUsername(), userBean.getPwd(), new BaseBiz.RequestHandle() {
-                    @Override
-                    public void onSuccess(ResponseBean responseBean) {
+    public static void autoLogin(final Context context) {
+        final UserBean userBean = getUserBean(context);
+        if (null != userBean && TextUtils.isEmpty(userBean.getPwd())) {
+            /**
+             *用户名和密码不为空进行自动登录
+             */
+            login(userBean.getUsername(), userBean.getPwd(), new BaseBiz.RequestHandle() {
+                @Override
+                public void onSuccess(ResponseBean responseBean) {
 
-                    }
+                }
 
-                    @Override
-                    public void onFail(ResponseBean responseBean) {
-                        setNullToUser(context);
-                        AppHttpClient.clearCookie();
-                    }
+                @Override
+                public void onFail(ResponseBean responseBean) {
+                    setNullToUser(context);
+                    AppHttpClient.clearCookie();
+                }
 
-                    @Override
-                    public ResponseBean getRequestCache() {
-                        return null;
-                    }
+                @Override
+                public ResponseBean getRequestCache() {
+                    return null;
+                }
 
-                    @Override
-                    public void onRequestCache(ResponseBean result) {
+                @Override
+                public void onRequestCache(ResponseBean result) {
 
-                    }
-                });
+                }
+            });
 
-            }
+        }
     }
 
     /**
      * 测试cookies
      */
-    public static void testCookies(){
-        String url="http://m.jingxi.net/cookie.php";
+    public static void testCookies() {
+        String url = "http://m.jingxi.net/cookie.php";
         BaseBiz.getRequest(url, null, new BaseBiz.RequestHandle() {
             @Override
             public void onSuccess(ResponseBean responseBean) {
@@ -110,53 +115,105 @@ public class UserBiz {
     }
 
 
-   public static void setNullToUser(Context context){
-       UserBean userBean=(UserBean)SpUtil.getObject(context,context.getResources().getString(R.string.cache_user));
-       if(null!=userBean){
-           SpUtil.setObject(context, context.getResources().getString(R.string.cache_userName), userBean.getUsername());
-       }
-        setUserBean(context,null);
-   }
+    public static String TYPE_DIG = "dig";
+    public static String TYPE_FIGHT = "fight";
+
+
+    /**
+     * 点赞或者反对
+     *
+     * @param type {点赞:dig  反对:fight}
+     * @param tid  {当前帖子ID}
+     * @param pid  （评论ID，0为楼主）
+     */
+    public static void digOrFight(String type, String tid, String pid, final BaseBiz.RequestHandle handle) {
+        RequestParams params = new RequestParams();
+        params.put("a", "reply");
+        params.put("type", type);
+        params.put("tid", tid);
+        params.put("pid", pid);
+        BaseBiz.getRequest(ServerConfig.DIG_FIGHT_URL, params, new BaseBiz.RequestHandle() {
+            @Override
+            public void onSuccess(ResponseBean responseBean) {
+
+                String string = (String) responseBean.getObject();
+                try {
+                    responseBean.setObject(BaseBean.newInstance(DigOrFightBean.class, string));
+                    handle.onSuccess(responseBean);
+                } catch (JSONException e) {
+                    responseBean.setStatus(ServerConfig.JSON_DATA_ERROR);
+                    responseBean.setInfo(TApplication.context.getResources().getString(R.string.exception_local_json_message));
+                    handle.onFail(responseBean);
+                }
+            }
+
+            @Override
+            public void onFail(ResponseBean responseBean) {
+                handle.onFail(responseBean);
+            }
+
+            @Override
+            public ResponseBean getRequestCache() {
+                return handle.getRequestCache();
+            }
+
+            @Override
+            public void onRequestCache(ResponseBean result) {
+                handle.onRequestCache(result);
+            }
+        });
+
+
+    }
+
+
+    public static void setNullToUser(Context context) {
+        UserBean userBean = (UserBean) SpUtil.getObject(context, context.getResources().getString(R.string.cache_user));
+        if (null != userBean) {
+            SpUtil.setObject(context, context.getResources().getString(R.string.cache_userName), userBean.getUsername());
+        }
+        setUserBean(context, null);
+    }
 
     /**
      * 设置用户bean
+     *
      * @param context
      * @param userBean
      */
-    public static void setUserBean(Context context,UserBean userBean){
-        if(userBean!=null){
-            UserBean locUserBean=(UserBean)SpUtil.getObject(context,context.getResources().getString(R.string.cache_user));
-            UserInfoBean locUserInfoBean=null;
-            if(null!=locUserBean){
-                locUserInfoBean =locUserBean.getUserInfoBean();
+    public static void setUserBean(Context context, UserBean userBean) {
+        if (userBean != null) {
+            UserBean locUserBean = (UserBean) SpUtil.getObject(context, context.getResources().getString(R.string.cache_user));
+            UserInfoBean locUserInfoBean = null;
+            if (null != locUserBean) {
+                locUserInfoBean = locUserBean.getUserInfoBean();
             }
-            if(null==userBean.getUserInfoBean()){
-                if(null!=locUserInfoBean){
+            if (null == userBean.getUserInfoBean()) {
+                if (null != locUserInfoBean) {
                     userBean.setUserInfoBean(locUserInfoBean);
                 }
             }
-            TApplication.mUser=userBean;
+            TApplication.mUser = userBean;
             SpUtil.setObject(context, context.getResources().getString(R.string.cache_user), userBean);
-        }else{
+        } else {
             SpUtil.setObject(context, context.getResources().getString(R.string.cache_user), null);
-            TApplication.mUser=null;
+            TApplication.mUser = null;
         }
     }
 
     /**
      * 获取全局用户引用
+     *
      * @param context
      * @return
      */
-    public static UserBean getUserBean(Context context){
-        if(TApplication.mUser!=null){
-                return TApplication.mUser;
+    public static UserBean getUserBean(Context context) {
+        if (TApplication.mUser != null) {
+            return TApplication.mUser;
         }
-        UserBean locUserBean=(UserBean)SpUtil.getObject(context,context.getResources().getString(R.string.cache_user));
-        if(locUserBean!=null){
-            TApplication.mUser=locUserBean;
-        }else{
-            ToastUtil.showToast(context, "无用户数据!");
+        UserBean locUserBean = (UserBean) SpUtil.getObject(context, context.getResources().getString(R.string.cache_user));
+        if (locUserBean != null) {
+            TApplication.mUser = locUserBean;
         }
         return TApplication.mUser;
     }
@@ -165,67 +222,71 @@ public class UserBiz {
     /**
      * 获取我的信息
      */
-    public static  void getMyInfo(final Context context,final UserBean userBean){
-                if(null!=userBean&&!TextUtils.isEmpty(userBean.getUid())){
-                             getUserInfo(userBean.getUid(), new BaseBiz.RequestHandle() {
-                                 @Override
-                                 public void onSuccess(ResponseBean responseBean) {
-                                     userBean.setUserInfoBean((UserInfoBean) responseBean.getObject());
-                                     setUserBean(context, userBean);
-                                     /** 发送更新用户信息事件*/
-                                     EventBus.getDefault().post(new UserInfoEvent());
-                                 }
-
-                                 @Override
-                                 public void onFail(ResponseBean responseBean) {
-
-                                 }
-
-                                 @Override
-                                 public ResponseBean getRequestCache() {
-                                     return null;
-                                 }
-
-                                 @Override
-                                 public void onRequestCache(ResponseBean result) {
-
-                                 }
-                             });
-                }else{
-                    ToastUtil.showToast(context, "当前用户不存在!");
+    public static void getMyInfo(final Context context, final UserBean userBean) {
+        if (null != userBean && !TextUtils.isEmpty(userBean.getUid())) {
+            getUserInfo(userBean.getUid(), new BaseBiz.RequestHandle() {
+                @Override
+                public void onSuccess(ResponseBean responseBean) {
+                    userBean.setUserInfoBean((UserInfoBean) responseBean.getObject());
+                    setUserBean(context, userBean);
+                    /** 发送更新用户信息事件*/
+                    EventBus.getDefault().post(new UserInfoEvent());
                 }
+
+                @Override
+                public void onFail(ResponseBean responseBean) {
+
+                }
+
+                @Override
+                public ResponseBean getRequestCache() {
+                    return null;
+                }
+
+                @Override
+                public void onRequestCache(ResponseBean result) {
+
+                }
+            });
+        } else {
+            ToastUtil.showToast(context, "当前用户不存在!");
+        }
     }
+
+
+
 
     /**
      * 用户发帖
-     * @param fid 频道
-     * @param type 类型
-     * @param action 操作
-     * @param tid 跟帖
+     *
+     * @param fid     频道
+     * @param type    类型
+     * @param action  操作
+     * @param tid     跟帖
      * @param subject 主题
      * @param content 内容
-     * @param aids 上传的图片
-     * @param handle 操作
+     * @param aids    上传的图片
+     * @param handle  操作
      */
-    public static void faTie(String fid,String type,String action,String tid,String subject,String content,String aids,final BaseBiz.RequestHandle handle){
-        RequestParams params =new RequestParams();
-        if(!TextUtils.isEmpty(fid)){
-            params.put("fid",fid);
+    public static void faTie(String fid, String type, String action, String tid, String subject, String content, String aids, final BaseBiz.RequestHandle handle) {
+        RequestParams params = new RequestParams();
+        if (!TextUtils.isEmpty(fid)) {
+            params.put("fid", fid);
         }
-        if(!TextUtils.isEmpty(type)){
-            params.put("type",type);
+        if (!TextUtils.isEmpty(type)) {
+            params.put("type", type);
         }
-        if(!TextUtils.isEmpty(tid)){
-            params.put("tid",tid);
+        if (!TextUtils.isEmpty(tid)) {
+            params.put("tid", tid);
         }
-        if(!TextUtils.isEmpty(subject)){
-            params.put("subject",subject);
+        if (!TextUtils.isEmpty(subject)) {
+            params.put("subject", subject);
         }
-        if(!TextUtils.isEmpty(content)){
-            params.put("content",subject);
+        if (!TextUtils.isEmpty(content)) {
+            params.put("content", subject);
         }
-        if(!TextUtils.isEmpty(aids)){
-            params.put("aids",aids);
+        if (!TextUtils.isEmpty(aids)) {
+            params.put("aids", aids);
         }
 
         BaseBiz.getRequest(ServerConfig.PUBLISH_URL, params, new BaseBiz.RequestHandle() {
@@ -243,14 +304,17 @@ public class UserBiz {
                     handle.onFail(responseBean);
                 }
             }
+
             @Override
             public void onFail(ResponseBean responseBean) {
                 handle.onFail(responseBean);
             }
+
             @Override
             public ResponseBean getRequestCache() {
                 return handle.getRequestCache();
             }
+
             @Override
             public void onRequestCache(ResponseBean result) {
                 handle.onRequestCache(result);
@@ -261,13 +325,14 @@ public class UserBiz {
 
     /**
      * 获取个人信息
+     *
      * @param uid
      * @param handle
      */
-    public static void getUserInfo(String uid,final BaseBiz.RequestHandle handle){
-        RequestParams params =new RequestParams();
-        if(!TextUtils.isEmpty(uid)){
-            params.put("uid",uid);
+    public static void getUserInfo(String uid, final BaseBiz.RequestHandle handle) {
+        RequestParams params = new RequestParams();
+        if (!TextUtils.isEmpty(uid)) {
+            params.put("uid", uid);
         }
         BaseBiz.getRequest(ServerConfig.MYINFO_URL, params, new BaseBiz.RequestHandle() {
 
@@ -284,14 +349,17 @@ public class UserBiz {
                     handle.onFail(responseBean);
                 }
             }
+
             @Override
             public void onFail(ResponseBean responseBean) {
                 handle.onFail(responseBean);
             }
+
             @Override
             public ResponseBean getRequestCache() {
                 return handle.getRequestCache();
             }
+
             @Override
             public void onRequestCache(ResponseBean result) {
                 handle.onRequestCache(result);
@@ -300,18 +368,18 @@ public class UserBiz {
     }
 
 
-
     /**
      * 用户登录方法
+     *
      * @param userName
      * @param pwd
      * @param handle
      */
-    public static void login(String userName,String pwd,final BaseBiz.RequestHandle handle){
-        RequestParams params =new RequestParams();
-        params.put("username",userName);
-        params.put("password",pwd);
-       //params.put("a","login");
+    public static void login(String userName, String pwd, final BaseBiz.RequestHandle handle) {
+        RequestParams params = new RequestParams();
+        params.put("username", userName);
+        params.put("password", pwd);
+        //params.put("a","login");
         BaseBiz.getRequest(ServerConfig.USER_LOGIN, params, new BaseBiz.RequestHandle() {
 
             @Override
@@ -349,16 +417,17 @@ public class UserBiz {
 
     /**
      * 用户登录方法
+     *
      * @param userName
      * @param pwd
      * @param handle
      */
-    public static void reg(String userName,String pwd,String email,String sex,final BaseBiz.RequestHandle handle){
-        RequestParams params =new RequestParams();
-        params.put("username",userName);
-        params.put("password",pwd);
-        params.put("email",email);
-        params.put("sex",sex);
+    public static void reg(String userName, String pwd, String email, String sex, final BaseBiz.RequestHandle handle) {
+        RequestParams params = new RequestParams();
+        params.put("username", userName);
+        params.put("password", pwd);
+        params.put("email", email);
+        params.put("sex", sex);
 
         BaseBiz.getRequest(ServerConfig.USER_REG, params, new BaseBiz.RequestHandle() {
 
@@ -393,8 +462,6 @@ public class UserBiz {
         });
 
     }
-
-
 
 
 }

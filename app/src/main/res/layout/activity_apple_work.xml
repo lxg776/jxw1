@@ -1,85 +1,116 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <include layout="@layout/tootbar_common"></include>
-
-    <LinearLayout
+    android:background="@color/gray_100"
+    tools:context=".PublishNewsActivity"
+    >
+    <com.xiwang.jxw.widget.AutoRelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/white"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        >
-        <com.xiwang.jxw.widget.MyInputEditView
+        android:layout_height="match_parent"
+        android:id="@+id/auto_rl"
+        android:orientation="vertical">
+        <include layout="@layout/tootbar_common"
+            android:id="@+id/toolbar"
+            ></include>
+        <ScrollView
             android:layout_width="match_parent"
-            app:topHinttext="姓名"
-            app:inputHinttext="姓名"
-            android:visibility="gone"
-            app:default_lColor="@color/orange_500"
-            android:layout_height="wrap_content">
-        </com.xiwang.jxw.widget.MyInputEditView>
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="24dp"
+                >
+                <!--姓名-->
+                <com.xiwang.jxw.widget.DeleteEditText
+                    android:id="@+id/name_edt"
+                    android:layout_marginTop="16dp"
+                    style="@style/etd_1"
+                    android:hint="姓名"
+                    android:layout_height="48dp"
+                    android:background="@color/white"
+                    >
+                </com.xiwang.jxw.widget.DeleteEditText>
 
-        <com.xiwang.jxw.widget.MyInputEditView
-            android:layout_width="match_parent"
-            app:topHinttext="联系电话"
-            app:inputHinttext="联系电话"
-            android:layout_marginTop="8dp"
-            android:visibility="gone"
-            app:default_lColor="@color/black_transparent_54"
-            android:layout_height="wrap_content">
-        </com.xiwang.jxw.widget.MyInputEditView>
-
-
-        <com.xiwang.jxw.widget.MyDatePickView
-            android:layout_width="match_parent"
-            android:layout_marginTop="8dp"
-            android:id="@+id/datePick"
-            app:topHinttext="日期选择"
-            app:inputHinttext="姓名"
-            android:visibility="gone"
-            app:default_lColor="@color/black_transparent_54"
-            android:layout_height="wrap_content">
-        </com.xiwang.jxw.widget.MyDatePickView>
-
-
-        <com.xiwang.jxw.widget.MyTextSelectView
-            android:layout_width="match_parent"
-            android:layout_marginTop="8dp"
-            android:id="@+id/xinzi_select"
-            app:topHinttext="期望薪资"
-            app:inputHinttext="期望薪资"
-            app:default_lColor="@color/black_transparent_54"
-            app:dialog_title="薪资选择"
-            android:visibility="gone"
-            android:layout_height="wrap_content">
-        </com.xiwang.jxw.widget.MyTextSelectView>
-
-
-        <ImageButton
-            android:id="@+id/action_insert_image"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="@null"
-            android:contentDescription="@null"
-            android:src="@mipmap/add_icon_gray"
-            />
-        <jp.wasabeef.richeditor.RichEditor
-            android:id="@+id/editor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            />
-
-    </LinearLayout>
+                <!--出生年月-->
+                <com.xiwang.jxw.widget.DeleteEditText
+                    android:id="@+id/name_edt"
+                    android:layout_marginTop="16dp"
+                    style="@style/etd_1"
+                    android:hint="姓名"
+                    android:layout_height="48dp"
+                    android:background="@color/white"
+                    >
+                </com.xiwang.jxw.widget.DeleteEditText>
 
 
 
+                <!--分类选择-->
+                <com.xiwang.jxw.widget.MyTextSelectView
+                    app:is_hint="false"
+                    app:inputHinttext="期望房租"
+                    app:dialog_title="期望房租"
+                    style="@style/etd_2"
+                    android:layout_marginTop="1dp"
+                    android:id="@+id/fangzu_sv"
+                    android:background="@color/white"
+                    >
+                </com.xiwang.jxw.widget.MyTextSelectView>
+
+                <!--输入标题-->
+                <com.xiwang.jxw.widget.DeleteEditText
+                    android:id="@+id/title_edt"
+                    android:layout_marginTop="16dp"
+                    style="@style/etd_1"
+                    android:hint="标题"
+                    android:layout_height="48dp"
+                    android:background="@color/white"
+                    >
+                </com.xiwang.jxw.widget.DeleteEditText>
 
 
+                <!--输入内容-->
+                <EditText
+                    android:id="@+id/content_edt"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="1dp"
+                    android:padding="16dp"
+                    android:hint="描述内容"
+                    android:background="@color/white"
+                    android:textColor="@color/black_transparent_87"
+                    android:textColorHint="@color/black_transparent_26"
+                    android:gravity="top"
+                    />
+                <!--联系人-->
+                <com.xiwang.jxw.widget.DeleteEditText
+                    android:id="@+id/linkman_edt"
+                    android:layout_marginTop="16dp"
+                    style="@style/etd_1"
+                    android:hint="联系人"
+                    android:layout_height="48dp"
+                    android:background="@color/white"
+                    >
+                </com.xiwang.jxw.widget.DeleteEditText>
 
-</LinearLayout>
+
+                <!--手机号码-->
+                <com.xiwang.jxw.widget.DeleteEditText
+                    android:id="@+id/phone_edt"
+                    android:layout_marginTop="1dp"
+                    style="@style/etd_1"
+                    android:hint="手机号码"
+                    android:layout_height="48dp"
+                    android:background="@color/white"
+                    android:inputType="number"
+                    >
+                </com.xiwang.jxw.widget.DeleteEditText>
+            </LinearLayout>
+        </ScrollView>
+    </com.xiwang.jxw.widget.AutoRelativeLayout>
+</RelativeLayout>

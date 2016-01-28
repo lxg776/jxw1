@@ -25,9 +25,14 @@
             android:paddingLeft="8dp"
             android:layout_weight="1"
             />
+
+        <!--跳至 回复列表-->
         <RelativeLayout
             android:layout_width="60dp"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:id="@+id/show_replies_rl"
+
+            >
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -38,10 +43,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:minWidth="16dp"
                 android:background="@drawable/red_bg"
                 android:textColor="@color/white"
-                android:text="100"
+                android:text="10"
+                android:id="@+id/replies_tv"
                 android:padding="2dp"
+                android:gravity="center"
                 android:textSize="8sp"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="2dp"
@@ -84,7 +92,7 @@
                 ></com.xiwang.jxw.widget.EmojiView>
             <TextView
                 style="@style/text_btn"
-                android:id="@+id/fabu_btn"
+                android:id="@+id/huifu_btn"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:layout_width="48dp"

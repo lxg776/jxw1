@@ -164,6 +164,10 @@ public class MyTextSelectView extends LinearLayout {
         return titleText;
     }
 
+    public String getText(){
+        return  text_tv.getText().toString();
+    }
+
     public void setTitleText(String titleText) {
         this.titleText = titleText;
     }

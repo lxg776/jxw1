@@ -8,4 +8,26 @@
             <item >女</item>
         </string-array>
 
+
+    <string-array name="select_ftw">
+        <item>单间</item>
+        <item>一房一厅一卫</item>
+        <item>两房一厅一卫</item>
+        <item>两房一厅两卫</item>
+        <item>三房一厅两卫</item>
+        <item>三房两厅两卫</item>
+        <item>四房两厅两卫</item>
+        <item>五房两厅三卫</item>
+    </string-array>
+
+    <string-array name="select_fangzu">
+        <item>面议</item>
+        <item>500元以下/月</item>
+        <item>500-1000元/月</item>
+        <item>1000-1500元/月</item>
+        <item>2000-2500元/月</item>
+        <item>2500-3000元/月</item>
+        <item>3000元/月以上</item>
+    </string-array>
+
 </resources>

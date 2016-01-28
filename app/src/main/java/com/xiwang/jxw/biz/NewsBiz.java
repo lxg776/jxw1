@@ -1,5 +1,8 @@
 package com.xiwang.jxw.biz;
 
+import android.content.Context;
+import android.text.TextUtils;
+
 import com.loopj.android.http.RequestParams;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseBiz;
@@ -7,12 +10,17 @@ import com.xiwang.jxw.bean.BaseBean;
 import com.xiwang.jxw.bean.NewsDetailBean;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.bean.SmileListBean;
+import com.xiwang.jxw.bean.UserBean;
+import com.xiwang.jxw.bean.UserInfoBean;
 import com.xiwang.jxw.bean.postbean.TopicBean;
 import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.config.TApplication;
+import com.xiwang.jxw.util.SpUtil;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -68,25 +76,26 @@ public class NewsBiz {
 
 
     /**
-     * 发布主题
-     * @param topicBean 主题
+     * 回复
+     *
+     * @param tid
+     * @param content
+     * @param aids
+     * @param handle
      */
-    public  static void publishTopic(TopicBean topicBean,final BaseBiz.RequestHandle handle){
-        if(topicBean==null){
-            return;
+    public static void reply(String tid, String content, String aids, final BaseBiz.RequestHandle handle) {
+        RequestParams params = new RequestParams();
+        params.put("tid", tid);
+        params.put("action", "reply");
+        params.put("content", content);
+        if (!TextUtils.isEmpty(aids)) {
+            params.put("aids", aids);
         }
 
-        RequestParams params =new RequestParams();
-        params.put("fid",topicBean.getFid());
-        //params.put("tid",topicBean.getTid());
-        params.put("action",topicBean.getAction());
-      //  params.put("tid",topicBean.getTid());
-        params.put("subject",topicBean.getSubject());
-        params.put("content",topicBean.getContent());
-        params.put("aids",topicBean.getAids());
-        BaseBiz.getRequest(ServerConfig.TOPIC_URL, params, new BaseBiz.RequestHandle() {
+        BaseBiz.getRequest(ServerConfig.PUBLISH_URL, params, new BaseBiz.RequestHandle() {
             @Override
             public void onSuccess(ResponseBean responseBean) {
+
                 String string = (String) responseBean.getObject();
                 try {
                     NewsDetailBean bean = (NewsDetailBean) BaseBean.newInstance(NewsDetailBean.class, string);
@@ -97,6 +106,59 @@ public class NewsBiz {
                     responseBean.setInfo(TApplication.context.getResources().getString(R.string.exception_local_json_message));
                     handle.onFail(responseBean);
                 }
+            }
+
+            @Override
+            public void onFail(ResponseBean responseBean) {
+                handle.onFail(responseBean);
+            }
+
+            @Override
+            public ResponseBean getRequestCache() {
+                return handle.getRequestCache();
+            }
+
+            @Override
+            public void onRequestCache(ResponseBean result) {
+                handle.onRequestCache(result);
+            }
+        });
+    }
+
+
+    /**
+     * 发布主题
+     * @param topicBean 主题
+     */
+    public  static void publishTopic(TopicBean topicBean,final BaseBiz.RequestHandle handle){
+        if(topicBean==null){
+            return;
+        }
+
+        RequestParams params =new RequestParams();
+        params.put("fid","70");
+        //params.put("fid",topicBean.getFid());
+        //params.put("tid",topicBean.getTid());
+        params.put("action",topicBean.getAction());
+      //  params.put("tid",topicBean.getTid());
+        params.put("subject",topicBean.getSubject());
+        params.put("content",topicBean.getContent());
+        params.put("aids",topicBean.getAids());
+        BaseBiz.getRequest(ServerConfig.TOPIC_URL, params, new BaseBiz.RequestHandle() {
+            @Override
+            public void onSuccess(ResponseBean responseBean) {
+
+                handle.onSuccess(responseBean);
+//                String string = (String) responseBean.getObject();
+//                try {
+//                    NewsDetailBean bean = (NewsDetailBean) BaseBean.newInstance(NewsDetailBean.class, string);
+//                    responseBean.setObject(bean);
+//                    handle.onSuccess(responseBean);
+//                } catch (JSONException e) {
+//                    responseBean.setStatus(ServerConfig.JSON_DATA_ERROR);
+//                    responseBean.setInfo(TApplication.context.getResources().getString(R.string.exception_local_json_message));
+//                    handle.onFail(responseBean);
+//                }
             }
 
             @Override
@@ -161,5 +223,41 @@ public class NewsBiz {
             }
         });
 
+    }
+
+    /**
+     * 获取点赞过后的新闻
+     * @param context
+     */
+    public static ArrayList<String>  getDiges(Context context){
+        UserBean userBean=UserBiz.getUserBean(context);
+        String userId=null;
+        if(null!=userBean){
+            userId=userBean.getUid();
+        }else{
+            userId="unLoginUser";
+        }
+        ArrayList<String> digList= (ArrayList<String>) SpUtil.getObject(context,context.getResources().getString(R.string.cache_dig)+userId);
+        if(digList==null){
+            digList=new ArrayList<>();
+        }
+        return  digList;
+    }
+
+    /**
+     * 设置点赞过后的帖子
+     * @param context
+     * @param digList
+     */
+    public static  void setDiges(Context context, ArrayList<String> digList){
+        UserBean userBean=UserBiz.getUserBean(context);
+        String userId=null;
+        if(null!=userBean){
+            userId=userBean.getUid();
+        }else{
+            userId="unLoginUser";
+        }
+        String key=context.getResources().getString(R.string.cache_dig)+userId;
+        SpUtil.setObject(context,key,digList);
     }
 }

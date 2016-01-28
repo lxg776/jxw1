@@ -1,0 +1,105 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_100"
+    tools:context=".PublishNewsActivity"
+    >
+<com.xiwang.jxw.widget.AutoRelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/auto_rl"
+    android:orientation="vertical">
+    <include layout="@layout/tootbar_common"
+        android:id="@+id/toolbar"
+        ></include>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="24dp"
+        >
+        <!--联想-->
+        <com.xiwang.jxw.widget.DeleteAutoCompleteTextView
+            android:hint="房/厅/卫"
+            android:layout_marginTop="16dp"
+            style="@style/etd_1"
+            android:singleLine="true"
+            android:id="@+id/fwt_tv"
+            android:completionThreshold="1"
+            android:background="@color/white"
+            >
+        </com.xiwang.jxw.widget.DeleteAutoCompleteTextView >
+
+
+        <!--分类选择-->
+        <com.xiwang.jxw.widget.MyTextSelectView
+            app:is_hint="false"
+            app:inputHinttext="期望房租"
+            app:dialog_title="期望房租"
+            style="@style/etd_2"
+            android:layout_marginTop="1dp"
+            android:id="@+id/fangzu_sv"
+            android:background="@color/white"
+            >
+        </com.xiwang.jxw.widget.MyTextSelectView>
+
+        <!--输入标题-->
+        <com.xiwang.jxw.widget.DeleteEditText
+            android:id="@+id/title_edt"
+            android:layout_marginTop="16dp"
+            style="@style/etd_1"
+            android:hint="标题"
+            android:layout_height="48dp"
+            android:background="@color/white"
+            >
+        </com.xiwang.jxw.widget.DeleteEditText>
+
+
+        <!--输入内容-->
+        <EditText
+            android:id="@+id/content_edt"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginTop="1dp"
+            android:padding="16dp"
+            android:hint="描述内容"
+            android:background="@color/white"
+            android:textColor="@color/black_transparent_87"
+            android:textColorHint="@color/black_transparent_26"
+            android:gravity="top"
+            />
+        <!--联系人-->
+        <com.xiwang.jxw.widget.DeleteEditText
+            android:id="@+id/linkman_edt"
+            android:layout_marginTop="16dp"
+            style="@style/etd_1"
+            android:hint="联系人"
+            android:layout_height="48dp"
+            android:background="@color/white"
+            >
+        </com.xiwang.jxw.widget.DeleteEditText>
+
+
+        <!--手机号码-->
+        <com.xiwang.jxw.widget.DeleteEditText
+            android:id="@+id/phone_edt"
+            android:layout_marginTop="1dp"
+            style="@style/etd_1"
+            android:hint="手机号码"
+            android:layout_height="48dp"
+            android:background="@color/white"
+            android:inputType="number"
+            >
+        </com.xiwang.jxw.widget.DeleteEditText>
+    </LinearLayout>
+    </ScrollView>
+</com.xiwang.jxw.widget.AutoRelativeLayout>
+</RelativeLayout>

@@ -1,5 +1,11 @@
 package com.xiwang.jxw.bean.postbean;
 
+import android.text.TextUtils;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLEncoder;
+
 /**
  * 提交帖子实体
  * Created by sunshine on 16/1/1.
@@ -54,6 +60,15 @@ public class TopicBean {
     }
 
     public String getSubject() {
+
+        if(!TextUtils.isEmpty(subject)){
+            try {
+                return URLEncoder.encode(subject,"GBK");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                return  subject;
+            }
+        }
         return subject;
     }
 
@@ -62,6 +77,16 @@ public class TopicBean {
     }
 
     public String getContent() {
+        if(!TextUtils.isEmpty(content)){
+            try {
+                return URLEncoder.encode(content,"GBK");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                return  content;
+
+            }
+        }
+
         return content;
     }
 

@@ -1,19 +1,20 @@
 package com.xiwang.jxw.activity;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.xiwang.jxw.R;
@@ -22,11 +23,14 @@ import com.xiwang.jxw.base.BaseActivity;
 import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.bean.AuthorBean;
 import com.xiwang.jxw.bean.ColumnBean;
+import com.xiwang.jxw.bean.DigOrFightBean;
 import com.xiwang.jxw.bean.NewsBean;
 import com.xiwang.jxw.bean.NewsDetailBean;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.bean.SmileBean;
+import com.xiwang.jxw.bean.UserBean;
 import com.xiwang.jxw.biz.NewsBiz;
+import com.xiwang.jxw.biz.UserBiz;
 import com.xiwang.jxw.config.IntentConfig;
 import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.util.CommonUtil;
@@ -41,7 +45,10 @@ import com.xiwang.jxw.widget.HorizontalRadioView;
 import com.xiwang.jxw.widget.LoadingLayout;
 import com.xiwang.jxw.widget.RefreshLayout;
 import com.xiwang.jxw.widget.RichEditText;
-import com.xiwang.jxw.widget.pop.CommentPopWindow;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,7 +62,7 @@ import me.zhanghai.android.materialprogressbar.IndeterminateProgressDrawable;
  * 帖子详情界面
  * Created by sunshine on 15/11/9.
  */
-public class NewsDetailActivity extends BaseActivity implements RefreshLayout.OnLoadListener,RefreshLayout.OnRefreshListener{
+public class NewsDetailActivity extends BaseActivity implements RefreshLayout.OnLoadListener,RefreshLayout.OnRefreshListener,AbsListView.OnScrollListener {
     /** webview用于显示html内容*/
     private WebView webView;
     /** 内容布局*/
@@ -108,8 +115,7 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
 
     /**评论按钮*/
     TextView showComment_btn;
-    /**评论的popwindow*/
-    CommentPopWindow commentPopWindow;
+
     /**全布局监听键盘事件*/
     AutoRelativeLayout auto_rl;
     /**评论内容*/
@@ -126,7 +132,20 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
     /**点赞名单列表*/
     TextView dianzan_users_tv;
     /**点赞详情*/
-    LinearLayout dianzan_user_btn;
+    LinearLayout dianzan_detail_ll;
+
+
+    /**回复数*/
+    TextView replies_tv;
+    /**跳回回复第一条*/
+    RelativeLayout show_replies_rl;
+
+    /**点赞的列表*/
+    ArrayList<String> diges;
+    /**回复按钮*/
+    TextView huifu_btn;
+    /**是否转到评论列表*/
+    boolean isRelpy=true;
 
     @Override
     protected String getPageName() {
@@ -164,6 +183,13 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         auto_rl= (AutoRelativeLayout) findViewById(R.id.auto_rl);
 
         headView=View.inflate(context,R.layout.view_news_detail_head, null);
+
+        /**点赞部分*/
+        dianzan_ll= (LinearLayout) headView.findViewById(R.id.dianzan_ll);
+        dianzan_count_tv= (TextView) headView.findViewById(R.id.dianzan_count_tv);
+        dianzan_users_tv= (TextView) headView.findViewById(R.id.dianzan_users_tv);
+        dianzan_detail_ll= (LinearLayout) headView.findViewById(R.id.dianzan_detail_ll);
+
         refreshLayout= (RefreshLayout) findViewById(R.id.refreshLayout);
         listView= (ListView) findViewById(R.id.listView);
         webView= (WebView) headView.findViewById(R.id.webView);
@@ -191,22 +217,24 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         webView.getSettings().setJavaScriptEnabled(true);
         webView.addJavascriptInterface(new JsObject(), "jsObject");
         /**评论部分*/
-        showComment_btn= (TextView) findViewById(R.id.showComment_btn);
-        commentPopWindow=new CommentPopWindow(this);
-        commentPopWindow.setOutsideTouchable(true);
+        showComment_btn= (TextView)findViewById(R.id.showComment_btn);
         comment_edt= (RichEditText) findViewById(R.id.comment_edt);
         emoji_view= (EmojiView) findViewById(R.id.emoji_view);
-        /**点赞部分*/
-        dianzan_ll= (LinearLayout) findViewById(R.id.dianzan_ll);
-        dianzan_count_tv= (TextView) findViewById(R.id.dianzan_count_tv);
-        dianzan_users_tv= (TextView) findViewById(R.id.dianzan_users_tv);
-        dianzan_user_btn= (LinearLayout) findViewById(R.id.dianzan_users_tv);
+
+        replies_tv= (TextView) findViewById(R.id.replies_tv);
+        show_replies_rl= (RelativeLayout) findViewById(R.id.show_replies_rl);
+        huifu_btn= (TextView) findViewById(R.id.huifu_btn);
+
     }
 
 
     @Override
     protected void init() {
-        loadNetData(1,true);
+
+
+        loadNetData(1, true);
+
+
     }
 
     /**
@@ -261,6 +289,8 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         columnBean=(ColumnBean)getIntent().getSerializableExtra(getString(R.string.send_column));
         listAdapter=new CommentListAdapter(this);
         listView.setAdapter(listAdapter);
+        diges=NewsBiz.getDiges(context);
+
     }
 
     /**
@@ -291,6 +321,20 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         like_rv.setText(detailBean.getDig());
         not_like_rv.setText(detailBean.getPoor());
         message_rv.setText(detailBean.getReplies());
+
+        //设置回复数据
+        if(!TextUtils.isEmpty(detailBean.getReplies())&&!"0".equals(detailBean.getReplies())){
+            replies_tv.setText(detailBean.getReplies());
+            replies_tv.setVisibility(View.VISIBLE);
+        }else{
+            replies_tv.setVisibility(View.GONE);
+        }
+
+        if(diges.contains(detailBean.getTid())){
+            setDianzan(true);
+        }else{
+            setDianzan(false);
+        }
     }
     /**正则抽去<img>标签的内容*/
     private static Pattern IMAGE_TAG_PATTERN = Pattern
@@ -451,6 +495,26 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         }, 500);
     }
 
+    /**
+     * 设置点赞按钮
+     */
+    private void setDianzan(boolean fla){
+        if(fla){
+            dianzan_ll.setBackground(getResources().getDrawable(R.drawable.yellow500_bg));
+            ImageView iv= (ImageView) dianzan_ll.getChildAt(0);
+            iv.setBackgroundDrawable(getResources().getDrawable(R.mipmap.dig_yellow));
+            TextView textView= (TextView) dianzan_ll.getChildAt(1);
+            textView.setTextColor(getResources().getColor(R.color.orange_700));
+        }else{
+            dianzan_ll.setBackground(getResources().getDrawable(R.drawable.white_bg));
+            ImageView iv= (ImageView) dianzan_ll.getChildAt(0);
+            iv.setBackgroundDrawable(getResources().getDrawable(R.mipmap.dig0));
+            TextView textView= (TextView) dianzan_ll.getChildAt(1);
+            textView.setTextColor(getResources().getColor(R.color.gray_500));
+        }
+
+    }
+
 
     @Override
     protected void widgetListener() {
@@ -523,25 +587,115 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         auto_rl.setKeyboardListener(new AutoRelativeLayout.OnKeyBoardListener() {
             @Override
             public void onKeyboardShow(int keyBoardHeight) {
-                if(keyBoardHeight>0){
+                if (keyBoardHeight > 0) {
                     emoji_view.setContentHeight(keyBoardHeight);
                 }
-                if(comment_edt.hasFocus()&&emoji_view.getVisibility()==View.GONE) {
+                if (comment_edt.hasFocus() && emoji_view.getVisibility() == View.GONE) {
                     onKeyShow();
-                }else if(!comment_edt.hasFocus()){
+                } else if (!comment_edt.hasFocus()) {
                     onEmojiHide();
-                }else if(comment_edt.hasFocus()&&emoji_view.content_ll.getVisibility()==View.VISIBLE){
+                } else if (comment_edt.hasFocus() && emoji_view.content_ll.getVisibility() == View.VISIBLE) {
                     onKeyShow();
                 }
             }
 
             @Override
             public void onKeyBoardHide() {
-                if(emoji_view.getVisibility()==View.VISIBLE&&emoji_view.content_ll.getVisibility()==View.GONE){
+                if (emoji_view.getVisibility() == View.VISIBLE && emoji_view.content_ll.getVisibility() == View.GONE) {
                     hideCommentView();
                 }
             }
         });
+
+        /*
+          跳至第一条评论
+         */
+        show_replies_rl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isRelpy){
+                    listView.setSelection(1);
+                }else{
+                    listView.setSelection(0);
+                }
+                isRelpy=!isRelpy;
+
+            }
+        });
+
+        /*
+        点赞
+         */
+        dianzan_ll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String tid =newsBean.getTid();
+                String pid="";
+                String type= UserBiz.TYPE_DIG;
+                UserBiz.digOrFight(type, tid, pid, new BaseBiz.RequestHandle() {
+                    @Override
+                    public void onSuccess(ResponseBean responseBean) {
+                        DigOrFightBean bean= (DigOrFightBean) responseBean.getObject();
+                        String dig=bean.getDig();
+                        setDianzan(true);
+                        dianzan_ll.setBackground(getResources().getDrawable(R.drawable.yellow500_bg));
+                        TextView textView= (TextView) dianzan_ll.getChildAt(1);
+                        textView.setText(dig);
+                        diges.add(newsBean.getTid());
+                        NewsBiz.setDiges(context,diges);
+                    }
+
+                    @Override
+                    public void onFail(ResponseBean responseBean) {
+
+                    }
+
+                    @Override
+                    public ResponseBean getRequestCache() {
+                        return null;
+                    }
+
+                    @Override
+                    public void onRequestCache(ResponseBean result) {
+
+                    }
+                });
+            }
+        });
+        /*
+        回复按钮
+         */
+        huifu_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    String replyContent=comment_edt.getRichText();
+                    if(!CheckUtil.isEmpty(context,"回复内容",replyContent)){
+                        NewsBiz.reply(newsBean.getTid(), replyContent, null, new BaseBiz.RequestHandle() {
+                            @Override
+                            public void onSuccess(ResponseBean responseBean) {
+                                showNewsDetail(responseBean);
+                                listView.setSelection(1);
+                            }
+
+                            @Override
+                            public void onFail(ResponseBean responseBean) {
+                                    ToastUtil.showToast(context,responseBean.getInfo());
+                            }
+
+                            @Override
+                            public ResponseBean getRequestCache() {
+                                return null;
+                            }
+
+                            @Override
+                            public void onRequestCache(ResponseBean result) {
+
+                            }
+                        });
+                    }
+            }
+        });
+        listView.setOnScrollListener(this);
     }
 
     @Override
@@ -551,8 +705,10 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
 
     @Override
     public void onRefresh() {
-        loadNetData(currentPage+1,true);
+        loadNetData(1,true);
     }
+
+
 
 
     /**
@@ -567,6 +723,23 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
             intent.putExtra(IntentConfig.SEND_TITLE, newsBean.getSubject());
             startActivity(intent);
         }
+    }
+
+    /**
+     * 滚动事件监听
+     */
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+            switch (scrollState){
+                case  AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
+                        hideCommentView();
+                    break;
+            }
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
     }
 }
 

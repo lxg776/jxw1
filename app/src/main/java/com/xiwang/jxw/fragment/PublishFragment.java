@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.activity.PublishNewsActivity;
+import com.xiwang.jxw.activity.RentalActivity;
 import com.xiwang.jxw.activity.TestActivity;
 import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.base.BaseFragment;
@@ -32,6 +33,7 @@ public class PublishFragment extends BaseFragment implements View.OnClickListene
 
 
     public static int DO_FABU=0x23;
+    public static int DO_QIUZU=0x24;
 
 
     /** 发帖按钮*/
@@ -99,6 +101,7 @@ public class PublishFragment extends BaseFragment implements View.OnClickListene
     @Override
     protected void widgetListener() {
         fabu_btn.setOnClickListener(this);
+        qiuzu_btn.setOnClickListener(this);
     }
 
     @Override
@@ -118,16 +121,27 @@ public class PublishFragment extends BaseFragment implements View.OnClickListene
 
     }
 
+
+    private Bundle getBundle(int send_do){
+        Bundle bundle=new Bundle();
+        bundle.putString(IntentConfig.SEND_FRAMGE_TAG,getTag());
+        bundle.putInt(IntentConfig.SEND_DO,send_do);
+        return  bundle;
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.fabu_btn:
-                Bundle bundle=new Bundle();
-                bundle.putString(IntentConfig.SEND_FRAMGE_TAG,getTag());
-                bundle.putInt(IntentConfig.SEND_DO,DO_FABU);
-                if(UserBiz.isLogin(context,bundle)){
+                if(UserBiz.isLogin(context,getBundle(DO_FABU))){
                     IntentUtil.gotoActivity(context, PublishNewsActivity.class);
                 }
+                break;
+            case R.id.qiuzu_btn:
+                if(UserBiz.isLogin(context,getBundle(DO_QIUZU))){
+                    IntentUtil.gotoActivity(context, RentalActivity.class);
+                }
+
                 break;
         }
     }
@@ -145,6 +159,8 @@ public class PublishFragment extends BaseFragment implements View.OnClickListene
                     int do_=data.getIntExtra(IntentConfig.SEND_DO,0);
                     if(do_==DO_FABU){
                     IntentUtil.gotoActivity(context, PublishNewsActivity.class);
+                    }else if(do_==DO_QIUZU){
+                        IntentUtil.gotoActivity(context, RentalActivity.class);
                     }
             }
         }
