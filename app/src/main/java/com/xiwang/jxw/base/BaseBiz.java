@@ -51,6 +51,8 @@ public class BaseBiz {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String responseStr = new String(responseBody);
                 ResponseBean responseBean = new ResponseBean();
+
+
                 Log.d("data:"+responseStr);
                 try {
 

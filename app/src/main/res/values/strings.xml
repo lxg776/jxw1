@@ -34,4 +34,7 @@
 
     <string name="email_format_error">邮箱格式不正确</string>
     <string name="cellphone_format_error">手机格式不正确</string>
+
+    <string name="postions_str">服务员,文员,厨师,司机,化妆师,保洁,搬运工,洗碗工,快递员,广告设计,洗车工,销售客服,置业顾问,理发师,保安,医生,护士,保姆,电脑维修,家电维修,手机维修,建筑工人,收银员,营业员,教师,业务员,程序员,学徒,杂工,室内设计,土木工程,酒店管理,按摩师,货车司机</string>
+
 </resources>

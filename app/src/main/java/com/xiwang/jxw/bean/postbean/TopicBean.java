@@ -2,6 +2,8 @@ package com.xiwang.jxw.bean.postbean;
 
 import android.text.TextUtils;
 
+import com.xiwang.jxw.util.CommonUtil;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -59,17 +61,30 @@ public class TopicBean {
         this.tid = tid;
     }
 
+
+    public static String gbEncoding(final String gbString) {
+        char[] utfBytes = gbString.toCharArray();
+        String unicodeBytes = "";
+        for (int byteIndex = 0; byteIndex < utfBytes.length; byteIndex++) {
+            String hexB = Integer.toHexString(utfBytes[byteIndex]);
+            if (hexB.length() <= 2) {
+                hexB = "00" + hexB;
+            }
+            unicodeBytes = unicodeBytes + "\\u" + hexB;
+        }
+        System.out.println("unicodeBytes is: " + unicodeBytes);
+        return unicodeBytes;
+    }
+
+
+
+
     public String getSubject() {
 
-        if(!TextUtils.isEmpty(subject)){
-            try {
-                return URLEncoder.encode(subject,"GBK");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-                return  subject;
-            }
+        if(!TextUtils.isEmpty(subject)) {
+            return CommonUtil.decodeUnicode(subject);
         }
-        return subject;
+        return  subject;
     }
 
     public void setSubject(String subject) {
@@ -78,15 +93,8 @@ public class TopicBean {
 
     public String getContent() {
         if(!TextUtils.isEmpty(content)){
-            try {
-                return URLEncoder.encode(content,"GBK");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-                return  content;
-
-            }
+            return CommonUtil.decodeUnicode(content);
         }
-
         return content;
     }
 

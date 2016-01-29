@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.xiwang.jxw.R;
+import com.xiwang.jxw.activity.ApplyWorkActivity;
+import com.xiwang.jxw.activity.HouseActivity;
 import com.xiwang.jxw.activity.PublishNewsActivity;
 import com.xiwang.jxw.activity.RentalActivity;
 import com.xiwang.jxw.activity.TestActivity;
@@ -31,9 +33,14 @@ import com.xiwang.jxw.util.IntentUtil;
  */
 public class PublishFragment extends BaseFragment implements View.OnClickListener{
 
-
+    //发帖
     public static int DO_FABU=0x23;
+    //求租
     public static int DO_QIUZU=0x24;
+    //求职
+    public static int DO_QIUZHI=0x25;
+    //房产
+    public static int DO_HOUSE=0x26;
 
 
     /** 发帖按钮*/
@@ -102,6 +109,7 @@ public class PublishFragment extends BaseFragment implements View.OnClickListene
     protected void widgetListener() {
         fabu_btn.setOnClickListener(this);
         qiuzu_btn.setOnClickListener(this);
+        qiuzhi_btn.setOnClickListener(this);
     }
 
     @Override
@@ -124,7 +132,7 @@ public class PublishFragment extends BaseFragment implements View.OnClickListene
 
     private Bundle getBundle(int send_do){
         Bundle bundle=new Bundle();
-        bundle.putString(IntentConfig.SEND_FRAMGE_TAG,getTag());
+        bundle.putString(IntentConfig.SEND_FRAMGE_TAG, getTag());
         bundle.putInt(IntentConfig.SEND_DO,send_do);
         return  bundle;
     }
@@ -143,6 +151,24 @@ public class PublishFragment extends BaseFragment implements View.OnClickListene
                 }
 
                 break;
+            case R.id.qiuzhi_btn:
+                /*
+                发求职简历
+                 */
+                if(UserBiz.isLogin(context,getBundle(DO_QIUZHI))){
+                    IntentUtil.gotoActivity(context, ApplyWorkActivity.class);
+                }
+                break;
+            case R.id.chuzu_btn:
+                  /*
+                发求房产信息
+                 */
+                if(UserBiz.isLogin(context,getBundle(DO_HOUSE))){
+                    IntentUtil.gotoActivity(context, HouseActivity.class);
+                }
+                break;
+
+
         }
     }
 
@@ -161,6 +187,10 @@ public class PublishFragment extends BaseFragment implements View.OnClickListene
                     IntentUtil.gotoActivity(context, PublishNewsActivity.class);
                     }else if(do_==DO_QIUZU){
                         IntentUtil.gotoActivity(context, RentalActivity.class);
+                    }else if(do_==DO_HOUSE){
+                        IntentUtil.gotoActivity(context, HouseActivity.class);
+                    }else if(do_==DO_QIUZHI){
+                        IntentUtil.gotoActivity(context, ApplyWorkActivity.class);
                     }
             }
         }

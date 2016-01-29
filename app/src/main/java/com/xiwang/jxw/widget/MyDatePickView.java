@@ -72,9 +72,6 @@ public class MyDatePickView extends LinearLayout{
         change_line_c=a.getColor(R.styleable.MyDialogView_change_lColor, getResources().getColor(R.color.orange_500));
 
         line.setBackgroundColor(default_line_c);
-
-
-
         date_tv.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -82,8 +79,6 @@ public class MyDatePickView extends LinearLayout{
                 showDateDialog();
             }
         });
-
-
         LinearLayout.LayoutParams params=new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.WRAP_CONTENT);
         addView(contentView, params);
 
@@ -123,12 +118,12 @@ public class MyDatePickView extends LinearLayout{
             DatePickerDialog datePickerDialog=new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                    date_tv.setText(bulidTime(year, monthOfYear, dayOfMonth));
+                    date_tv.setText(bulidTime(year, monthOfYear+1, dayOfMonth));
 
                 }
 
 
-            },year,month,day);
+            },year,month+1,day);
             datePickerDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialog) {

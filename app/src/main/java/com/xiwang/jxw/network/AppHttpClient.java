@@ -18,6 +18,7 @@ import org.apache.http.client.CookieStore;
 import org.apache.http.client.params.ClientPNames;
 import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.cookie.Cookie;
+import org.apache.http.protocol.HTTP;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,6 +113,8 @@ public class AppHttpClient {
 
     public static void get(String url, RequestParams params,
                            AsyncHttpResponseHandler responseHandler) {
+
+
         client.get(url, params, responseHandler);
         Log.i(new StringBuilder("GET ").append(url).append(params).toString());
     }

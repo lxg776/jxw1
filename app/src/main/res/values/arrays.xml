@@ -30,4 +30,41 @@
         <item>3000元/月以上</item>
     </string-array>
 
+
+    <string-array name="select_education">
+        <item>初中</item>
+        <item>高中</item>
+        <item>中专</item>
+        <item>大专</item>
+        <item>本科</item>
+        <item>本科以上</item>
+    </string-array>
+
+    <string-array name="select_workExperience">
+        <item>1年以下工作经验</item>
+        <item>1-2年工作经验</item>
+        <item>2-3年工作经验</item>
+        <item>3年以上工作经验</item>
+    </string-array>
+
+
+    <string-array name="select_salary">
+        <item>面议</item>
+        <item>1000元以下/月</item>
+        <item>1000-1500元/月</item>
+        <item>1500-2000元/月</item>
+        <item>2000-3000元/月</item>
+        <item>3000-4000元/月</item>
+        <item>4000-5000元/月</item>
+        <item>5000-6000元/月</item>
+        <item>6000-7000元/月</item>
+        <item>7000元以上/月</item>
+    </string-array>
+
+
+
+
+
+
+
 </resources>

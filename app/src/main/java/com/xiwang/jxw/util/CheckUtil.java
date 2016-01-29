@@ -2,10 +2,7 @@ package com.xiwang.jxw.util;
 
 import android.content.Context;
 import android.text.TextUtils;
-
 import com.xiwang.jxw.R;
-import com.xiwang.jxw.config.TApplication;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;

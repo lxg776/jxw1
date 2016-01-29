@@ -75,6 +75,15 @@
             android:theme="@style/AppTheme" >
         </activity>
 
+        <!-- 租房房产 -->
+        <activity
+            android:name=".activity.HouseActivity"
+            android:screenOrientation="portrait"
+            android:exported="false"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustUnspecified"
+            android:theme="@style/AppTheme" >
+        </activity>
+
         <!-- 登录Activity -->
         <activity
             android:name=".activity.LoginActivity"
@@ -101,6 +110,9 @@
             android:exported="false"
             android:label="@string/title_activity_login" >
         </activity>
+
+
+
 
         <!-- 选择多张图片 -->
         <activity

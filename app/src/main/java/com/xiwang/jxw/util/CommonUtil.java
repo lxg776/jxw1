@@ -129,8 +129,19 @@ public class CommonUtil {
         map_value.put("click_event" , eventName );
         MobclickAgent.onEvent(context,context.getResources().getString(R.string.u_click_event),map_value);
     }
-
-
+    public static String decodeUnicode(String s) {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c >= 0 && c <= 255) {
+                sb.append(c);
+            }
+            else {
+                sb.append("\\u"+Integer.toHexString(c));
+            }
+        }
+        return sb.toString();
+    }
 
     /**
      * 获取主题分类

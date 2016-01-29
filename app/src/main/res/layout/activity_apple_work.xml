@@ -36,69 +36,53 @@
                     android:background="@color/white"
                     >
                 </com.xiwang.jxw.widget.DeleteEditText>
-
                 <!--出生年月-->
-                <com.xiwang.jxw.widget.DeleteEditText
-                    android:id="@+id/name_edt"
-                    android:layout_marginTop="16dp"
-                    style="@style/etd_1"
-                    android:hint="姓名"
-                    android:layout_height="48dp"
-                    android:background="@color/white"
-                    >
-                </com.xiwang.jxw.widget.DeleteEditText>
+               <com.xiwang.jxw.widget.MyDatePickView
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   style="@style/etd_1"
+                   android:id="@+id/birthDate_pv"
+                   android:layout_marginTop="1dp"
+                   android:background="@color/white"
+                   app:inputHinttext="出生年月"
+                   >
+               </com.xiwang.jxw.widget.MyDatePickView>
 
-
-
-                <!--分类选择-->
+                <!--性别-->
                 <com.xiwang.jxw.widget.MyTextSelectView
                     app:is_hint="false"
-                    app:inputHinttext="期望房租"
-                    app:dialog_title="期望房租"
+                    app:inputHinttext="性别"
+                    app:dialog_title="性别"
                     style="@style/etd_2"
                     android:layout_marginTop="1dp"
-                    android:id="@+id/fangzu_sv"
+                    android:id="@+id/sex_sv"
                     android:background="@color/white"
                     >
                 </com.xiwang.jxw.widget.MyTextSelectView>
 
-                <!--输入标题-->
-                <com.xiwang.jxw.widget.DeleteEditText
-                    android:id="@+id/title_edt"
-                    android:layout_marginTop="16dp"
-                    style="@style/etd_1"
-                    android:hint="标题"
-                    android:layout_height="48dp"
-                    android:background="@color/white"
-                    >
-                </com.xiwang.jxw.widget.DeleteEditText>
-
-
-                <!--输入内容-->
-                <EditText
-                    android:id="@+id/content_edt"
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp"
+                <!--最高学历-->
+                <com.xiwang.jxw.widget.MyTextSelectView
+                    app:is_hint="false"
+                    app:inputHinttext="最高学历"
+                    app:dialog_title="最高学历"
+                    style="@style/etd_2"
                     android:layout_marginTop="1dp"
-                    android:padding="16dp"
-                    android:hint="描述内容"
-                    android:background="@color/white"
-                    android:textColor="@color/black_transparent_87"
-                    android:textColorHint="@color/black_transparent_26"
-                    android:gravity="top"
-                    />
-                <!--联系人-->
-                <com.xiwang.jxw.widget.DeleteEditText
-                    android:id="@+id/linkman_edt"
-                    android:layout_marginTop="16dp"
-                    style="@style/etd_1"
-                    android:hint="联系人"
-                    android:layout_height="48dp"
+                    android:id="@+id/education_sv"
                     android:background="@color/white"
                     >
-                </com.xiwang.jxw.widget.DeleteEditText>
+                </com.xiwang.jxw.widget.MyTextSelectView>
 
-
+                <!--工作年限-->
+                <com.xiwang.jxw.widget.MyTextSelectView
+                    app:is_hint="false"
+                    app:inputHinttext="工作年限"
+                    app:dialog_title="工作年限"
+                    style="@style/etd_2"
+                    android:layout_marginTop="1dp"
+                    android:id="@+id/workExperience_sv"
+                    android:background="@color/white"
+                    >
+                </com.xiwang.jxw.widget.MyTextSelectView>
                 <!--手机号码-->
                 <com.xiwang.jxw.widget.DeleteEditText
                     android:id="@+id/phone_edt"
@@ -110,6 +94,46 @@
                     android:inputType="number"
                     >
                 </com.xiwang.jxw.widget.DeleteEditText>
+
+
+                <!--期望职位-->
+                <com.xiwang.jxw.widget.DeleteAutoCompleteTextView
+                    android:hint="期望职位"
+                    android:layout_marginTop="16dp"
+                    style="@style/etd_1"
+                    android:singleLine="true"
+                    android:id="@+id/position_tv"
+                    android:completionThreshold="1"
+                    android:background="@color/white"
+                    >
+                </com.xiwang.jxw.widget.DeleteAutoCompleteTextView>
+
+
+                <!--薪资待遇-->
+                <com.xiwang.jxw.widget.MyTextSelectView
+                    app:is_hint="false"
+                    app:inputHinttext="期望薪资"
+                    app:dialog_title="期望薪资"
+                    style="@style/etd_2"
+                    android:layout_marginTop="1dp"
+                    android:id="@+id/salary_sv"
+                    android:background="@color/white"
+                    >
+                </com.xiwang.jxw.widget.MyTextSelectView>
+
+                <!--输入内容-->
+                <EditText
+                    android:id="@+id/pingjia_edt"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="16dp"
+                    android:padding="16dp"
+                    android:hint="自我评价"
+                    android:background="@color/white"
+                    android:textColor="@color/black_transparent_87"
+                    android:textColorHint="@color/black_transparent_26"
+                    android:gravity="top"
+                    />
             </LinearLayout>
         </ScrollView>
     </com.xiwang.jxw.widget.AutoRelativeLayout>
