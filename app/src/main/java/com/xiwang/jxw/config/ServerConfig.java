@@ -73,6 +73,10 @@ public class ServerConfig {
 
 	/**点赞或者反对*/
 	public final static String DIG_FIGHT_URL=SERVER_API_URL+"getapp.php";
+	/**点赞列表*/
+	public final static String DIG_LIST_URL=SERVER_API_URL+"getapp.php?a=diglist";
+
+
 
 	// public final static String SERVER_API_URL = "http://192.168.202.75/b2b/";
 	// public final static String SERVER_API_URL = "http://192.168.202.75/b2b/";
@@ -92,6 +96,8 @@ public class ServerConfig {
 	public final static String UPLOAD_IMG=SERVER_API_URL+"hack/uploadappimg.php";
 	/** 发帖接口 */
 	public final static String TOPIC_URL=SERVER_API_URL+"getapp.php?a=post";
+
+
 
 
 

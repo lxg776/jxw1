@@ -1,12 +1,14 @@
 package com.xiwang.jxw.biz;
 
 import android.content.Context;
+import android.os.Handler;
 import android.text.TextUtils;
 
 import com.loopj.android.http.RequestParams;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.bean.BaseBean;
+import com.xiwang.jxw.bean.DigUserBean;
 import com.xiwang.jxw.bean.NewsDetailBean;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.bean.SmileListBean;
@@ -259,5 +261,38 @@ public class NewsBiz {
         }
         String key=context.getResources().getString(R.string.cache_dig)+userId;
         SpUtil.setObject(context,key,digList);
+    }
+
+    /**
+     * 获取点赞列表
+     * @param tid
+     */
+    public static void getDigUsers(String tid,final BaseBiz.RequestHandle handle){
+        String url=ServerConfig.DIG_LIST_URL;
+        RequestParams params =new RequestParams();
+        params.put("tid",tid);
+
+        BaseBiz.getRequest(url, params, new BaseBiz.RequestHandle() {
+            @Override
+            public void onSuccess(ResponseBean responseBean) {
+                    BaseBean.setResponseObjectList(responseBean,DigUserBean.class,"diglist");
+                    handle.onSuccess(responseBean);
+            }
+
+            @Override
+            public void onFail(ResponseBean responseBean) {
+                handle.onFail(responseBean);
+            }
+
+            @Override
+            public ResponseBean getRequestCache() {
+                return handle.getRequestCache();
+            }
+
+            @Override
+            public void onRequestCache(ResponseBean result) {
+                handle.onRequestCache(result);
+            }
+        });
     }
 }

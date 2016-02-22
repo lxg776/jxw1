@@ -24,7 +24,11 @@ public class IntentConfig {
     public static final String SEND_BUNDLE="sendBundle";
     /** 发送操作*/
     public static final String SEND_DO="sendDo";
+    /** tid*/
+    public static final String SEND_TID="sendTid";
 
+    /** 消息 */
+    public static final String ACTION_MESSAGE= "com.jxw.sell.action.message";
 
 
 

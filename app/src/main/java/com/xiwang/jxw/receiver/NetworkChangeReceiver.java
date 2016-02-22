@@ -39,7 +39,7 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
         netType=NetWorkUtil.getCurrentNetworkType();
-        ToastUtil.showToast(context,netType);
+       // ToastUtil.showToast(context,netType);
         if (activeNetInfo != null && activeNetInfo.isAvailable()) {
             connectionFla = true;
 //            Intent autoLoginIntent = new Intent(Global.BROADCAST_RECOVERY_NETWORK_LOGIN);

@@ -20,6 +20,8 @@ import com.xiwang.jxw.network.AppHttpClient;
 import com.xiwang.jxw.util.ImgLoadUtil;
 import com.xiwang.jxw.util.SpUtil;
 
+import cn.jpush.android.api.JPushInterface;
+
 
 /**
  * 全局公用Application类,单例初始化操作,静态成员储存
@@ -75,7 +77,11 @@ public class TApplication extends Application  {
 		/** 初始化ImageLoad */
 		initImageLoader(context);
 		sp = SpUtil.getSpUtil(DataFields.DATA_MINE, Context.MODE_PRIVATE);
-		AppHttpClient.setHttpClient(new AsyncHttpClient(),this);
+		AppHttpClient.setHttpClient(new AsyncHttpClient(), this);
+
+		/** 初始化JPush推送 */
+		JPushInterface.setDebugMode(true);
+		JPushInterface.init(this);
 
 	}
 	/**

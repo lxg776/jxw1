@@ -404,6 +404,15 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         return html;
     }
 
+    /**
+     * 跳转点赞列表
+     */
+    private void toDigList(String tid){
+        Intent intent=new Intent(context,DigUsersActivity.class);
+        intent.putExtra(IntentConfig.SEND_TID,tid);
+        startActivity(intent);
+    }
+
 
     /**attachment/upload/middle/44/2044.jpg?1451383209
      * 显示新闻评论
@@ -518,6 +527,7 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
 
     @Override
     protected void widgetListener() {
+
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setOnLoadListener(this);
         webView.getSettings().setSupportZoom(false);
@@ -662,8 +672,20 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
                 });
             }
         });
-        /*
-        回复按钮
+
+        /**
+         * 点赞详情
+         */
+        dianzan_detail_ll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                toDigList(detailBean.getTid());
+            }
+        });
+
+        /**
+         *回复按钮
          */
         huifu_btn.setOnClickListener(new View.OnClickListener() {
             @Override
