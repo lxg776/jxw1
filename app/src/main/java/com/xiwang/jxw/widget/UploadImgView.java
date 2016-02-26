@@ -1,6 +1,7 @@
 package com.xiwang.jxw.widget;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,6 +9,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,12 +19,16 @@ import android.widget.RelativeLayout;
 
 
 import com.xiwang.jxw.R;
+import com.xiwang.jxw.activity.DeleteImageActivity;
 import com.xiwang.jxw.activity.PickOrTakeImageActivity;
 import com.xiwang.jxw.bean.BaseBean;
 import com.xiwang.jxw.bean.ResponseBean;
+import com.xiwang.jxw.bean.ShowImg;
 import com.xiwang.jxw.bean.SingleImageModel;
 import com.xiwang.jxw.bean.UploadImgBean;
 import com.xiwang.jxw.biz.SystemBiz;
+import com.xiwang.jxw.config.IntentConfig;
+import com.xiwang.jxw.event.DeleteImageEvent;
 import com.xiwang.jxw.event.PickImageEvent;
 import com.xiwang.jxw.util.AlbumBitmapCacheHelper;
 import com.xiwang.jxw.util.DisplayUtil;
@@ -29,6 +37,7 @@ import com.xiwang.jxw.util.IntentUtil;
 import org.json.JSONException;
 
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,9 +53,10 @@ public class UploadImgView extends RelativeLayout{
     /** 上下文*/
     Context context;
     /** 选择的图片*/
-    List<String> imageModelList;
+    ArrayList<ShowImg> imageModelList;
     /** 成功上传的图片*/
     List<UploadImgBean> uploadImageUrlList;
+
     /** 标识*/
     String tag="uploadimgGridView";
     int beginId=1001;
@@ -54,16 +64,15 @@ public class UploadImgView extends RelativeLayout{
     int horizontalSpacing;
     /** 垂直间距*/
     int verticalSpacing;
-
     /** 子控件的宽带*/
     int child_with;
     /** 子控件的高度*/
     int child_height;
     /**每行有多少个控件 */
     int numColumns;
-
     /** 选择图片监听*/
     PickImageListener pickImageListener;
+
 
     public List<UploadImgBean> getUploadImageUrlList() {
         return uploadImageUrlList;
@@ -106,10 +115,10 @@ public class UploadImgView extends RelativeLayout{
 
     private void init(final Context context,AttributeSet attrs){
         this.context=context;
-        imageModelList=new ArrayList<String>();
+        imageModelList=new ArrayList<ShowImg>();
         uploadImageUrlList=new ArrayList<UploadImgBean>();
         SingleImageModel button=new SingleImageModel();
-        imageModelList.add(SingleImageModel.TYPE_BUTTON);
+
         if(useEventBus()){
             EventBus.getDefault().register(this);
         }
@@ -192,20 +201,46 @@ public class UploadImgView extends RelativeLayout{
      * 添加图片
      */
     private void setImagePath(String path){
-        imageModelList.add(0, path);
+        ShowImg showImg=new ShowImg();
         View view=View.inflate(context,R.layout.item_upload_image,null);
-        view.setId(beginId++);
+        final int vId=beginId++;
+        showImg.path=path;
+        showImg.id=vId;
+        imageModelList.add(0, showImg);
+        view.setId(vId);
         ImageView img_iv= (ImageView) view.findViewById(R.id.img_iv);
+
+        /**
+         * 点击事件
+         */
+        img_iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, DeleteImageActivity.class);
+                intent.putParcelableArrayListExtra(IntentConfig.SEND_IMG_LIST, imageModelList);
+                int img_postion = 0;
+                int size = getChildCount();
+                for (int i = 0; i < size; i++) {
+                    if (getChildAt(i).getId() == vId) {
+                        img_postion = i;
+                    }
+                }
+                intent.putExtra(IntentConfig.SEND_IMG_POSTION, img_postion);
+                intent.putExtra(IntentConfig.SEND_TAG, tag);
+                context.startActivity(intent);
+            }
+        });
+
 
         displayFromSDCard(context, img_iv, path);
         addView(view, 0, getRelationLayout());
-
-        uploadImage(path,view);
-
+        //uploadImage(path, view);
     }
 
-    private void uploadImage(String path,View view){
-       final PercentView progress_view= (PercentView) view.findViewById(R.id.progress_view);
+
+
+    private void uploadImage(final String path,View view){
+        final PercentView progress_view= (PercentView) view.findViewById(R.id.progress_view);
         final ImageView img_iv= (ImageView) view.findViewById(R.id.img_iv);
         try {
             SystemBiz.uploadImg(path, new SystemBiz.UploadImgListener() {
@@ -214,12 +249,13 @@ public class UploadImgView extends RelativeLayout{
                     progress_view.setVisibility(View.GONE);
                     try {
                         UploadImgBean uploadImgBean= (UploadImgBean) BaseBean.newInstance(UploadImgBean.class,(String)responseBean.getObject());
-                        uploadImageUrlList.add(uploadImgBean);
+                        //显示的图片包含上传成功的图片才进行上传
+                        if(imageModelList.contains(path)){
+                            uploadImageUrlList.add(uploadImgBean);
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
-
                 }
                 @Override
                 public void onFail(ResponseBean responseBean) {
@@ -271,6 +307,20 @@ public class UploadImgView extends RelativeLayout{
         }
     }
 
+    public void onEvent(DeleteImageEvent event){
+        if(tag.equals(event.fromTag)){
+            if(event.imgList!=null){
+                imageModelList.clear();
+                imageModelList.addAll(event.imgList);
+                /**删除布局*/
+                if(null!=findViewById(event.deleteImg.id)){
+                    removeView(findViewById(event.deleteImg.id));
+                    calculLayout();
+                }
+            }
+        }
+    }
+
     @Override
     protected void onDetachedFromWindow() {
         if(useEventBus()){
@@ -306,11 +356,14 @@ public class UploadImgView extends RelativeLayout{
         }else{
             imageView.setBackgroundDrawable(context.getResources().getDrawable(R.mipmap.default_loading_img));
         }
-
     }
 
 
     public interface PickImageListener{
             public void onImageSelect(List<String> picklist);
     }
+
+
+
+
 }

@@ -39,7 +39,7 @@ public class SystemBiz {
                 return;
             }
             params.put("file",file);
-            AppHttpClient.post(ServerConfig.SERVER_API_URL + ServerConfig.UPLOAD_IMG, params, new AsyncHttpResponseHandler() {
+            AppHttpClient.post(ServerConfig.UPLOAD_IMG, params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     String responseStr = new String(responseBody);

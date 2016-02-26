@@ -81,9 +81,9 @@ public class TopicBean {
 
     public String getSubject() {
 
-        if(!TextUtils.isEmpty(subject)) {
-            return CommonUtil.decodeUnicode(subject);
-        }
+//        if(!TextUtils.isEmpty(subject)) {
+//            return CommonUtil.decodeUnicode(subject);
+//        }
         return  subject;
     }
 
@@ -92,9 +92,9 @@ public class TopicBean {
     }
 
     public String getContent() {
-        if(!TextUtils.isEmpty(content)){
-            return CommonUtil.decodeUnicode(content);
-        }
+//        if(!TextUtils.isEmpty(content)){
+//            return CommonUtil.decodeUnicode(content);
+//        }
         return content;
     }
 

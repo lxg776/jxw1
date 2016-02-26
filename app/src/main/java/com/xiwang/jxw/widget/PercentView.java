@@ -133,7 +133,6 @@ public class PercentView extends View {
                 percentlistener.finish();
             }
         }
-        ToastUtil.showToast(context,percent);
         Log.d(percent + "");
         invalidate();
     }

@@ -89,6 +89,10 @@ public class NewsBean extends BaseBean{
     }
 
     public String getImage() {
+        if("null".equals(image)){
+            return "";
+        }
+
         return image;
     }
 

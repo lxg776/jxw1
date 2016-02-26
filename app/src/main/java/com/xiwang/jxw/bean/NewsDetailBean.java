@@ -252,6 +252,7 @@ public class NewsDetailBean extends BaseBean {
         setContact((ContactBean) BaseBean.newInstance(ContactBean.class,jSon.optString("contact")));
 
 
+
         setCommentList((ArrayList<NewsDetailCommentBean>) BaseBean.toModelList(jSon.optString("list"),NewsDetailCommentBean.class));
     }
 }

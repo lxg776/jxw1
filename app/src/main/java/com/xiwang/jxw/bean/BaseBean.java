@@ -307,9 +307,10 @@ public abstract class BaseBean implements Serializable {
 	 */
 	public static ArrayList<? extends BaseBean> toModelList(String jsonSrc, Class<? extends BaseBean> cls) throws JSONException {
 		ArrayList<BaseBean> modelList = new ArrayList<BaseBean>();
-		if (TextUtils.isEmpty(jsonSrc) || cls == null) {
+		if (TextUtils.isEmpty(jsonSrc) ||"null".equals(jsonSrc)|| cls == null) {
 			return modelList;
 		}
+
 		JSONArray jSonArray = new JSONArray(jsonSrc);
 		for (int i = 0; i < jSonArray.length(); i++) {
 			BaseBean model = newInstance(cls, jSonArray.getJSONObject(i));

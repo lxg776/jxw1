@@ -26,6 +26,17 @@ public class IntentConfig {
     public static final String SEND_DO="sendDo";
     /** tid*/
     public static final String SEND_TID="sendTid";
+    /** sendType*/
+    public static final String SEND_TYPE="sendType";
+    /** sendValue*/
+    public static final String SEND_VALUE="sendValue";
+    /** ImgList*/
+    public static final String SEND_IMG_LIST="sendImgList";
+    /** postion*/
+    public static final String SEND_IMG_POSTION="postion";
+    /** tag*/
+    public static final String SEND_TAG="tag";
+
 
     /** 消息 */
     public static final String ACTION_MESSAGE= "com.jxw.sell.action.message";

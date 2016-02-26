@@ -32,6 +32,4 @@ public class CommentPopWindow extends PopupWindow {
             content_edt= (RichEditText) view_parent.findViewById(R.id.content_edt);
     }
 
-
-
 }

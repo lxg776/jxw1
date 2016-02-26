@@ -1,11 +1,13 @@
 package com.xiwang.jxw.fragment;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.activity.MainActivity;
+import com.xiwang.jxw.activity.PersionDetailActivity;
 import com.xiwang.jxw.base.BaseFragment;
 import com.xiwang.jxw.bean.UserBean;
 import com.xiwang.jxw.bean.UserInfoBean;
@@ -94,7 +96,10 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
             switch (v.getId()){
+                //个人信息
                 case R.id.ziliao_ll:
+                    Intent intent=new Intent(context,PersionDetailActivity.class);
+                    startActivity(intent);
                     break;
                 case R.id.fabu_ll:
                     break;

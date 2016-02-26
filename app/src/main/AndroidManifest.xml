@@ -114,7 +114,7 @@
         <!-- 登录Activity -->
         <activity
             android:name=".activity.LoginActivity"
-            android:label="@string/title_activity_login"
+            
             android:exported="false"
             android:screenOrientation="portrait"
             >
@@ -123,7 +123,7 @@
         <!-- 注册Activity -->
         <activity
             android:name=".activity.RegisterActivity"
-            android:label="@string/title_activity_login"
+            
             android:exported="false"
             android:screenOrientation="portrait"
             >
@@ -135,7 +135,7 @@
             android:name=".activity.ApplyWorkActivity"
             android:screenOrientation="portrait"
             android:exported="false"
-            android:label="@string/title_activity_login" >
+             >
         </activity>
 
 
@@ -146,7 +146,7 @@
             android:name=".activity.PickOrTakeImageActivity"
             android:screenOrientation="portrait"
             android:exported="false"
-            android:label="@string/title_activity_login" >
+             >
         </activity>
 
         <!-- 选择多张图片预览效果 -->
@@ -154,7 +154,7 @@
             android:name=".activity.PickBigImagesActivity"
             android:screenOrientation="portrait"
             android:exported="false"
-            android:label="@string/title_activity_login" >
+             >
         </activity>
 
         <!-- 服务协议 -->
@@ -162,7 +162,7 @@
             android:name=".activity.ServiceProtocolActivity"
             android:screenOrientation="portrait"
             android:exported="false"
-            android:label="@string/title_activity_login" >
+             >
         </activity>
 
 
@@ -180,7 +180,7 @@
             android:name=".activity.NewsImagesActivity"
             android:screenOrientation="portrait"
             android:exported="false"
-            android:label="@string/title_activity_login" >
+             >
         </activity>
 
 
@@ -189,13 +189,33 @@
             android:name=".activity.DigUsersActivity"
             android:screenOrientation="portrait"
             android:exported="false"
-            android:label="@string/title_activity_login" >
+             >
         </activity>
 
+        <!-- 个人信息 -->
+        <activity
+            android:name=".activity.PersionDetailActivity"
+            android:screenOrientation="portrait"
+            android:exported="false"
+             >
+        </activity>
 
+        <!-- 保存个人信息 -->
+        <activity
+            android:name=".activity.PersonMsgSaveActivity"
+            android:screenOrientation="portrait"
+            android:exported="false"
+             >
+        </activity>
 
-
-
+        <!-- 删除图片Activity -->
+        <activity
+            android:name=".activity.DeleteImageActivity"
+            android:screenOrientation="portrait"
+            android:exported="false"
+             >
+        </activity>
+        
         <!-- 监听网络变化广播 -->
         <receiver
             android:name=".receiver.NetworkChangeReceiver"

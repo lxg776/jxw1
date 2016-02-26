@@ -85,6 +85,7 @@ public class PublishNewsActivity extends BaseSubmitActivity{
         topicBean.setFid(fid);
        // topicBean.setType(type);
         topicBean.setSubject(title);
+
         if(null!=uploadString&&uploadString.size()>0){
             StringBuffer sb=new StringBuffer();
             for(int i=0;i<uploadString.size();i++){

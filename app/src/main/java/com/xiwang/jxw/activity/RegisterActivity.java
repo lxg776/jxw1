@@ -151,10 +151,6 @@ public class RegisterActivity extends BaseSubmitActivity implements View.OnClick
         if(CheckUtil.isEmpty(context, "密码", pwd)){
             return false;
         }
-
-
-
-
         if(CheckUtil.isEmpty(context,"确认密码",re_pwd)){
             return false;
         }
