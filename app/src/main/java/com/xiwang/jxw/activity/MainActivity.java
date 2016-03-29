@@ -26,6 +26,7 @@ import com.xiwang.jxw.fragment.HomeFragment;
 import com.xiwang.jxw.fragment.MineFragment;
 import com.xiwang.jxw.fragment.PublishFragment;
 import com.xiwang.jxw.util.CommonUtil;
+import com.xiwang.jxw.util.IntentUtil;
 import com.xiwang.jxw.util.SpUtil;
 import com.xiwang.jxw.widget.MyRadioView;
 
@@ -76,6 +77,9 @@ public class MainActivity extends BaseActivity {
     public final static int FRAGMENT_PUBLISH = 2;
     /** 我的 */
     public final static int FRAGMENT_MINE = 3;
+
+    public final static int ACTION_FABU = 4;
+
 
     /** 当前显示的Fragment */
     private int current_Fragment = -1;
@@ -191,13 +195,30 @@ public class MainActivity extends BaseActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_search) {
-
+        if (id == R.id.action_fatie) {
+            fatie();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    private Bundle getBundle(int send_do){
+        Bundle bundle=new Bundle();
+        bundle.putString(IntentConfig.SEND_FRAMGE_TAG, "");
+        bundle.putInt(IntentConfig.SEND_DO,send_do);
+        return  bundle;
+    }
+
+    /**
+     * 发帖
+     */
+    private void fatie(){
+        if(UserBiz.isLogin(MainActivity.this,getBundle(ACTION_FABU))){
+            IntentUtil.gotoActivity(context, PublishNewsActivity.class);
+        }
+    }
+
 
     /**
      * 隐藏所有Fragment
@@ -271,14 +292,13 @@ public class MainActivity extends BaseActivity {
             }
             // 获取Fragment的操作对象
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.content_frame, list_Fragments.get(position),position+"fragment");
+            transaction.replace(R.id.content_frame, list_Fragments.get(position), position + "fragment");
             if (current_Fragment != -1) {
                 getSupportFragmentManager().popBackStack(position + "", 0);
                 transaction.addToBackStack(position + "");// 将上一个Fragment存回栈，生命周期为stop，不销毁
             }
             transaction.commitAllowingStateLoss();// 提交更改
             current_Fragment = position;
-
 //            // 设置导航条
 //            int toXDelta = 0;
 //            int fromXDelta = 0;
@@ -417,6 +437,7 @@ public class MainActivity extends BaseActivity {
                             fragment.onActivityResult(requestCode,resultCode,data);
                         }
                     }
+
                      /*
                      我的按钮
                      */
@@ -428,6 +449,8 @@ public class MainActivity extends BaseActivity {
                             }
                         },200);
 
+                    }else if(do_==ACTION_FABU){
+                        fatie();
                     }
 
                 }

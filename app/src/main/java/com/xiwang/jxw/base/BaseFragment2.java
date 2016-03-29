@@ -28,7 +28,7 @@ import de.greenrobot.event.EventBus;
  * 
  */
 
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment2 extends Fragment {
 	/** Standard activity result: operation canceled. */
 	protected final int RESULT_CANCELED = 0;
 	/** Standard activity result: operation succeeded. */
@@ -55,20 +55,16 @@ public abstract class BaseFragment extends Fragment {
 		this.pageName = pageName;
 	}
 
-	public  BaseFragment(){
+	public BaseFragment2(){
 			super();
 		}
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		filter = new IntentFilter();
-		view_Parent = getViews();
-		findViews();
 		if (useEventBus()) {
 			EventBus.getDefault().register(this);
 		}
 		initGetData();
-		widgetListener();
-		init();
 		registerReceiver();
 		setPageName(getPageName());
 		super.onCreate(savedInstanceState);
@@ -88,16 +84,17 @@ public abstract class BaseFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		if (null != view_Parent) {
-			ViewGroup parent = (ViewGroup) view_Parent.getParent();
-			if (null != parent) {
-				parent.removeView(view_Parent);
-			}
-		} else {
-			view_Parent = getViews();
-			findViews();
-		}
+		view_Parent = getViews();
+		findViews();
+		widgetListener();
 		return view_Parent;
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		init();
+
 	}
 
 	/**
@@ -137,7 +134,7 @@ public abstract class BaseFragment extends Fragment {
 		receiver = new BroadcastReceiver() {
 			@Override
 			public void onReceive(Context context, Intent intent) {
-				BaseFragment.this.onReceive(context, intent);
+				BaseFragment2.this.onReceive(context, intent);
 			}
 		};
 		getActivity().registerReceiver(receiver, filter);

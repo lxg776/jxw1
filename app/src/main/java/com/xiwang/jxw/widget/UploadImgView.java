@@ -4,16 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.text.TextUtils;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -37,7 +35,6 @@ import com.xiwang.jxw.util.IntentUtil;
 import org.json.JSONException;
 
 import java.io.FileNotFoundException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,6 +69,12 @@ public class UploadImgView extends RelativeLayout{
     int numColumns;
     /** 选择图片监听*/
     PickImageListener pickImageListener;
+
+    /**显示上传的图片*/
+    RecyclerView recyclerView;
+
+    ItemAdapter adapter;
+
 
 
     public List<UploadImgBean> getUploadImageUrlList() {
@@ -117,84 +120,93 @@ public class UploadImgView extends RelativeLayout{
         this.context=context;
         imageModelList=new ArrayList<ShowImg>();
         uploadImageUrlList=new ArrayList<UploadImgBean>();
-        SingleImageModel button=new SingleImageModel();
+        adapter=new ItemAdapter();
 
         if(useEventBus()){
             EventBus.getDefault().register(this);
         }
+
+        View contentView = View.inflate(context, R.layout.view_upload_img,null);
+
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.UploadImgView);
         horizontalSpacing=a.getDimensionPixelSize(R.styleable.UploadImgView_horizontalSpacing, DisplayUtil.dip2px(context, 8));
         verticalSpacing=a.getDimensionPixelSize(R.styleable.UploadImgView_verticalSpacing, DisplayUtil.dip2px(context, 8));
         numColumns=a.getInteger(R.styleable.UploadImgView_numColumns,5);
         a.recycle();
+        recyclerView= (RecyclerView) contentView.findViewById(R.id.recyclerView);
+        StaggeredGridLayoutManager mLayoutManager=new StaggeredGridLayoutManager(4,StaggeredGridLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(mLayoutManager);
+//        /**
+//         * 计算每个控件的w 和 h
+//         */
+//        int with=  DisplayUtil.getScreenWidth(context)-DisplayUtil.dip2px(context,16*2);
+//        child_with=(with-(numColumns-1)*horizontalSpacing)/numColumns;
+//        child_height=child_with;
+//
+//        //添加add按钮
+        imageModelList.add(new ShowImg());
+        recyclerView.setAdapter(adapter);
 
+//        View addBtn=View.inflate(context,R.layout.item_upload_image,null);
+//        addBtn.setBackgroundDrawable(getResources().getDrawable(R.mipmap.add_icon_gray));
+//        addBtn.findViewById(R.id.progress_view).setVisibility(GONE);
+////        addBtn.setBackgroundResource(R.drawable.upload_img_btn);
+////        ImageView img_iv= (ImageView) addBtn.findViewById(R.id.img_iv);
+////        Drawable drawable=context.getResources().getDrawable(R.mipmap.add_icon_gray);
+////        drawable.setBounds(0, 0, DisplayUtil.dip2px(context, 48), DisplayUtil.dip2px(context, 48));
+////        img_iv.setImageDrawable(drawable);
+//        addBtn.setId(beginId++);
+//        addBtn.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                /**
+//                 * 跳转选择多张图片activity
+//                 */
+//                Bundle bundle = new Bundle();
+//                bundle.putSerializable(context.getResources().getString(R.string.send_tag), tag);
+//                IntentUtil.gotoActivity(context, PickOrTakeImageActivity.class, bundle);
+//            }
+//        });
 
-        /**
-         * 计算每个控件的w 和 h
-         */
-        int with=  DisplayUtil.getScreenWidth(context)-DisplayUtil.dip2px(context,16*2);
-        child_with=(with-(numColumns-1)*horizontalSpacing)/numColumns;
-        child_height=child_with;
-
-        //添加add按钮
-        View addBtn=View.inflate(context,R.layout.item_upload_image,null);
-        addBtn.setBackgroundDrawable(getResources().getDrawable(R.mipmap.add_icon_gray));
-        addBtn.findViewById(R.id.progress_view).setVisibility(GONE);
-//        addBtn.setBackgroundResource(R.drawable.upload_img_btn);
-//        ImageView img_iv= (ImageView) addBtn.findViewById(R.id.img_iv);
-//        Drawable drawable=context.getResources().getDrawable(R.mipmap.add_icon_gray);
-//        drawable.setBounds(0, 0, DisplayUtil.dip2px(context, 48), DisplayUtil.dip2px(context, 48));
-//        img_iv.setImageDrawable(drawable);
-        addBtn.setId(beginId++);
-        addBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                /**
-                 * 跳转选择多张图片activity
-                 */
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(context.getResources().getString(R.string.send_tag), tag);
-                IntentUtil.gotoActivity(context, PickOrTakeImageActivity.class, bundle);
-            }
-        });
-        addView(addBtn,getRelationLayout());
+        RelativeLayout.LayoutParams params= new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        addView(contentView,params);
     }
 
     /**
      * 计算布局位置
      */
-    private void calculLayout(){
-        if(getChildCount()>0){
-            /**
-             * 遍历子控件定位其位置
-             */
-            for(int i=0;i<getChildCount();i++){
-                View view=getChildAt(i);
-                RelativeLayout.LayoutParams params= (LayoutParams) view.getLayoutParams();
-
-                int left_view_id = 0;
-                int above_view_id = 0;
-                /** 左边view*/
-                if(i%numColumns!=0){
-                    if(i>0){
-                        left_view_id=getChildAt(i-1).getId();
-                    }
-                }
-                /** 上边view*/
-                if(i>=numColumns){
-                    above_view_id=getChildAt(i-numColumns).getId();
-                }
-                if(left_view_id!=0){
-                    params.addRule(RelativeLayout.RIGHT_OF,left_view_id);
-                    params.leftMargin=horizontalSpacing;
-                }
-                if(above_view_id!=0){
-                    params.addRule(RelativeLayout.BELOW,above_view_id);
-                    params.topMargin=verticalSpacing;
-                }
-            }
-        }
-    }
+//    private void calculLayout(){
+//        if(getChildCount()>0){
+//            /**
+//             * 遍历子控件定位其位置
+//             */
+//            for(int i=0;i<getChildCount();i++){
+//                View view=getChildAt(i);
+//                RelativeLayout.LayoutParams params= (LayoutParams) view.getLayoutParams();
+//
+//                int left_view_id = 0;
+//                int above_view_id = 0;
+//                /** 左边view*/
+//                if(i%numColumns!=0){
+//                    if(i>0){
+//                        left_view_id=getChildAt(i-1).getId();
+//                    }
+//                }
+//                /** 上边view*/
+//                if(i>=numColumns){
+//                    above_view_id=getChildAt(i-numColumns).getId();
+//                }
+//                if(left_view_id!=0){
+//                    params.addRule(RelativeLayout.RIGHT_OF,left_view_id);
+//                    params.leftMargin=horizontalSpacing;
+//                }
+//                if(above_view_id!=0){
+//                    params.addRule(RelativeLayout.BELOW,above_view_id);
+//                    params.topMargin=verticalSpacing;
+//                }
+//            }
+//        }
+//    }
 
 
     /**
@@ -207,33 +219,35 @@ public class UploadImgView extends RelativeLayout{
         showImg.path=path;
         showImg.id=vId;
         imageModelList.add(0, showImg);
-        view.setId(vId);
-        ImageView img_iv= (ImageView) view.findViewById(R.id.img_iv);
+        adapter.notifyItemRangeChanged(0,imageModelList.size());
 
-        /**
-         * 点击事件
-         */
-        img_iv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, DeleteImageActivity.class);
-                intent.putParcelableArrayListExtra(IntentConfig.SEND_IMG_LIST, imageModelList);
-                int img_postion = 0;
-                int size = getChildCount();
-                for (int i = 0; i < size; i++) {
-                    if (getChildAt(i).getId() == vId) {
-                        img_postion = i;
-                    }
-                }
-                intent.putExtra(IntentConfig.SEND_IMG_POSTION, img_postion);
-                intent.putExtra(IntentConfig.SEND_TAG, tag);
-                context.startActivity(intent);
-            }
-        });
-
-
-        displayFromSDCard(context, img_iv, path);
-        addView(view, 0, getRelationLayout());
+//        view.setId(vId);
+//        ImageView img_iv= (ImageView) view.findViewById(R.id.img_iv);
+//
+//        /**
+//         * 点击事件
+//         */
+//        img_iv.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(context, DeleteImageActivity.class);
+//                intent.putParcelableArrayListExtra(IntentConfig.SEND_IMG_LIST, imageModelList);
+//                int img_postion = 0;
+//                int size = getChildCount();
+//                for (int i = 0; i < size; i++) {
+//                    if (getChildAt(i).getId() == vId) {
+//                        img_postion = i;
+//                    }
+//                }
+//                intent.putExtra(IntentConfig.SEND_IMG_POSTION, img_postion);
+//                intent.putExtra(IntentConfig.SEND_TAG, tag);
+//                context.startActivity(intent);
+//            }
+//        });
+//
+//
+//        displayFromSDCard(context, img_iv, path);
+//        addView(view, 0, getRelationLayout());
         //uploadImage(path, view);
     }
 
@@ -300,9 +314,8 @@ public class UploadImgView extends RelativeLayout{
                 }
                 for(String path:event.picklist){
                     setImagePath(path);
-
                 }
-                calculLayout();
+                //calculLayout();
             }
         }
     }
@@ -312,11 +325,7 @@ public class UploadImgView extends RelativeLayout{
             if(event.imgList!=null){
                 imageModelList.clear();
                 imageModelList.addAll(event.imgList);
-                /**删除布局*/
-                if(null!=findViewById(event.deleteImg.id)){
-                    removeView(findViewById(event.deleteImg.id));
-                    calculLayout();
-                }
+                adapter.notifyItemRangeChanged(0,imageModelList.size());
             }
         }
     }
@@ -363,7 +372,78 @@ public class UploadImgView extends RelativeLayout{
             public void onImageSelect(List<String> picklist);
     }
 
+    public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+            View view;
+            if(i==getItemCount()-1){
+                view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_upload_btn,
+                        viewGroup, false);
+                return new ViewHolder(view,ViewHolder.TYPE_BTN);
+            }else{
+                 view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_upload_image,
+                        viewGroup, false);
+                return new ViewHolder(view,ViewHolder.TYPE_IMG);
+            }
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder viewHolder, final int i) {
+            ShowImg showImg=imageModelList.get(i);
+            if(i==getItemCount()-1){
+                viewHolder.img_iv.setOnClickListener(new View.OnClickListener(){
+
+                    @Override
+                    public void onClick(View v) {
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable(context.getResources().getString(R.string.send_tag), tag);
+                            IntentUtil.gotoActivity(context, PickOrTakeImageActivity.class, bundle);
+                    }
+                });
+            }else{
+
+                displayFromSDCard(context, viewHolder.img_iv, showImg.path);
+                viewHolder.img_iv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, DeleteImageActivity.class);
+                        intent.putParcelableArrayListExtra(IntentConfig.SEND_IMG_LIST, imageModelList);
+                        intent.putExtra(IntentConfig.SEND_IMG_POSTION, i);
+                        intent.putExtra(IntentConfig.SEND_TAG, tag);
+                        context.startActivity(intent);
+                    }
+                });
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            if(imageModelList!=null){
+                return  imageModelList.size();
+            }
+            return 0;
+        }
+
+        class ViewHolder extends RecyclerView.ViewHolder {
+
+            ImageView img_iv;
+            PercentView progress_view;
+
+            public static final int TYPE_IMG=2;
+            public static final int TYPE_BTN=1;
+
+            public ViewHolder(View itemView,int type) {
+                  super(itemView);
+                if(type==TYPE_IMG){
+                    img_iv= (ImageView) itemView.findViewById(R.id.img_iv);
+                    progress_view= (PercentView) itemView.findViewById(R.id.progress_view);
+                }else{
+                    img_iv= (ImageView) itemView.findViewById(R.id.img_iv);
+                }
+            }
+        }
+    }
 
 
 }

@@ -2,13 +2,20 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.bo.frame.fragment.HomeFragment">
 
-    <com.xiwang.jxw.widget.RefreshLayout
+
+    <com.cjj.MaterialRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/refreshLayout"
-        >
+        app:isLoadMore="false"
+        app:overlay="true"
+        app:progress_colors="@array/material_colors"
+        app:progress_size_type="normal"
+        app:wave_height_type="normal"
+        app:wave_show="true" >
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -17,8 +24,7 @@
             android:divider="@color/trans"
             android:footerDividersEnabled="false"
             ></ListView>
-
-    </com.xiwang.jxw.widget.RefreshLayout>
+    </com.cjj.MaterialRefreshLayout>
 
 
 </LinearLayout>

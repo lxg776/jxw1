@@ -54,7 +54,13 @@
             app:textSize="16dp"
             android:layout_height="wrap_content">
         </com.xiwang.jxw.widget.MyTextSelectView>
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/black_transparent_26"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            ></View>
 
         <com.xiwang.jxw.widget.DeleteEditText
             android:id="@+id/pwd_edt"
@@ -80,7 +86,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-
+            android:visibility="gone"
             android:background="@color/black_transparent_26"
             ></View>
     </LinearLayout>
