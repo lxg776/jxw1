@@ -35,7 +35,7 @@ public abstract class BaseFragment2 extends Fragment {
 	protected final int RESULT_OK = -1;
 	/** Start of user-defined activity results. */
 	protected final int RESULT_FIRST_USER = 1;
-	protected Activity context;
+	protected Context context;
 	/** 父视图 */
 	protected View view_Parent;
 	/** 广播接收器 */
@@ -70,11 +70,7 @@ public abstract class BaseFragment2 extends Fragment {
 		super.onCreate(savedInstanceState);
 	}
 
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		this.context=activity;
-	}
+
 
 	@SuppressWarnings("unchecked")
 	public <T extends View> T findViewById(int resId) {
@@ -91,8 +87,15 @@ public abstract class BaseFragment2 extends Fragment {
 	}
 
 	@Override
+	public void onAttach(Context context) {
+		super.onAttach(context);
+		this.context=context;
+	}
+
+	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+
 		init();
 
 	}

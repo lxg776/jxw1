@@ -16,6 +16,8 @@ import com.xiwang.jxw.config.IntentConfig;
 import com.xiwang.jxw.event.DeleteImageEvent;
 import com.xiwang.jxw.util.AlbumBitmapCacheHelper;
 import com.xiwang.jxw.widget.ZoomImageView;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
@@ -44,6 +46,8 @@ public class DeleteImageActivity extends BaseActivity implements View.OnClickLis
     /**来源标识*/
     String fromTag;
 
+    List<View> views=new ArrayList<View>();
+
 
 
     @Override
@@ -71,7 +75,7 @@ public class DeleteImageActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     protected void init() {
-        pagerAdapter =new MyViewPagerAdapter(imgList);
+        pagerAdapter =new MyViewPagerAdapter();
         vp_content.setAdapter(pagerAdapter);
         vp_content.setCurrentItem(mPostion);
         setTv_title();
@@ -82,14 +86,46 @@ public class DeleteImageActivity extends BaseActivity implements View.OnClickLis
         imgList = getIntent().getParcelableArrayListExtra(IntentConfig.SEND_IMG_LIST);
         mPostion=getIntent().getIntExtra(IntentConfig.SEND_IMG_POSTION, 0);
         fromTag=getIntent().getStringExtra(IntentConfig.SEND_TAG);
+
+        if(null!=imgList&&imgList.size()>0){
+            for(int i=0;i<imgList.size();i++){
+                View view = LayoutInflater.from(DeleteImageActivity.this).inflate(R.layout.widget_zoom_iamge, null);
+                views.add(view);
+
+            }
+
+        }
+
     }
+
+    private void setView(int index){
+            View view=views.get(index);
+            final ZoomImageView zoomImageView = (ZoomImageView) view.findViewById(R.id.zoom_image_view);
+            AlbumBitmapCacheHelper.getInstance().addPathToShowlist(imgList.get(index).path);
+            final  String tag=imgList.get(index).id+"tag";
+            zoomImageView.setTag(tag);
+            Bitmap bitmap = AlbumBitmapCacheHelper.getInstance().getBitmap(imgList.get(index).path, 0, 0, new AlbumBitmapCacheHelper.ILoadImageCallback() {
+                @Override
+                public void onLoadImageCallBack(Bitmap bitmap, String path, Object... objects) {
+                    ZoomImageView view = ((ZoomImageView)vp_content.findViewWithTag(tag));
+                    if (view != null && bitmap != null)
+                        view.setSourceImageBitmap(bitmap, DeleteImageActivity.this);
+                }
+            }, index);
+            if (bitmap != null){
+                zoomImageView.setSourceImageBitmap(bitmap, DeleteImageActivity.this);
+            }
+        }
+
 
     /**
      * 设置标题显示
      */
     private void setTv_title(){
-      if(null!= imgList){
+      if(null!= imgList&&imgList.size()>0){
             tv_title.setText(mPostion + 1 + "/" + imgList.size());
+      }else{
+          tv_title.setText(mPostion+ "/" + imgList.size());
       }
     }
 
@@ -107,6 +143,15 @@ public class DeleteImageActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onPageSelected(int position) {
                 mPostion=position;
+              //  setView(position);
+//                if(position>0){
+//                    setView(position-1);
+//                }
+//                if(position<pagerAdapter.getCount()-2){
+//                    setView(position+1);
+//                }
+
+
                 setTv_title();
             }
 
@@ -129,40 +174,51 @@ public class DeleteImageActivity extends BaseActivity implements View.OnClickLis
             //删除按钮
             case  R.id.btn_delete:
                 if(null!= imgList &&mPostion<= imgList.size()-1){
-//                    ShowImg delImg=imgList.get(mPostion);
-//                    if(mPostion>=imgList.size()-1){
-//                        mPostion=imgList.size()-1;
-//                        vp_content.setCurrentItem(mPostion, false);
-//                        imgList.remove(delImg);
-//                        mPostion--;
-//                        setTv_title();
-//                    }else if(mPostion==0){
-//                        imgList.remove(delImg);
-//                        if(imgList.size()>0){
-//                            vp_content.setCurrentItem(0, false);
-//                        }else{
-//                            finish();
-//                        }
-//                    }else{
-//                        imgList.remove(delImg);
-//                        vp_content.setCurrentItem(mPostion,false);
-                    ShowImg delImg=imgList.get(mPostion);
-                    imgList.remove(mPostion);
-                       /*
-                    发送event通知控件删除
-                     */
-                    DeleteImageEvent event=new DeleteImageEvent();
-                    event.fromTag=fromTag;
-                    event.imgList=imgList;
-                    event.deleteImg=delImg;
-                    EventBus.getDefault().post(event);
-                    pagerAdapter.imgList=imgList;
+
+                    ShowImg delImg=imgList.remove(mPostion);
+                    View delView= views.remove(views.size()-1);
+
                     pagerAdapter.notifyDataSetChanged();
-                    if(mPostion==imgList.size()-1) {
-                        mPostion=mPostion-1;
-                        vp_content.setCurrentItem(mPostion);
+                    if(views.size()==0){
+                        finish();
+                    }else{
+//                        if(mPostion==0){
+//                            vp_content.setCurrentItem(1,false);
+//                        }else{
+//                            vp_content.setCurrentItem(mPostion-1,false);
+//                        }
+                        if(mPostion==views.size()){
+                            vp_content.setCurrentItem(mPostion-1);
+                        }else{
+                            vp_content.setCurrentItem(mPostion);
+                        }
+                        if(null!=imgList&&imgList.size()>0){
+                            for(int i=0;i<imgList.size();i++){
+                               setView(i);
+                            }
+                        }
+                        String delTag= (String) delView.getTag();
+                        if(vp_content.findViewWithTag(delTag)!=null){
+                            vp_content.removeView(vp_content.findViewWithTag(delTag));
+                        }
                     }
+
+
+
+
                     setTv_title();
+
+
+//                       /*
+//                    发送event通知控件删除
+//                     */
+//                    DeleteImageEvent event=new DeleteImageEvent();
+//                    event.fromTag=fromTag;
+//                    event.imgList=imgList;
+//                    event.deleteImg=delImg;
+//                    EventBus.getDefault().post(event);
+//
+//                    setTv_title();
                 }
                 break;
         }
@@ -172,48 +228,32 @@ public class DeleteImageActivity extends BaseActivity implements View.OnClickLis
      * 图片适配器
      */
     private class MyViewPagerAdapter extends PagerAdapter {
-        List<ShowImg> imgList;
+
         @Override
         public int getCount() {
-            if(null!= imgList){
-                return imgList.size();
+            if(null!= views){
+                return views.size();
             }
             return  0;
         }
 
-        public MyViewPagerAdapter( List<ShowImg> list){
-            imgList=list;
+        public MyViewPagerAdapter(){
+
         }
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            View view = LayoutInflater.from(DeleteImageActivity.this).inflate(R.layout.widget_zoom_iamge, null);
-            final ZoomImageView zoomImageView = (ZoomImageView) view.findViewById(R.id.zoom_image_view);
-
-            AlbumBitmapCacheHelper.getInstance().addPathToShowlist(imgList.get(position).path);
-
-            final  String tag=imgList.get(position).id+"tag";
-            zoomImageView.setTag(tag);
-            Bitmap bitmap = AlbumBitmapCacheHelper.getInstance().getBitmap(imgList.get(position).path, 0, 0, new AlbumBitmapCacheHelper.ILoadImageCallback() {
-                @Override
-                public void onLoadImageCallBack(Bitmap bitmap, String path, Object... objects) {
-                    ZoomImageView view = ((ZoomImageView)vp_content.findViewWithTag(tag));
-                    if (view != null && bitmap != null)
-                        view.setSourceImageBitmap(bitmap, DeleteImageActivity.this);
-                }
-            }, position);
-
-            if (bitmap != null){
-                zoomImageView.setSourceImageBitmap(bitmap, DeleteImageActivity.this);
-            }
+            View view=views.get(position);
+            view.setTag(position+"");
+            setView(position);
             container.addView(view);
             return view;
         }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            View view = (View) object;
-            container.removeView(view);
+           // View view = (View) object;
+            container.removeView(views.get(position));
             AlbumBitmapCacheHelper.getInstance().removePathFromShowlist(imgList.get(position).path);
         }
 

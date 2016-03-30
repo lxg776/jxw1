@@ -94,13 +94,14 @@ public class NewsListFragment extends BaseFragment2{
 
     @Override
     protected void findViews() {
+
+        //refreshLayout.setLoadMore(true);
+        listView= (ListView) view_Parent.findViewById(R.id.listView);
+        listView.setAdapter(adapter);
         refreshLayout = (MaterialRefreshLayout) view_Parent.findViewById(R.id.refresh_layout);
         refreshLayout.setWaveColor(0xffffffff);
         refreshLayout.setIsOverLay(false);
         refreshLayout.setWaveShow(true);
-        refreshLayout.setLoadMore(true);
-        listView= (ListView) view_Parent.findViewById(R.id.listView);
-        listView.setAdapter(adapter);
     }
 
     @Override

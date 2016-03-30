@@ -1,6 +1,10 @@
 package com.xiwang.jxw.fragment;
 
+import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.adapter.HomePagerAdapter;
@@ -22,7 +26,7 @@ import java.util.List;
  * @date 2015/9/24
  * @modifier
  */
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends BaseFragment2 {
     /** 栏目控件*/
     PagerSlidingTabStrip tabs;
     /** viewpaper 控件*/
@@ -30,6 +34,8 @@ public class HomeFragment extends BaseFragment {
     /** 栏目数组数据*/
     List<ColumnBean> columnBeanList=new ArrayList<ColumnBean>();
     HomePagerAdapter adapter;
+
+    boolean isInit=false;
 
     @Override
     protected String getPageName() {
@@ -49,23 +55,60 @@ public class HomeFragment extends BaseFragment {
         tabs.setTextColorResource(R.color.gray_500);
 
         pager=findViewById(R.id.pager);
-
+        showColumnList();
+        isInit=true;
 
     }
+
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        if (null != view_Parent) {
+            ViewGroup parent = (ViewGroup) view_Parent.getParent();
+            if (null != parent) {
+                parent.removeView(view_Parent);
+            }
+        } else {
+            view_Parent = getViews();
+            findViews();
+            widgetListener();
+        }
+        return view_Parent;
+    }
+
 
     @Override
     public void initGetData() {
         initTabsData();
     }
 
+    int currentPostion;
+
     @Override
     protected void widgetListener() {
+        pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                currentPostion=position;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
     protected void init() {
-        showColumnList();
+            pager.setCurrentItem(currentPostion,false);
     }
 
     /**
@@ -94,7 +137,9 @@ public class HomeFragment extends BaseFragment {
     }
 
     public void onEvent(MenuEvent event) {
-        showColumnList();
+        if(isInit){
+            showColumnList();
+        }
     }
 
 

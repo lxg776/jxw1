@@ -146,7 +146,8 @@ public class NewsBiz {
         params.put("subject",topicBean.getSubject());
         params.put("content",topicBean.getContent());
         params.put("aids",topicBean.getAids());
-        BaseBiz.getRequest(ServerConfig.TOPIC_URL, params, new BaseBiz.RequestHandle() {
+        params.put("a","post");
+        BaseBiz.postRequest(ServerConfig.TOPIC_URL, params, new BaseBiz.RequestHandle() {
             @Override
             public void onSuccess(ResponseBean responseBean) {
 

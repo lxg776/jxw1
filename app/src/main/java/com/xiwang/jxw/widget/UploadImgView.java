@@ -414,12 +414,8 @@ public class UploadImgView extends RelativeLayout{
                                 sendimagelList.add(imageModelList.get(index));
                             }
                         }
-                        int send_img_postion=0;
-                        if(sendimagelList.size()!=imageModelList.size()&&i>1){
-                            send_img_postion=i-1;
-                        }
                         intent.putParcelableArrayListExtra(IntentConfig.SEND_IMG_LIST, sendimagelList);
-                        intent.putExtra(IntentConfig.SEND_IMG_POSTION, send_img_postion);
+                        intent.putExtra(IntentConfig.SEND_IMG_POSTION, i);
                         intent.putExtra(IntentConfig.SEND_TAG, tag);
                         context.startActivity(intent);
                     }
