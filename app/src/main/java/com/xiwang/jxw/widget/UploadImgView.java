@@ -8,21 +8,19 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
-
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.activity.DeleteImageActivity;
 import com.xiwang.jxw.activity.PickOrTakeImageActivity;
 import com.xiwang.jxw.bean.BaseBean;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.bean.ShowImg;
-import com.xiwang.jxw.bean.SingleImageModel;
 import com.xiwang.jxw.bean.UploadImgBean;
 import com.xiwang.jxw.biz.SystemBiz;
 import com.xiwang.jxw.config.IntentConfig;
@@ -31,9 +29,7 @@ import com.xiwang.jxw.event.PickImageEvent;
 import com.xiwang.jxw.util.AlbumBitmapCacheHelper;
 import com.xiwang.jxw.util.DisplayUtil;
 import com.xiwang.jxw.util.IntentUtil;
-
 import org.json.JSONException;
-
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -136,6 +132,9 @@ public class UploadImgView extends RelativeLayout{
         recyclerView= (RecyclerView) contentView.findViewById(R.id.recyclerView);
         StaggeredGridLayoutManager mLayoutManager=new StaggeredGridLayoutManager(4,StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.addItemDecoration(new DividerGridItemDecoration(context));
+
+
 //        /**
 //         * 计算每个控件的w 和 h
 //         */
@@ -378,7 +377,7 @@ public class UploadImgView extends RelativeLayout{
         public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
             View view;
             if(i==getItemCount()-1){
-                view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_upload_btn,
+                view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_upload_image,
                         viewGroup, false);
                 return new ViewHolder(view,ViewHolder.TYPE_BTN);
             }else{
@@ -401,19 +400,31 @@ public class UploadImgView extends RelativeLayout{
                             IntentUtil.gotoActivity(context, PickOrTakeImageActivity.class, bundle);
                     }
                 });
+                viewHolder.img_iv.setBackgroundDrawable(getResources().getDrawable(R.mipmap.add_icon_gray));
+                viewHolder.progress_view.setVisibility(View.GONE);
             }else{
-
                 displayFromSDCard(context, viewHolder.img_iv, showImg.path);
                 viewHolder.img_iv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(context, DeleteImageActivity.class);
-                        intent.putParcelableArrayListExtra(IntentConfig.SEND_IMG_LIST, imageModelList);
-                        intent.putExtra(IntentConfig.SEND_IMG_POSTION, i);
+                        ArrayList<ShowImg> sendimagelList=new ArrayList<ShowImg>();
+                        for(int index=0;index<imageModelList.size();index++){
+                            if(!TextUtils.isEmpty(imageModelList.get(index).path)){
+                                sendimagelList.add(imageModelList.get(index));
+                            }
+                        }
+                        int send_img_postion=0;
+                        if(sendimagelList.size()!=imageModelList.size()&&i>1){
+                            send_img_postion=i-1;
+                        }
+                        intent.putParcelableArrayListExtra(IntentConfig.SEND_IMG_LIST, sendimagelList);
+                        intent.putExtra(IntentConfig.SEND_IMG_POSTION, send_img_postion);
                         intent.putExtra(IntentConfig.SEND_TAG, tag);
                         context.startActivity(intent);
                     }
                 });
+                viewHolder.progress_view.setVisibility(View.VISIBLE);
             }
         }
 
@@ -435,12 +446,8 @@ public class UploadImgView extends RelativeLayout{
 
             public ViewHolder(View itemView,int type) {
                   super(itemView);
-                if(type==TYPE_IMG){
                     img_iv= (ImageView) itemView.findViewById(R.id.img_iv);
                     progress_view= (PercentView) itemView.findViewById(R.id.progress_view);
-                }else{
-                    img_iv= (ImageView) itemView.findViewById(R.id.img_iv);
-                }
             }
         }
     }

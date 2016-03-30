@@ -71,7 +71,7 @@ public class DeleteImageActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     protected void init() {
-        pagerAdapter =new MyViewPagerAdapter();
+        pagerAdapter =new MyViewPagerAdapter(imgList);
         vp_content.setAdapter(pagerAdapter);
         vp_content.setCurrentItem(mPostion);
         setTv_title();
@@ -129,35 +129,26 @@ public class DeleteImageActivity extends BaseActivity implements View.OnClickLis
             //删除按钮
             case  R.id.btn_delete:
                 if(null!= imgList &&mPostion<= imgList.size()-1){
-                    ShowImg delImg=imgList.get(mPostion);
-                    if(mPostion==imgList.size()-1){
-                        vp_content.setCurrentItem(mPostion, false);
-                        imgList.remove(delImg);
-                        mPostion--;
-                        setTv_title();
-                    }else if(mPostion==0){
-                        imgList.remove(delImg);
-                        if(imgList.size()>0){
-                            vp_content.setCurrentItem(0, false);
-                        }else{
-                            finish();
-                        }
-                    }else{
-                        imgList.remove(delImg);
-                        vp_content.setCurrentItem(mPostion,false);
-                    }
-
-//                    if(mPostion>0&&mPostion==imgList.size()-1){
+//                    ShowImg delImg=imgList.get(mPostion);
+//                    if(mPostion>=imgList.size()-1){
+//                        mPostion=imgList.size()-1;
+//                        vp_content.setCurrentItem(mPostion, false);
+//                        imgList.remove(delImg);
 //                        mPostion--;
+//                        setTv_title();
+//                    }else if(mPostion==0){
+//                        imgList.remove(delImg);
+//                        if(imgList.size()>0){
+//                            vp_content.setCurrentItem(0, false);
+//                        }else{
+//                            finish();
+//                        }
+//                    }else{
+//                        imgList.remove(delImg);
 //                        vp_content.setCurrentItem(mPostion,false);
-//                    }
-//                    if(mPostion==0&&imgList.size()>1){
-//                        vp_content.setCurrentItem(mPostion+1,false);
-//                    }
-
-                    pagerAdapter.notifyDataSetChanged();
-
-                    /*
+                    ShowImg delImg=imgList.get(mPostion);
+                    imgList.remove(mPostion);
+                       /*
                     发送event通知控件删除
                      */
                     DeleteImageEvent event=new DeleteImageEvent();
@@ -165,7 +156,13 @@ public class DeleteImageActivity extends BaseActivity implements View.OnClickLis
                     event.imgList=imgList;
                     event.deleteImg=delImg;
                     EventBus.getDefault().post(event);
-
+                    pagerAdapter.imgList=imgList;
+                    pagerAdapter.notifyDataSetChanged();
+                    if(mPostion==imgList.size()-1) {
+                        mPostion=mPostion-1;
+                        vp_content.setCurrentItem(mPostion);
+                    }
+                    setTv_title();
                 }
                 break;
         }
@@ -175,13 +172,17 @@ public class DeleteImageActivity extends BaseActivity implements View.OnClickLis
      * 图片适配器
      */
     private class MyViewPagerAdapter extends PagerAdapter {
-
+        List<ShowImg> imgList;
         @Override
         public int getCount() {
             if(null!= imgList){
                 return imgList.size();
             }
             return  0;
+        }
+
+        public MyViewPagerAdapter( List<ShowImg> list){
+            imgList=list;
         }
 
         @Override
