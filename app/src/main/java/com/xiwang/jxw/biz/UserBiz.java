@@ -463,5 +463,101 @@ public class UserBiz {
 
     }
 
+    /**
+     * 校验手机或者邮箱的验证码
+     * @param phoneOrMail
+     * @param code
+     * @param type
+     */
+    public static void verifyCode(String phoneOrMail,String code,String type,final BaseBiz.RequestHandle handle){
+        RequestParams params = new RequestParams();
+        if(TextUtils.isEmpty(type)){
+            type="mobile";
+        }
+        if("mobile".equals(type)){
+            params.put("mobile", phoneOrMail);
+            params.put("type", "ismcode");
+        }else{
+            params.put("email", phoneOrMail);
+            params.put("type", "isecode");
+        }
+//        params.put("a", "smscode");
+        params.put("code", code);
+
+
+
+        BaseBiz.getRequest(ServerConfig.CHECK_CODE_URL, params, new BaseBiz.RequestHandle() {
+
+            @Override
+            public void onSuccess(ResponseBean responseBean) {
+
+
+                    handle.onSuccess(responseBean);
+
+            }
+
+            @Override
+            public void onFail(ResponseBean responseBean) {
+                handle.onFail(responseBean);
+            }
+
+            @Override
+            public ResponseBean getRequestCache() {
+                return handle.getRequestCache();
+            }
+
+            @Override
+            public void onRequestCache(ResponseBean result) {
+                handle.onRequestCache(result);
+            }
+        });
+
+    }
+
+
+
+    /**
+     * 校验手机或者邮箱的验证码
+     * @param phoneOrMail
+     * @param type mobile 手机验证码 email 邮件验证码
+     */
+    public static void getVerifyCode(String phoneOrMail,String type,final BaseBiz.RequestHandle handle){
+        RequestParams params = new RequestParams();
+        if(TextUtils.isEmpty(type)){
+            type="mobile";
+        }
+        if("mobile".equals(type)){
+            params.put("mobile", phoneOrMail);
+        }else{
+            params.put("email", phoneOrMail);
+        }
+        params.put("type", type);
+        BaseBiz.getRequest(ServerConfig.CHECK_CODE_URL, params, new BaseBiz.RequestHandle() {
+
+            @Override
+            public void onSuccess(ResponseBean responseBean) {
+                handle.onSuccess(responseBean);
+            }
+
+            @Override
+            public void onFail(ResponseBean responseBean) {
+                handle.onFail(responseBean);
+            }
+
+            @Override
+            public ResponseBean getRequestCache() {
+                return handle.getRequestCache();
+            }
+
+            @Override
+            public void onRequestCache(ResponseBean result) {
+                handle.onRequestCache(result);
+            }
+        });
+
+    }
+
+
+
 
 }

@@ -75,6 +75,8 @@ public class ServerConfig {
 	public final static String DIG_FIGHT_URL=SERVER_API_URL+"getapp.php";
 	/**点赞列表*/
 	public final static String DIG_LIST_URL=SERVER_API_URL+"getapp.php?a=diglist";
+	/**点赞列表*/
+	public final static String CHECK_CODE_URL=SERVER_API_URL+"getapp.php?a=smscode";
 
 
 

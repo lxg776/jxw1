@@ -83,6 +83,14 @@
             android:exported="false"
             android:theme="@style/AppTheme" >
         </activity>
+        <!-- 填写手机号码 -->
+        <activity
+            android:name=".activity.WritePhoneActivity"
+            android:screenOrientation="portrait"
+            android:exported="false"
+            android:theme="@style/AppTheme" >
+        </activity>
+
 
         <!-- 租房详情 -->
         <activity

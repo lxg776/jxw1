@@ -7,7 +7,7 @@
     <include layout="@layout/tootbar_common"></include>
 
     <com.xiwang.jxw.widget.MyInputEditView2
-        android:id="@+id/register_edit_phone"
+        android:id="@+id/edit_phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
