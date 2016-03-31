@@ -212,11 +212,11 @@ public class DeleteImageActivity extends BaseActivity implements View.OnClickLis
 //                       /*
 //                    发送event通知控件删除
 //                     */
-//                    DeleteImageEvent event=new DeleteImageEvent();
-//                    event.fromTag=fromTag;
-//                    event.imgList=imgList;
-//                    event.deleteImg=delImg;
-//                    EventBus.getDefault().post(event);
+                    DeleteImageEvent event=new DeleteImageEvent();
+                    event.fromTag=fromTag;
+                    event.imgList=imgList;
+                    event.deleteImg=delImg;
+                    EventBus.getDefault().post(event);
 //
 //                    setTv_title();
                 }

@@ -16,6 +16,7 @@ import com.xiwang.jxw.adapter.HomeNewsListAdapter;
 import com.xiwang.jxw.adapter.OnitemClicklistener;
 import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.base.BaseFragment2;
+import com.xiwang.jxw.base.BaseFragment3;
 import com.xiwang.jxw.bean.ColumnBean;
 import com.xiwang.jxw.bean.ListBean;
 import com.xiwang.jxw.bean.NewsBean;
@@ -32,7 +33,7 @@ import java.util.List;
  * Created by sunshine on 15/11/7.
  */
 @SuppressLint("ValidFragment")
-public class NewsListFragment extends BaseFragment2{
+public class NewsListFragment extends BaseFragment3 {
     /** 栏目信息*/
     ColumnBean columnBean;
     /** 下拉刷新和上拉更多控件*/

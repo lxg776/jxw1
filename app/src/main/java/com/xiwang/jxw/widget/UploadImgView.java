@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
@@ -25,10 +26,13 @@ import com.xiwang.jxw.bean.UploadImgBean;
 import com.xiwang.jxw.biz.SystemBiz;
 import com.xiwang.jxw.config.IntentConfig;
 import com.xiwang.jxw.event.DeleteImageEvent;
+import com.xiwang.jxw.event.PercentEvent;
 import com.xiwang.jxw.event.PickImageEvent;
 import com.xiwang.jxw.util.AlbumBitmapCacheHelper;
 import com.xiwang.jxw.util.DisplayUtil;
 import com.xiwang.jxw.util.IntentUtil;
+import com.xiwang.jxw.util.ToastUtil;
+
 import org.json.JSONException;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -71,7 +75,7 @@ public class UploadImgView extends RelativeLayout{
 
     ItemAdapter adapter;
 
-
+    Handler mHandler;
 
     public List<UploadImgBean> getUploadImageUrlList() {
         return uploadImageUrlList;
@@ -117,7 +121,7 @@ public class UploadImgView extends RelativeLayout{
         imageModelList=new ArrayList<ShowImg>();
         uploadImageUrlList=new ArrayList<UploadImgBean>();
         adapter=new ItemAdapter();
-
+        mHandler=new Handler();
         if(useEventBus()){
             EventBus.getDefault().register(this);
         }
@@ -217,6 +221,7 @@ public class UploadImgView extends RelativeLayout{
         final int vId=beginId++;
         showImg.path=path;
         showImg.id=vId;
+        showImg.percent=50;
         imageModelList.add(0, showImg);
         adapter.notifyItemRangeChanged(0,imageModelList.size());
 
@@ -247,24 +252,31 @@ public class UploadImgView extends RelativeLayout{
 //
 //        displayFromSDCard(context, img_iv, path);
 //        addView(view, 0, getRelationLayout());
-        //uploadImage(path, view);
+        uploadImage(showImg);
     }
 
 
 
-    private void uploadImage(final String path,View view){
-        final PercentView progress_view= (PercentView) view.findViewById(R.id.progress_view);
-        final ImageView img_iv= (ImageView) view.findViewById(R.id.img_iv);
+    private void uploadImage(final ShowImg img){
+
         try {
-            SystemBiz.uploadImg(path, new SystemBiz.UploadImgListener() {
+            SystemBiz.uploadImg(img.path, new SystemBiz.UploadImgListener() {
                 @Override
                 public void onSuccess(ResponseBean responseBean) {
-                    progress_view.setVisibility(View.GONE);
+
+                    img.percent=100;
+                    notifyChance(img.path);
                     try {
                         UploadImgBean uploadImgBean= (UploadImgBean) BaseBean.newInstance(UploadImgBean.class,(String)responseBean.getObject());
                         //显示的图片包含上传成功的图片才进行上传
-                        if(imageModelList.contains(path)){
-                            uploadImageUrlList.add(uploadImgBean);
+                        if(imageModelList!=null&&imageModelList.size()>0){
+                            for(ShowImg showImg:imageModelList){
+                                if(showImg.path.equals(img.path)){
+                                    uploadImageUrlList.add(uploadImgBean);
+                                    ToastUtil.showToast(context,"上传成功"+img.path);
+                                    break;
+                                }
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -272,22 +284,24 @@ public class UploadImgView extends RelativeLayout{
                 }
                 @Override
                 public void onFail(ResponseBean responseBean) {
-                    img_iv.setBackgroundDrawable(getResources().getDrawable(R.mipmap.ic_launcher));
-                    progress_view.setVisibility(GONE);
+                    img.percent=-1;
+                    notifyChance(img.path);
+
                 }
                 @Override
-                public void onProgress(int progress) {
-                    progress_view.setPercent(progress);
-                }
-
+                public void onProgress(final int progress) {
+                         img.percent=progress;
+                         notifyChance(img.path);
+                    }
                 @Override
                 public void onFinish() {
-                    progress_view.setVisibility(GONE);
+                    notifyChance(img.path);
+                    img.percent=100;
+                    notifyChance(img.path);
                 }
             });
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            img_iv.setBackgroundDrawable(getResources().getDrawable(R.mipmap.ic_launcher));
+            notifyChance(img.path);
         }
     }
 
@@ -321,17 +335,37 @@ public class UploadImgView extends RelativeLayout{
 
     public void onEvent(DeleteImageEvent event){
         if(tag.equals(event.fromTag)){
-            if(event.imgList!=null){
-                imageModelList.clear();
-                imageModelList.addAll(event.imgList);
-                adapter.notifyItemRangeChanged(0,imageModelList.size());
+            int deletePostion=-1;
+            for(int i=0;i<imageModelList.size();i++){
+                if( event.deleteImg.path.equals(imageModelList.get(i).path)){
+                    deletePostion=i;
+                    break;
+                }
             }
+            if(deletePostion!=-1){
+                imageModelList.remove(deletePostion);
+            }
+            adapter.notifyItemRemoved(deletePostion);
         }
     }
 
+
+    private void notifyChance(String path){
+        int changePostion=-1;
+        for(int i=0;i<imageModelList.size();i++){
+            if( path.equals(imageModelList.get(i).path)){
+                changePostion=i;
+                break;
+            }
+        }
+        if(changePostion!=-1){
+
+            adapter.notifyItemChanged(changePostion);
+        }
+    }
     @Override
     protected void onDetachedFromWindow() {
-        if(useEventBus()){
+        if (useEventBus()){
             EventBus.getDefault().unregister(this);
         }
         AlbumBitmapCacheHelper.getInstance().clearCache();
@@ -408,9 +442,9 @@ public class UploadImgView extends RelativeLayout{
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(context, DeleteImageActivity.class);
-                        ArrayList<ShowImg> sendimagelList=new ArrayList<ShowImg>();
-                        for(int index=0;index<imageModelList.size();index++){
-                            if(!TextUtils.isEmpty(imageModelList.get(index).path)){
+                        ArrayList<ShowImg> sendimagelList = new ArrayList<ShowImg>();
+                        for (int index = 0; index < imageModelList.size(); index++) {
+                            if (!TextUtils.isEmpty(imageModelList.get(index).path)) {
                                 sendimagelList.add(imageModelList.get(index));
                             }
                         }
@@ -420,7 +454,16 @@ public class UploadImgView extends RelativeLayout{
                         context.startActivity(intent);
                     }
                 });
-                viewHolder.progress_view.setVisibility(View.VISIBLE);
+                if(showImg.percent==0||showImg.percent>=100){
+                    viewHolder.progress_view.setVisibility(View.GONE);
+                }else if(showImg.percent==-1){
+                    viewHolder.progress_view.setVisibility(View.GONE);
+                    viewHolder.img_iv.setBackgroundDrawable(getResources().getDrawable(R.mipmap.ic_launcher));
+                }
+                else{
+                    viewHolder.progress_view.setVisibility(View.VISIBLE);
+                    viewHolder.progress_view.setPercent(showImg.percent);
+                }
             }
         }
 

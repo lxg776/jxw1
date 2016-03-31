@@ -7,6 +7,7 @@ public class ShowImg implements Parcelable {
         private static final long serialVersionUID = 3611224074993323709L;
        public  String path;
        public int id;
+       public int percent=0;
 
 
        public static final Parcelable.Creator<ShowImg> CREATOR = new Creator<ShowImg>() {

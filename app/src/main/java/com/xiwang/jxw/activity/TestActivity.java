@@ -13,6 +13,8 @@ import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.biz.HomeBiz;
 import com.xiwang.jxw.event.PickImageEvent;
 import com.xiwang.jxw.util.SpUtil;
+import com.xiwang.jxw.widget.PercentView;
+
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
@@ -31,7 +33,7 @@ public class TestActivity extends BaseActivity{
     View headView;
     WebView webView;
 
-
+    protected PercentView percentView;
     @Override
     protected String getPageName() {
         return "测试a";
@@ -47,8 +49,29 @@ public class TestActivity extends BaseActivity{
         return R.layout.activity_test;
     }
 
+    int per=0;
+
+
+    Runnable runnable=new Runnable() {
+        @Override
+        public void run() {
+            if(per<100){
+                per=per+1;
+                percentView.setPercent(per);
+                mHandler.removeCallbacks(runnable);
+                mHandler.postDelayed(runnable,200);
+            }else{
+                mHandler.removeCallbacks(runnable);
+                per=0;
+            }
+
+        }
+    };
     @Override
     protected void findViews() {
+        percentView= (PercentView) findViewById(R.id.percentView);
+        mHandler.postDelayed(runnable,200);
+
 //        listView= (ListView) findViewById(R.id.listView);
 //        adapter =new HomeNewsListAdapter(this);
 //

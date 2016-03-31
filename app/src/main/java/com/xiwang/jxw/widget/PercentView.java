@@ -7,12 +7,14 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.graphics.drawable.shapes.RectShape;
 import android.util.AttributeSet;
 import android.view.View;
 
 import com.xiwang.jxw.R;
 
+import com.xiwang.jxw.util.DisplayUtil;
 import com.xiwang.jxw.util.Log;
 import com.xiwang.jxw.util.ToastUtil;
 
@@ -111,6 +113,16 @@ public class PercentView extends View {
         /** 画背景*/
         p.setColor(backgroundColor);
         canvas.drawRect(0, percent_h, w, h, p);
+        Typeface font = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL);
+        p.setTypeface( font );
+        p.setTextAlign(Paint.Align.CENTER);
+        p.setColor(getResources().getColor(R.color.black_transparent_26));
+        int x=getWidth()/2;
+        int y=getHeight()/2;
+        p.setTextSize(DisplayUtil.dip2px(context,14));
+        if(percent<=100) {
+            canvas.drawText(percent + "%", x, y, p);
+        }
     }
 
     /**

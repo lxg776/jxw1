@@ -67,4 +67,18 @@
         <attr name = "child_height" format = "dimension" />
         <attr name = "numColumns" format = "integer" />
     </declare-styleable>
+
+    <declare-styleable name="MyInputEditView">
+        <attr name="lineColor1" format="color" />
+        <attr name="lineColor2" format="color" />
+        <attr name="leftText" format="string" />
+        <attr name="rightText" format="string" />
+        <attr name="rightHintText" format="string" />
+        <attr name="isPwd" format="boolean" />
+        <attr name="inputType" format="integer" />
+        <attr name="isLeft" format="boolean" />
+        <attr name="isRight" format="boolean" />
+        <attr name="leftTextColor" format="color" />
+        <attr name="rightTextColor" format="color" />
+    </declare-styleable>
 </resources>

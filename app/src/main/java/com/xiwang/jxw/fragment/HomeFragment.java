@@ -124,7 +124,6 @@ public class HomeFragment extends BaseFragment2 {
         columnBeanList= (List<ColumnBean>) SpUtil.getObject(context,getString(R.string.cache_menu));
         if(null!=columnBeanList&&columnBeanList.size()>0){
             adapter.setColumnBeanList(columnBeanList);
-
             pager.setAdapter(adapter);
             tabs.setViewPager(pager);
         }
