@@ -97,54 +97,68 @@ public class BaseBiz {
 
 
     /**
-     * 发送http请求
+     * 发送http post请求
      * @param url
      * @param params
      */
-    public static void postRequest(final String url, final RequestParams params, final RequestHandle handle){
-        RequestExecutor.addTask(new Runnable() {
+    public static void postRequest(final String url, final RequestParams params, final RequestHandle mhandle){
+
+        ResponseBean cacheData = mhandle.getRequestCache();
+        if (cacheData != null) {
+            mhandle.onRequestCache(cacheData);
+        }
+
+        Log.d(url);
+        if(null!=params){
+            Log.d(params.toString());
+        }
+        AsyncHttpResponseHandler handler =new AsyncHttpResponseHandler() {
             @Override
-            public void run() {
-                ResponseBean cacheData = handle.getRequestCache();
-                if (cacheData != null) {
-                    handle.onRequestCache(cacheData);
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String responseStr = new String(responseBody);
+                ResponseBean responseBean = new ResponseBean();
+
+
+                Log.d("data:"+responseStr);
+                try {
+
+                    JSONObject jsonObject = new JSONObject(responseStr);
+                    responseBean.setInfo(jsonObject.optString("msg"));
+                    responseBean.setStatus(jsonObject.optString("code"));
+                    responseBean.setObject(jsonObject.optString("data"));
+                } catch (JSONException e) {
+                    responseBean.setStatus(ServerConfig.JSON_DATA_ERROR);
+                    responseBean.setInfo(TApplication.context.getResources().getString(R.string.exception_local_json_message));
+                    mhandle.onFail(responseBean);
                 }
 
-
-
-                AppHttpClient.post(url, params, new AsyncHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                        String responseStr = new String(responseBody);
-                        ResponseBean responseBean = new ResponseBean();
-                        try {
-                            JSONObject jsonObject = new JSONObject(responseStr);
-                            responseBean.setInfo(jsonObject.optString("info"));
-                            responseBean.setStatus(jsonObject.optString("status"));
-                            responseBean.setObject(jsonObject.optString("data"));
-                        } catch (JSONException e) {
-                            responseBean.setStatus(ServerConfig.JSON_DATA_ERROR);
-                            responseBean.setInfo(TApplication.context.getResources().getString(R.string.exception_local_json_message));
-                            handle.onFail(responseBean);
-                        }
-                        if(isSuccess(responseBean.getStatus())){
-                            handle.onSuccess(responseBean);
-                        }else
-                        {
-                            handle.onFail(responseBean);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        ResponseBean responseBean = new ResponseBean();
-                        responseBean.setStatus(statusCode + "");
-                        responseBean.setInfo(new String(responseBody));
-                        handle.onFail(responseBean);
-                    }
-                });
+                if(isSuccess(responseBean.getStatus())){
+                    mhandle.onSuccess(responseBean);
+                }else
+                {
+                    mhandle.onFail(responseBean);
+                }
             }
-        });
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                ResponseBean responseBean = new ResponseBean();
+                responseBean.setStatus(statusCode + "");
+                if(null!=responseBody){
+                    responseBean.setInfo(new String(responseBody));
+                }
+                mhandle.onFail(responseBean);
+            }
+        };
+        if(params==null){
+            AppHttpClient.post(url, handler);
+        }else{
+            AppHttpClient.post(url, params, handler);
+        }
+
+
+
+
     }
 
 

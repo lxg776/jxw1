@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.TextView;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseSubmitActivity;
-import com.xiwang.jxw.event.DeleteImageEvent;
 import com.xiwang.jxw.event.FinishEvent;
 import com.xiwang.jxw.util.CheckUtil;
 import com.xiwang.jxw.util.IntentUtil;

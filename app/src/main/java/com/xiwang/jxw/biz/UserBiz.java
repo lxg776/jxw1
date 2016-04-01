@@ -502,13 +502,13 @@ public class UserBiz {
 
 
 
-        BaseBiz.getRequest(ServerConfig.CHECK_CODE_URL, params, new BaseBiz.RequestHandle() {
+        BaseBiz.postRequest(ServerConfig.CHECK_CODE_URL, params, new BaseBiz.RequestHandle() {
 
             @Override
             public void onSuccess(ResponseBean responseBean) {
 
 
-                    handle.onSuccess(responseBean);
+                handle.onSuccess(responseBean);
 
             }
 
@@ -548,7 +548,8 @@ public class UserBiz {
             params.put("email", phoneOrMail);
         }
         params.put("type", type);
-        BaseBiz.getRequest(ServerConfig.CHECK_CODE_URL, params, new BaseBiz.RequestHandle() {
+        params.put("a", "smscode");
+        BaseBiz.postRequest(ServerConfig.CHECK_CODE_URL, params, new BaseBiz.RequestHandle() {
 
             @Override
             public void onSuccess(ResponseBean responseBean) {
