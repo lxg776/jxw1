@@ -23,7 +23,16 @@ public class UserInfoBean extends BaseBean{
     private String introduce;
     /**新短消息数*/
     private String newpm;
+    /**手机号码*/
+    private String cellphone;
 
+    public String getCellphone() {
+        return cellphone;
+    }
+
+    public void setCellphone(String cellphone) {
+        this.cellphone = cellphone;
+    }
 
     public String getUid() {
         return uid;
@@ -90,5 +99,6 @@ public class UserInfoBean extends BaseBean{
         setSignature(jSon.optString("signature"));
         setIntroduce(jSon.optString("introduce"));
         setNewpm(jSon.optString("newpm"));
+        setCellphone(jSon.optString("cellphone"));
     }
 }

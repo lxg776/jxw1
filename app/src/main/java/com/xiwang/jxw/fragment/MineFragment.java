@@ -1,6 +1,7 @@
 package com.xiwang.jxw.fragment;
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -156,7 +157,9 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
             ImgLoadUtil.displayImage(CommonUtil.getAboutAbsoluteImgUrl(userBean.getFace()), user_headimg_iv);
             user_tv.setText(userBean.getUsername());
             if(null!=userBean.getUserInfoBean()){
-                sign_tv.setText(userBean.getUserInfoBean().getSignature());
+                if(!TextUtils.isEmpty(userBean.getUserInfoBean().getSignature())){
+                    sign_tv.setText(userBean.getUserInfoBean().getSignature());
+                }
             }
         }
     }

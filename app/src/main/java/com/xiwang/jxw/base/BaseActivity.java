@@ -51,6 +51,16 @@ public abstract class BaseActivity extends AppCompatActivity {
 	/**页面时长*/
 	long beg;
 
+	protected String activityTag;
+
+
+	public String getActivityTag() {
+		return activityTag;
+	}
+
+	public void setActivityTag(String activityTag) {
+		this.activityTag = activityTag;
+	}
 
 	public void setPageName(String pageName) {
 		this.pageName = pageName;

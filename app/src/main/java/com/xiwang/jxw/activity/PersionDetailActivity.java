@@ -2,6 +2,7 @@ package com.xiwang.jxw.activity;
 
 import android.content.Intent;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -15,9 +16,14 @@ import com.xiwang.jxw.base.BaseActivity;
 import com.xiwang.jxw.bean.UserBean;
 import com.xiwang.jxw.biz.UserBiz;
 import com.xiwang.jxw.config.IntentConfig;
+import com.xiwang.jxw.event.FinishEvent;
+import com.xiwang.jxw.event.UserInfoEvent;
 import com.xiwang.jxw.util.CommonUtil;
 import com.xiwang.jxw.util.DialogUtil;
 import com.xiwang.jxw.util.ImgLoadUtil;
+import com.xiwang.jxw.util.IntentUtil;
+
+import org.w3c.dom.Text;
 
 /**
  * 个人信息activity
@@ -43,7 +49,10 @@ public class PersionDetailActivity extends BaseActivity implements  View.OnClick
     RelativeLayout email_rl;
     /**个性签名*/
     LinearLayout sign_rl;
+    /**绑定手机号*/
+    RelativeLayout cellphone_rl;
 
+    UserBean userBean;
 
 
     @Override
@@ -66,6 +75,11 @@ public class PersionDetailActivity extends BaseActivity implements  View.OnClick
     }
 
     @Override
+    protected boolean useEventBus() {
+        return  true;
+    }
+
+    @Override
     protected int getContentViewId() {
         return R.layout.activity_persion_detail;
     }
@@ -81,10 +95,15 @@ public class PersionDetailActivity extends BaseActivity implements  View.OnClick
         sex_rl= (RelativeLayout) findViewById(R.id.sex_rl);
         email_rl= (RelativeLayout) findViewById(R.id.email_rl);
         sign_rl= (LinearLayout) findViewById(R.id.sign_rl);
+        cellphone_rl= (RelativeLayout) findViewById(R.id.cellphone_rl);
+
+
     }
 
     @Override
     protected void init() {
+
+        setActivityTag("PersionDetailActivity");
         showUserInfo();
     }
 
@@ -98,13 +117,14 @@ public class PersionDetailActivity extends BaseActivity implements  View.OnClick
         sex_rl.setOnClickListener(this);
         sign_rl.setOnClickListener(this);
         email_rl.setOnClickListener(this);
+        cellphone_rl.setOnClickListener(this);
     }
 
     /**
      * 显示个人数据
      */
     private void showUserInfo(){
-        UserBean userBean= UserBiz.getUserBean(context);
+        userBean= UserBiz.getUserBean(context);
         if(null!=userBean){
             ImgLoadUtil.displayImage(CommonUtil.getAboutAbsoluteImgUrl(userBean.getFace()), user_headimg_iv);
             name_tv.setText(userBean.getUsername());
@@ -113,6 +133,13 @@ public class PersionDetailActivity extends BaseActivity implements  View.OnClick
                 sign_tv.setText(userBean.getUserInfoBean().getSignature());
                 //cellphone_tv.setText(userBean.getUserInfoBean().getUsername());
             }
+        }
+        if(TextUtils.isEmpty(userBean.getUserInfoBean().getCellphone())){
+            cellphone_tv.setTextColor(getResources().getColor(R.color.material_red));
+            cellphone_tv.setText("立即绑定");
+        }else{
+            cellphone_tv.setTextColor(getResources().getColor(R.color.black_transparent_54));
+            cellphone_tv.setText(userBean.getUserInfoBean().getCellphone());
         }
     }
 
@@ -172,7 +199,24 @@ public class PersionDetailActivity extends BaseActivity implements  View.OnClick
                     signIntent.putExtra(IntentConfig.SEND_VALUE,sign_tv.getText().toString());
                     startActivity(signIntent);
                     break;
+                case R.id.cellphone_rl:
+                    if(TextUtils.isEmpty(userBean.getUserInfoBean().getCellphone())){
+                        /**
+                         * 跳转去绑定手机
+                         */
+                        IntentUtil.gotoActivity(context,WritePhoneActivity.class);
+
+                    }
+
+
+                    break;
             }
+    }
+
+    public void onEvent(UserInfoEvent event){
+        if (event.tag.equals(activityTag)){
+           showUserInfo();
+        }
     }
 }
 

@@ -95,7 +95,7 @@ public class CheckUtil {
      * @return
      */
     public static boolean checkMobileNumber(Context context,String mobileNumber){
-        boolean flag = false;
+        boolean flag = true;
         try{
             Pattern regex = Pattern.compile("^(((13[0-9])|(15([0-3]|[5-9]))|(17([0-3]|[5-9]))|(18[0,5-9]))\\d{8})|(0\\d{2}-\\d{8})|(0\\d{3}-\\d{7})$");
             Matcher matcher = regex.matcher(mobileNumber);
@@ -108,6 +108,6 @@ public class CheckUtil {
         }
 
 
-        return true;
+        return flag;
     }
 }

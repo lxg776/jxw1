@@ -1,26 +1,17 @@
 package com.xiwang.jxw.activity;
 
-import android.content.Intent;
+
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.xiwang.jxw.R;
-import com.xiwang.jxw.adapter.TextAdapter;
-import com.xiwang.jxw.base.BaseActivity;
 import com.xiwang.jxw.base.BaseSubmitActivity;
-import com.xiwang.jxw.bean.UserBean;
-import com.xiwang.jxw.biz.UserBiz;
-import com.xiwang.jxw.config.IntentConfig;
+import com.xiwang.jxw.event.DeleteImageEvent;
+import com.xiwang.jxw.event.FinishEvent;
 import com.xiwang.jxw.util.CheckUtil;
-import com.xiwang.jxw.util.CommonUtil;
-import com.xiwang.jxw.util.DialogUtil;
-import com.xiwang.jxw.util.ImgLoadUtil;
+import com.xiwang.jxw.util.IntentUtil;
 import com.xiwang.jxw.widget.MyInputEditView2;
 
 /**
@@ -31,6 +22,7 @@ public class WritePhoneActivity extends BaseSubmitActivity implements  View.OnCl
 
 
     MyInputEditView2 edit_phone;
+    TextView btn_next;
 
     @Override
     protected String getPageName() {
@@ -40,7 +32,7 @@ public class WritePhoneActivity extends BaseSubmitActivity implements  View.OnCl
     @Override
     protected void initActionBar() {
         toolbar= (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("个人信息");
+        toolbar.setTitle("绑定手机");
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.back_btn));
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -60,13 +52,14 @@ public class WritePhoneActivity extends BaseSubmitActivity implements  View.OnCl
     protected void findViews() {
         edit_phone= (MyInputEditView2) findViewById(R.id.edit_phone);
         edit_phone.getInput_edt().setInputType(InputType.TYPE_CLASS_PHONE);
+        btn_next= (TextView) findViewById(R.id.btn_next);
 
 
     }
 
     @Override
     protected void init() {
-
+        setActivityTag("WritePhoneActivity");
     }
 
     @Override
@@ -76,13 +69,24 @@ public class WritePhoneActivity extends BaseSubmitActivity implements  View.OnCl
 
     @Override
     protected void widgetListener() {
+        btn_next.setOnClickListener(this);
 
     }
 
 
+
+
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()){
+            case R.id.btn_next:
+                if(checkInput()){
+                    Bundle bundle=new Bundle();
+                    bundle.putString(getString(R.string.send_data),edit_phone.getText().toString());
+                    IntentUtil.gotoActivity(context,AuthPhoneActivity.class,bundle);
+                }
+            break;
+        }
     }
 
     @Override
@@ -97,6 +101,12 @@ public class WritePhoneActivity extends BaseSubmitActivity implements  View.OnCl
             return false;
         }
         return true;
+    }
+
+    public void onEvent(FinishEvent event){
+        if (event.tag.equals(activityTag)){
+            finish();
+        }
     }
 }
 

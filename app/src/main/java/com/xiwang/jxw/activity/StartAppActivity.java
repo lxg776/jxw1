@@ -95,6 +95,13 @@ public class StartAppActivity extends BaseActivity {
 
     }
 
+    Runnable toMainRunable=new Runnable() {
+        @Override
+        public void run() {
+            IntentUtil.gotoActivityAndFinish(context, MainActivity.class);
+        }
+    };
+
     @Override
     protected void init() {
         MobclickAgent.openActivityDurationTrack(false);
@@ -125,12 +132,7 @@ public class StartAppActivity extends BaseActivity {
                 ImgLoadUtil.displayImage(imgUrl, img_view, displayOptions, listener);
             }
         });
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                IntentUtil.gotoActivityAndFinish(context, MainActivity.class);
-            }
-        }, 3000);
+        mHandler.postDelayed(toMainRunable, 3000);
 
 
     }
@@ -145,5 +147,9 @@ public class StartAppActivity extends BaseActivity {
 
     }
 
-
+    @Override
+    protected void onDestroy() {
+        mHandler.removeCallbacks(toMainRunable);
+        super.onDestroy();
+    }
 }
