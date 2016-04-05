@@ -147,6 +147,15 @@
              >
         </activity>
 
+        <!-- 选择上传头像 -->
+        <activity
+            android:name=".activity.PickHeadImageActivity"
+            android:screenOrientation="portrait"
+            android:exported="false"
+            >
+        </activity>
+
+
 
 
 

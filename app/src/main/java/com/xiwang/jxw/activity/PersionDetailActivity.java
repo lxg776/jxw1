@@ -1,6 +1,8 @@
 package com.xiwang.jxw.activity;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
@@ -43,6 +45,12 @@ public class PersionDetailActivity extends BaseActivity implements  View.OnClick
     RelativeLayout email_rl;
     /**个性签名*/
     LinearLayout sign_rl;
+    /**上传图片*/
+    LinearLayout uploadhead_ll;
+
+
+
+
 
 
 
@@ -81,6 +89,7 @@ public class PersionDetailActivity extends BaseActivity implements  View.OnClick
         sex_rl= (RelativeLayout) findViewById(R.id.sex_rl);
         email_rl= (RelativeLayout) findViewById(R.id.email_rl);
         sign_rl= (LinearLayout) findViewById(R.id.sign_rl);
+        uploadhead_ll= (LinearLayout) findViewById(R.id.uploadhead_ll);
     }
 
     @Override
@@ -98,6 +107,8 @@ public class PersionDetailActivity extends BaseActivity implements  View.OnClick
         sex_rl.setOnClickListener(this);
         sign_rl.setOnClickListener(this);
         email_rl.setOnClickListener(this);
+        uploadhead_ll.setOnClickListener(this);
+
     }
 
     /**
@@ -172,7 +183,20 @@ public class PersionDetailActivity extends BaseActivity implements  View.OnClick
                     signIntent.putExtra(IntentConfig.SEND_VALUE,sign_tv.getText().toString());
                     startActivity(signIntent);
                     break;
+                case R.id.uploadhead_ll:
+                     /*
+                        上传头像
+                         */
+                    Intent headIntent=new Intent(context,PickHeadImageActivity.class);
+                    startActivity(headIntent);
+                    break;
+
             }
     }
+
+
+
+
+
 }
 
