@@ -125,7 +125,9 @@ public class PersionDetailActivity extends BaseActivity implements  View.OnClick
     protected void widgetListener() {
         sex_rl.setOnClickListener(this);
         sign_rl.setOnClickListener(this);
+        uploadhead_ll.setOnClickListener(this);
         email_rl.setOnClickListener(this);
+        cellphone_rl.setOnClickListener(this);
     }
 
     /**
