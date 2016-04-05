@@ -18,7 +18,9 @@ import com.xiwang.jxw.bean.UserInfoBean;
 import com.xiwang.jxw.config.IntentConfig;
 import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.config.TApplication;
+import com.xiwang.jxw.event.LoginEvent;
 import com.xiwang.jxw.event.UserInfoEvent;
+import com.xiwang.jxw.intf.UserInfoListener;
 import com.xiwang.jxw.network.AppHttpClient;
 import com.xiwang.jxw.util.SpUtil;
 import com.xiwang.jxw.util.ToastUtil;
@@ -54,14 +56,14 @@ public class UserBiz {
      */
     public static void autoLogin(final Context context) {
         final UserBean userBean = getUserBean(context);
-        if (null != userBean && TextUtils.isEmpty(userBean.getPwd())) {
+        if (null != userBean && !TextUtils.isEmpty(userBean.getPwd())) {
             /**
              *用户名和密码不为空进行自动登录
              */
             login(userBean.getUsername(), userBean.getPwd(), new BaseBiz.RequestHandle() {
                 @Override
                 public void onSuccess(ResponseBean responseBean) {
-
+                            EventBus.getDefault().post(new LoginEvent(true));
                 }
 
                 @Override
@@ -222,34 +224,48 @@ public class UserBiz {
     /**
      * 获取我的信息
      */
-    public static void getMyInfo(final Context context, final UserBean userBean) {
+    public static void getMyInfo(final Context context,final UserInfoListener listener,boolean isRefresh) {
+        final  UserBean userBean=getUserBean(context);
         if (null != userBean && !TextUtils.isEmpty(userBean.getUid())) {
-            getUserInfo(userBean.getUid(), new BaseBiz.RequestHandle() {
-                @Override
-                public void onSuccess(ResponseBean responseBean) {
-                    userBean.setUserInfoBean((UserInfoBean) responseBean.getObject());
-                    setUserBean(context, userBean);
-                    /** 发送更新用户信息事件*/
-                    EventBus.getDefault().post(new UserInfoEvent());
-                }
+            if(userBean.getUserInfoBean()!=null){
+              if(listener!=null){
+                  listener.onCache(userBean);
+              }
+            }
 
-                @Override
-                public void onFail(ResponseBean responseBean) {
+            if(isRefresh||userBean.getUserInfoBean()==null){
+                getUserInfo(userBean.getUid(), new BaseBiz.RequestHandle() {
+                    @Override
+                    public void onSuccess(ResponseBean responseBean) {
+                        userBean.setUserInfoBean((UserInfoBean) responseBean.getObject());
+                        setUserBean(context, userBean);
+                        if(listener!=null){
+                            listener.onHttpGet(userBean);
+                        }
+                        /** 发送更新用户信息事件*/
+                        EventBus.getDefault().post(new UserInfoEvent("PersionDetailActivity"));
+                    }
 
-                }
+                    @Override
+                    public void onFail(ResponseBean responseBean) {
 
-                @Override
-                public ResponseBean getRequestCache() {
-                    return null;
-                }
+                    }
 
-                @Override
-                public void onRequestCache(ResponseBean result) {
+                    @Override
+                    public ResponseBean getRequestCache() {
+                        return null;
+                    }
 
-                }
-            });
+                    @Override
+                    public void onRequestCache(ResponseBean result) {
+
+                    }
+                });
+            }
         } else {
-            ToastUtil.showToast(context, "当前用户不存在!");
+            if(listener!=null){
+                listener.onFail();
+            }
         }
     }
 
@@ -486,13 +502,13 @@ public class UserBiz {
 
 
 
-        BaseBiz.getRequest(ServerConfig.CHECK_CODE_URL, params, new BaseBiz.RequestHandle() {
+        BaseBiz.postRequest(ServerConfig.CHECK_CODE_URL, params, new BaseBiz.RequestHandle() {
 
             @Override
             public void onSuccess(ResponseBean responseBean) {
 
 
-                    handle.onSuccess(responseBean);
+                handle.onSuccess(responseBean);
 
             }
 
@@ -532,7 +548,8 @@ public class UserBiz {
             params.put("email", phoneOrMail);
         }
         params.put("type", type);
-        BaseBiz.getRequest(ServerConfig.CHECK_CODE_URL, params, new BaseBiz.RequestHandle() {
+        params.put("a", "smscode");
+        BaseBiz.postRequest(ServerConfig.CHECK_CODE_URL, params, new BaseBiz.RequestHandle() {
 
             @Override
             public void onSuccess(ResponseBean responseBean) {

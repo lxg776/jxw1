@@ -20,6 +20,7 @@ import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.biz.HomeBiz;
 import com.xiwang.jxw.biz.UserBiz;
 import com.xiwang.jxw.config.IntentConfig;
+import com.xiwang.jxw.event.LoginEvent;
 import com.xiwang.jxw.event.MenuEvent;
 import com.xiwang.jxw.fragment.FindFragment;
 import com.xiwang.jxw.fragment.HomeFragment;
@@ -95,6 +96,11 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    protected boolean useEventBus() {
+        return true;
+    }
+
+    @Override
     protected void findViews() {
         /** 设置toolbar*/
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -154,6 +160,7 @@ public class MainActivity extends BaseActivity {
 
         /** 進行自動登錄*/
        UserBiz.autoLogin(context);
+
 
     }
 
@@ -458,4 +465,12 @@ public class MainActivity extends BaseActivity {
         }
          super.onActivityResult(requestCode, resultCode, data);
     }
+
+
+    public void onEvent(LoginEvent event) {
+        if(event.islogin){
+            UserBiz.getMyInfo(context,null,true);
+        }
+    }
+
 }

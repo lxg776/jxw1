@@ -18,11 +18,12 @@
     <!-- 登录按钮 -->
 
     <TextView
-        android:id="@+id/register_btn_next"
+        android:id="@+id/btn_next"
         style="@style/common_btn1"
         android:layout_marginTop="32dp"
-        android:enabled="false"
         android:background="@drawable/origan_btn"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:text="下一步" />
 
 </LinearLayout>

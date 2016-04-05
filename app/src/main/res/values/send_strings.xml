@@ -6,6 +6,6 @@
     <string name="send_news">send_news</string>
     <string name="send_column">send_column</string>
     <string name="send_tag">send_column</string>
-
+    <string name="send_data">send_data</string>
 
 </resources>
