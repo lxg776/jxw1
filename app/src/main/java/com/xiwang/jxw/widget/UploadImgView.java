@@ -138,78 +138,17 @@ public class UploadImgView extends RelativeLayout{
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new DividerGridItemDecoration(context));
 
-
-//        /**
-//         * 计算每个控件的w 和 h
-//         */
-//        int with=  DisplayUtil.getScreenWidth(context)-DisplayUtil.dip2px(context,16*2);
-//        child_with=(with-(numColumns-1)*horizontalSpacing)/numColumns;
-//        child_height=child_with;
 //
 //        //添加add按钮
         imageModelList.add(new ShowImg());
         recyclerView.setAdapter(adapter);
 
-//        View addBtn=View.inflate(context,R.layout.item_upload_image,null);
-//        addBtn.setBackgroundDrawable(getResources().getDrawable(R.mipmap.add_icon_gray));
-//        addBtn.findViewById(R.id.progress_view).setVisibility(GONE);
-////        addBtn.setBackgroundResource(R.drawable.upload_img_btn);
-////        ImageView img_iv= (ImageView) addBtn.findViewById(R.id.img_iv);
-////        Drawable drawable=context.getResources().getDrawable(R.mipmap.add_icon_gray);
-////        drawable.setBounds(0, 0, DisplayUtil.dip2px(context, 48), DisplayUtil.dip2px(context, 48));
-////        img_iv.setImageDrawable(drawable);
-//        addBtn.setId(beginId++);
-//        addBtn.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                /**
-//                 * 跳转选择多张图片activity
-//                 */
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable(context.getResources().getString(R.string.send_tag), tag);
-//                IntentUtil.gotoActivity(context, PickOrTakeImageActivity.class, bundle);
-//            }
-//        });
+
 
         RelativeLayout.LayoutParams params= new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         addView(contentView,params);
     }
 
-    /**
-     * 计算布局位置
-     */
-//    private void calculLayout(){
-//        if(getChildCount()>0){
-//            /**
-//             * 遍历子控件定位其位置
-//             */
-//            for(int i=0;i<getChildCount();i++){
-//                View view=getChildAt(i);
-//                RelativeLayout.LayoutParams params= (LayoutParams) view.getLayoutParams();
-//
-//                int left_view_id = 0;
-//                int above_view_id = 0;
-//                /** 左边view*/
-//                if(i%numColumns!=0){
-//                    if(i>0){
-//                        left_view_id=getChildAt(i-1).getId();
-//                    }
-//                }
-//                /** 上边view*/
-//                if(i>=numColumns){
-//                    above_view_id=getChildAt(i-numColumns).getId();
-//                }
-//                if(left_view_id!=0){
-//                    params.addRule(RelativeLayout.RIGHT_OF,left_view_id);
-//                    params.leftMargin=horizontalSpacing;
-//                }
-//                if(above_view_id!=0){
-//                    params.addRule(RelativeLayout.BELOW,above_view_id);
-//                    params.topMargin=verticalSpacing;
-//                }
-//            }
-//        }
-//    }
 
 
     /**
@@ -225,33 +164,6 @@ public class UploadImgView extends RelativeLayout{
         imageModelList.add(0, showImg);
         adapter.notifyItemRangeChanged(0,imageModelList.size());
 
-//        view.setId(vId);
-//        ImageView img_iv= (ImageView) view.findViewById(R.id.img_iv);
-//
-//        /**
-//         * 点击事件
-//         */
-//        img_iv.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(context, DeleteImageActivity.class);
-//                intent.putParcelableArrayListExtra(IntentConfig.SEND_IMG_LIST, imageModelList);
-//                int img_postion = 0;
-//                int size = getChildCount();
-//                for (int i = 0; i < size; i++) {
-//                    if (getChildAt(i).getId() == vId) {
-//                        img_postion = i;
-//                    }
-//                }
-//                intent.putExtra(IntentConfig.SEND_IMG_POSTION, img_postion);
-//                intent.putExtra(IntentConfig.SEND_TAG, tag);
-//                context.startActivity(intent);
-//            }
-//        });
-//
-//
-//        displayFromSDCard(context, img_iv, path);
-//        addView(view, 0, getRelationLayout());
         uploadImage(showImg);
     }
 

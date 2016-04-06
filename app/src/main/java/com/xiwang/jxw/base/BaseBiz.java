@@ -10,12 +10,9 @@ import com.xiwang.jxw.R;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.config.TApplication;
-import com.xiwang.jxw.executor.RequestExecutor;
 import com.xiwang.jxw.network.AppHttpClient;
 import com.xiwang.jxw.util.Log;
 
-
-import java.io.DataOutputStream;
 
 /**
  * 基本的网络事务
@@ -89,10 +86,6 @@ public class BaseBiz {
         }else{
             AppHttpClient.get(url, params, handler);
         }
-
-
-
-
     }
 
 

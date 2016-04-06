@@ -1,27 +1,18 @@
 package com.xiwang.jxw.network;
 
-import android.app.Activity;
+
 import android.content.Context;
-import android.text.TextUtils;
-
-
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
-import com.xiwang.jxw.R;
+
 import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.util.Log;
-import com.xiwang.jxw.util.SpUtil;
 
-import org.apache.http.client.CookieStore;
+
 import org.apache.http.client.params.ClientPNames;
-import org.apache.http.client.protocol.ClientContext;
-import org.apache.http.cookie.Cookie;
-import org.apache.http.protocol.HTTP;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 

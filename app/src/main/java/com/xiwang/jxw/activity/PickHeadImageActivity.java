@@ -38,6 +38,7 @@ import com.xiwang.jxw.R;
 import com.xiwang.jxw.bean.ImageDirectoryModel;
 import com.xiwang.jxw.bean.SingleImageModel;
 import com.xiwang.jxw.config.TApplication;
+import com.xiwang.jxw.event.PickHeadImageEvent;
 import com.xiwang.jxw.event.PickImageEvent;
 import com.xiwang.jxw.util.AlbumBitmapCacheHelper;
 import com.xiwang.jxw.util.CommonUtil;
@@ -132,6 +133,8 @@ public class PickHeadImageActivity extends Activity implements View.OnClickListe
     /**头像保存路径*/
     private String cropPath;
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -153,6 +156,7 @@ public class PickHeadImageActivity extends Activity implements View.OnClickListe
 
         tv_choose_image_directory = (TextView) findViewById(R.id.tv_choose_image_directory);
         tv_preview = (TextView) findViewById(R.id.tv_preview);
+        tv_preview.setVisibility(View.INVISIBLE);
         v_line = findViewById(R.id.v_line);
         rl_bottom = (RelativeLayout) findViewById(R.id.rl_bottom);
         rl_bottom.setOnClickListener(this);
@@ -244,6 +248,7 @@ public class PickHeadImageActivity extends Activity implements View.OnClickListe
         ((TextView)findViewById(R.id.tv_title)).setText("选择图片");
 
         btn_choose_finish = (Button) findViewById(R.id.btn_choose_finish);
+        btn_choose_finish.setVisibility(View.INVISIBLE);
         btn_choose_finish.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -1031,8 +1036,9 @@ public class PickHeadImageActivity extends Activity implements View.OnClickListe
                     intent.setData(uri);
                     sendBroadcast(intent);
 
-                    //重新拉取最新数据库文件
-                    getAllImages();
+                    //裁切文件
+                    //getAllImages();
+                    startPhotoZoom(tempPath);
                 }
                 break;
             default:
@@ -1047,7 +1053,14 @@ public class PickHeadImageActivity extends Activity implements View.OnClickListe
                 case RESULT_REQUEST_CODE:
                     if (data != null)
                     {
-                        getImageToView(data);
+                        /**
+                         * 发送EventBug 上传图片
+                         */
+                        PickHeadImageEvent pickHeadImageEvent=new PickHeadImageEvent();
+                        pickHeadImageEvent.tag=fromTag;
+                        pickHeadImageEvent.path=cropPath;
+                        EventBus.getDefault().post(pickHeadImageEvent);
+                        finish();
                     }
                     break;
             }
@@ -1194,7 +1207,7 @@ public class PickHeadImageActivity extends Activity implements View.OnClickListe
         intent.putExtra("outputX", 256);
         intent.putExtra("outputY", 256);
         intent.putExtra("return-data", true);
-        cropPath="/" + getExternalCacheDir().getPath() + "/" + "headPic.jpg";
+        cropPath= getExternalCacheDir().getPath() + "/" + "headPic.jpg";
         //uritempFile为Uri类变量，实例化uritempFile
         Uri uritempFile = Uri.parse("file://" + cropPath);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uritempFile);
@@ -1204,20 +1217,20 @@ public class PickHeadImageActivity extends Activity implements View.OnClickListe
 
 
 
-
-    /**
-     * 保存裁剪之后的图片数据
-     */
-    private void getImageToView(Intent data)
-    {
-        Bundle extras = data.getExtras();
-        if (extras != null)
-        {
-
-
-
-        }
-    }
+//
+//    /**
+//     * 保存裁剪之后的图片数据
+//     */
+//    private void getImageToView(Intent data)
+//    {
+//        Bundle extras = data.getExtras();
+//        if (extras != null)
+//        {
+//
+//
+//
+//        }
+//    }
 
 
 

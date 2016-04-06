@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.activity.LoginActivity;
@@ -22,10 +23,16 @@ import com.xiwang.jxw.event.LoginEvent;
 import com.xiwang.jxw.event.UserInfoEvent;
 import com.xiwang.jxw.intf.UserInfoListener;
 import com.xiwang.jxw.network.AppHttpClient;
+import com.xiwang.jxw.util.Log;
 import com.xiwang.jxw.util.SpUtil;
 import com.xiwang.jxw.util.ToastUtil;
 
+import org.apache.http.Header;
 import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 
 import de.greenrobot.event.EventBus;
 
@@ -572,6 +579,70 @@ public class UserBiz {
             }
         });
 
+    }
+
+
+    /**
+     * 上传图片
+     * @param path
+     * @param handle
+     * @throws FileNotFoundException
+     */
+    public static void uploadHeadImg(String path,final SystemBiz.UploadImgListener handle) throws FileNotFoundException {
+        RequestParams params=new RequestParams();
+        params.put("a","userinfo");
+        params.put("ac","upface");
+        File file =new File(path);
+        if(!file.exists()){
+            return;
+        }
+        params.put("file",file);
+        AppHttpClient.post(ServerConfig.GETAPP_URL, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String responseStr = new String(responseBody);
+
+                ResponseBean responseBean = new ResponseBean();
+                Log.d("data:" + responseStr);
+                try {
+                    JSONObject jsonObject = new JSONObject(responseStr);
+                    responseBean.setInfo(jsonObject.optString("msg"));
+                    responseBean.setStatus(jsonObject.optString("code"));
+                    JSONObject data=jsonObject.optJSONObject("data");
+                    if(data!=null){
+                        responseBean.setObject(data.optString("face"));
+                    }
+                } catch (JSONException e) {
+                    responseBean.setStatus(ServerConfig.JSON_DATA_ERROR);
+                    responseBean.setInfo(TApplication.context.getResources().getString(R.string.exception_local_json_message));
+                    handle.onFail(responseBean);
+                }
+                if(BaseBiz.isSuccess(responseBean.getStatus())){
+                    handle.onSuccess(responseBean);
+                }else
+                {
+                    handle.onFail(responseBean);
+                }
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                ResponseBean responseBean = new ResponseBean();
+                responseBean.setStatus(statusCode + "");
+                if(null!=responseBody){
+                    responseBean.setInfo(new String(responseBody));
+                }
+                handle.onFail(responseBean);
+            }
+            @Override
+            public void onProgress(long bytesWritten, long totalSize) {
+                super.onProgress(bytesWritten, totalSize);
+                int progress= (int) (bytesWritten*100/totalSize);
+                if(progress==100){
+                    handle.onFinish();
+                }
+                handle.onProgress(progress);
+            }
+        });
     }
 
 

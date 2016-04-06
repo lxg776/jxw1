@@ -1,8 +1,10 @@
 package com.xiwang.jxw.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
@@ -15,17 +17,29 @@ import android.widget.TextView;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.adapter.TextAdapter;
 import com.xiwang.jxw.base.BaseActivity;
+import com.xiwang.jxw.bean.BaseBean;
+import com.xiwang.jxw.bean.ResponseBean;
+import com.xiwang.jxw.bean.ShowImg;
+import com.xiwang.jxw.bean.UploadImgBean;
 import com.xiwang.jxw.bean.UserBean;
+import com.xiwang.jxw.biz.SystemBiz;
 import com.xiwang.jxw.biz.UserBiz;
 import com.xiwang.jxw.config.IntentConfig;
 import com.xiwang.jxw.event.FinishEvent;
+import com.xiwang.jxw.event.PickHeadImageEvent;
 import com.xiwang.jxw.event.UserInfoEvent;
 import com.xiwang.jxw.util.CommonUtil;
 import com.xiwang.jxw.util.DialogUtil;
 import com.xiwang.jxw.util.ImgLoadUtil;
 import com.xiwang.jxw.util.IntentUtil;
+import com.xiwang.jxw.util.ToastUtil;
+import com.xiwang.jxw.widget.PercentView;
 
+import org.json.JSONException;
 import org.w3c.dom.Text;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 
 /**
  * 个人信息activity
@@ -55,6 +69,8 @@ public class PersionDetailActivity extends BaseActivity implements  View.OnClick
     LinearLayout uploadhead_ll;
     /**绑定手机号*/
     RelativeLayout cellphone_rl;
+    /**绑定手机号*/
+    PercentView user_headimg_pv;
 
     UserBean userBean;
 
@@ -105,6 +121,8 @@ public class PersionDetailActivity extends BaseActivity implements  View.OnClick
         sign_rl= (LinearLayout) findViewById(R.id.sign_rl);
         uploadhead_ll= (LinearLayout) findViewById(R.id.uploadhead_ll);
         cellphone_rl= (RelativeLayout) findViewById(R.id.cellphone_rl);
+        user_headimg_pv= (PercentView) findViewById(R.id.user_headimg_pv);
+
 
 
     }
@@ -225,6 +243,7 @@ public class PersionDetailActivity extends BaseActivity implements  View.OnClick
                         上传头像
                          */
                     Intent headIntent=new Intent(context,PickHeadImageActivity.class);
+                    headIntent.putExtra(getString(R.string.send_tag),activityTag);
                     startActivity(headIntent);
                     break;
 
@@ -234,6 +253,69 @@ public class PersionDetailActivity extends BaseActivity implements  View.OnClick
     public void onEvent(UserInfoEvent event){
         if (event.tag.equals(activityTag)){
            showUserInfo();
+        }
+    }
+
+
+    public void onEvent(PickHeadImageEvent event){
+        if (event.tag.equals(activityTag)){
+            uploadHeadImage(event.path);
+        }
+    }
+
+    private Bitmap getBitmapFromUri(Uri uri)
+    {
+        try
+        {
+            // 读取uri所在的图片
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+            return bitmap;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    private void uploadHeadImage(String path){
+
+        Uri fileUri=Uri.fromFile(new File(path));
+        Bitmap bitmap=getBitmapFromUri(fileUri);
+        if(bitmap!=null){
+            user_headimg_iv.setImageBitmap(bitmap);
+        }
+        try {
+            UserBiz.uploadHeadImg(path, new SystemBiz.UploadImgListener() {
+                @Override
+                public void onSuccess(ResponseBean responseBean) {
+                    user_headimg_pv.setVisibility(View.INVISIBLE);
+                    String imgUrl= (String) responseBean.getObject();
+                    /**更新用户数据*/
+                    UserBiz.getMyInfo(PersionDetailActivity.this,null,true);
+                }
+
+                @Override
+                public void onFail(ResponseBean responseBean) {
+                    user_headimg_pv.setVisibility(View.INVISIBLE);
+                }
+
+                @Override
+                public void onProgress(final int progress) {
+                    if(user_headimg_pv.getVisibility()!=View.VISIBLE){
+                        user_headimg_pv.setVisibility(View.VISIBLE);
+                    }
+                    user_headimg_pv.setPercent(progress);
+                }
+
+                @Override
+                public void onFinish() {
+                    user_headimg_pv.setVisibility(View.INVISIBLE);
+                }
+            });
+        } catch (FileNotFoundException e) {
+            user_headimg_pv.setVisibility(View.INVISIBLE);
         }
     }
 

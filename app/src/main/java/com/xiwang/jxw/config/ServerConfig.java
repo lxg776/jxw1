@@ -98,7 +98,8 @@ public class ServerConfig {
 	public final static String UPLOAD_IMG=SERVER_API_URL+"hack/uploadappimg.php";
 	/** 发帖接口 */
 	public final static String TOPIC_URL=SERVER_API_URL+"getapp.php";
-
+	/** getApp */
+	public final static String GETAPP_URL=SERVER_API_URL+"getapp.php";
 
 
 
