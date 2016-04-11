@@ -9,23 +9,27 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.base.BaseSubmitActivity;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.bean.UserBean;
 import com.xiwang.jxw.biz.UserBiz;
-import com.xiwang.jxw.config.IntentConfig;
 import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.event.LoginEvent;
 import com.xiwang.jxw.event.RegEvent;
-import com.xiwang.jxw.network.AppHttpClient;
 import com.xiwang.jxw.util.CheckUtil;
 import com.xiwang.jxw.util.IntentUtil;
 import com.xiwang.jxw.util.ProcessDialogUtil;
 import com.xiwang.jxw.util.SpUtil;
 import com.xiwang.jxw.util.ToastUtil;
 import com.xiwang.jxw.widget.DeleteEditText;
+
+import java.util.Map;
+
 import de.greenrobot.event.EventBus;
 
 /**
@@ -43,6 +47,8 @@ public class LoginActivity extends BaseSubmitActivity implements View.OnClickLis
     TextView login_btn;
     /** 注册按钮*/
     TextView register_btn;
+    /** 自动登录*/
+    TextView tx_login_btn;
 
     @Override
     protected String getPageName() {
@@ -76,6 +82,7 @@ public class LoginActivity extends BaseSubmitActivity implements View.OnClickLis
         pwd_edt= (DeleteEditText) findViewById(R.id.pwd_edt);
         login_btn= (TextView) findViewById(R.id.login_btn);
         register_btn= (TextView) findViewById(R.id.register_btn);
+        tx_login_btn= (TextView) findViewById(R.id.tx_login_btn);
     }
 
     @Override
@@ -95,6 +102,7 @@ public class LoginActivity extends BaseSubmitActivity implements View.OnClickLis
     protected void widgetListener() {
         login_btn.setOnClickListener(this);
         register_btn.setOnClickListener(this);
+        tx_login_btn.setOnClickListener(this);
     }
 
     /**
@@ -117,47 +125,55 @@ public class LoginActivity extends BaseSubmitActivity implements View.OnClickLis
      * 用户登录
      */
     protected void submit(){
-            super.submit();
-            String userName=username_edt.getText().toString();
-            final String pwd=pwd_edt.getText().toString();
-            ProcessDialogUtil.showDialog(context,getResources().getString(R.string.loading),false);
-            UserBiz.login(userName, pwd, new BaseBiz.RequestHandle() {
-                @Override
-                public void onSuccess(ResponseBean responseBean) {
-                    TApplication.mUser= (UserBean) responseBean.getObject();
-                    TApplication.mUser.setPwd(pwd);
-                    UserBiz.setUserBean(context, TApplication.mUser);
-                    /** 发出登录成功通知*/
-                    EventBus.getDefault().post(new LoginEvent(true));
-                    ProcessDialogUtil.dismissDialog();
-                    Intent intent=new Intent();
-                    Bundle bundle=getIntent().getExtras();
-                    if (null!=bundle)
+        super.submit();
+        String userName=username_edt.getText().toString();
+        final String pwd=pwd_edt.getText().toString();
+        if(CheckUtil.isEmpty(context,"用户名",userName)){
+            return;
+        }
+        if(CheckUtil.isEmpty(context,"密码",pwd)){
+            return;
+        }
+
+
+        ProcessDialogUtil.showDialog(context, getResources().getString(R.string.loading), false);
+        UserBiz.login(userName, pwd, new BaseBiz.RequestHandle() {
+            @Override
+            public void onSuccess(ResponseBean responseBean) {
+                TApplication.mUser = (UserBean) responseBean.getObject();
+                TApplication.mUser.setPwd(pwd);
+                UserBiz.setUserBean(context, TApplication.mUser);
+                /** 发出登录成功通知*/
+                EventBus.getDefault().post(new LoginEvent(true));
+                ProcessDialogUtil.dismissDialog();
+                Intent intent = new Intent();
+                Bundle bundle = getIntent().getExtras();
+                if (null != bundle)
                     intent.putExtras(bundle);
-                    setResult(RESULT_OK, intent);
+                setResult(RESULT_OK, intent);
 
-                    /** 帐号登录，记录友盟*/
-                    MobclickAgent.onProfileSignIn(TApplication.mUser.getUid()+"_"+TApplication.mUser.getUsername());
-                    finish();
-                }
+                /** 帐号登录，记录友盟*/
+                MobclickAgent.onProfileSignIn(TApplication.mUser.getUid() + "_" + TApplication.mUser.getUsername());
+                finish();
+            }
 
-                @Override
-                public void onFail(ResponseBean responseBean) {
+            @Override
+            public void onFail(ResponseBean responseBean) {
 
-                    ProcessDialogUtil.dismissDialog();
-                    ToastUtil.showToast(context,responseBean.getInfo());
-                }
+                ProcessDialogUtil.dismissDialog();
+                ToastUtil.showToast(context, responseBean.getInfo());
+            }
 
-                @Override
-                public ResponseBean getRequestCache() {
-                    return null;
-                }
+            @Override
+            public ResponseBean getRequestCache() {
+                return null;
+            }
 
-                @Override
-                public void onRequestCache(ResponseBean result) {
+            @Override
+            public void onRequestCache(ResponseBean result) {
 
-                }
-            });
+            }
+        });
 
     }
 
@@ -169,13 +185,97 @@ public class LoginActivity extends BaseSubmitActivity implements View.OnClickLis
             {
                 submit();
             }
-                break;
+            break;
             /** 注册*/
             case R.id.register_btn:
                 IntentUtil.gotoActivity(context,RegisterActivity.class);
-
+//                mShareAPI.deleteOauth(LoginActivity.this, SHARE_MEDIA.QQ, new UMAuthListener() {
+//                    @Override
+//                    public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
+//                        ToastUtil.showToast(context, "取消成功!");
+//                    }
+//
+//                    @Override
+//                    public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancel(SHARE_MEDIA share_media, int i) {
+//
+//                    }
+//                });
+                break;
+            case R.id.tx_login_btn:
+                qq_login();
                 break;
         }
+    }
+
+
+    UMShareAPI mShareAPI;
+
+    /**
+     * qq登录
+     */
+    private void qq_login(){
+        SHARE_MEDIA platform = SHARE_MEDIA.QQ;
+        if(mShareAPI==null){
+            mShareAPI = UMShareAPI.get(this);
+        }
+
+
+        if(mShareAPI.isInstall(this,platform)){
+            if(mShareAPI.isAuthorize(this,platform)){
+                mShareAPI.getPlatformInfo(this, platform, new UMAuthListener() {
+
+                    @Override
+                    public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
+                        ToastUtil.showToast(context, "获取成功!");
+                    }
+
+                    @Override
+                    public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
+                        ToastUtil.showToast(context, "获取失败!");
+                    }
+
+                    @Override
+                    public void onCancel(SHARE_MEDIA share_media, int i) {
+                        ToastUtil.showToast(context, "获取取消!");
+                    }
+                });
+            }else{
+                mShareAPI.doOauthVerify(this, platform, new UMAuthListener() {
+
+                    @Override
+                    public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
+                        ToastUtil.showToast(context, "授权成功!");
+                    }
+
+                    @Override
+                    public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
+                        ToastUtil.showToast(context, "授权失败!");
+                    }
+
+                    @Override
+                    public void onCancel(SHARE_MEDIA share_media, int i) {
+                        ToastUtil.showToast(context, "授权取消!");
+                    }
+                });
+
+
+            }
+
+
+
+        }else{
+            ToastUtil.showToast(context,"未安装腾讯QQ");
+
+        }
+
+
+
+
     }
 
     @Override
@@ -187,5 +287,11 @@ public class LoginActivity extends BaseSubmitActivity implements View.OnClickLis
     public void onEvent(RegEvent event) {
         /**注册成功结束当前界面*/
         finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        mShareAPI.onActivityResult(requestCode, resultCode, data);
     }
 }

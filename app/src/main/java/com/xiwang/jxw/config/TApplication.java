@@ -12,6 +12,8 @@ import android.graphics.Typeface;
 import com.loopj.android.http.AsyncHttpClient;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.utils.StorageUtils;
+import com.umeng.socialize.Config;
+import com.umeng.socialize.PlatformConfig;
 import com.xiwang.jxw.bean.SmileListBean;
 import com.xiwang.jxw.bean.ThreadTypeBean;
 import com.xiwang.jxw.bean.UserBean;
@@ -68,7 +70,7 @@ public class TApplication extends Application  {
 	public static UserBean mUser;
 	public static  boolean isUmeng=true;
 
-	@Override
+    @Override
 	public void onCreate() {
 		context = getApplicationContext();
 		screenWidth = getResources().getDisplayMetrics().widthPixels;
@@ -82,6 +84,7 @@ public class TApplication extends Application  {
 		/** 初始化JPush推送 */
 		JPushInterface.setDebugMode(true);
 		JPushInterface.init(this);
+        initPlatform();
 
 	}
 	/**
@@ -95,6 +98,11 @@ public class TApplication extends Application  {
 		// 即保存的每个缓存文件的最大长宽
 		ImageLoaderConfiguration config = ImgLoadUtil.getImageConfig(this);
 		ImgLoadUtil.getInstance().init(config);
+	}
+
+	private void initPlatform(){
+		PlatformConfig.setQQZone("1105245649", "QBSIYLgWrlOnaLgR");
+        Config.isloadUrl = true;
 	}
 
 
