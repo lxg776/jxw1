@@ -12,6 +12,7 @@ import android.graphics.Typeface;
 import com.loopj.android.http.AsyncHttpClient;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.utils.StorageUtils;
+import com.umeng.socialize.PlatformConfig;
 import com.xiwang.jxw.bean.SmileListBean;
 import com.xiwang.jxw.bean.ThreadTypeBean;
 import com.xiwang.jxw.bean.UserBean;
@@ -82,7 +83,7 @@ public class TApplication extends Application  {
 		/** 初始化JPush推送 */
 		JPushInterface.setDebugMode(true);
 		JPushInterface.init(this);
-
+		setPlatformConfigInit();
 	}
 	/**
 	 * 初始化ImageLoader配置
@@ -97,5 +98,12 @@ public class TApplication extends Application  {
 		ImgLoadUtil.getInstance().init(config);
 	}
 
+	/**
+	 * 设置平台参数
+	 */
+	private  void setPlatformConfigInit(){
+
+		PlatformConfig.setQQZone("1105245649", "QBSIYLgWrlOnaLgR");
+	}
 
 }

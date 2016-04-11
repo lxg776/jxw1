@@ -87,7 +87,7 @@ public abstract class BaseFragment2 extends Fragment {
 	}
 
 	@Override
-	public void onAttach(Context context) {
+	public void onAttach(Activity context) {
 		super.onAttach(context);
 		this.context=context;
 	}

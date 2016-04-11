@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.base.BaseSubmitActivity;
@@ -26,6 +29,12 @@ import com.xiwang.jxw.util.ProcessDialogUtil;
 import com.xiwang.jxw.util.SpUtil;
 import com.xiwang.jxw.util.ToastUtil;
 import com.xiwang.jxw.widget.DeleteEditText;
+
+import org.apache.commons.logging.Log;
+import org.w3c.dom.Text;
+
+import java.util.Map;
+
 import de.greenrobot.event.EventBus;
 
 /**
@@ -43,6 +52,8 @@ public class LoginActivity extends BaseSubmitActivity implements View.OnClickLis
     TextView login_btn;
     /** 注册按钮*/
     TextView register_btn;
+    /** 腾讯登录*/
+    TextView tx_login_btn;
 
     @Override
     protected String getPageName() {
@@ -76,6 +87,7 @@ public class LoginActivity extends BaseSubmitActivity implements View.OnClickLis
         pwd_edt= (DeleteEditText) findViewById(R.id.pwd_edt);
         login_btn= (TextView) findViewById(R.id.login_btn);
         register_btn= (TextView) findViewById(R.id.register_btn);
+        tx_login_btn= (TextView) findViewById(R.id.tx_login_btn);
     }
 
     @Override
@@ -95,6 +107,7 @@ public class LoginActivity extends BaseSubmitActivity implements View.OnClickLis
     protected void widgetListener() {
         login_btn.setOnClickListener(this);
         register_btn.setOnClickListener(this);
+        tx_login_btn.setOnClickListener(this);
     }
 
     /**
@@ -175,6 +188,11 @@ public class LoginActivity extends BaseSubmitActivity implements View.OnClickLis
                 IntentUtil.gotoActivity(context,RegisterActivity.class);
 
                 break;
+            /** 腾讯登录*/
+            case R.id.tx_login_btn:
+                qq_login();
+                break;
+
         }
     }
 
@@ -187,5 +205,47 @@ public class LoginActivity extends BaseSubmitActivity implements View.OnClickLis
     public void onEvent(RegEvent event) {
         /**注册成功结束当前界面*/
         finish();
+    }
+
+    UMShareAPI mShareAPI;
+
+
+    /**
+     * qq授权登录
+     */
+    private void qq_login(){
+        if(null==mShareAPI){
+            mShareAPI  = UMShareAPI.get(this);
+        }
+        SHARE_MEDIA platform =  SHARE_MEDIA.QQ;
+
+
+        //if(mShareAPI.isInstall(LoginActivity.this,platform)){
+            /*
+                进行授权
+             */
+            mShareAPI.doOauthVerify(LoginActivity.this, platform, new UMAuthListener() {
+                @Override
+                public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
+                    ToastUtil.showToast(getApplicationContext(), "授权成功!");
+                }
+
+                @Override
+                public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
+                    ToastUtil.showToast(getApplicationContext(), "授权失败!");
+                }
+
+                @Override
+                public void onCancel(SHARE_MEDIA share_media, int i) {
+                    ToastUtil.showToast(getApplicationContext(), "取消授权!");
+                }
+            });
+//        }else{
+//            ToastUtil.showToast(getApplicationContext(), "未安装腾讯QQ软件!");
+//        }
+
+
+
+
     }
 }
