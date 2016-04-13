@@ -66,6 +66,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 		this.pageName = pageName;
 	}
 
+
+	protected  boolean isfront=false;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -97,6 +100,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 		beg=System.currentTimeMillis();
 		/**友盟统计*/
 		MobclickAgent.onResume(this);
+		isfront=true;
 	}
 	public void onPause() {
 		super.onPause();
@@ -104,6 +108,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 		CommonUtil.onActivityPage(context,getPageName(),distence);
 		/**友盟统计*/
 		MobclickAgent.onPause(this);
+		isfront=false;
 	}
 
 	/**

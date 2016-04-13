@@ -1,6 +1,7 @@
 package com.xiwang.jxw.activity;
 
 import android.app.FragmentManager;
+import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,18 +17,24 @@ import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseActivity;
 import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.bean.ColumnBean;
+import com.xiwang.jxw.bean.PushNewsBean;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.biz.HomeBiz;
 import com.xiwang.jxw.biz.UserBiz;
 import com.xiwang.jxw.config.IntentConfig;
 import com.xiwang.jxw.event.LoginEvent;
 import com.xiwang.jxw.event.MenuEvent;
+import com.xiwang.jxw.event.PushMessageEvent;
 import com.xiwang.jxw.fragment.FindFragment;
 import com.xiwang.jxw.fragment.HomeFragment;
 import com.xiwang.jxw.fragment.MineFragment;
 import com.xiwang.jxw.fragment.PublishFragment;
+import com.xiwang.jxw.intf.PushDialogListener;
 import com.xiwang.jxw.util.CommonUtil;
+import com.xiwang.jxw.util.DialogUtil;
+import com.xiwang.jxw.util.DisplayUtil;
 import com.xiwang.jxw.util.IntentUtil;
+import com.xiwang.jxw.util.NotifyHelper;
 import com.xiwang.jxw.util.SpUtil;
 import com.xiwang.jxw.widget.MyRadioView;
 
@@ -470,6 +477,34 @@ public class MainActivity extends BaseActivity {
     public void onEvent(LoginEvent event) {
         if(event.islogin){
             UserBiz.getMyInfo(context,null,true);
+        }
+    }
+
+    public void onEvent(PushMessageEvent event) {
+        if(isfront){
+            DialogUtil.showPushNewsDialog(MainActivity.this, event.newsBean, new PushDialogListener() {
+                @Override
+                public void viewPage() {
+
+                }
+
+                @Override
+                public void cancel() {
+
+                }
+            });
+        }else{
+            NotifyHelper.with(this)
+                    .autoCancel(true)
+                    .when(System.currentTimeMillis())
+                    .defaults(Notification.DEFAULT_LIGHTS)
+                    .title(event.newsBean.getSubject())
+                    .message(event.newsBean.getDesc())
+                    .ticker("New Message")
+
+                    .smallIcon(R.mipmap.ic_launcher)
+                    .largeIcon(R.mipmap.ic_launcher)
+                    .show();
         }
     }
 

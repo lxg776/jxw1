@@ -15,9 +15,12 @@ import android.util.Log;
 
 import com.xiwang.jxw.activity.MainActivity;
 import com.xiwang.jxw.bean.MessageBean;
+import com.xiwang.jxw.bean.PushNewsBean;
 import com.xiwang.jxw.config.IntentConfig;
-import cn.jpush.android.api.JPushInterface;
+import com.xiwang.jxw.event.PushMessageEvent;
 
+import cn.jpush.android.api.JPushInterface;
+import de.greenrobot.event.EventBus;
 
 
 /**
@@ -56,25 +59,33 @@ public class JPushReceiver extends BroadcastReceiver {
 		} else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
 			Log.d(TAG, "[MyReceiver] 接收到推送下来的自定义消息: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
 			String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
-			// String title = bundle.getString(JPushInterface.EXTRA_TITLE);
+//			// String title = bundle.getString(JPushInterface.EXTRA_TITLE);
+//
+//				/** 反馈App收到消息 */
+//				JSONObject object2;
+//				try {
+//					object2 = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
+//
+//				final long messageId = object2.getLong("messageId");
+//				boolean isUnShowNotice = object2.getBoolean("isUnShowNotice");
+//
+//				if (isUnShowNotice) {
+//					notification(bundle, context, true);
+//				} else {
+//
+//				}
+//				} catch (JSONException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+			PushNewsBean pushNewsBean=new PushNewsBean();
+			pushNewsBean.setSubject("测试推送消息");
+			pushNewsBean.setDesc("推送消息了哈！！");
+			pushNewsBean.setTid("10000");
+			EventBus.getDefault().post(new PushMessageEvent(pushNewsBean));
 
-				/** 反馈App收到消息 */
-				JSONObject object2;
-				try {
-					object2 = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
-				
-				final long messageId = object2.getLong("messageId");
-				boolean isUnShowNotice = object2.getBoolean("isUnShowNotice");
-			
-				if (isUnShowNotice) {
-					notification(bundle, context, true);
-				} else {
 
-				}
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+
 
 		} else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
 			Log.d(TAG, "[MyReceiver] 接收到推送下来的通知");
