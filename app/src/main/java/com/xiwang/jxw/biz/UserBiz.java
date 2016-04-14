@@ -70,7 +70,7 @@ public class UserBiz {
             login(userBean.getUsername(), userBean.getPwd(), new BaseBiz.RequestHandle() {
                 @Override
                 public void onSuccess(ResponseBean responseBean) {
-                            EventBus.getDefault().post(new LoginEvent(true));
+                    EventBus.getDefault().post(new LoginEvent(true));
                 }
 
                 @Override
@@ -91,6 +91,46 @@ public class UserBiz {
             });
 
         }
+    }
+
+    /**
+     * 第三方登录
+     * @param context
+     * @param openid
+     * @param platform
+     * @param username
+     * @param sex
+     * @param mHandle
+     */
+    public static void otherLogin(final Context context ,String openid,String platform,String username,String sex, BaseBiz.RequestHandle mHandle){
+        RequestParams params = new RequestParams();
+        params.put("a", "reply");
+        params.put("openid", openid);
+        params.put("platform", platform);
+        params.put("username", username);
+        params.put("sex", sex);
+        BaseBiz.postRequest(ServerConfig.GETAPP_URL, params, new BaseBiz.RequestHandle() {
+            @Override
+            public void onSuccess(ResponseBean responseBean) {
+                EventBus.getDefault().post(new LoginEvent(true));
+            }
+
+            @Override
+            public void onFail(ResponseBean responseBean) {
+
+            }
+
+            @Override
+            public ResponseBean getRequestCache() {
+                return null;
+            }
+
+            @Override
+            public void onRequestCache(ResponseBean result) {
+
+            }
+        });
+
     }
 
     /**
