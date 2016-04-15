@@ -98,6 +98,10 @@ public class TApplication extends Application  {
 		// 即保存的每个缓存文件的最大长宽
 		ImageLoaderConfiguration config = ImgLoadUtil.getImageConfig(this);
 		ImgLoadUtil.getInstance().init(config);
+
+		ImgLoadUtil.getInstance().clearMemoryCache();
+
+
 	}
 
 	private void initPlatform(){

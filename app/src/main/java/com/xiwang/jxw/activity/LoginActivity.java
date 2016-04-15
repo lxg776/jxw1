@@ -28,6 +28,7 @@ import com.xiwang.jxw.util.SpUtil;
 import com.xiwang.jxw.util.ToastUtil;
 import com.xiwang.jxw.widget.DeleteEditText;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import de.greenrobot.event.EventBus;
@@ -219,37 +220,58 @@ public class LoginActivity extends BaseSubmitActivity implements View.OnClickLis
      * qq登录
      */
     private void qq_login(){
-        SHARE_MEDIA platform = SHARE_MEDIA.QQ;
+      final  SHARE_MEDIA platform = SHARE_MEDIA.QQ;
         if(mShareAPI==null){
             mShareAPI = UMShareAPI.get(this);
         }
 
 
         if(mShareAPI.isInstall(this,platform)){
-            if(mShareAPI.isAuthorize(this,platform)){
-                mShareAPI.getPlatformInfo(this, platform, new UMAuthListener() {
-
-                    @Override
-                    public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
-                        ToastUtil.showToast(context, "获取成功!");
-                    }
-
-                    @Override
-                    public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
-                        ToastUtil.showToast(context, "获取失败!");
-                    }
-
-                    @Override
-                    public void onCancel(SHARE_MEDIA share_media, int i) {
-                        ToastUtil.showToast(context, "获取取消!");
-                    }
-                });
-            }else{
+//            if(mShareAPI.isAuthorize(this,platform)){
+//                mShareAPI.getPlatformInfo(this, platform, new UMAuthListener() {
+//
+//                    @Override
+//                    public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
+//                        //ToastUtil.showToast(context, "获取成功!");
+//                        authLogin(map);
+//                    }
+//
+//                    @Override
+//                    public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
+//                        ToastUtil.showToast(context, "获取失败!");
+//                    }
+//
+//                    @Override
+//                    public void onCancel(SHARE_MEDIA share_media, int i) {
+//                        ToastUtil.showToast(context, "获取取消!");
+//                    }
+//                });
+//            }else{
                 mShareAPI.doOauthVerify(this, platform, new UMAuthListener() {
 
                     @Override
                     public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
-                        ToastUtil.showToast(context, "授权成功!");
+
+                        mShareAPI.getPlatformInfo(LoginActivity.this, platform, new UMAuthListener() {
+
+                            @Override
+                            public void onComplete(SHARE_MEDIA share_media, int i,final Map<String, String> map) {
+                              //  ToastUtil.showToast(context, "获取成功!");
+                                authLogin(map);
+                            }
+
+                            @Override
+                            public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
+                                ToastUtil.showToast(context, "获取失败!");
+                            }
+
+                            @Override
+                            public void onCancel(SHARE_MEDIA share_media, int i) {
+                                ToastUtil.showToast(context, "获取取消!");
+                            }
+                        });
+
+
                     }
 
                     @Override
@@ -262,21 +284,64 @@ public class LoginActivity extends BaseSubmitActivity implements View.OnClickLis
                         ToastUtil.showToast(context, "授权取消!");
                     }
                 });
-
-
-            }
-
-
-
+          //  }
         }else{
             ToastUtil.showToast(context,"未安装腾讯QQ");
 
         }
 
-
-
-
     }
+
+    /**
+     * 授权登录
+     * @param map
+     */
+    private void authLogin(Map<String, String> map){
+        if(map==null){
+                return;
+        }
+        /**性别*/
+        String gender=map.get("gender");
+        /**uid*/
+        String openid=map.get("openid");
+        /**显示名称*/
+        String screen_name=map.get("screen_name");
+        /**头像地址*/
+        String profile_image_url=map.get("profile_image_url");
+
+
+        ProcessDialogUtil.showDialog(context, getResources().getString(R.string.loading), false);
+        UserBiz.otherLogin(LoginActivity.this, openid, "qq", screen_name, gender, new BaseBiz.RequestHandle() {
+            @Override
+            public void onSuccess(ResponseBean responseBean) {
+                ProcessDialogUtil.dismissDialog();
+                ToastUtil.showToast(context, responseBean.getInfo());
+            }
+
+            @Override
+            public void onFail(ResponseBean responseBean) {
+                ProcessDialogUtil.dismissDialog();
+                ToastUtil.showToast(context,responseBean.getInfo());
+            }
+
+            @Override
+            public ResponseBean getRequestCache() {
+                return null;
+            }
+
+            @Override
+            public void onRequestCache(ResponseBean result) {
+
+            }
+        });
+    }
+
+
+
+
+
+
+
 
     @Override
     protected boolean useEventBus() {

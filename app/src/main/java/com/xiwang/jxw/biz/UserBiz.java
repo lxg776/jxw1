@@ -102,31 +102,34 @@ public class UserBiz {
      * @param sex
      * @param mHandle
      */
-    public static void otherLogin(final Context context ,String openid,String platform,String username,String sex, BaseBiz.RequestHandle mHandle){
+    public static void otherLogin(final Context context ,String openid,String platform,String username,String sex,final BaseBiz.RequestHandle mHandle){
         RequestParams params = new RequestParams();
-        params.put("a", "reply");
+        params.put("a", "login");
+        params.put("step", "qqlogin");
         params.put("openid", openid);
         params.put("platform", platform);
         params.put("username", username);
         params.put("sex", sex);
-        BaseBiz.postRequest(ServerConfig.GETAPP_URL, params, new BaseBiz.RequestHandle() {
+        BaseBiz.postRequest(context,ServerConfig.GETAPP_URL, params, new BaseBiz.RequestHandle() {
             @Override
             public void onSuccess(ResponseBean responseBean) {
                 EventBus.getDefault().post(new LoginEvent(true));
+                mHandle.onSuccess(responseBean);
             }
 
             @Override
             public void onFail(ResponseBean responseBean) {
-
+                mHandle.onFail(responseBean);
             }
 
             @Override
             public ResponseBean getRequestCache() {
-                return null;
+                return mHandle.getRequestCache();
             }
 
             @Override
             public void onRequestCache(ResponseBean result) {
+                mHandle.onRequestCache(result);
 
             }
         });
@@ -404,7 +407,8 @@ public class UserBiz {
 
                 String string = (String) responseBean.getObject();
                 try {
-                    responseBean.setObject(BaseBean.newInstance(UserInfoBean.class, string));
+                    JSONObject jsonObject=new JSONObject(string);
+                    responseBean.setObject(BaseBean.newInstance(UserInfoBean.class, jsonObject.optJSONObject("userinfo")));
                     handle.onSuccess(responseBean);
                 } catch (JSONException e) {
                     responseBean.setStatus(ServerConfig.JSON_DATA_ERROR);
@@ -532,7 +536,7 @@ public class UserBiz {
      * @param code
      * @param type
      */
-    public static void verifyCode(String phoneOrMail,String code,String type,final BaseBiz.RequestHandle handle){
+    public static void verifyCode(Context context,String phoneOrMail,String code,String type,final BaseBiz.RequestHandle handle){
         RequestParams params = new RequestParams();
         if(TextUtils.isEmpty(type)){
             type="mobile";
@@ -549,7 +553,7 @@ public class UserBiz {
 
 
 
-        BaseBiz.postRequest(ServerConfig.CHECK_CODE_URL, params, new BaseBiz.RequestHandle() {
+        BaseBiz.postRequest(context,ServerConfig.CHECK_CODE_URL, params, new BaseBiz.RequestHandle() {
 
             @Override
             public void onSuccess(ResponseBean responseBean) {
@@ -584,7 +588,7 @@ public class UserBiz {
      * @param phoneOrMail
      * @param type mobile 手机验证码 email 邮件验证码
      */
-    public static void getVerifyCode(String phoneOrMail,String type,final BaseBiz.RequestHandle handle){
+    public static void getVerifyCode(Context context,String phoneOrMail,String type,final BaseBiz.RequestHandle handle){
         RequestParams params = new RequestParams();
         if(TextUtils.isEmpty(type)){
             type="mobile";
@@ -596,7 +600,7 @@ public class UserBiz {
         }
         params.put("type", type);
         params.put("a", "smscode");
-        BaseBiz.postRequest(ServerConfig.CHECK_CODE_URL, params, new BaseBiz.RequestHandle() {
+        BaseBiz.postRequest(context,ServerConfig.CHECK_CODE_URL, params, new BaseBiz.RequestHandle() {
 
             @Override
             public void onSuccess(ResponseBean responseBean) {

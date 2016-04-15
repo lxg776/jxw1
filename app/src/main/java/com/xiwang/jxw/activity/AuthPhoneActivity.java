@@ -87,7 +87,7 @@ public class AuthPhoneActivity extends BaseSubmitActivity implements  View.OnCli
             public void onClick(View v) {
                 if(checkInput()){
 
-                    UserBiz.verifyCode(send_phone, edit_identifyingcode.getText().toString(), "mobile", new BaseBiz.RequestHandle() {
+                    UserBiz.verifyCode(AuthPhoneActivity.this,send_phone, edit_identifyingcode.getText().toString(), "mobile", new BaseBiz.RequestHandle() {
                         @Override
                         public void onSuccess(ResponseBean responseBean) {
 
@@ -130,7 +130,7 @@ public class AuthPhoneActivity extends BaseSubmitActivity implements  View.OnCli
                 /*
                 获取验证码
                  */
-                UserBiz.getVerifyCode(send_phone, "mobile", new BaseBiz.RequestHandle() {
+                UserBiz.getVerifyCode(AuthPhoneActivity.this,send_phone, "mobile", new BaseBiz.RequestHandle() {
                     @Override
                     public void onSuccess(ResponseBean responseBean) {
                         ToastUtil.showToast(context,responseBean.getInfo());

@@ -330,7 +330,7 @@ public class PublishNewsActivity extends BaseSubmitActivity{
         if(!checkInput()){
             return;
         }
-        NewsBiz.publishTopic(topicBean, new BaseBiz.RequestHandle() {
+        NewsBiz.publishTopic(PublishNewsActivity.this,topicBean, new BaseBiz.RequestHandle() {
             @Override
             public void onSuccess(ResponseBean responseBean) {
                 ToastUtil.showToast(context,responseBean.getInfo());

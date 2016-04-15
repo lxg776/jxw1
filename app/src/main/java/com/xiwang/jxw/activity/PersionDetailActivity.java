@@ -3,10 +3,11 @@ package com.xiwang.jxw.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Bundle;
+
 import android.provider.MediaStore;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -14,10 +15,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.adapter.TextAdapter;
 import com.xiwang.jxw.base.BaseActivity;
-import com.xiwang.jxw.bean.BaseBean;
+
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.bean.ShowImg;
 import com.xiwang.jxw.bean.UploadImgBean;
@@ -40,6 +42,7 @@ import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Iterator;
 
 /**
  * 个人信息activity
@@ -154,7 +157,9 @@ public class PersionDetailActivity extends BaseActivity implements  View.OnClick
     private void showUserInfo(){
         userBean= UserBiz.getUserBean(context);
         if(null!=userBean){
-            ImgLoadUtil.displayImage(CommonUtil.getAboutAbsoluteImgUrl(userBean.getFace()), user_headimg_iv);
+            if(null!=userBean.getUserInfoBean()&&!TextUtils.isEmpty(userBean.getUserInfoBean().getFace())){
+                ImgLoadUtil.displayImage(userBean.getUserInfoBean().getFace(), user_headimg_iv);
+            }
             name_tv.setText(userBean.getUsername());
             sex_tv.setText(userBean.getSex());
             if(null!=userBean.getUserInfoBean()){
@@ -292,6 +297,8 @@ public class PersionDetailActivity extends BaseActivity implements  View.OnClick
                 public void onSuccess(ResponseBean responseBean) {
                     user_headimg_pv.setVisibility(View.INVISIBLE);
                     String imgUrl= (String) responseBean.getObject();
+                    /**清除本地缓存*/
+                    removeHeadImg(imgUrl);
                     /**更新用户数据*/
                     UserBiz.getMyInfo(PersionDetailActivity.this,null,true);
                 }
@@ -317,6 +324,25 @@ public class PersionDetailActivity extends BaseActivity implements  View.OnClick
         } catch (FileNotFoundException e) {
             user_headimg_pv.setVisibility(View.INVISIBLE);
         }
+    }
+
+    /**
+     * 清除缓存数据
+     * @param url
+     */
+    private void removeHeadImg(String url){
+        Iterator<String> it = ImgLoadUtil.getInstance().getMemoryCache().keys().iterator();
+        while (it.hasNext()) {
+            String allUrl = it.next();
+          if(allUrl.contains(url)){
+              ImgLoadUtil.getInstance().getMemoryCache().remove(allUrl);
+              ImgLoadUtil.getInstance().getDiskCache().remove(allUrl);
+
+
+          }
+        }
+
+
     }
 
 

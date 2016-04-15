@@ -154,7 +154,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
     private void showUserInfo(){
         UserBean userBean= UserBiz.getUserBean(context);
         if(null!=userBean){
-            ImgLoadUtil.displayImage(CommonUtil.getAboutAbsoluteImgUrl(userBean.getFace()), user_headimg_iv);
+            ImgLoadUtil.displayImage(userBean.getUserInfoBean().getFace(), user_headimg_iv);
             user_tv.setText(userBean.getUsername());
             if(null!=userBean.getUserInfoBean()){
                 if(!TextUtils.isEmpty(userBean.getUserInfoBean().getSignature())){

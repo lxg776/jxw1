@@ -132,7 +132,7 @@ public class NewsBiz {
      * 发布主题
      * @param topicBean 主题
      */
-    public  static void publishTopic(TopicBean topicBean,final BaseBiz.RequestHandle handle){
+    public  static void publishTopic(Context context,TopicBean topicBean,final BaseBiz.RequestHandle handle){
         if(topicBean==null){
             return;
         }
@@ -147,7 +147,7 @@ public class NewsBiz {
         params.put("content",topicBean.getContent());
         params.put("aids",topicBean.getAids());
         params.put("a","post");
-        BaseBiz.postRequest(ServerConfig.TOPIC_URL, params, new BaseBiz.RequestHandle() {
+        BaseBiz.postRequest(context,ServerConfig.TOPIC_URL, params, new BaseBiz.RequestHandle() {
             @Override
             public void onSuccess(ResponseBean responseBean) {
 
