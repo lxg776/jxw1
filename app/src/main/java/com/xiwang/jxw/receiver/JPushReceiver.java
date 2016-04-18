@@ -14,10 +14,15 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.xiwang.jxw.activity.MainActivity;
+import com.xiwang.jxw.bean.ColumnBean;
 import com.xiwang.jxw.bean.MessageBean;
+import com.xiwang.jxw.bean.NewsBean;
 import com.xiwang.jxw.bean.PushNewsBean;
 import com.xiwang.jxw.config.IntentConfig;
+import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.event.PushMessageEvent;
+import com.xiwang.jxw.util.CommonUtil;
+import com.xiwang.jxw.util.SystemUtil;
 
 import cn.jpush.android.api.JPushInterface;
 import de.greenrobot.event.EventBus;
@@ -78,15 +83,28 @@ public class JPushReceiver extends BroadcastReceiver {
 //					// TODO Auto-generated catch block
 //					e.printStackTrace();
 //				}
-			PushNewsBean pushNewsBean=new PushNewsBean();
-			pushNewsBean.setSubject("测试推送消息");
-			pushNewsBean.setDesc("推送消息了哈！！");
-			pushNewsBean.setTid("10000");
-			EventBus.getDefault().post(new PushMessageEvent(pushNewsBean));
-
-
-
-
+			if(!SystemUtil.isAppInForeground(context)){
+				/*
+				程序运行的情况
+				 */
+				PushNewsBean pushNewsBean=new PushNewsBean();
+				pushNewsBean.setSubject("测试推送消息");
+				pushNewsBean.setDesc("靖西的贝侬们：警报！今晚，广西车主将面临严峻考");
+				pushNewsBean.setTid("5910");
+				EventBus.getDefault().post(new PushMessageEvent(pushNewsBean));
+			}else{
+				/*
+				程序未运行的情况
+				 */
+				PushNewsBean pushNewsBean=new PushNewsBean();
+				pushNewsBean.setSubject("测试推送消息");
+				pushNewsBean.setDesc("靖西的贝侬们：警报！今晚，广西车主将面临严峻考");
+				pushNewsBean.setTid("5910");
+//				EventBus.getDefault().post(new PushMessageEvent(pushNewsBean));
+				ColumnBean columnBean=new ColumnBean();
+				columnBean.setName("测试推送");
+				CommonUtil.notifiNews(context,columnBean,pushNewsBean,true);
+			}
 		} else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
 			Log.d(TAG, "[MyReceiver] 接收到推送下来的通知");
 			notification(bundle, context, false);

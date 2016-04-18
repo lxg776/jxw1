@@ -85,7 +85,7 @@ public class CommentListAdapter extends BaseAdapter{
         holder.author_tv.setText(bean.getUserinfo().getAuthor());
         holder.publish_tv.setText(bean.getPostdate());
         holder.content_tv.setRichText(bean.getContent());
-        ImgLoadUtil.getInstance().displayImage(CommonUtil.getAboutAbsoluteImgUrl(bean.getUserinfo().getFace()), holder.author_headimg_iv, options, loadingListener);
+        ImgLoadUtil.getInstance().displayImage(bean.getUserinfo().getFace(), holder.author_headimg_iv, options, loadingListener);
         return convertView;
     }
 

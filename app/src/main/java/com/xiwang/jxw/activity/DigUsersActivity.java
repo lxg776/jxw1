@@ -162,7 +162,7 @@ public class DigUsersActivity extends BaseActivity {
             ImageView author_headimg_iv= (ImageView) convertView.findViewById(R.id.author_headimg_iv);
             /**名称*/
             TextView author_tv= (TextView) convertView.findViewById(R.id.author_tv);
-            ImgLoadUtil.getInstance().displayImage(CommonUtil.getAboutAbsoluteImgUrl(digUserBean.getFace()),author_headimg_iv, options, loadingListener);
+            ImgLoadUtil.getInstance().displayImage(digUserBean.getFace(),author_headimg_iv, options, loadingListener);
             author_tv.setText(digUserBean.getUsername());
             return convertView;
         }

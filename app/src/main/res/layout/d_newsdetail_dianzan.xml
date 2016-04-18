@@ -55,8 +55,9 @@
             android:textColor="@color/gray_500"
             android:singleLine="true"
             android:layout_weight="1"
+            android:gravity="right|center_vertical"
             android:ellipsize="end"
-            android:text="lxg776、龙潭掏粪、龙潭掏粪、龙潭掏粪、龙潭掏粪、龙潭掏粪"
+            android:text="lxg776、龙潭掏粪"
             />
 
         <TextView

@@ -2,6 +2,7 @@ package com.xiwang.jxw.activity;
 
 import android.app.FragmentManager;
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,11 +18,13 @@ import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseActivity;
 import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.bean.ColumnBean;
+import com.xiwang.jxw.bean.NewsBean;
 import com.xiwang.jxw.bean.PushNewsBean;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.biz.HomeBiz;
 import com.xiwang.jxw.biz.UserBiz;
 import com.xiwang.jxw.config.IntentConfig;
+import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.event.LoginEvent;
 import com.xiwang.jxw.event.MenuEvent;
 import com.xiwang.jxw.event.PushMessageEvent;
@@ -493,18 +496,31 @@ public class MainActivity extends BaseActivity {
 
                 }
             });
-        }else{
-            NotifyHelper.with(this)
-                    .autoCancel(true)
-                    .when(System.currentTimeMillis())
-                    .defaults(Notification.DEFAULT_LIGHTS)
-                    .title(event.newsBean.getSubject())
-                    .message(event.newsBean.getDesc())
-                    .ticker("New Message")
+        }else {
 
-                    .smallIcon(R.mipmap.ic_launcher)
-                    .largeIcon(R.mipmap.ic_launcher)
-                    .show();
+            ColumnBean columnBean = new ColumnBean();
+            columnBean.setName("测试推送");
+            CommonUtil.notifiNews(context, columnBean, event.newsBean,false);
+//            Bundle bundle=new Bundle();
+//            NewsBean newsBean=new NewsBean();
+//            ColumnBean columnBean=new ColumnBean();
+//            bundle.putSerializable(getString(R.string.send_news),newsBean);
+//            bundle.putSerializable(getString(R.string.send_column), columnBean);
+//            newsBean.setTid(event.newsBean.getTid());
+//            columnBean.setName("测试推送");
+//
+//            NotifyHelper.with(this)
+//                    .autoCancel(true)
+//                    .when(System.currentTimeMillis())
+//                    .defaults(Notification.DEFAULT_LIGHTS)
+//                    .title(event.newsBean.getSubject())
+//                    .message(event.newsBean.getDesc())
+//                    .ticker("New Message")
+//
+//                    .smallIcon(R.mipmap.ic_launcher)
+//                    .largeIcon(R.mipmap.ic_launcher)
+//                    .click(NewsDetailActivity.class,bundle)
+//                    .show();
         }
     }
 

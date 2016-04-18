@@ -1,10 +1,12 @@
 package com.xiwang.jxw.util;
 
 import android.app.AlertDialog;
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.ContextThemeWrapper;
@@ -15,7 +17,11 @@ import android.widget.TextView;
 
 import com.umeng.analytics.MobclickAgent;
 import com.xiwang.jxw.R;
+import com.xiwang.jxw.activity.NewsDetailActivity;
 import com.xiwang.jxw.base.BaseBiz;
+import com.xiwang.jxw.bean.ColumnBean;
+import com.xiwang.jxw.bean.NewsBean;
+import com.xiwang.jxw.bean.PushNewsBean;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.bean.SmileListBean;
 import com.xiwang.jxw.bean.ThreadTypeBean;
@@ -202,19 +208,22 @@ public class CommonUtil {
                 NewsBiz.getSmileBean(new BaseBiz.RequestHandle() {
                     @Override
                     public void onSuccess(ResponseBean responseBean) {
-                        TApplication.smilesList= (List<SmileListBean>) responseBean.getObject();
-                        if(TApplication.smilesList!=null&&TApplication.smilesList.size()>0){
-                            SpUtil.setObject(context,context.getResources().getString(R.string.cache_smiles),TApplication.smilesList);
+                        TApplication.smilesList = (List<SmileListBean>) responseBean.getObject();
+                        if (TApplication.smilesList != null && TApplication.smilesList.size() > 0) {
+                            SpUtil.setObject(context, context.getResources().getString(R.string.cache_smiles), TApplication.smilesList);
                         }
                     }
+
                     @Override
                     public void onFail(ResponseBean responseBean) {
 
                     }
+
                     @Override
                     public ResponseBean getRequestCache() {
                         return null;
                     }
+
                     @Override
                     public void onRequestCache(ResponseBean result) {
 
@@ -397,4 +406,38 @@ public class CommonUtil {
         dlg.setCanceledOnTouchOutside(true);
         dlg.show();
     }
+
+    /**
+     * 消息栏推送帖子
+     * @param columnBean
+     * @param pushNewsBean
+     */
+    public static void notifiNews( Context context,ColumnBean columnBean, PushNewsBean pushNewsBean,boolean isStartMain){
+
+        if(null==pushNewsBean){
+            return;
+        }
+
+        Bundle bundle=new Bundle();
+        NewsBean newsBean=new NewsBean();
+
+        newsBean.setSubject(pushNewsBean.getSubject());
+        newsBean.setDesc(pushNewsBean.getDesc());
+        newsBean.setTid(pushNewsBean.getTid());
+        bundle.putSerializable(context.getString(R.string.send_fla), isStartMain);
+        bundle.putSerializable(context.getString(R.string.send_news),newsBean);
+        bundle.putSerializable(context.getString(R.string.send_column), columnBean);
+        NotifyHelper.with(context)
+                .autoCancel(true)
+                .when(System.currentTimeMillis())
+                .defaults(Notification.DEFAULT_LIGHTS)
+                .title(pushNewsBean.getSubject())
+                .message(pushNewsBean.getDesc())
+                .ticker("New Message")
+                .smallIcon(R.mipmap.ic_launcher)
+                .largeIcon(R.mipmap.ic_launcher)
+                .click(NewsDetailActivity.class,bundle)
+                .show();
+    }
+
 }

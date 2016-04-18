@@ -24,6 +24,7 @@ import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.bean.AuthorBean;
 import com.xiwang.jxw.bean.ColumnBean;
 import com.xiwang.jxw.bean.DigOrFightBean;
+import com.xiwang.jxw.bean.DigUserBean;
 import com.xiwang.jxw.bean.NewsBean;
 import com.xiwang.jxw.bean.NewsDetailBean;
 import com.xiwang.jxw.bean.ResponseBean;
@@ -35,6 +36,7 @@ import com.xiwang.jxw.config.IntentConfig;
 import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.util.CommonUtil;
 import com.xiwang.jxw.util.ImgLoadUtil;
+import com.xiwang.jxw.util.IntentUtil;
 import com.xiwang.jxw.util.SpUtil;
 import com.xiwang.jxw.util.CheckUtil;
 import com.xiwang.jxw.util.ToastUtil;
@@ -146,6 +148,8 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
     TextView huifu_btn;
     /**是否转到评论列表*/
     boolean isRelpy=true;
+    /**是否启动主界面*/
+    boolean isStartMainActivity=false;
 
     @Override
     protected String getPageName() {
@@ -287,6 +291,9 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
     protected void initGetData() {
         newsBean= (NewsBean) getIntent().getSerializableExtra(getString(R.string.send_news));
         columnBean=(ColumnBean)getIntent().getSerializableExtra(getString(R.string.send_column));
+        isStartMainActivity=getIntent().getBooleanExtra(getString(R.string.send_fla),false);
+
+
         listAdapter=new CommentListAdapter(this);
         listView.setAdapter(listAdapter);
         diges=NewsBiz.getDiges(context);
@@ -335,7 +342,39 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         }else{
             setDianzan(false);
         }
+        //设置点赞
+        dianzan_count_tv.setText(detailBean.getDig());
+        setDigesListText(detailBean.getDiglist());
     }
+
+    /**
+     * 设置点赞文本
+     */
+    private void setDigesListText(List<DigUserBean> digUserBeans){
+        if(null==digUserBeans||digUserBeans.size()==0){
+            dianzan_detail_ll.setVisibility(View.GONE);
+        }else{
+            dianzan_detail_ll.setVisibility(View.VISIBLE);
+            StringBuffer sb=new StringBuffer();
+            int j=0;
+            for(int i=digUserBeans.size()-1;i>=0;i--){
+                DigUserBean userBean=digUserBeans.get(i);
+                sb.append(userBean.getUsername());
+                if(i>0){
+                    sb.append("、");
+                }else{
+                    sb.append("");
+                }
+                j++;
+                if(j==2){
+                    break;
+                }
+            }
+            dianzan_users_tv.setText(sb.toString());
+        }
+    }
+
+
     /**正则抽去<img>标签的内容*/
     private static Pattern IMAGE_TAG_PATTERN = Pattern
             .compile("\\<img (.*?)\\ />");
@@ -350,7 +389,7 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         if(null!=authorBean){
             author_tv.setText(authorBean.getAuthor());
             publish_tv.setText(detailBean.getPostdate());
-            ImgLoadUtil.getInstance().displayImage(CommonUtil.getAboutAbsoluteImgUrl(authorBean.getFace()), author_headimg_iv, options, loadingListener);
+            ImgLoadUtil.getInstance().displayImage(authorBean.getFace(), author_headimg_iv, options, loadingListener);
         }
     }
 
@@ -761,6 +800,16 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        if(isStartMainActivity){
+            /**启动主界面*/
+            IntentUtil.gotoActivity(this,MainActivity.class);
+        }
 
     }
 }

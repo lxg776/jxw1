@@ -3,6 +3,7 @@ package com.xiwang.jxw.bean;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author liangxg
@@ -175,6 +176,9 @@ public class NewsDetailBean extends BaseBean {
     private String pages;
     private String shareurl;
 
+    /**点赞列表*/
+    private ArrayList<DigUserBean> diglist;
+
     public ArrayList<NewsDetailCommentBean> getCommentList() {
         return commentList;
     }
@@ -231,6 +235,15 @@ public class NewsDetailBean extends BaseBean {
         this.contact = contact;
     }
 
+
+    public ArrayList<DigUserBean> getDiglist() {
+        return diglist;
+    }
+
+    public void setDiglist(ArrayList<DigUserBean> diglist) {
+        this.diglist = diglist;
+    }
+
     @Override
     protected void init(JSONObject jSon) throws JSONException {
         setDig(jSon.optString("dig"));
@@ -249,8 +262,8 @@ public class NewsDetailBean extends BaseBean {
         setPage(jSon.optString("page"));
         setTotal(jSon.optString("total"));
         setUserinfo((AuthorBean) BaseBean.newInstance(AuthorBean.class, jSon.optString("userinfo")));
-        setContact((ContactBean) BaseBean.newInstance(ContactBean.class,jSon.optString("contact")));
-
+        setContact((ContactBean) BaseBean.newInstance(ContactBean.class, jSon.optString("contact")));
+        setDiglist((ArrayList<DigUserBean>) BaseBean.toModelList(jSon.optString("diglist"),DigUserBean.class));
 
 
         setCommentList((ArrayList<NewsDetailCommentBean>) BaseBean.toModelList(jSon.optString("list"),NewsDetailCommentBean.class));

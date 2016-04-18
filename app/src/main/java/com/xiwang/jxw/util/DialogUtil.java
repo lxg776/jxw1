@@ -190,7 +190,7 @@ public class DialogUtil {
                 // TODO Auto-generated method stub
                 dlg.dismiss();
 
-                if(null!=listener){
+                if (null != listener) {
                     listener.cancel();
                 }
             }
@@ -206,7 +206,7 @@ public class DialogUtil {
                 }
             }
         });
-        dlg.setCanceledOnTouchOutside(true);
+        dlg.setCanceledOnTouchOutside(false);
         dlg.show();
 
     }

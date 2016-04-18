@@ -24,6 +24,8 @@ public class NewsBean extends BaseBean{
     private String replies;
     /** 图片地址*/
     private String image;
+    /** 描述*/
+    private String desc;
 
 
 
@@ -88,6 +90,14 @@ public class NewsBean extends BaseBean{
         this.author = author;
     }
 
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
     public String getImage() {
         if("null".equals(image)){
             return "";
@@ -110,5 +120,6 @@ public class NewsBean extends BaseBean{
         setHits(jSon.optString("hits"));
         setReplies(jSon.optString("replies"));
         setImage(jSon.optString("image"));
+        setDesc(jSon.optString("desc"));
     }
 }
