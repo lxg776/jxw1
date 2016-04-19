@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
@@ -17,6 +19,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.shareboard.SnsPlatform;
+import com.umeng.socialize.utils.ShareBoardlistener;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.adapter.CommentListAdapter;
 import com.xiwang.jxw.base.BaseActivity;
@@ -448,7 +454,7 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
      */
     private void toDigList(String tid){
         Intent intent=new Intent(context,DigUsersActivity.class);
-        intent.putExtra(IntentConfig.SEND_TID,tid);
+        intent.putExtra(IntentConfig.SEND_TID, tid);
         startActivity(intent);
     }
 
@@ -538,7 +544,7 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
             public void run() {
                 emoji_view.setVisibility(View.VISIBLE);
                 emoji_view.onKeyBoard();
-                 showCommentView();
+                showCommentView();
             }
         }, 500);
     }
@@ -761,12 +767,55 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
 
     @Override
     public void onLoad() {
-        loadNetData(currentPage+1,false);
+        loadNetData(currentPage + 1, false);
     }
 
     @Override
     public void onRefresh() {
         loadNetData(1,true);
+    }
+
+
+    public void onSort(MenuItem item) {
+        // Request a call to onPrepareOptionsMenu so we can change the sort icon
+        invalidateOptionsMenu();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_news_detail, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_share) {
+            openCustemShare();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    private void openCustemShare(){
+        new ShareAction(this).setDisplayList(SHARE_MEDIA.QQ)
+                .addButton("umeng_sharebutton_custom","umeng_sharebutton_custom","info_icon_1","info_icon_1")
+                .setShareboardclickCallback(new ShareBoardlistener() {
+                    @Override
+                    public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
+
+                    }
+                }).open();
     }
 
 

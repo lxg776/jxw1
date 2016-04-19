@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.umeng.socialize.ShareAction;
+
 /**
  * 作者: lxg776 on 2015/8/28.
  */
@@ -23,5 +25,7 @@ public class ExitActivity extends Activity{
         if ((Intent.FLAG_ACTIVITY_CLEAR_TOP & intent.getFlags()) != 0) {
             finish();
         }
+
+        ShareAction ss;
     }
 }
