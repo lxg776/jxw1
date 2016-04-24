@@ -85,6 +85,8 @@ public class TApplication extends Application  {
 		JPushInterface.setDebugMode(true);
 		JPushInterface.init(this);
         initPlatform();
+		/** 开启分享回流 */
+		Config.isloadUrl = true;
 
 	}
 	/**

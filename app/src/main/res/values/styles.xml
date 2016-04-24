@@ -171,4 +171,9 @@ by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
 
 
 
+    <style name="popwin_anim_style">
+        <item name="android:windowEnterAnimation">@anim/abc_slide_in_bottom</item>
+        <item name="android:windowExitAnimation">@anim/abc_slide_out_bottom</item>
+    </style>
+
 </resources>

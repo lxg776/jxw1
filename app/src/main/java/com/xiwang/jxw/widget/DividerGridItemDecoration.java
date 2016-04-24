@@ -41,6 +41,9 @@ public class DividerGridItemDecoration extends RecyclerView.ItemDecoration
 
     }
 
+
+
+
     private int getSpanCount(RecyclerView parent)
     {
         // 列数
@@ -91,6 +94,7 @@ public class DividerGridItemDecoration extends RecyclerView.ItemDecoration
             final int right = left + mDivider.getIntrinsicWidth();
 
             mDivider.setBounds(left, top, right, bottom);
+
             mDivider.draw(c);
         }
     }

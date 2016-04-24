@@ -57,10 +57,7 @@ public class UploadImgView extends RelativeLayout{
     /** 标识*/
     String tag="uploadimgGridView";
     int beginId=1001;
-    /** 水平间距*/
-    int horizontalSpacing;
-    /** 垂直间距*/
-    int verticalSpacing;
+
     /** 子控件的宽带*/
     int child_with;
     /** 子控件的高度*/
@@ -127,10 +124,7 @@ public class UploadImgView extends RelativeLayout{
         }
 
         View contentView = View.inflate(context, R.layout.view_upload_img,null);
-
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.UploadImgView);
-        horizontalSpacing=a.getDimensionPixelSize(R.styleable.UploadImgView_horizontalSpacing, DisplayUtil.dip2px(context, 8));
-        verticalSpacing=a.getDimensionPixelSize(R.styleable.UploadImgView_verticalSpacing, DisplayUtil.dip2px(context, 8));
         numColumns=a.getInteger(R.styleable.UploadImgView_numColumns,5);
         a.recycle();
         recyclerView= (RecyclerView) contentView.findViewById(R.id.recyclerView);

@@ -3,6 +3,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,7 +21,10 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.shareboard.SnsPlatform;
 import com.umeng.socialize.utils.ShareBoardlistener;
 import com.xiwang.jxw.R;
@@ -34,6 +38,7 @@ import com.xiwang.jxw.bean.DigUserBean;
 import com.xiwang.jxw.bean.NewsBean;
 import com.xiwang.jxw.bean.NewsDetailBean;
 import com.xiwang.jxw.bean.ResponseBean;
+import com.xiwang.jxw.bean.ShareBean;
 import com.xiwang.jxw.bean.SmileBean;
 import com.xiwang.jxw.bean.UserBean;
 import com.xiwang.jxw.biz.NewsBiz;
@@ -53,6 +58,7 @@ import com.xiwang.jxw.widget.HorizontalRadioView;
 import com.xiwang.jxw.widget.LoadingLayout;
 import com.xiwang.jxw.widget.RefreshLayout;
 import com.xiwang.jxw.widget.RichEditText;
+import com.xiwang.jxw.widget.pop.SharePopWindow;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -157,6 +163,10 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
     /**是否启动主界面*/
     boolean isStartMainActivity=false;
 
+
+    /**分享popWindow*/
+    SharePopWindow sharePopWindow;
+
     @Override
     protected String getPageName() {
         if(null!=columnBean){
@@ -243,7 +253,52 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
 
 
         loadNetData(1, true);
+        sharePopWindow=new SharePopWindow(this);
 
+    }
+
+    /**
+     * 成功回调
+     */
+    UMShareListener listener=new UMShareListener() {
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+            ToastUtil.showToast(NewsDetailActivity.this,"分享成功!");
+
+
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            ToastUtil.showToast(NewsDetailActivity.this,"分享失败!");
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            ToastUtil.showToast(NewsDetailActivity.this,"分享取消!");
+        }
+    };
+
+    public void shareContent(NewsBean newsBean, String shareUrl, ShareBean shareBean){
+
+        UMImage image=null;
+        if(TextUtils.isEmpty(newsBean.getImage())){
+            image= new UMImage(this, newsBean.getImage());
+        }
+
+        ShareAction shareAction=new ShareAction(this);
+        shareAction.setPlatform(shareBean.getPlatform());
+
+
+        shareAction.setCallback(listener);
+        shareAction.withText(newsBean.getSubject());
+        shareAction.withTitle(newsBean.getSubject());
+        shareAction.withTargetUrl(shareUrl);
+        if(image!=null){
+            shareAction.withMedia(image);
+        };
+
+        shareAction.share();
 
     }
 
@@ -808,14 +863,11 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
 
 
     private void openCustemShare(){
-        new ShareAction(this).setDisplayList(SHARE_MEDIA.QQ)
-                .addButton("umeng_sharebutton_custom","umeng_sharebutton_custom","info_icon_1","info_icon_1")
-                .setShareboardclickCallback(new ShareBoardlistener() {
-                    @Override
-                    public void onclick(SnsPlatform snsPlatform, SHARE_MEDIA share_media) {
-
-                    }
-                }).open();
+            if(sharePopWindow.isShowing()){
+                sharePopWindow.dismiss();
+            }else{
+                sharePopWindow.showAtLocation(findViewById(R.id.content_rl), Gravity.BOTTOM,0,0);
+            }
     }
 
 
@@ -860,6 +912,13 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
             IntentUtil.gotoActivity(this,MainActivity.class);
         }
 
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode,resultCode,data);
     }
 }
 

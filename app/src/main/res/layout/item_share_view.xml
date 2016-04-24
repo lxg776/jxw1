@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="100dp"
     android:orientation="vertical"
     android:gravity="center"
     >
     <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:background="@mipmap/umeng_socialize_qq_on"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/icon_iv"
         />
 
@@ -16,7 +15,8 @@
         android:text="分享qq好友"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
+        android:textSize="14sp"
+        android:layout_marginTop="8dp"
         android:textColor="@color/black_transparent_54"
         android:id="@+id/name_tv"
         />
