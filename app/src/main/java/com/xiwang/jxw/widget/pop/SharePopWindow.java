@@ -95,6 +95,11 @@ public class SharePopWindow extends PopupWindow {
     OnShareListener listener;
 
 
+    public void setOnShareListener(OnShareListener listener){
+        this.listener=listener;
+    }
+
+
 
     /**
      * 初始化数据

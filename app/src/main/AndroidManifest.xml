@@ -114,7 +114,13 @@
             android:theme="@style/AppTheme" >
         </activity>
 
-
+        <!-- 分享编辑 -->
+        <activity
+            android:name=".activity.ShareEditActivity"
+            android:screenOrientation="portrait"
+            android:exported="false"
+            android:theme="@style/AppTheme" >
+        </activity>
 
         <!-- 新闻详情 -->
         <activity

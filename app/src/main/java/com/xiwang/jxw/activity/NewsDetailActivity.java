@@ -25,8 +25,6 @@ import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
-import com.umeng.socialize.shareboard.SnsPlatform;
-import com.umeng.socialize.utils.ShareBoardlistener;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.adapter.CommentListAdapter;
 import com.xiwang.jxw.base.BaseActivity;
@@ -40,12 +38,11 @@ import com.xiwang.jxw.bean.NewsDetailBean;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.bean.ShareBean;
 import com.xiwang.jxw.bean.SmileBean;
-import com.xiwang.jxw.bean.UserBean;
 import com.xiwang.jxw.biz.NewsBiz;
 import com.xiwang.jxw.biz.UserBiz;
 import com.xiwang.jxw.config.IntentConfig;
 import com.xiwang.jxw.config.TApplication;
-import com.xiwang.jxw.util.CommonUtil;
+import com.xiwang.jxw.intf.OnShareListener;
 import com.xiwang.jxw.util.ImgLoadUtil;
 import com.xiwang.jxw.util.IntentUtil;
 import com.xiwang.jxw.util.SpUtil;
@@ -59,10 +56,6 @@ import com.xiwang.jxw.widget.LoadingLayout;
 import com.xiwang.jxw.widget.RefreshLayout;
 import com.xiwang.jxw.widget.RichEditText;
 import com.xiwang.jxw.widget.pop.SharePopWindow;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -136,9 +129,6 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
     RichEditText comment_edt;
     EmojiView emoji_view;
 
-    /**
-     * 点赞
-     */
     /**点赞按钮*/
     LinearLayout dianzan_ll;
     /**点赞次数*/
@@ -254,6 +244,12 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
 
         loadNetData(1, true);
         sharePopWindow=new SharePopWindow(this);
+        sharePopWindow.setOnShareListener(new OnShareListener() {
+            @Override
+            public void onShare(ShareBean shareBean) {
+                shareContent(newsBean, detailBean.getShareurl(), shareBean);
+            }
+        });
 
     }
 
@@ -280,26 +276,35 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
     };
 
     public void shareContent(NewsBean newsBean, String shareUrl, ShareBean shareBean){
-
-        UMImage image=null;
-        if(TextUtils.isEmpty(newsBean.getImage())){
-            image= new UMImage(this, newsBean.getImage());
+        if(SHARE_MEDIA.TENCENT.equals(shareBean.getPlatform())){
+            //腾讯微博
+            newsBean.setShareUrl(shareUrl);
+            Intent intent=new Intent(this,ShareEditActivity.class);
+            intent.putExtra(getString(R.string.send_data),newsBean);
+            intent.putExtra("sharebean",shareBean);
+            startActivity(intent);
+        }else if(SHARE_MEDIA.SINA.equals(shareBean.getPlatform())){
+            //新浪微博
+            Intent intent=new Intent(this,ShareEditActivity.class);
+            intent.putExtra(getString(R.string.send_data),newsBean);
+            intent.putExtra("sharebean",shareBean);
+            startActivity(intent);
+        }else{
+            UMImage image=null;
+            if(TextUtils.isEmpty(newsBean.getImage())){
+                image= new UMImage(this, newsBean.getImage());
+            }
+            ShareAction shareAction=new ShareAction(this);
+            shareAction.setPlatform(shareBean.getPlatform());
+            shareAction.setCallback(listener);
+            shareAction.withText(newsBean.getSubject());
+            shareAction.withTitle(newsBean.getSubject());
+            shareAction.withTargetUrl(shareUrl);
+            if(image!=null){
+                shareAction.withMedia(image);
+            }
+            shareAction.share();
         }
-
-        ShareAction shareAction=new ShareAction(this);
-        shareAction.setPlatform(shareBean.getPlatform());
-
-
-        shareAction.setCallback(listener);
-        shareAction.withText(newsBean.getSubject());
-        shareAction.withTitle(newsBean.getSubject());
-        shareAction.withTargetUrl(shareUrl);
-        if(image!=null){
-            shareAction.withMedia(image);
-        };
-
-        shareAction.share();
-
     }
 
     /**
@@ -745,14 +750,14 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
                 UserBiz.digOrFight(type, tid, pid, new BaseBiz.RequestHandle() {
                     @Override
                     public void onSuccess(ResponseBean responseBean) {
-                        DigOrFightBean bean= (DigOrFightBean) responseBean.getObject();
-                        String dig=bean.getDig();
+                        DigOrFightBean bean = (DigOrFightBean) responseBean.getObject();
+                        String dig = bean.getDig();
                         setDianzan(true);
                         dianzan_ll.setBackground(getResources().getDrawable(R.drawable.yellow500_bg));
-                        TextView textView= (TextView) dianzan_ll.getChildAt(1);
+                        TextView textView = (TextView) dianzan_ll.getChildAt(1);
                         textView.setText(dig);
                         diges.add(newsBean.getTid());
-                        NewsBiz.setDiges(context,diges);
+                        NewsBiz.setDiges(context, diges);
                     }
 
                     @Override
@@ -790,34 +795,37 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         huifu_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    String replyContent=comment_edt.getRichText();
-                    if(!CheckUtil.isEmpty(context,"回复内容",replyContent)){
-                        NewsBiz.reply(newsBean.getTid(), replyContent, null, new BaseBiz.RequestHandle() {
-                            @Override
-                            public void onSuccess(ResponseBean responseBean) {
-                                showNewsDetail(responseBean);
-                                listView.setSelection(1);
-                            }
+                String replyContent = comment_edt.getRichText();
+                if (!CheckUtil.isEmpty(context, "回复内容", replyContent)) {
+                    NewsBiz.reply(newsBean.getTid(), replyContent, null, new BaseBiz.RequestHandle() {
+                        @Override
+                        public void onSuccess(ResponseBean responseBean) {
+                            showNewsDetail(responseBean);
+                            listView.setSelection(1);
+                        }
 
-                            @Override
-                            public void onFail(ResponseBean responseBean) {
-                                    ToastUtil.showToast(context,responseBean.getInfo());
-                            }
+                        @Override
+                        public void onFail(ResponseBean responseBean) {
+                            ToastUtil.showToast(context, responseBean.getInfo());
+                        }
 
-                            @Override
-                            public ResponseBean getRequestCache() {
-                                return null;
-                            }
+                        @Override
+                        public ResponseBean getRequestCache() {
+                            return null;
+                        }
 
-                            @Override
-                            public void onRequestCache(ResponseBean result) {
+                        @Override
+                        public void onRequestCache(ResponseBean result) {
 
-                            }
-                        });
-                    }
+                        }
+                    });
+                }
             }
         });
         listView.setOnScrollListener(this);
+
+
+
     }
 
     @Override
@@ -918,7 +926,7 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        UMShareAPI.get(this).onActivityResult(requestCode,resultCode,data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode,data);
     }
 }
 

@@ -26,13 +26,17 @@ public class NewsBean extends BaseBean{
     private String image;
     /** 描述*/
     private String desc;
+    /** 分享连接*/
+    private String shareUrl;
 
 
+    public String getShareUrl() {
+        return shareUrl;
+    }
 
-
-
-
-
+    public void setShareUrl(String shareUrl) {
+        this.shareUrl = shareUrl;
+    }
 
     public String getTid() {
         return tid;
