@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.ShareContent;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -297,12 +298,18 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
             ShareAction shareAction=new ShareAction(this);
             shareAction.setPlatform(shareBean.getPlatform());
             shareAction.setCallback(listener);
-            shareAction.withText(newsBean.getSubject());
-            shareAction.withTitle(newsBean.getSubject());
+           // shareAction.withText(newsBean.getSubject());
+        //    shareAction.withTitle(newsBean.getSubject());
             shareAction.withTargetUrl(shareUrl);
-            if(image!=null){
-                shareAction.withMedia(image);
-            }
+            ShareContent shareContent=new ShareContent();
+            shareContent.mTitle=newsBean.getSubject();
+            shareContent.mTargetUrl=shareUrl;
+            shareContent.mMedia=image;
+            shareAction.setShareContent(shareContent);
+//            shareAction.set
+//            if(image!=null){
+//                shareAction.withMedia(image);
+//            }
             shareAction.share();
         }
     }

@@ -85,8 +85,7 @@ public class TApplication extends Application  {
 		JPushInterface.setDebugMode(true);
 		JPushInterface.init(this);
         initPlatform();
-		/** 开启分享回流 */
-		Config.isloadUrl = true;
+
 
 	}
 	/**
@@ -108,6 +107,7 @@ public class TApplication extends Application  {
 
 	private void initPlatform(){
 		PlatformConfig.setQQZone("1105245649", "QBSIYLgWrlOnaLgR");
+		/** 开启分享回流 */
         Config.isloadUrl = true;
 	}
 
