@@ -1,4 +1,4 @@
-package com.xiwang.jxw.activity.wxapi;
+package com.xiwang.jxw.wxapi;
 
 
 import com.umeng.socialize.weixin.view.WXCallbackActivity;

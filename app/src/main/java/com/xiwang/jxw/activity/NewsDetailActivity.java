@@ -20,8 +20,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.ShareContent;
+import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -61,6 +63,7 @@ import com.xiwang.jxw.widget.pop.SharePopWindow;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -241,17 +244,56 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
 
     @Override
     protected void init() {
-
-
         loadNetData(1, true);
         sharePopWindow=new SharePopWindow(this);
         sharePopWindow.setOnShareListener(new OnShareListener() {
             @Override
-            public void onShare(ShareBean shareBean) {
-                shareContent(newsBean, detailBean.getShareurl(), shareBean);
+            public void onShare(final ShareBean shareBean) {
+                doShare(shareBean);
             }
         });
+    }
 
+    /**
+     * 分享操作
+     */
+    private void doShare(final ShareBean shareBean){
+        UMShareAPI   mShareAPI = UMShareAPI.get(NewsDetailActivity.this);
+        if(mShareAPI.isInstall(NewsDetailActivity.this,shareBean.getPlatform())){
+                    /*
+                        已经安装
+                     */
+            if(mShareAPI.isAuthorize(NewsDetailActivity.this,shareBean.getPlatform())){
+                    /*
+                        已经授权
+                     */
+                shareContent(newsBean, detailBean.getShareurl(), shareBean);
+            }else{
+
+
+                    /*
+                      未授权
+                     */
+                mShareAPI.doOauthVerify(NewsDetailActivity.this, shareBean.getPlatform(), new UMAuthListener() {
+                    @Override
+                    public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
+                        shareContent(newsBean, detailBean.getShareurl(), shareBean);
+                    }
+
+                    @Override
+                    public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
+                        ToastUtil.showToast(context,"授权失败");
+                    }
+
+                    @Override
+                    public void onCancel(SHARE_MEDIA share_media, int i) {
+                        ToastUtil.showToast(context,"取消授权");
+                    }
+                });
+            }
+        }else{
+            ToastUtil.showToast(context,"未安装"+shareBean.getAppName());
+        }
     }
 
     /**

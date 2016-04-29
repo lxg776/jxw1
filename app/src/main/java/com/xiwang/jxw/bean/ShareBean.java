@@ -19,6 +19,17 @@ public class ShareBean  implements Serializable {
     private SHARE_MEDIA platform;
     /** 路径*/
     private String  showText;
+    /** 应用名称*/
+    private String  appName;
+
+    public String getAppName() {
+        return appName;
+    }
+
+    public void setAppName(String appName) {
+        this.appName = appName;
+    }
+
     private static final long serialVersionUID = 36112240749933232L;
 
     public SHARE_MEDIA getPlatform() {

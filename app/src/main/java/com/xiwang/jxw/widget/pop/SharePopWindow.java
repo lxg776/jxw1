@@ -110,25 +110,30 @@ public class SharePopWindow extends PopupWindow {
         ShareBean wxShare=new ShareBean();
         wxShare.setShowText("微信朋友圈");
         wxShare.setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE);
+        wxShare.setAppName("微信");
         shareBeanList.add(wxShare);
         ShareBean wxFriendShare=new ShareBean();
         wxFriendShare.setShowText("微信好友");
         wxFriendShare.setPlatform(SHARE_MEDIA.WEIXIN);
+        wxFriendShare.setAppName("微信");
         shareBeanList.add(wxFriendShare);
 
         ShareBean qZoneShare=new ShareBean();
         qZoneShare.setShowText("QQ空间");
+        qZoneShare.setAppName("QQ");
         qZoneShare.setPlatform(SHARE_MEDIA.QZONE);
         shareBeanList.add(qZoneShare);
 
         ShareBean txwbShare=new ShareBean();
         txwbShare.setShowText("腾讯微博");
         txwbShare.setPlatform(SHARE_MEDIA.TENCENT);
+        txwbShare.setAppName("QQ");
         shareBeanList.add(txwbShare);
 
         ShareBean sinaShare=new ShareBean();
         sinaShare.setPlatform(SHARE_MEDIA.SINA);
         sinaShare.setShowText("新浪微博");
+        sinaShare.setAppName("新浪微博");
         shareBeanList.add(sinaShare);
 
         adapter=new ItemAdapter(shareBeanList);
