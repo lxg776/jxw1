@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.activity.ApplyWorkActivity;
+import com.xiwang.jxw.activity.EmployActivity;
 import com.xiwang.jxw.activity.HouseActivity;
 import com.xiwang.jxw.activity.PublishNewsActivity;
 import com.xiwang.jxw.activity.RentalActivity;
@@ -41,6 +42,8 @@ public class PublishFragment extends BaseFragment implements View.OnClickListene
     public static int DO_QIUZHI=0x25;
     //房产
     public static int DO_HOUSE=0x26;
+    //招聘
+    public static int DO_EMPLOYT=0x27;
 
 
     /** 发帖按钮*/
@@ -110,6 +113,7 @@ public class PublishFragment extends BaseFragment implements View.OnClickListene
         fabu_btn.setOnClickListener(this);
         qiuzu_btn.setOnClickListener(this);
         qiuzhi_btn.setOnClickListener(this);
+        zhaopin_btn.setOnClickListener(this);
     }
 
     @Override
@@ -167,6 +171,14 @@ public class PublishFragment extends BaseFragment implements View.OnClickListene
                     IntentUtil.gotoActivity(context, HouseActivity.class);
                 }
                 break;
+            case R.id.zhaopin_btn:
+                /*
+                招聘信息
+                 */
+                if(UserBiz.isLogin(context,getBundle(DO_EMPLOYT))){
+                    IntentUtil.gotoActivity(context, EmployActivity.class);
+                }
+                break;
 
 
         }
@@ -191,6 +203,8 @@ public class PublishFragment extends BaseFragment implements View.OnClickListene
                         IntentUtil.gotoActivity(context, HouseActivity.class);
                     }else if(do_==DO_QIUZHI){
                         IntentUtil.gotoActivity(context, ApplyWorkActivity.class);
+                    }else if(do_==DO_EMPLOYT){
+                        IntentUtil.gotoActivity(context, EmployActivity.class);
                     }
             }
         }

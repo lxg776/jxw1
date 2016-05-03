@@ -184,6 +184,14 @@
 
 
 
+
+        <!-- 招聘 -->
+        <activity
+            android:name=".activity.EmployActivity"
+            android:screenOrientation="portrait"
+            android:exported="false"
+            />
+
         <!-- 选择多张图片 -->
         <activity
             android:name=".activity.PickOrTakeImageActivity"

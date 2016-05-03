@@ -107,7 +107,8 @@ public class TApplication extends Application  {
 
 	private void initPlatform(){
 		PlatformConfig.setQQZone("1105245649", "QBSIYLgWrlOnaLgR");
-		PlatformConfig.setWeixin("wx91c87e3ac3509b67","fc9215a9c4f11929ebadf8aa60055a8f");
+		PlatformConfig.setWeixin("wx91c87e3ac3509b67", "fc9215a9c4f11929ebadf8aa60055a8f");
+		PlatformConfig.setSinaWeibo("3416662071","f6090926381113998384b3113f4ab241");
 		/** 开启分享回流 */
         Config.isloadUrl = true;
 	}
