@@ -1,6 +1,8 @@
 package com.xiwang.jxw.activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.PixelFormat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -8,6 +10,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -15,12 +18,15 @@ import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.view.ViewGroup.LayoutParams;
+import com.nineoldandroids.view.ViewHelper;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
-import com.tencent.mm.sdk.openapi.WXAPIFactory;
+
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.ShareContent;
 import com.umeng.socialize.UMAuthListener;
@@ -46,6 +52,7 @@ import com.xiwang.jxw.biz.UserBiz;
 import com.xiwang.jxw.config.IntentConfig;
 import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.intf.OnShareListener;
+import com.xiwang.jxw.util.DisplayUtil;
 import com.xiwang.jxw.util.ImgLoadUtil;
 import com.xiwang.jxw.util.IntentUtil;
 import com.xiwang.jxw.util.SpUtil;
@@ -252,6 +259,14 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
                 doShare(shareBean);
             }
         });
+
+        sharePopWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+
+                removeshadeView();
+            }
+        });
     }
 
     /**
@@ -443,6 +458,8 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         like_rv.setText(detailBean.getDig());
         not_like_rv.setText(detailBean.getPoor());
         message_rv.setText(detailBean.getReplies());
+
+
 
         //设置回复数据
         if(!TextUtils.isEmpty(detailBean.getReplies())&&!"0".equals(detailBean.getReplies())){
@@ -884,7 +901,7 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
 
     @Override
     public void onRefresh() {
-        loadNetData(1,true);
+        loadNetData(1, true);
     }
 
 
@@ -922,9 +939,32 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
     private void openCustemShare(){
             if(sharePopWindow.isShowing()){
                 sharePopWindow.dismiss();
+
             }else{
-                sharePopWindow.showAtLocation(findViewById(R.id.content_rl), Gravity.BOTTOM,0,0);
+                sharePopWindow.showAtLocation(findViewById(R.id.content_rl), Gravity.BOTTOM, 0, 0);
+                addShadeView();
             }
+    }
+
+    TextView shadetextView;
+    private void addShadeView(){
+        if(null==shadetextView){
+            RelativeLayout.LayoutParams layoutParams=new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT);
+            shadetextView  = new TextView(context);
+            shadetextView.setBackgroundColor(0x99000000);
+            RelativeLayout content_rl= (RelativeLayout) findViewById(R.id.content_rl);
+            content_rl.addView(shadetextView, layoutParams);
+        }
+    }
+
+    private void removeshadeView(){
+        WindowManager  mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        if(shadetextView!=null){
+            RelativeLayout content_rl= (RelativeLayout) findViewById(R.id.content_rl);
+            content_rl.removeView(shadetextView);
+            shadetextView=null;
+        }
+
     }
 
 
@@ -975,8 +1015,10 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        UMShareAPI.get(this).onActivityResult(requestCode, resultCode,data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
+
+
 }
 
 

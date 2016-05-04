@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.text.TextUtils;
 
 import com.loopj.android.http.RequestParams;
+import com.sina.weibo.sdk.api.share.Base;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.bean.BaseBean;
@@ -276,8 +277,16 @@ public class NewsBiz {
         BaseBiz.getRequest(url, params, new BaseBiz.RequestHandle() {
             @Override
             public void onSuccess(ResponseBean responseBean) {
-                    BaseBean.setResponseObjectList(responseBean,DigUserBean.class,"diglist");
+                String string= (String) responseBean.getObject();
+                try {
+                    JSONObject jsonObject=new JSONObject(string);
+                    responseBean.setObject( BaseBean.toModelList(jsonObject.optString("list"),DigUserBean.class));
                     handle.onSuccess(responseBean);
+                }catch (JSONException e){
+                    responseBean.setStatus(ServerConfig.JSON_DATA_ERROR);
+                    responseBean.setInfo(TApplication.context.getResources().getString(R.string.exception_local_json_message));
+                    handle.onFail(responseBean);
+                }
             }
 
             @Override

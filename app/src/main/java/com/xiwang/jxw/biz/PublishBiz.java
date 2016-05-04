@@ -65,6 +65,7 @@ public class PublishBiz {
         String url=ServerConfig.GETAPP_URL;
         RequestParams params =new RequestParams();
         params.put("action","new");
+        params.put("type","jobs");
         params.put("a","posts");
         params.put("jobs",jobs);
         params.put("company",company);

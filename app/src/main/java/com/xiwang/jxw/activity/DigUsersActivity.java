@@ -81,12 +81,12 @@ public class DigUsersActivity extends BaseActivity {
         }
         adapter.list=list;
         adapter.notifyDataSetChanged();
-        content_rl.setLoadView(true);
+        content_rl.setLoadView(false);
     }
 
     @Override
     protected void init() {
-        content_rl.setLoadView(false);
+        content_rl.setLoadView(true);
         NewsBiz.getDigUsers(tid, new BaseBiz.RequestHandle() {
             @Override
             public void onSuccess(ResponseBean responseBean) {

@@ -1,6 +1,7 @@
 package com.xiwang.jxw.activity;
 
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -14,6 +15,7 @@ import com.xiwang.jxw.util.CheckUtil;
 import com.xiwang.jxw.util.ProcessDialogUtil;
 import com.xiwang.jxw.util.ToastUtil;
 import com.xiwang.jxw.widget.DeleteAutoCompleteTextView;
+import com.xiwang.jxw.widget.DeleteEditText;
 import com.xiwang.jxw.widget.MyTextSelectView;
 
 /**
@@ -40,7 +42,7 @@ public class EmployActivity extends BaseSubmitActivity {
     /**联系号码*/
     DeleteAutoCompleteTextView  mobile_tv;
     /**标题*/
-    DeleteAutoCompleteTextView  title_edt;
+    DeleteEditText title_edt;
     /**内容*/
     EditText content_edt;
     /**招聘人数*/
@@ -91,9 +93,9 @@ public class EmployActivity extends BaseSubmitActivity {
         company_tv= (DeleteAutoCompleteTextView) findViewById(R.id.company_tv);
         cname_tv= (DeleteAutoCompleteTextView) findViewById(R.id.cname_tv);
         mobile_tv= (DeleteAutoCompleteTextView) findViewById(R.id.mobile_tv);
-        title_edt= (DeleteAutoCompleteTextView) findViewById(R.id.title_edt);
+        title_edt= (DeleteEditText) findViewById(R.id.title_edt);
         content_edt= (EditText) findViewById(R.id.content_edt);
-
+        number_tv= (DeleteAutoCompleteTextView) findViewById(R.id.number_tv);
     }
 
     @Override
@@ -137,7 +139,7 @@ public class EmployActivity extends BaseSubmitActivity {
         if(CheckUtil.isEmpty(context,"职位描述",dustStr)){
             return false;
         }
-        if(CheckUtil.isEmpty(context,"能力要求",abilityStr)){
+        if(CheckUtil.isEmpty(context, "能力要求", abilityStr)){
             return false;
         }
         if(CheckUtil.isSelect(context, "工作经验", experienceStr)){
@@ -158,6 +160,10 @@ public class EmployActivity extends BaseSubmitActivity {
         if(CheckUtil.isEmpty(context, "联系号码", moblieStr)){
             return false;
         }
+        if(!CheckUtil.checkMobileNumber(context,moblieStr)){
+            return false;
+        }
+
         if(CheckUtil.isEmpty(context, "标题", titleStr)){
             return false;
         }
@@ -209,5 +215,12 @@ public class EmployActivity extends BaseSubmitActivity {
                 }
             });
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_finlish, menu);
+        return true;
     }
 }

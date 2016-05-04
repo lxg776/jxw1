@@ -1,12 +1,15 @@
 package com.xiwang.jxw.widget.pop;
 
 import android.content.Context;
+import android.graphics.PixelFormat;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -14,6 +17,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.bean.ShareBean;
 import com.xiwang.jxw.intf.OnShareListener;
+import com.xiwang.jxw.util.DisplayUtil;
 import com.xiwang.jxw.widget.DividerGridItemDecoration;
 import android.view.ViewGroup.LayoutParams;
 
@@ -225,4 +229,17 @@ public class SharePopWindow extends PopupWindow {
         }
     }
 
+
+
+    @Override
+    public void dismiss() {
+        super.dismiss();
+       // removeshadeView();
+    }
+
+    @Override
+    public void showAtLocation(View parent, int gravity, int x, int y) {
+        super.showAtLocation(parent, gravity, x, y);
+      //  addShadeView();
+    }
 }

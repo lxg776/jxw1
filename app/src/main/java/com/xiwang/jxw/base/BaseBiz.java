@@ -76,10 +76,10 @@ public class BaseBiz {
                     handle.onSuccess(responseBean);
                 }else
                 {
-                    handle.onFail(responseBean);
-                }
-            }
 
+            handle.onFail(responseBean);
+        }
+    }
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 ResponseBean responseBean = new ResponseBean();
