@@ -45,11 +45,16 @@ public class ToRentalHouseActivity extends BaseSubmitActivity{
 
     @Override
     protected void findViews() {
+
         fwt_tv= (DeleteAutoCompleteTextView) findViewById(R.id.fwt_tv);
         mianji_tv= (DeleteAutoCompleteTextView) findViewById(R.id.mianji_tv);
         title_edt= (DeleteEditText) findViewById(R.id.title_edt);
         content_edt= (EditText) findViewById(R.id.content_edt);
         linkman_edt= (DeleteEditText) findViewById(R.id.linkman_edt);
+        phone_edt= (DeleteEditText) findViewById(R.id.phone_edt);
+        type_sv=(MyTextSelectView) findViewById(R.id.type_sv);
+        price_tv=(DeleteAutoCompleteTextView) findViewById(R.id.price_tv);
+        uploadView=(UploadImgView) findViewById(R.id.uploadView);
 
     }
 
@@ -118,11 +123,12 @@ public class ToRentalHouseActivity extends BaseSubmitActivity{
         return R.layout.activity_to_rental_house;
     }
 
-
+    String []rentTypeArray;
 
     @Override
     protected void init() {
-
+        rentTypeArray=getResources().getStringArray(R.array.select_rent_type);
+        type_sv.setShowItemes(rentTypeArray);
     }
 
     @Override

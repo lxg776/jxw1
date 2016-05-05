@@ -14,6 +14,7 @@ import com.xiwang.jxw.activity.HouseActivity;
 import com.xiwang.jxw.activity.PublishNewsActivity;
 import com.xiwang.jxw.activity.RentalActivity;
 import com.xiwang.jxw.activity.TestActivity;
+import com.xiwang.jxw.activity.ToRentalHouseActivity;
 import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.base.BaseFragment;
 import com.xiwang.jxw.bean.ResponseBean;
@@ -114,6 +115,7 @@ public class PublishFragment extends BaseFragment implements View.OnClickListene
         qiuzu_btn.setOnClickListener(this);
         qiuzhi_btn.setOnClickListener(this);
         zhaopin_btn.setOnClickListener(this);
+        chuzu_btn.setOnClickListener(this);
     }
 
     @Override
@@ -168,7 +170,7 @@ public class PublishFragment extends BaseFragment implements View.OnClickListene
                 发求房产信息
                  */
                 if(UserBiz.isLogin(context,getBundle(DO_HOUSE))){
-                    IntentUtil.gotoActivity(context, HouseActivity.class);
+                    IntentUtil.gotoActivity(context, ToRentalHouseActivity.class);
                 }
                 break;
             case R.id.zhaopin_btn:

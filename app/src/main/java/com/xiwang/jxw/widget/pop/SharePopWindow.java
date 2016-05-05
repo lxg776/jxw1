@@ -133,12 +133,12 @@ public class SharePopWindow extends PopupWindow {
         txwbShare.setPlatform(SHARE_MEDIA.TENCENT);
         txwbShare.setAppName("QQ");
         shareBeanList.add(txwbShare);
-
-        ShareBean sinaShare=new ShareBean();
-        sinaShare.setPlatform(SHARE_MEDIA.SINA);
-        sinaShare.setShowText("新浪微博");
-        sinaShare.setAppName("新浪微博");
-        shareBeanList.add(sinaShare);
+//
+//        ShareBean sinaShare=new ShareBean();
+//        sinaShare.setPlatform(SHARE_MEDIA.SINA);
+//        sinaShare.setShowText("新浪微博");
+//        sinaShare.setAppName("新浪微博");
+//        shareBeanList.add(sinaShare);
 
         adapter=new ItemAdapter(shareBeanList);
 

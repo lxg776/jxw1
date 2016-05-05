@@ -133,7 +133,7 @@
 
         <!-- 租房房产 -->
         <activity
-            android:name=".activity.HouseActivity"
+            android:name=".activity.ToRentalHouseActivity"
             android:screenOrientation="portrait"
             android:exported="false"
             android:windowSoftInputMode="stateAlwaysHidden|adjustUnspecified"

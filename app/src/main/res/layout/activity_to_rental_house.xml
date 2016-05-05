@@ -54,7 +54,7 @@
         <com.xiwang.jxw.widget.MyTextSelectView
             app:is_hint="false"
             app:inputHinttext="出售/出租"
-            app:dialog_title="出售/出租"
+            app:dialog_title="类型"
             style="@style/etd_2"
             android:layout_marginTop="1dp"
             android:id="@+id/type_sv"
@@ -97,30 +97,7 @@
             android:layout_marginRight="16dp"
             ></com.xiwang.jxw.widget.UploadImgView>
 
-        <com.xiwang.jxw.widget.DeleteAutoCompleteTextView
-            android:hint="联系人"
-            style="@style/etd_1"
-            android:singleLine="true"
-            android:id="@+id/cname_tv"
-            android:completionThreshold="1"
-            android:layout_marginTop="16dp"
-            android:background="@color/white"
-            >
-        </com.xiwang.jxw.widget.DeleteAutoCompleteTextView >
 
-        <View
-            style="@style/line_view_w"
-            ></View>
-        <com.xiwang.jxw.widget.DeleteAutoCompleteTextView
-            android:hint="联系号码"
-            style="@style/etd_1"
-            android:singleLine="true"
-            android:id="@+id/mobile_tv"
-            android:completionThreshold="1"
-            android:background="@color/white"
-            android:inputType="phone"
-            >
-        </com.xiwang.jxw.widget.DeleteAutoCompleteTextView >
 
         <!--输入标题-->
         <com.xiwang.jxw.widget.DeleteEditText

@@ -11,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -34,6 +36,7 @@ import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.WeiXinShareContent;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.adapter.CommentListAdapter;
 import com.xiwang.jxw.base.BaseActivity;
@@ -68,6 +71,7 @@ import com.xiwang.jxw.widget.RichEditText;
 import com.xiwang.jxw.widget.pop.SharePopWindow;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -274,7 +278,7 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
      */
     private void doShare(final ShareBean shareBean){
         UMShareAPI   mShareAPI = UMShareAPI.get(NewsDetailActivity.this);
-        if(mShareAPI.isInstall(NewsDetailActivity.this,shareBean.getPlatform())){
+        if(mShareAPI.isInstall(NewsDetailActivity.this, shareBean.getPlatform())){
                     /*
                         已经安装
                      */
@@ -349,24 +353,20 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
             startActivity(intent);
         }else{
             UMImage image=null;
-            if(TextUtils.isEmpty(newsBean.getImage())){
+            if(!TextUtils.isEmpty(newsBean.getImage())){
                 image= new UMImage(this, newsBean.getImage());
+            }else{
+                image= new UMImage(context,R.mipmap.ic_launcher);
             }
             ShareAction shareAction=new ShareAction(this);
             shareAction.setPlatform(shareBean.getPlatform());
             shareAction.setCallback(listener);
-           // shareAction.withText(newsBean.getSubject());
-        //    shareAction.withTitle(newsBean.getSubject());
+            shareAction.withText(newsBean.getSubject());
+            shareAction.withTitle(newsBean.getSubject());
             shareAction.withTargetUrl(shareUrl);
-            ShareContent shareContent=new ShareContent();
-            shareContent.mTitle=newsBean.getSubject();
-            shareContent.mTargetUrl=shareUrl;
-            shareContent.mMedia=image;
-            shareAction.setShareContent(shareContent);
-//            shareAction.set
-//            if(image!=null){
-//                shareAction.withMedia(image);
-//            }
+            if(image!=null){
+                shareAction.withMedia(image);
+            }
             shareAction.share();
         }
     }
@@ -953,6 +953,8 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
             shadetextView  = new TextView(context);
             shadetextView.setBackgroundColor(0x99000000);
             RelativeLayout content_rl= (RelativeLayout) findViewById(R.id.content_rl);
+            Animation annotation=  AnimationUtils.loadAnimation(this,R.anim.abc_fade_in);
+            shadetextView.startAnimation(annotation);
             content_rl.addView(shadetextView, layoutParams);
         }
     }
@@ -961,6 +963,8 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         WindowManager  mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         if(shadetextView!=null){
             RelativeLayout content_rl= (RelativeLayout) findViewById(R.id.content_rl);
+            Animation annotation=  AnimationUtils.loadAnimation(this,R.anim.abc_fade_out);
+            shadetextView.startAnimation(annotation);
             content_rl.removeView(shadetextView);
             shadetextView=null;
         }
