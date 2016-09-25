@@ -26,7 +26,6 @@ import com.xiwang.jxw.bean.UploadImgBean;
 import com.xiwang.jxw.biz.SystemBiz;
 import com.xiwang.jxw.config.IntentConfig;
 import com.xiwang.jxw.event.DeleteImageEvent;
-import com.xiwang.jxw.event.PercentEvent;
 import com.xiwang.jxw.event.PickImageEvent;
 import com.xiwang.jxw.util.AlbumBitmapCacheHelper;
 import com.xiwang.jxw.util.DisplayUtil;
@@ -67,6 +66,9 @@ public class UploadImgView extends RelativeLayout{
     /** 选择图片监听*/
     PickImageListener pickImageListener;
 
+    /**是否显示添加按钮*/
+    boolean isAdd;
+
     /**显示上传的图片*/
     RecyclerView recyclerView;
 
@@ -74,9 +76,60 @@ public class UploadImgView extends RelativeLayout{
 
     Handler mHandler;
 
+
+
+    int mitemlayout =R.layout.item_upload_image;
+
+
+    /**
+     * 设置布局
+     * @param layout
+     */
+    public void setItemLayout(int layout){
+        mitemlayout = layout;
+    }
+
+
     public List<UploadImgBean> getUploadImageUrlList() {
         return uploadImageUrlList;
     }
+
+
+    /**
+     * 获取上传aids
+     * @return
+     */
+    public String getAids(){
+        List<UploadImgBean> uploadString=getUploadImageUrlList();
+        if(null!=uploadString&&uploadString.size()>0){
+            StringBuffer sb=new StringBuffer();
+            for(int i=0;i<uploadString.size();i++){
+                sb.append(uploadString.get(i).getAid());
+                if(i!=uploadString.size()-1){
+                    sb.append(",");
+                }
+            }
+           return sb.toString();
+        }
+        return  null;
+    }
+
+    /**
+     * 清除图片
+     */
+    public void clearImage(){
+
+        if(null!=imageModelList&&imageModelList.size()>0){
+            for(int i=0;i<imageModelList.size();i++){
+                imageModelList.remove(0);
+                adapter.notifyItemRemoved(0);
+
+            }
+        }
+
+    }
+
+
 
 
 
@@ -126,16 +179,20 @@ public class UploadImgView extends RelativeLayout{
         View contentView = View.inflate(context, R.layout.view_upload_img,null);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.UploadImgView);
         numColumns=a.getInteger(R.styleable.UploadImgView_numColumns,5);
+        isAdd = a.getBoolean(R.styleable.UploadImgView_isAdd,true);
+
         a.recycle();
         recyclerView= (RecyclerView) contentView.findViewById(R.id.recyclerView);
         StaggeredGridLayoutManager mLayoutManager=new StaggeredGridLayoutManager(4,StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new DividerGridItemDecoration(context));
-
-//
-//        //添加add按钮
-        imageModelList.add(new ShowImg());
+        //添加add按钮
+        if(isAdd){
+            recyclerView.setVisibility(View.VISIBLE);
+            imageModelList.add(new ShowImg());
+        }
         recyclerView.setAdapter(adapter);
+
 
 
 
@@ -157,6 +214,7 @@ public class UploadImgView extends RelativeLayout{
         showImg.percent=50;
         imageModelList.add(0, showImg);
         adapter.notifyItemRangeChanged(0,imageModelList.size());
+        recyclerView.setVisibility(View.VISIBLE);
 
         uploadImage(showImg);
     }
@@ -179,7 +237,7 @@ public class UploadImgView extends RelativeLayout{
                             for(ShowImg showImg:imageModelList){
                                 if(showImg.path.equals(img.path)){
                                     uploadImageUrlList.add(uploadImgBean);
-                                    ToastUtil.showToast(context,"上传成功"+img.path);
+
                                     break;
                                 }
                             }
@@ -252,6 +310,9 @@ public class UploadImgView extends RelativeLayout{
                 imageModelList.remove(deletePostion);
             }
             adapter.notifyItemRemoved(deletePostion);
+            if(imageModelList.size()==0){
+                recyclerView.setVisibility(GONE);
+            }
         }
     }
 
@@ -311,18 +372,30 @@ public class UploadImgView extends RelativeLayout{
             public void onImageSelect(List<String> picklist);
     }
 
+
+    /**
+     * 添加图片
+     */
+    public void addImages(){
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(context.getResources().getString(R.string.send_tag), tag);
+        IntentUtil.gotoActivity(context, PickOrTakeImageActivity.class, bundle);
+    }
+
     public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
             View view;
             if(i==getItemCount()-1){
-                view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_upload_image,
+                view = LayoutInflater.from(viewGroup.getContext()).inflate(mitemlayout,
                         viewGroup, false);
                 return new ViewHolder(view,ViewHolder.TYPE_BTN);
             }else{
-                 view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_upload_image,
+                 view = LayoutInflater.from(viewGroup.getContext()).inflate(mitemlayout,
                         viewGroup, false);
+                view.getLayoutParams().width = DisplayUtil.dip2px(context,24);
+                view.getLayoutParams().height = DisplayUtil.dip2px(context,24);
                 return new ViewHolder(view,ViewHolder.TYPE_IMG);
             }
         }
@@ -330,14 +403,11 @@ public class UploadImgView extends RelativeLayout{
         @Override
         public void onBindViewHolder(ViewHolder viewHolder, final int i) {
             ShowImg showImg=imageModelList.get(i);
-            if(i==getItemCount()-1){
+            if((i==getItemCount()-1)&&isAdd){
                 viewHolder.img_iv.setOnClickListener(new View.OnClickListener(){
-
                     @Override
                     public void onClick(View v) {
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable(context.getResources().getString(R.string.send_tag), tag);
-                            IntentUtil.gotoActivity(context, PickOrTakeImageActivity.class, bundle);
+                        addImages();
                     }
                 });
                 viewHolder.img_iv.setBackgroundDrawable(getResources().getDrawable(R.mipmap.add_icon_gray));

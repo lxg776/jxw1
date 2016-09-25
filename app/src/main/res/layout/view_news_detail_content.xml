@@ -23,7 +23,7 @@
     <View
         style="@style/line_view_w2"
         />
-
+    <!--回复布局-->
     <include layout="@layout/d_newsdetail_buttom"></include>
 
     <LinearLayout

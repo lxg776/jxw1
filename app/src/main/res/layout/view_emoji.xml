@@ -27,6 +27,13 @@
         android:visibility="gone"
         android:src="@mipmap/keyboard_icon"
         />
+        <ImageView
+            android:id="@+id/picture_iv"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="8dp"
+            android:src="@mipmap/picture_icon"
+            />
     </LinearLayout>
         <!--内容页面-->
     <LinearLayout

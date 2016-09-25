@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/gray_100"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     >
     <!--评论弹出前-->
     <LinearLayout
@@ -11,7 +12,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/comment_before_ll"
-
         android:padding="8dp"
         >
         <TextView
@@ -63,24 +63,40 @@
         android:layout_width="match_parent"
         android:padding="8dp"
         android:id="@+id/commenting_ll"
-        android:visibility="gone"
+
         android:background="@color/gray_100"
 
         android:orientation="vertical"
         android:layout_height="wrap_content">
         <!--输入内容-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:orientation="vertical"
+            android:background="@drawable/white_bg"
+            >
         <com.xiwang.jxw.widget.RichEditText
             android:id="@+id/comment_edt"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:layout_marginTop="8dp"
-            android:padding="16dp"
+            android:layout_height="48dp"
             android:hint="说点什么？"
-            android:background="@drawable/white_bg"
+            android:background="@mipmap/trans"
             android:textColor="@color/black_transparent_87"
             android:textColorHint="@color/black_transparent_26"
             android:gravity="top"
             />
+            <com.xiwang.jxw.widget.UploadImgView
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:id="@+id/uploadView"
+                app:horizontalSpacing="8dp"
+                app:verticalSpacing="8dp"
+                app:isAdd="false"
+                android:layout_marginTop="8dp"
+                ></com.xiwang.jxw.widget.UploadImgView>
+        </LinearLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

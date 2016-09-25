@@ -2,7 +2,6 @@ package com.xiwang.jxw.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.PixelFormat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -25,18 +24,16 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.view.ViewGroup.LayoutParams;
-import com.nineoldandroids.view.ViewHelper;
+
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import com.umeng.socialize.ShareAction;
-import com.umeng.socialize.ShareContent;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
-import com.umeng.socialize.media.WeiXinShareContent;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.adapter.CommentListAdapter;
 import com.xiwang.jxw.base.BaseActivity;
@@ -55,7 +52,6 @@ import com.xiwang.jxw.biz.UserBiz;
 import com.xiwang.jxw.config.IntentConfig;
 import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.intf.OnShareListener;
-import com.xiwang.jxw.util.DisplayUtil;
 import com.xiwang.jxw.util.ImgLoadUtil;
 import com.xiwang.jxw.util.IntentUtil;
 import com.xiwang.jxw.util.SpUtil;
@@ -68,10 +64,10 @@ import com.xiwang.jxw.widget.HorizontalRadioView;
 import com.xiwang.jxw.widget.LoadingLayout;
 import com.xiwang.jxw.widget.RefreshLayout;
 import com.xiwang.jxw.widget.RichEditText;
+import com.xiwang.jxw.widget.UploadImgView;
 import com.xiwang.jxw.widget.pop.SharePopWindow;
 
 import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -172,6 +168,61 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
     /**分享popWindow*/
     SharePopWindow sharePopWindow;
 
+    UploadImgView mUploadView;
+
+
+    public static final int RECORD_KEYBOARD=0;
+    public static final int RECORD_ENMOJI=1;
+    public static final int RECORD_HIDE=2;
+
+    /**状态记录*/
+    public int mRecordStatus = RECORD_HIDE;
+
+
+    /**
+     * 记录状态
+     */
+    private void recordStatus(){
+        if(emoji_view.getVisibility()!=View.VISIBLE){
+            mRecordStatus = RECORD_HIDE;
+        }else{
+            if(emoji_view.contentFla){
+                mRecordStatus = RECORD_ENMOJI;
+            }else{
+                mRecordStatus = RECORD_KEYBOARD;
+            }
+        }
+    }
+
+    /**
+     * 记录状态
+     */
+    private void reSetStatus(){
+
+        if(mRecordStatus==RECORD_KEYBOARD){
+            onEmojiHide();
+            onKeyShow();
+        }else if(mRecordStatus==RECORD_ENMOJI){
+            onEShow();
+        }else{
+            hideCommentView();
+        }
+    }
+
+
+    @Override
+    protected void onStop() {
+        recordStatus();
+        super.onStop();
+    }
+
+
+    @Override
+    public void onResume() {
+        reSetStatus();
+        super.onResume();
+    }
+
     @Override
     protected String getPageName() {
         if(null!=columnBean){
@@ -225,7 +276,7 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         like_rv= (HorizontalRadioView) findViewById(R.id.like_rv);
         not_like_rv= (HorizontalRadioView) findViewById(R.id.not_like_rv);
         message_rv= (HorizontalRadioView) findViewById(R.id.message_rv);
-
+        mUploadView= (UploadImgView) findViewById(R.id.uploadView);
         foot_view=View.inflate(context, R.layout.listview_footer_view, null);
         text_more= (TextView) foot_view.findViewById(R.id.text_more);
         if(TApplication.sdk>android.os.Build.VERSION_CODES.HONEYCOMB){
@@ -250,6 +301,8 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         show_replies_rl= (RelativeLayout) findViewById(R.id.show_replies_rl);
         huifu_btn= (TextView) findViewById(R.id.huifu_btn);
 
+
+        mUploadView.setItemLayout(R.layout.item_upload_image_40);
     }
 
 
@@ -652,24 +705,24 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
      * 隐藏表情以及键盘
      */
     private void  onEmojiHide(){
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
+
+                System.out.println("onEmojiHide");
                 emoji_view.onHide();
                 emoji_view.setVisibility(View.GONE);
-            }
-        }, 500);
+
     }
 
     /**
      *  显示键盘
      */
     private void onKeyShow(){
+
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 emoji_view.setVisibility(View.VISIBLE);
                 emoji_view.onKeyBoard();
+                System.out.println("onKeyShow1");
                 showCommentView();
             }
         }, 500);
@@ -762,12 +815,19 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
                     keyboardUtil.showKeyBoard(context, comment_edt);
                 }
             }
+
+            @Override
+            public void onClickPictureView() {
+                mUploadView.addImages();
+            }
         });
 
 
         auto_rl.setKeyboardListener(new AutoRelativeLayout.OnKeyBoardListener() {
             @Override
             public void onKeyboardShow(int keyBoardHeight) {
+
+
                 if (keyBoardHeight > 0) {
                     emoji_view.setContentHeight(keyBoardHeight);
                 }
@@ -782,6 +842,8 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
 
             @Override
             public void onKeyBoardHide() {
+                System.out.println("onKeyBoardHide()");
+
                 if (emoji_view.getVisibility() == View.VISIBLE && emoji_view.content_ll.getVisibility() == View.GONE) {
                     hideCommentView();
                 }
@@ -861,13 +923,23 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         huifu_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String replyContent = comment_edt.getRichText();
+                final String replyContent = comment_edt.getRichText();
                 if (!CheckUtil.isEmpty(context, "回复内容", replyContent)) {
-                    NewsBiz.reply(newsBean.getTid(), replyContent, null, new BaseBiz.RequestHandle() {
+
+
+                    String aid = mUploadView.getAids();
+
+                    NewsBiz.reply(newsBean.getTid(), replyContent, aid, new BaseBiz.RequestHandle() {
                         @Override
                         public void onSuccess(ResponseBean responseBean) {
-                            showNewsDetail(responseBean);
-                            listView.setSelection(1);
+                            //showNewsDetail(responseBean);
+                           // listView.setSelection(1);
+                            ToastUtil.showToast(context,responseBean.getInfo());
+                            //回复输入
+                            comment_edt.setText("");
+                            mUploadView.clearImage();
+                            hideCommentView();
+                            loadNetData(1,true);
                         }
 
                         @Override

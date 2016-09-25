@@ -116,7 +116,7 @@ public class PercentView extends View {
         Typeface font = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL);
         p.setTypeface( font );
         p.setTextAlign(Paint.Align.CENTER);
-        p.setColor(getResources().getColor(R.color.black_transparent_26));
+        p.setColor(getResources().getColor(R.color.green));
         int x=getWidth()/2;
         int y=getHeight()/2;
         p.setTextSize(DisplayUtil.dip2px(context,14));

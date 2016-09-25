@@ -77,15 +77,16 @@ public class AutoRelativeLayout extends LinearLayout {
                 runnable=new Runnable() {
                     @Override
                     public void run() {
-                        if(null!= keyboardListener){
+                        if(null!= keyboardListener&&isKeyBoard){
                             keyboardListener.onKeyBoardHide();
+							isKeyBoard=false;
                         }
                     }
                 };
 
-                isKeyBoard=false;
+
             }else if(b<orgin_b){
-                isKeyBoard=true;
+
                 int distence=orgin_b-b;
                 if(distence>keyBoardHeight){
                     keyBoardHeight=distence;
@@ -94,6 +95,9 @@ public class AutoRelativeLayout extends LinearLayout {
                     @Override
                     public void run() {
                         if(null!= keyboardListener){
+							if(!isKeyBoard){
+								isKeyBoard=true;
+							}
                             keyboardListener.onKeyboardShow(keyBoardHeight);
                         }
                     }

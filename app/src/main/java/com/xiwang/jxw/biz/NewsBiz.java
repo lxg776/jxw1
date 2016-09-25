@@ -83,7 +83,7 @@ public class NewsBiz {
      *
      * @param tid
      * @param content
-     * @param aids
+     * @param aids //图片
      * @param handle
      */
     public static void reply(String tid, String content, String aids, final BaseBiz.RequestHandle handle) {
@@ -99,16 +99,17 @@ public class NewsBiz {
             @Override
             public void onSuccess(ResponseBean responseBean) {
 
-                String string = (String) responseBean.getObject();
-                try {
-                    NewsDetailBean bean = (NewsDetailBean) BaseBean.newInstance(NewsDetailBean.class, string);
-                    responseBean.setObject(bean);
-                    handle.onSuccess(responseBean);
-                } catch (JSONException e) {
-                    responseBean.setStatus(ServerConfig.JSON_DATA_ERROR);
-                    responseBean.setInfo(TApplication.context.getResources().getString(R.string.exception_local_json_message));
-                    handle.onFail(responseBean);
-                }
+//                String string = (String) responseBean.getObject();
+//                try {
+//                    NewsDetailBean bean = (NewsDetailBean) BaseBean.newInstance(NewsDetailBean.class, string);
+//                    responseBean.setObject(bean);
+//                    handle.onSuccess(responseBean);
+//                } catch (JSONException e) {
+//                    responseBean.setStatus(ServerConfig.JSON_DATA_ERROR);
+//                    responseBean.setInfo(TApplication.context.getResources().getString(R.string.exception_local_json_message));
+//                    handle.onFail(responseBean);
+//                }
+                handle.onSuccess(responseBean);
             }
 
             @Override
