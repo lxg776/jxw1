@@ -186,6 +186,7 @@ public class UploadImgView extends RelativeLayout{
         StaggeredGridLayoutManager mLayoutManager=new StaggeredGridLayoutManager(4,StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new DividerGridItemDecoration(context));
+        recyclerView.setItemAnimator(null);
         //添加add按钮
         if(isAdd){
             recyclerView.setVisibility(View.VISIBLE);
@@ -196,7 +197,7 @@ public class UploadImgView extends RelativeLayout{
 
 
 
-        RelativeLayout.LayoutParams params= new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams params= new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         addView(contentView,params);
     }
 
@@ -328,6 +329,7 @@ public class UploadImgView extends RelativeLayout{
         if(changePostion!=-1){
 
             adapter.notifyItemChanged(changePostion);
+
         }
     }
     @Override

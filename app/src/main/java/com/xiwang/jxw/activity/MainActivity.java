@@ -62,7 +62,7 @@ public class MainActivity extends BaseActivity {
     /** 我的页面 */
     private MineFragment mineFragmentFragment;
     /** 发现页面 */
-    private FindFragment findFragment;
+   // private FindFragment findFragment;
     /** 发布页面 */
     private PublishFragment publishFragment;
     /** home页面 */
@@ -70,8 +70,8 @@ public class MainActivity extends BaseActivity {
 
     /** home选项 */
     private MyRadioView main_rv;
-    /** 油价走势 */
-    private MyRadioView find_rv;
+    /** 发现 */
+   // private MyRadioView find_rv;
     /** 发布选项 */
     private MyRadioView publish_rl;
     /** 我的择项 */
@@ -83,11 +83,11 @@ public class MainActivity extends BaseActivity {
     /** 主页 */
     public final static int FRAGMENT_HOME = 0;
     /** 发现 */
-    public final static int FRAGMENT_FIND = 1;
+    //public final static int FRAGMENT_FIND = 1;
     /** 发布 */
-    public final static int FRAGMENT_PUBLISH = 2;
+    public final static int FRAGMENT_PUBLISH = 1;
     /** 我的 */
-    public final static int FRAGMENT_MINE = 3;
+    public final static int FRAGMENT_MINE = 2;
 
     public final static int ACTION_FABU = 4;
 
@@ -119,7 +119,7 @@ public class MainActivity extends BaseActivity {
         setSupportActionBar(toolbar);
 
         main_rv=(MyRadioView)findViewById(R.id.main_rv);
-        find_rv=(MyRadioView)findViewById(R.id.find_rv);
+      //  find_rv=(MyRadioView)findViewById(R.id.find_rv);
         publish_rl=(MyRadioView)findViewById(R.id.publish_rl);
         mine_rv=(MyRadioView)findViewById(R.id.mine_rv);
 
@@ -183,7 +183,7 @@ public class MainActivity extends BaseActivity {
     protected void widgetListener() {
 
         main_rv.setOnClickListener(radioClick);
-        find_rv.setOnClickListener(radioClick);
+        //find_rv.setOnClickListener(radioClick);
         publish_rl.setOnClickListener(radioClick);
         mine_rv.setOnClickListener(radioClick);
 
@@ -253,9 +253,9 @@ public class MainActivity extends BaseActivity {
             transaction.hide(homeFragment);
             // myOrderFragment.onPause();
         }
-        if (findFragment != null) {
-            transaction.hide(findFragment);
-        }
+//        if (findFragment != null) {
+//            transaction.hide(findFragment);
+//        }
         if (publishFragment != null) {
             transaction.hide(publishFragment);
         }
@@ -276,14 +276,14 @@ public class MainActivity extends BaseActivity {
     private void initFragment() {
 
         homeFragment = new HomeFragment();
-        findFragment = new FindFragment();
+        //findFragment = new FindFragment();
         publishFragment = new PublishFragment();
 
 
         mineFragmentFragment = new MineFragment();
 
         list_Fragments.add(homeFragment);
-        list_Fragments.add(findFragment);
+        //list_Fragments.add(findFragment);
         list_Fragments.add(publishFragment);
         list_Fragments.add(mineFragmentFragment);
 
@@ -349,9 +349,9 @@ public class MainActivity extends BaseActivity {
                 case R.id.main_rv:
                     switchView(FRAGMENT_HOME);
                     break;
-                case R.id.find_rv:
-                    switchView(FRAGMENT_FIND);
-                    break;
+//                case R.id.find_rv:
+//                    switchView(FRAGMENT_FIND);
+//                    break;
                 case R.id.publish_rl:
                     switchView(FRAGMENT_PUBLISH);
                     break;
