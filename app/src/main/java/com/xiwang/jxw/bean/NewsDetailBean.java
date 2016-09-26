@@ -268,4 +268,17 @@ public class NewsDetailBean extends BaseBean {
 
         setCommentList((ArrayList<NewsDetailCommentBean>) BaseBean.toModelList(jSon.optString("list"),NewsDetailCommentBean.class));
     }
+
+    /**
+     * 返回是否最后一页
+     * @return
+     */
+    public boolean isEndPage(){
+
+        if(null!=page&page.equals(pages)){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

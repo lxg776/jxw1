@@ -35,14 +35,14 @@
             app:img1="@mipmap/main_home_1"
             app:text="首页" />
 
-        <com.xiwang.jxw.widget.MyRadioView
-            android:id="@+id/find_rv"
-            android:layout_width="0px"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            app:img0="@mipmap/main_find_0"
-            app:img1="@mipmap/main_find_1"
-            app:text="发现" />
+        <!--<com.xiwang.jxw.widget.MyRadioView-->
+            <!--android:id="@+id/find_rv"-->
+            <!--android:layout_width="0px"-->
+            <!--android:layout_height="fill_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--app:img0="@mipmap/main_find_0"-->
+            <!--app:img1="@mipmap/main_find_1"-->
+            <!--app:text="发现" />-->
 
         <com.xiwang.jxw.widget.MyRadioView
             android:id="@+id/publish_rl"

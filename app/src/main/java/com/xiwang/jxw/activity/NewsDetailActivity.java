@@ -426,26 +426,34 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
 
     /**
      * 加载网络数据
-     * @param page 页数
+     * @param loadPage 页数
      */
-    private void loadNetData(final int page, final boolean loadCache){
+    private void loadNetData(final int loadPage, final boolean loadCache){
 
 
 
-        if(page>1){
+        if(loadPage>1){
             text_more.setText(R.string.more_loading);
             indeterminate_progress_library.setVisibility(View.VISIBLE);
         }
-
-        NewsBiz.getNewsDetail(newsBean.getTid(), currentPage, new BaseBiz.RequestHandle() {
+        newsBean.setTid("7328");
+        NewsBiz.getNewsDetail(newsBean.getTid(), loadPage, new BaseBiz.RequestHandle() {
             @Override
             public void onSuccess(ResponseBean responseBean) {
-                currentPage = page;
-                if (page == 1) {
+
+                NewsDetailBean bean = (NewsDetailBean) responseBean.getObject();
+                if(!TextUtils.isEmpty(bean.getPage())){
+                    try {
+                        currentPage = Integer.parseInt(bean.getPage());
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+
+                if (loadPage == 1) {
                     //如果是第一页加载显示详情
                     showNewsDetail(responseBean);
                 } else {
-                    NewsDetailBean bean = (NewsDetailBean) responseBean.getObject();
                     showCommentList(bean);
                 }
             }
@@ -457,7 +465,7 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
 
             @Override
             public ResponseBean getRequestCache() {
-                if (loadCache && page == 1) {
+                if (loadCache && loadPage == 1) {
                     return (ResponseBean) SpUtil.getObject(context, getString(R.string.cache_newsdetail) + newsBean.getTid());
                 }
                 return null;
@@ -530,6 +538,14 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         //设置点赞
         dianzan_count_tv.setText(detailBean.getDig());
         setDigesListText(detailBean.getDiglist());
+        if(detailBean.isEndPage()){
+            refreshLayout.setLoadMore(false);
+
+        }else{
+            refreshLayout.setLoadMore(true);
+        }
+
+
     }
 
     /**
@@ -647,6 +663,11 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         }else{
             listAdapter.getCommentBeanList().addAll(newsDetailBean.getCommentList());
         }
+        if(newsDetailBean.isEndPage()){
+            refreshLayout.setLoadMore(false);
+        }else{
+            refreshLayout.setLoadMore(true);
+        }
         finishLoad();
     }
 
@@ -658,6 +679,8 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         listAdapter.notifyDataSetChanged();
         refreshLayout.setRefreshing(false);
         refreshLayout.setLoading(false);
+
+
 
 
         text_more.setText(R.string.loadmore);

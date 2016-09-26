@@ -53,8 +53,14 @@ public class RefreshLayout extends SwipeRefreshLayout {
         return super.dispatchTouchEvent(event);
     }
 
+    boolean mLoadMoreFla = true;
+
+    public void setLoadMore(boolean loadMore){
+        mLoadMoreFla =loadMore;
+    }
+
     private boolean canLoadMore() {
-        return isBottom() && !isLoading && isPullingUp();
+        return mLoadMoreFla&&isBottom() && !isLoading && isPullingUp();
     }
 
     private boolean isBottom() {
