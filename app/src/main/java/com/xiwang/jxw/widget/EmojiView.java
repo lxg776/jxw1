@@ -44,8 +44,13 @@ public class EmojiView extends BaseView {
     /**回调*/
     EmojiListener emojiListener;
 
+
+    /**添加图片按钮*/
+    ImageView mPicture;
+
+
     /**表情内容是否显示*/
-    boolean contentFla;
+    public boolean contentFla;
 
     public boolean isContentFla() {
         return contentFla;
@@ -87,6 +92,7 @@ public class EmojiView extends BaseView {
         viewPager= (ViewPager) view_Parent.findViewById(R.id.viewPager);
         page_index_ll= (LinearLayout) view_Parent.findViewById(R.id.page_index_ll);
         change_ll= (LinearLayout) view_Parent.findViewById(R.id.change_ll);
+        mPicture= (ImageView) view_Parent.findViewById(R.id.picture_iv);
     }
 
 
@@ -144,6 +150,16 @@ public class EmojiView extends BaseView {
                 onKeyBoard();
             }
         });
+        mPicture.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+             if(null!=emojiListener){
+                 emojiListener.onClickPictureView();
+             }
+            }
+        });
+
         /**
          * 监听页面
          */
@@ -476,6 +492,11 @@ public class EmojiView extends BaseView {
          * @param bean
          */
             public void onClickEmojiView(SmileBean bean);
+
+        /**
+         * 点击上传图片
+         */
+        public void onClickPictureView();
 
         /**
          * 表情显示

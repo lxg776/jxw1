@@ -209,6 +209,12 @@ public class PublishNewsActivity extends BaseSubmitActivity{
                     content_edt.addEmoji(bean);
                 }
             }
+
+            @Override
+            public void onClickPictureView() {
+
+            }
+
             @Override
             public void onEmojiShow() {
                 onEShow();

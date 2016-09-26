@@ -66,6 +66,8 @@
         <attr name = "child_with" format = "dimension" />
         <attr name = "child_height" format = "dimension" />
         <attr name = "numColumns" format = "integer" />
+        <attr name = "isAdd" format = "boolean" />
+
     </declare-styleable>
 
     <declare-styleable name="MyInputEditView">
