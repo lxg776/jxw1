@@ -1,7 +1,14 @@
 package com.xiwang.jxw.bean;
 
+import android.text.TextUtils;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 详情评论实体
  * @author liangxg
@@ -32,6 +39,18 @@ public class NewsDetailCommentBean extends BaseBean {
 
     private AuthorBean userinfo;
 
+
+    private List<String> images;
+
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
+    }
+
     public AuthorBean getUserinfo() {
         return userinfo;
     }
@@ -52,6 +71,16 @@ public class NewsDetailCommentBean extends BaseBean {
             setIfshield(jSon.optString("ifshield"));
             setGroupid(jSon.optString("groupid"));
             setId(jSon.optString("id"));
+
+            String imagesString = jSon.optString("images");
+            if(!TextUtils.isEmpty(imagesString)){
+               JSONArray imagesArray = jSon.optJSONArray("images");
+                images = new ArrayList<>();
+               for(int i=0;i<imagesArray.length();i++){
+                   String string = imagesArray.optString(i);
+                   images.add(string);
+               }
+            }
 
             setUserinfo((AuthorBean) BaseBean.newInstance(AuthorBean.class, jSon.optString("userinfo")));
     }
