@@ -1,12 +1,19 @@
 package com.xiwang.jxw.widget;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import com.xiwang.jxw.activity.NewsImagesActivity;
+import com.xiwang.jxw.config.IntentConfig;
 import com.xiwang.jxw.util.DisplayUtil;
+import com.xiwang.jxw.util.ImgLoadUtil;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -21,7 +28,7 @@ public class NineGridlayout extends ViewGroup {
     private int gap = 5;
     private int columns;//
     private int rows;//
-    private List listData;
+    private ArrayList<String> listData;
     private int totalWidth;
 
     private Context mContext;
@@ -33,7 +40,15 @@ public class NineGridlayout extends ViewGroup {
     public NineGridlayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext =context;
-        totalWidth=DisplayUtil.getScreenWidth(mContext)- DisplayUtil.dip2px(mContext,80);
+        //totalWidth=DisplayUtil.getScreenWidth(mContext)- DisplayUtil.dip2px(mContext,40);
+    }
+
+    public int getTotalWidth() {
+        return totalWidth;
+    }
+
+    public void setTotalWidth(int totalWidth) {
+        this.totalWidth = totalWidth;
     }
 
     @Override
@@ -58,6 +73,7 @@ public class NineGridlayout extends ViewGroup {
 
         for (int i = 0; i < childrenCount; i++) {
             ImageView childrenView = (ImageView) getChildAt(i);
+            final int postion = i;
 //            childrenView.setImageUrl(((Image) listData.get(i)).getUrl());
             int[] position = findPosition(i);
             int left = (singleWidth + gap) * position[1];
@@ -66,6 +82,15 @@ public class NineGridlayout extends ViewGroup {
             int bottom = top + singleHeight;
 
             childrenView.layout(left, top, right, bottom);
+            childrenView.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    toImages(listData.get(postion));
+                }
+            });
+            //异步加载图片
+            ImgLoadUtil.displayImage(listData.get(i),childrenView);
         }
 
     }
@@ -94,7 +119,7 @@ public class NineGridlayout extends ViewGroup {
     }
 
 
-    public void setImagesData(List<String> lists) {
+    public void setImagesData(ArrayList<String> lists) {
         if (lists == null || lists.isEmpty()) {
             return;
         }
@@ -160,14 +185,16 @@ public class NineGridlayout extends ViewGroup {
     private ImageView generateImageView() {
         ImageView iv = new ImageView(getContext());
         iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        iv.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
         iv.setBackgroundColor(Color.parseColor("#f5f5f5"));
         return iv;
+    }
+
+    public void toImages(String url) {
+        Intent intent=new Intent(mContext,NewsImagesActivity.class);
+        intent.putExtra(IntentConfig.SEND_URL,url);
+        intent.putStringArrayListExtra(IntentConfig.SEND_URL_LIST, listData);
+        intent.putExtra(IntentConfig.SEND_TITLE, "");
+        mContext.startActivity(intent);
     }
 
 

@@ -3,6 +3,7 @@ package com.xiwang.jxw.fragment;
 import android.annotation.SuppressLint;
 
 import android.os.Bundle;
+import android.support.v4.view.PagerAdapter;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ListView;
@@ -45,6 +46,8 @@ public class NewsListFragment extends BaseFragment3 {
     /** 当前页数*/
     int currentPage=1;
 
+
+    View ad_view;
 
 
     private static final String ARG_PARAM1 = "param1";
@@ -107,6 +110,10 @@ public class NewsListFragment extends BaseFragment3 {
 
     @Override
     public void initGetData() {
+        ad_view =View.inflate(context,R.layout.d_viewpager,null);
+
+
+
         adapter=new HomeNewsListAdapter(context);
     }
 
@@ -151,6 +158,8 @@ public class NewsListFragment extends BaseFragment3 {
 
     @Override
     protected void init() {
+
+
         if(null==adapter.getNewsBeanList()||adapter.getNewsBeanList().size()<=0){
             loadData(1, true, false);
         }
@@ -226,6 +235,5 @@ public class NewsListFragment extends BaseFragment3 {
         refreshLayout.finishRefreshLoadMore();
         adapter.notifyDataSetChanged();
     }
-
 
 }

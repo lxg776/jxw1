@@ -2,6 +2,7 @@ package com.xiwang.jxw.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -436,7 +437,6 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
             text_more.setText(R.string.more_loading);
             indeterminate_progress_library.setVisibility(View.VISIBLE);
         }
-        newsBean.setTid("7328");
         NewsBiz.getNewsDetail(newsBean.getTid(), loadPage, new BaseBiz.RequestHandle() {
             @Override
             public void onSuccess(ResponseBean responseBean) {
