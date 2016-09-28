@@ -21,8 +21,8 @@ import com.xiwang.jxw.util.IntentUtil;
 import java.util.ArrayList;
 
 /**
-     * 适配器
-     */
+ ** 适配器
+ */
 public class UploadImgesAdapter extends BaseAdapter {
        public  ArrayList<String> imageModelList;
         Context context;
@@ -96,4 +96,4 @@ public class UploadImgesAdapter extends BaseAdapter {
             }
             return convertView;
         }
-    }
+}
