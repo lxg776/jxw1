@@ -1,9 +1,6 @@
 package com.xiwang.jxw.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -14,10 +11,9 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.bean.NewsDetailCommentBean;
-import com.xiwang.jxw.util.CommonUtil;
 import com.xiwang.jxw.util.DisplayUtil;
 import com.xiwang.jxw.util.ImgLoadUtil;
-import com.xiwang.jxw.widget.NoScrollGridView;
+import com.xiwang.jxw.widget.NineGridlayout;
 import com.xiwang.jxw.widget.RichTextView;
 
 import java.util.ArrayList;
@@ -83,7 +79,7 @@ public class CommentListAdapter extends BaseAdapter{
             holder.publish_tv= (TextView) convertView.findViewById(R.id.publish_tv);
             holder.content_tv= (RichTextView) convertView.findViewById(R.id.content_tv);
             holder.author_headimg_iv= (ImageView) convertView.findViewById(R.id.author_headimg_iv);
-            holder.mImages = (NoScrollGridView) convertView.findViewById(R.id.images_rv);
+            holder.mImages = (NineGridlayout) convertView.findViewById(R.id.images_rv);
             convertView.setTag(holder);
         }else{
             holder= (ViewHolder) convertView.getTag();
@@ -95,7 +91,8 @@ public class CommentListAdapter extends BaseAdapter{
         //显示评论图片
         if(bean.getImages()!=null&&bean.getImages().size()>0){
             holder.mImages.setVisibility(View.VISIBLE);
-            refreshData(bean.getImages(),holder.mImages);
+            holder.mImages.setTotalWidth(DisplayUtil.getScreenWidth(context)- DisplayUtil.dip2px(context,40+16*2+16*2));
+            holder.mImages.setImagesData((ArrayList<String>) bean.getImages());
         }else{
             holder.mImages.setVisibility(View.GONE);
         }
@@ -106,46 +103,6 @@ public class CommentListAdapter extends BaseAdapter{
 
     private final int ONE_LINE_SHOW_NUMBER = 3;
 
-    public void refreshData(List<String> data,RecyclerView item_recyclerview) {
-
-        //每行显示3个，水平显示
-        item_recyclerview.setLayoutManager(new GridLayoutManager(context,ONE_LINE_SHOW_NUMBER, LinearLayoutManager.HORIZONTAL,false));
-
-        ViewGroup.LayoutParams layoutParams = item_recyclerview.getLayoutParams();
-        //计算行数
-        int lineNumber = data.size()%ONE_LINE_SHOW_NUMBER==0? data.size()/ONE_LINE_SHOW_NUMBER:data.size()/ONE_LINE_SHOW_NUMBER +1;
-        //计算高度=行数＊每行的高度 ＋(行数－1)＊10dp的margin ＋ 10dp（为了居中）
-        //因为每行显示3个条目，为了保持正方形，那么高度应该是也是宽度/3
-        //高度的计算需要自己好好理解，否则会产生嵌套recyclerView可以滑动的现象
-        int height = 0;
-        if(null!=data&&data.size()>0){
-            int size =data.size();
-            height = ((size-1/ONE_LINE_SHOW_NUMBER)+1)*DisplayUtil.dip2px(context,80);
-        }
-        layoutParams.height= height;
-        layoutParams.width = DisplayUtil.dip2px(context,270);
-
-        System.out.print("qtbj_height"+layoutParams.height);
-        System.out.print("qtbj_width"+layoutParams.width);
-
-        item_recyclerview.setLayoutParams(layoutParams);
-        item_recyclerview.setAdapter(new ItemCommentImageAdapter(context,data));
-    }
-
-
-    public void refreshData(List<String> data,NoScrollGridView gridView) {
-        int height = 0;
-        if(null!=data&&data.size()>0){
-            int size =data.size();
-            height = ((size-1/ONE_LINE_SHOW_NUMBER)+1)*DisplayUtil.dip2px(context,80);
-        }
-
-        ViewGroup.LayoutParams layoutParams = gridView.getLayoutParams();
-        layoutParams.height =height;
-        gridView.setLayoutParams(layoutParams);
-
-        gridView.setAdapter(new ItemCommentImageAdapter2(context,data));
-    }
 
 
     private class ViewHolder {
@@ -159,6 +116,6 @@ public class CommentListAdapter extends BaseAdapter{
         private ImageView author_headimg_iv;
 
         /**评论图片*/
-        private NoScrollGridView mImages;
+        private NineGridlayout mImages;
     }
 }

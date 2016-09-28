@@ -46,14 +46,11 @@
             android:textColor="@color/black_transparent_54"
             android:textSize="16sp" />
         <!--评论图片-->
-        <com.xiwang.jxw.widget.NoScrollGridView
+        <com.xiwang.jxw.widget.NineGridlayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/images_rv"
-            android:numColumns="3"
-            android:verticalSpacing="10dp"
-            android:horizontalSpacing="10dp"
-            ></com.xiwang.jxw.widget.NoScrollGridView>
+            ></com.xiwang.jxw.widget.NineGridlayout>
 
     </LinearLayout>
 </LinearLayout>
