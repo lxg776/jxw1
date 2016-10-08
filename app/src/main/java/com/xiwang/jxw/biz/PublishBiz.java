@@ -1,40 +1,9 @@
 package com.xiwang.jxw.biz;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.TextUtils;
-
-import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.xiwang.jxw.R;
-import com.xiwang.jxw.activity.LoginActivity;
 import com.xiwang.jxw.base.BaseBiz;
-import com.xiwang.jxw.bean.BaseBean;
-import com.xiwang.jxw.bean.DigOrFightBean;
-import com.xiwang.jxw.bean.DigUserBean;
 import com.xiwang.jxw.bean.ResponseBean;
-import com.xiwang.jxw.bean.UserBean;
-import com.xiwang.jxw.bean.UserInfoBean;
-import com.xiwang.jxw.config.IntentConfig;
 import com.xiwang.jxw.config.ServerConfig;
-import com.xiwang.jxw.config.TApplication;
-import com.xiwang.jxw.event.LoginEvent;
-import com.xiwang.jxw.event.UserInfoEvent;
-import com.xiwang.jxw.intf.UserInfoListener;
-import com.xiwang.jxw.network.AppHttpClient;
-import com.xiwang.jxw.util.Log;
-import com.xiwang.jxw.util.SpUtil;
-
-import org.apache.http.Header;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-
-import de.greenrobot.event.EventBus;
 
 /**
  * @author liangxg

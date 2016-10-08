@@ -13,12 +13,14 @@ import com.xiwang.jxw.network.AppHttpClient;
 import com.xiwang.jxw.util.Log;
 
 
-import org.apache.http.Header;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+
+import cz.msebera.android.httpclient.Header;
 
 /**
  * 系统逻辑
@@ -40,6 +42,20 @@ public class SystemBiz {
             }
             params.put("file",file);
             AppHttpClient.post(ServerConfig.UPLOAD_IMG, params, new AsyncHttpResponseHandler() {
+
+
+
+
+                @Override
+                public void onProgress(long bytesWritten, long totalSize) {
+                    super.onProgress(bytesWritten, totalSize);
+                    int progress= (int) (bytesWritten*100/totalSize);
+                    if(progress==100){
+                        handle.onFinish();
+                    }
+                    handle.onProgress(progress);
+                }
+
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     String responseStr = new String(responseBody);
@@ -72,15 +88,6 @@ public class SystemBiz {
                         responseBean.setInfo(new String(responseBody));
                     }
                     handle.onFail(responseBean);
-                }
-                @Override
-                public void onProgress(long bytesWritten, long totalSize) {
-                    super.onProgress(bytesWritten, totalSize);
-                    int progress= (int) (bytesWritten*100/totalSize);
-                    if(progress==100){
-                        handle.onFinish();
-                    }
-                    handle.onProgress(progress);
                 }
             });
         }

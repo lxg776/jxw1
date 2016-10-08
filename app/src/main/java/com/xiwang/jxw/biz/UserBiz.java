@@ -25,15 +25,15 @@ import com.xiwang.jxw.intf.UserInfoListener;
 import com.xiwang.jxw.network.AppHttpClient;
 import com.xiwang.jxw.util.Log;
 import com.xiwang.jxw.util.SpUtil;
-import com.xiwang.jxw.util.ToastUtil;
 
-import org.apache.http.Header;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 
+import cz.msebera.android.httpclient.entity.mime.Header;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -642,8 +642,9 @@ public class UserBiz {
         }
         params.put("file",file);
         AppHttpClient.post(ServerConfig.GETAPP_URL, params, new AsyncHttpResponseHandler() {
+
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
                 String responseStr = new String(responseBody);
 
                 ResponseBean responseBean = new ResponseBean();
@@ -668,8 +669,9 @@ public class UserBiz {
                     handle.onFail(responseBean);
                 }
             }
+
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
                 ResponseBean responseBean = new ResponseBean();
                 responseBean.setStatus(statusCode + "");
                 if(null!=responseBody){
@@ -677,6 +679,7 @@ public class UserBiz {
                 }
                 handle.onFail(responseBean);
             }
+
             @Override
             public void onProgress(long bytesWritten, long totalSize) {
                 super.onProgress(bytesWritten, totalSize);

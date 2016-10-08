@@ -11,10 +11,10 @@ import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.util.Log;
 
 
-import org.apache.http.client.params.ClientPNames;
 
 import java.util.Locale;
 
+import cz.msebera.android.httpclient.client.params.ClientPNames;
 
 
 /**

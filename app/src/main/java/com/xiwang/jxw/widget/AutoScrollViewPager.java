@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 
+import com.xiwang.jxw.R;
 import com.xiwang.jxw.util.DisplayUtil;
 
 import java.util.ArrayList;

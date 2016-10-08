@@ -425,7 +425,9 @@ public class EmojiView extends BaseView {
             }
            final ImageView img_iv= (ImageView) convertView.findViewById(R.id.img_iv);
             if(smileBean.isDeleteSimile()){
-                convertView.setBackgroundResource(R.mipmap.ic_launcher);
+
+                img_iv.setImageDrawable(getResources().getDrawable(R.mipmap.del_f_icon));
+               // convertView.setBackgroundResource(R.mipmap.del_f_icon);
                 convertView.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {

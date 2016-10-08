@@ -4,12 +4,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.text.TextUtils;
 
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-import org.apache.http.Header;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.umeng.analytics.MobclickAgent;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.bean.ResponseBean;
@@ -19,6 +19,8 @@ import com.xiwang.jxw.network.AppHttpClient;
 import com.xiwang.jxw.util.Log;
 import com.xiwang.jxw.util.ProcessDialogUtil;
 import android.content.DialogInterface.OnDismissListener;
+
+import cz.msebera.android.httpclient.Header;
 
 /**
  * 基本的网络事务
@@ -53,6 +55,7 @@ public class BaseBiz {
                 Log.d(params.toString());
             }
         AsyncHttpResponseHandler handler =new AsyncHttpResponseHandler() {
+
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String responseStr = new String(responseBody);
@@ -77,9 +80,10 @@ public class BaseBiz {
                 }else
                 {
 
-            handle.onFail(responseBean);
-        }
-    }
+                    handle.onFail(responseBean);
+                }
+            }
+
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 ResponseBean responseBean = new ResponseBean();
@@ -90,9 +94,6 @@ public class BaseBiz {
                 handle.onFail(responseBean);
             }
         };
-
-
-
 
         if(params==null){
             AppHttpClient.get(url,handler);
