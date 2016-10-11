@@ -22,12 +22,16 @@ import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.base.BaseFragment2;
 import com.xiwang.jxw.base.BaseFragment3;
 import com.xiwang.jxw.bean.ColumnBean;
+import com.xiwang.jxw.bean.HfPagerBean;
+import com.xiwang.jxw.bean.HomeLunBoBean;
 import com.xiwang.jxw.bean.ListBean;
 import com.xiwang.jxw.bean.NewsBean;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.biz.HomeBiz;
 import com.xiwang.jxw.util.IntentUtil;
 import com.xiwang.jxw.util.SpUtil;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -50,13 +54,13 @@ public class NewsListFragment extends BaseFragment3 {
     int currentPage=1;
 
 
-    View ad_view;
-
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    String param1;
+
+
+
 
     public static NewsListFragment newInstance() {
         NewsListFragment fragment = new NewsListFragment();
@@ -111,15 +115,14 @@ public class NewsListFragment extends BaseFragment3 {
         refreshLayout.setWaveColor(0xffffffff);
         refreshLayout.setIsOverLay(false);
         refreshLayout.setWaveShow(true);
+
     }
 
     @Override
     public void initGetData() {
-        ad_view =View.inflate(context,R.layout.d_viewpager,null);
-
-
 
         adapter=new HomeNewsListAdapter2(context);
+
     }
 
     @Override
@@ -130,9 +133,13 @@ public class NewsListFragment extends BaseFragment3 {
             public void onitemClick(View view, int position) {
                 if (position <= adapter.getNewsBeanList().size() - 1) {
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable(getString(R.string.send_news), adapter.getNewsBeanList().get(position));
-                    bundle.putSerializable(getString(R.string.send_column), columnBean);
-                    IntentUtil.gotoActivity(context, NewsDetailActivity.class, bundle);
+                    Object o =  adapter.getNewsBeanList().get(position);
+                    if(o instanceof  NewsBean){
+                        NewsBean bean = (NewsBean) o;
+                        bundle.putSerializable(getString(R.string.send_news),bean);
+                        bundle.putSerializable(getString(R.string.send_column), columnBean);
+                        IntentUtil.gotoActivity(context, NewsDetailActivity.class, bundle);
+                    }
                 }
             }
         });
@@ -170,6 +177,27 @@ public class NewsListFragment extends BaseFragment3 {
         }
     }
 
+    List<Object> objectList =new ArrayList<>();
+
+
+    private HomeLunBoBean getHomeLunbo(){
+        HomeLunBoBean boBean =new HomeLunBoBean();
+        boBean.setRotation_speed(2000);
+        ArrayList<HfPagerBean> pageres = new ArrayList<>();
+        for(int i=0;i<4;i++){
+            HfPagerBean itpage =new HfPagerBean();
+            itpage.setImage_url("http://images.jingxi.net/imgread-p/u=650,850&id=24646.gif");
+            itpage.setImage_id("9999");
+            pageres.add(itpage);
+        }
+        boBean.setDataList(pageres);
+
+
+        return  boBean;
+    }
+
+
+
 
 
 
@@ -181,21 +209,22 @@ public class NewsListFragment extends BaseFragment3 {
      */
     private void loadData(final int page, final boolean isCache,boolean startLoading){
 
-
-
         if(null!=columnBean){
             String dataUrl=columnBean.getDataUrl();
             if(!TextUtils.isEmpty(dataUrl)){
-
                 HomeBiz.getHomeNewsList(dataUrl, page, new BaseBiz.RequestHandle() {
                     @Override
                     public void onSuccess(ResponseBean responseBean) {
                         ListBean listBean = (ListBean) responseBean.getObject();
                         currentPage = page;
                         if (currentPage == 1) {
-                            adapter.setNewsBeanList((List<NewsBean>) listBean.getModelList());
+                            objectList.clear();
+                            objectList.add(getHomeLunbo());
+                            objectList.addAll(listBean.getModelList());
+                            adapter.setNewsBeanList(objectList);
                         } else {
-                            adapter.getNewsBeanList().addAll((List<NewsBean>) listBean.getModelList());
+                            objectList.addAll(listBean.getModelList());
+                            adapter.setNewsBeanList(objectList);
                         }
                         if(currentPage!=listBean.getPages()){
                             refreshLayout.setLoadMore(true);
@@ -223,7 +252,9 @@ public class NewsListFragment extends BaseFragment3 {
                     public void onRequestCache(ResponseBean result) {
                         if (currentPage == 1) {
                             ListBean listBean = (ListBean) result.getObject();
-                            adapter.setNewsBeanList((List<NewsBean>) listBean.getModelList());
+                            objectList.clear();
+                            objectList.addAll(listBean.getModelList());
+                            adapter.setNewsBeanList(objectList);
                             adapter.notifyDataSetChanged();
                         }
                     }

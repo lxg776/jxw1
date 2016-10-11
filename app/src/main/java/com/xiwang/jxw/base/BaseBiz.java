@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.sina.weibo.sdk.utils.LogUtil;
 import com.umeng.analytics.MobclickAgent;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.bean.ResponseBean;
@@ -60,8 +61,9 @@ public class BaseBiz {
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String responseStr = new String(responseBody);
                 ResponseBean responseBean = new ResponseBean();
-
-
+                LogUtil.i("Net","get_URL:"+url);
+                LogUtil.i("Net","get_params:"+params.toString());
+                LogUtil.i("Net","get_Json:"+ responseBean.getObject());
                 Log.d("data:"+responseStr);
                 try {
 

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content" >
 
-    <com.brightoilonline.c2b_phone.view.AutoScrollViewPager
+    <com.xiwang.jxw.widget.AutoScrollViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="200dp" />

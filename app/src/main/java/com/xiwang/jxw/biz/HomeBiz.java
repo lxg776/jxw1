@@ -1,5 +1,6 @@
 package com.xiwang.jxw.biz;
 
+import com.loopj.android.http.RequestParams;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.bean.BaseBean;
@@ -103,6 +104,40 @@ public class HomeBiz {
             });
 
         }
+
+    /**
+     * 获取头部广轮播
+     * @param fid
+     * @param handle
+     */
+    public static void getTopLunbo(String fid,final BaseBiz.RequestHandle handle){
+            String url = ServerConfig.GETAPP_URL;
+        RequestParams params =new RequestParams();
+        params.put("a","ibenner");
+        params.put("fid",fid);
+        BaseBiz.getRequest(url, params, new BaseBiz.RequestHandle() {
+            @Override
+            public void onSuccess(ResponseBean responseBean) {
+
+
+            }
+
+            @Override
+            public void onFail(ResponseBean responseBean) {
+                handle.onFail(responseBean);
+            }
+
+            @Override
+            public ResponseBean getRequestCache() {
+                return handle.getRequestCache();
+            }
+
+            @Override
+            public void onRequestCache(ResponseBean result) {
+                handle.onRequestCache(result);
+            }
+        });
+    }
 
 
 }

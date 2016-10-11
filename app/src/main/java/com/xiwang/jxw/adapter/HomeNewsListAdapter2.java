@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
@@ -30,19 +29,29 @@ import java.util.List;
 public class HomeNewsListAdapter2 extends RecyclerView.Adapter{
 
     /** 列表数据*/
-    List<NewsBean> newsBeanList;
+    List<Object> newsBeanList;
     /** 上下文*/
     Context context;
     /** item点击事件*/
     OnitemClicklistener onitemClicklistener;
 
 
-    boolean isHeadShow =false;
+
 
     public final int TYPE_HEAD=0;
     public final int TYPE_NORMAL=1;
 
 
+
+
+
+    public List<Object> getNewsBeanList() {
+        return newsBeanList;
+    }
+
+    public void setNewsBeanList(List<Object> newsBeanList) {
+        this.newsBeanList = newsBeanList;
+    }
 
     public OnitemClicklistener getOnitemClicklistener() {
         return onitemClicklistener;
@@ -76,13 +85,7 @@ public class HomeNewsListAdapter2 extends RecyclerView.Adapter{
         }
     };
 
-    public List<NewsBean> getNewsBeanList() {
-        return newsBeanList;
-    }
 
-    public void setNewsBeanList(List<NewsBean> newsBeanList) {
-        this.newsBeanList = newsBeanList;
-    }
 
     public HomeNewsListAdapter2(Context context){
         this.context=context;
@@ -96,8 +99,8 @@ public class HomeNewsListAdapter2 extends RecyclerView.Adapter{
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
        if(viewType==TYPE_HEAD){
-           View view = View.inflate(context,R.layout.view_lunbo_ad,null);
-           return new ItemViewHolder(view);
+           View ad_view = View.inflate(context,R.layout.view_lunbo_ad,null);
+           return new LunBoAdHolder(ad_view);
        }else{
            View view = View.inflate(context,R.layout.item_home_newslist,null);
            return new ItemViewHolder(view);
@@ -107,19 +110,20 @@ public class HomeNewsListAdapter2 extends RecyclerView.Adapter{
 
     @Override
     public int getItemViewType(int position) {
-        if(position==0&&isHeadShow){
-            return  TYPE_HEAD;
-        }else{
-            return  TYPE_NORMAL;
-        }
+            Object o = newsBeanList.get(position);
+            if(o instanceof HomeLunBoBean){
+                return  TYPE_HEAD;
+            }else {
+               return TYPE_NORMAL;
+            }
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder,final int position) {
-
-        if(viewHolder instanceof ItemViewHolder) {
+        Object  o =  newsBeanList.get(position);
+        if(o instanceof NewsBean) {
+            NewsBean newsBean = (NewsBean) o;
             ItemViewHolder holder = (ItemViewHolder) viewHolder;
-            NewsBean  newsBean =  newsBeanList.get(position);
             holder.subject_tv.setText(newsBean.getSubject());
             holder.author_tv.setText(newsBean.getAuthor());
             holder.hits_tv.setText(newsBean.getHits());
@@ -138,17 +142,18 @@ public class HomeNewsListAdapter2 extends RecyclerView.Adapter{
                     }
                 }
             });
-        }else if(viewHolder instanceof LunBoAdHolder){
+        }else if(o instanceof HomeLunBoBean){
+            HomeLunBoBean homeLunBoBean = (HomeLunBoBean) o;
             LunBoAdHolder holder = (LunBoAdHolder) viewHolder;
             //轮播图
-
+            setViewPagerSrc(homeLunBoBean,holder.viewPager);
         }
     }
 
 
     /**
+     * 网络请求后的结果 填充 viewPager
      * @param lunBoBean
-     *            网络请求后的结果 填充 viewPager
      */
     public void setViewPagerSrc(HomeLunBoBean lunBoBean, AutoScrollViewPager viewPager) {
         ArrayList<HfPagerBean> list = lunBoBean.getDataList();
@@ -157,16 +162,14 @@ public class HomeNewsListAdapter2 extends RecyclerView.Adapter{
             viewPager.setVisibility(View.VISIBLE);
             final AdPageAdapter adapter = new AdPageAdapter(context,list);
             viewPager.setAdapter(adapter);
-//            delayeTime = lunBoBean.getRotation_speed();
-//            if (delayeTime > 0 && delayeTime <= 2000) {
-//                delayeTime = 2000;
-//            }
-//            viewPager.startAutoScroll(delayeTime);
-            // viewPager.reSetIndicator();
+            long delayeTime = lunBoBean.getRotation_speed();
+            if (delayeTime > 0 && delayeTime <= 2000) {
+                delayeTime = 2000;
+            }
+            viewPager.startAutoScroll(delayeTime);
         } else {
             viewPager.setVisibility(View.GONE);
         }
-
     }
 
     @Override
