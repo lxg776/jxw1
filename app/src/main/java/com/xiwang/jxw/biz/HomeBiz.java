@@ -5,6 +5,8 @@ import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.bean.BaseBean;
 import com.xiwang.jxw.bean.ColumnBean;
+import com.xiwang.jxw.bean.HfPagerBean;
+import com.xiwang.jxw.bean.HomeLunBoBean;
 import com.xiwang.jxw.bean.ListBean;
 import com.xiwang.jxw.bean.NewsBean;
 import com.xiwang.jxw.bean.ResponseBean;
@@ -12,6 +14,8 @@ import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.config.TApplication;
 
 import org.json.JSONException;
+
+import java.util.ArrayList;
 
 /**
  * 首页逻辑
@@ -118,8 +122,18 @@ public class HomeBiz {
         BaseBiz.getRequest(url, params, new BaseBiz.RequestHandle() {
             @Override
             public void onSuccess(ResponseBean responseBean) {
-
-
+                String string = (String) responseBean.getObject();
+                HomeLunBoBean boBean =new HomeLunBoBean();
+                try {
+                    boBean.setRotation_speed(3000);
+                    boBean.setDataList((ArrayList<HfPagerBean>) BaseBean.toModelList(string, HfPagerBean.class));
+                    responseBean.setObject(boBean);
+                    handle.onSuccess(responseBean);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    responseBean.setInfo("数据转化异常");
+                    handle.onFail(responseBean);
+                }
             }
 
             @Override

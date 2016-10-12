@@ -44,8 +44,8 @@ public class HomeLunBoBean extends BaseBean {
 	@Override
 	protected void init(JSONObject jSon) throws JSONException {
 		// TODO Auto-generated method stub
-		setRotation_speed(jSon.optLong("rotation_speed"));
-		setDataList((ArrayList<HfPagerBean>)toModelList(jSon.optString("dataList"), HfPagerBean.class));
+		setRotation_speed(2000);
+		setDataList((ArrayList<HfPagerBean>)toModelList(jSon.toString(), HfPagerBean.class));
 	}
 
 }

@@ -16,6 +16,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.bean.HfPagerBean;
+import com.xiwang.jxw.util.ToastUtil;
 
 import java.util.ArrayList;
 
@@ -103,7 +104,7 @@ public class AdPageAdapter extends PagerAdapter {
 			bean = mList.get(y_index);
 
 			if (null != bean) {
-				final String imgUrl = bean.getImage_url();
+				final String imgUrl = bean.getImage();
 				ImageLoader.getInstance().displayImage(imgUrl, imageView,
 						options, listener);
 				final HfPagerBean adBean = bean;
@@ -111,15 +112,9 @@ public class AdPageAdapter extends PagerAdapter {
 
 					@Override
 					public void onClick(View v) {// viewpager点击监听事件
-						if (null != adBean
-								&& !TextUtils.isEmpty(adBean
-										.getImage_hyperlink())) {
-							final Bundle bundle = new Bundle();
-							bundle.putSerializable("ad_bean", adBean);
-//							IntentUtil.gotoActivity(mContext,
-//									AdDetailActivity.class, bundle);
+						if (null != adBean){
+							ToastUtil.showToast(mContext,adBean.getTid());
 						}
-
 					}
 				});
 			}

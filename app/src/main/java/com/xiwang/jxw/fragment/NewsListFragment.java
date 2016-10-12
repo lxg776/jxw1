@@ -52,14 +52,11 @@ public class NewsListFragment extends BaseFragment3 {
     RecyclerView listView;
     /** 当前页数*/
     int currentPage=1;
-
-
-
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
 
-
+    HomeLunBoBean lunboBean;
 
 
     public static NewsListFragment newInstance() {
@@ -170,8 +167,6 @@ public class NewsListFragment extends BaseFragment3 {
 
     @Override
     protected void init() {
-
-
         if(null==adapter.getNewsBeanList()||adapter.getNewsBeanList().size()<=0){
             loadData(1, true, false);
         }
@@ -179,21 +174,55 @@ public class NewsListFragment extends BaseFragment3 {
 
     List<Object> objectList =new ArrayList<>();
 
+    /**
+     * 获取轮播布局
+     */
+    private void getHomeLunbo(){
+        HomeBiz.getTopLunbo(columnBean.getFid(), new BaseBiz.RequestHandle() {
+            @Override
+            public void onSuccess(ResponseBean responseBean) {
+                HomeLunBoBean boBean = (HomeLunBoBean) responseBean.getObject();
+                if(boBean.getDataList()!=null&&boBean.getDataList().size()>0){
+                    lunboBean =boBean;
+                }else{
+                    lunboBean=null;
+                }
+                updateLunboView();
+            }
+            @Override
+            public void onFail(ResponseBean responseBean) {
 
-    private HomeLunBoBean getHomeLunbo(){
-        HomeLunBoBean boBean =new HomeLunBoBean();
-        boBean.setRotation_speed(2000);
-        ArrayList<HfPagerBean> pageres = new ArrayList<>();
-        for(int i=0;i<4;i++){
-            HfPagerBean itpage =new HfPagerBean();
-            itpage.setImage_url("http://images.jingxi.net/imgread-p/u=650,850&id=24646.gif");
-            itpage.setImage_id("9999");
-            pageres.add(itpage);
+            }
+            @Override
+            public ResponseBean getRequestCache() {
+                return null;
+            }
+            @Override
+            public void onRequestCache(ResponseBean result) {
+
+            }
+        });
+    }
+
+    /**
+     * 更新轮播布局
+     */
+    private void updateLunboView(){
+        Object o=null;
+        if(null!=objectList&&objectList.size()>0){
+                o= objectList.get(0);
         }
-        boBean.setDataList(pageres);
-
-
-        return  boBean;
+        if(o!=null&&o instanceof HomeLunBoBean&&lunboBean!=null){
+            objectList.remove(0);
+            objectList.add(0,lunboBean);
+        }else if(o!=null&&o instanceof HomeLunBoBean&&lunboBean==null){
+            objectList.remove(0);
+        }else if(o!=null&&o instanceof NewsBean&&lunboBean==null){
+            objectList.add(0,lunboBean);
+        }else if(o==null){
+            objectList.add(0,lunboBean);
+        }
+        adapter.setNewsBeanList(objectList);
     }
 
 
@@ -212,14 +241,23 @@ public class NewsListFragment extends BaseFragment3 {
         if(null!=columnBean){
             String dataUrl=columnBean.getDataUrl();
             if(!TextUtils.isEmpty(dataUrl)){
+                if(page==1){
+                    //获取轮播图
+                    getHomeLunbo();
+                }
                 HomeBiz.getHomeNewsList(dataUrl, page, new BaseBiz.RequestHandle() {
                     @Override
                     public void onSuccess(ResponseBean responseBean) {
                         ListBean listBean = (ListBean) responseBean.getObject();
                         currentPage = page;
                         if (currentPage == 1) {
+
+                            if(objectList.size()>0){
+                                Object o = objectList.get(0);
+                            }
                             objectList.clear();
-                            objectList.add(getHomeLunbo());
+
+
                             objectList.addAll(listBean.getModelList());
                             adapter.setNewsBeanList(objectList);
                         } else {

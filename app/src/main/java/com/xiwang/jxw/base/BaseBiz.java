@@ -62,7 +62,9 @@ public class BaseBiz {
                 String responseStr = new String(responseBody);
                 ResponseBean responseBean = new ResponseBean();
                 LogUtil.i("Net","get_URL:"+url);
-                LogUtil.i("Net","get_params:"+params.toString());
+                if(null!=params){
+                    LogUtil.i("Net","get_params:"+params.toString());
+                }
                 LogUtil.i("Net","get_Json:"+ responseBean.getObject());
                 Log.d("data:"+responseStr);
                 try {
