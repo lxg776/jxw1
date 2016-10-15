@@ -10,7 +10,7 @@ import org.json.JSONObject;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.sina.weibo.sdk.utils.LogUtil;
+
 import com.umeng.analytics.MobclickAgent;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.bean.ResponseBean;
@@ -18,6 +18,7 @@ import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.network.AppHttpClient;
 import com.xiwang.jxw.util.Log;
+import com.xiwang.jxw.util.LogUtil;
 import com.xiwang.jxw.util.ProcessDialogUtil;
 import android.content.DialogInterface.OnDismissListener;
 
@@ -65,8 +66,7 @@ public class BaseBiz {
                 if(null!=params){
                     LogUtil.i("Net","get_params:"+params.toString());
                 }
-                LogUtil.i("Net","get_Json:"+ responseBean.getObject());
-                Log.d("data:"+responseStr);
+                LogUtil.i("Net","get_Json:"+ responseStr);
                 try {
 
                     JSONObject jsonObject = new JSONObject(responseStr);
@@ -130,7 +130,11 @@ public class BaseBiz {
                 ResponseBean responseBean = new ResponseBean();
 
 
-                Log.d("data:"+responseStr);
+                LogUtil.i("Net","get_URL:"+url);
+                if(null!=params){
+                    LogUtil.i("Net","get_params:"+params.toString());
+                }
+                LogUtil.i("Net","get_Json:"+ responseStr);
                 try {
 
                     JSONObject jsonObject = new JSONObject(responseStr);

@@ -1,6 +1,7 @@
 package com.xiwang.jxw.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -10,9 +11,13 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.xiwang.jxw.R;
+import com.xiwang.jxw.activity.NewsImagesActivity;
+import com.xiwang.jxw.bean.CommentImagesBean;
 import com.xiwang.jxw.bean.NewsDetailCommentBean;
+import com.xiwang.jxw.config.IntentConfig;
 import com.xiwang.jxw.util.DisplayUtil;
 import com.xiwang.jxw.util.ImgLoadUtil;
+import com.xiwang.jxw.util.ToastUtil;
 import com.xiwang.jxw.widget.NineGridlayout;
 import com.xiwang.jxw.widget.RichTextView;
 
@@ -68,7 +73,7 @@ public class CommentListAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, final ViewGroup parent) {
         ViewHolder holder;
         NewsDetailCommentBean bean=getItem(position);
 
@@ -92,7 +97,20 @@ public class CommentListAdapter extends BaseAdapter{
         if(bean.getImages()!=null&&bean.getImages().size()>0){
             holder.mImages.setVisibility(View.VISIBLE);
             holder.mImages.setTotalWidth(DisplayUtil.getScreenWidth(context)- DisplayUtil.dip2px(context,40+16*2+16*2));
-            holder.mImages.setImagesData((ArrayList<String>) bean.getImages());
+            ArrayList<String> thumbImagesArray =new ArrayList<>();
+            final  ArrayList<String> hdImagesArray =new ArrayList<>();
+            for(CommentImagesBean imagesBean:bean.getImages()){
+                thumbImagesArray.add(imagesBean.getImg_thumb());
+                hdImagesArray.add(imagesBean.getImg_hd());
+            }
+            holder.mImages.setImagesData(thumbImagesArray);
+            holder.mImages.setOnItemClickListener(new NineGridlayout.OnitemClickListener() {
+                @Override
+                public void onItemClick(int p) {
+                   // ToastUtil.showToast(context,p+"p"+"hdImagesArray:"+hdImagesArray.size());
+                    NewsImagesActivity.jumpNewsImagesActivity(context,"图片",hdImagesArray.get(p),hdImagesArray);
+                }
+            });
         }else{
             holder.mImages.setVisibility(View.GONE);
         }
@@ -102,6 +120,9 @@ public class CommentListAdapter extends BaseAdapter{
 
 
     private final int ONE_LINE_SHOW_NUMBER = 3;
+
+
+
 
 
 

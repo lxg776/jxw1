@@ -73,9 +73,9 @@ public class AutoScrollViewPager extends FrameLayout {
 	 * 设置指示器
 	 */
 	private void setIndicator() {
-		int size = DisplayUtil.dip2px(context, 8);
+		int size = DisplayUtil.dip2px(context, 6);
 		LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(size, size);
-		int px = DisplayUtil.dip2px(context, 8);
+		int px = DisplayUtil.dip2px(context, 6);
 		p.setMargins(px, 0, 0, px);
 		if (mLayout.getChildCount() > 0) {
 			mLayout.removeAllViews();

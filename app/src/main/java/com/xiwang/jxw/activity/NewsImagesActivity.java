@@ -1,5 +1,7 @@
 package com.xiwang.jxw.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -22,6 +24,7 @@ import com.xiwang.jxw.config.IntentConfig;
 import com.xiwang.jxw.listener.SaveImageListener;
 import com.xiwang.jxw.util.CommonUtil;
 import com.xiwang.jxw.util.ImgLoadUtil;
+import com.xiwang.jxw.util.LogUtil;
 import com.xiwang.jxw.util.ToastUtil;
 import com.xiwang.jxw.widget.PercentView;
 import com.xiwang.jxw.widget.ZoomImageView;
@@ -212,6 +215,7 @@ public class NewsImagesActivity extends BaseActivity{
             @Override
             public void onProgressUpdate(String imageUri, View view, int current, int total) {
                 int proess = current * 100 / total;
+                LogUtil.i("progress",proess+"%");
                 progress_view.setPercent(proess);
             }
         });
@@ -281,6 +285,19 @@ public class NewsImagesActivity extends BaseActivity{
                     }.start();
                 }
 
+    }
+
+
+
+
+
+
+    public static void jumpNewsImagesActivity(Context context,String title,String currentImagesUrl,  ArrayList<String> imagesUrlList){
+        Intent intent=new Intent(context,NewsImagesActivity.class);
+        intent.putExtra(IntentConfig.SEND_URL,currentImagesUrl);
+        intent.putStringArrayListExtra(IntentConfig.SEND_URL_LIST, imagesUrlList);
+        intent.putExtra(IntentConfig.SEND_TITLE,title);
+        context.startActivity(intent);
     }
 
 

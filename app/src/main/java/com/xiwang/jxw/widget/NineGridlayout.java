@@ -33,6 +33,18 @@ public class NineGridlayout extends ViewGroup {
 
     private Context mContext;
 
+    /**item点击时间*/
+    OnitemClickListener onItemClickListener;
+
+
+    public OnitemClickListener getOnItemClickListener() {
+        return onItemClickListener;
+    }
+
+    public void setOnItemClickListener(OnitemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
     public NineGridlayout(Context context) {
         super(context);
     }
@@ -71,7 +83,7 @@ public class NineGridlayout extends ViewGroup {
         params.height = singleHeight * rows + gap * (rows - 1);
         setLayoutParams(params);
 
-        for (int i = 0; i < childrenCount; i++) {
+        for ( int i = 0; i < childrenCount; i++) {
             ImageView childrenView = (ImageView) getChildAt(i);
             final int postion = i;
 //            childrenView.setImageUrl(((Image) listData.get(i)).getUrl());
@@ -86,7 +98,9 @@ public class NineGridlayout extends ViewGroup {
 
                 @Override
                 public void onClick(View v) {
-                    toImages(listData.get(postion));
+                    if(onItemClickListener!=null){
+                        onItemClickListener.onItemClick(postion);
+                    }
                 }
             });
             //异步加载图片
@@ -189,12 +203,11 @@ public class NineGridlayout extends ViewGroup {
         return iv;
     }
 
-    public void toImages(String url) {
-        Intent intent=new Intent(mContext,NewsImagesActivity.class);
-        intent.putExtra(IntentConfig.SEND_URL,url);
-        intent.putStringArrayListExtra(IntentConfig.SEND_URL_LIST, listData);
-        intent.putExtra(IntentConfig.SEND_TITLE, "");
-        mContext.startActivity(intent);
+
+
+
+    public interface  OnitemClickListener{
+        public void onItemClick(int postion);
     }
 
 

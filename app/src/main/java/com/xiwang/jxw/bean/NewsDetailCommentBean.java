@@ -2,6 +2,8 @@ package com.xiwang.jxw.bean;
 
 import android.text.TextUtils;
 
+import com.sina.weibo.sdk.api.share.Base;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,14 +42,14 @@ public class NewsDetailCommentBean extends BaseBean {
     private AuthorBean userinfo;
 
 
-    private List<String> images;
+    private ArrayList<CommentImagesBean> images;
 
 
-    public List<String> getImages() {
+    public ArrayList<CommentImagesBean> getImages() {
         return images;
     }
 
-    public void setImages(List<String> images) {
+    public void setImages(ArrayList<CommentImagesBean> images) {
         this.images = images;
     }
 
@@ -71,16 +73,16 @@ public class NewsDetailCommentBean extends BaseBean {
             setIfshield(jSon.optString("ifshield"));
             setGroupid(jSon.optString("groupid"));
             setId(jSon.optString("id"));
-
-            String imagesString = jSon.optString("images");
-            if(!TextUtils.isEmpty(imagesString)){
-               JSONArray imagesArray = jSon.optJSONArray("images");
-                images = new ArrayList<>();
-               for(int i=0;i<imagesArray.length();i++){
-                   String string = imagesArray.optString(i);
-                   images.add(string);
-               }
-            }
+            images = (ArrayList<CommentImagesBean>) BaseBean.toModelList( jSon.optString("images"),CommentImagesBean.class);
+//        String imagesString = jSon.optString("images");
+//            if(!TextUtils.isEmpty(imagesString)){
+//               JSONArray imagesArray = jSon.optJSONArray("images");
+//                images = new ArrayList<>();
+//               for(int i=0;i<imagesArray.length();i++){
+//                   String string = imagesArray.optString(i);
+//                   images.add(string);
+//               }
+//            }
 
             setUserinfo((AuthorBean) BaseBean.newInstance(AuthorBean.class, jSon.optString("userinfo")));
     }

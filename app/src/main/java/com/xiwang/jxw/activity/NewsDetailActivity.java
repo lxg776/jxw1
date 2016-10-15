@@ -2,6 +2,7 @@ package com.xiwang.jxw.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -327,6 +328,26 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         });
     }
 
+
+    /**
+     * 跳转新闻详情
+     * @param context
+     * @param bean
+     * @param columnBean
+     */
+    public static void jumpNewsDetailActivity(Context context,NewsBean bean,ColumnBean columnBean){
+        if(null==bean){
+            return;
+        }
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(context.getString(R.string.send_news),bean);
+        bundle.putSerializable(context.getString(R.string.send_column), columnBean);
+        IntentUtil.gotoActivity(context, NewsDetailActivity.class, bundle);
+    }
+
+
+
+
     /**
      * 分享操作
      */
@@ -579,8 +600,10 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
     /**正则抽去<img>标签的内容*/
     private static Pattern IMAGE_TAG_PATTERN = Pattern
             .compile("\\<img (.*?)\\ />");
-    /**正则抽去<img src= >的内容*/
-    private static Pattern SRC_TAG_PATTERN = Pattern.compile("src=\"(.*?)\"");
+    /**正则抽去<img zoomfile= >的内容*/
+    private static Pattern SRC_TAG_PATTERN = Pattern.compile("zoomfile=\"(.*?)\"");
+
+
 
     /**
      * 显示作者信息

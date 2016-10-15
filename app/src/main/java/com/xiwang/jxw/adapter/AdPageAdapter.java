@@ -15,7 +15,10 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.xiwang.jxw.R;
+import com.xiwang.jxw.activity.NewsDetailActivity;
+import com.xiwang.jxw.bean.ColumnBean;
 import com.xiwang.jxw.bean.HfPagerBean;
+import com.xiwang.jxw.bean.NewsBean;
 import com.xiwang.jxw.util.ToastUtil;
 
 import java.util.ArrayList;
@@ -61,11 +64,13 @@ public class AdPageAdapter extends PagerAdapter {
 		// }
 
 		Context mContext;
+		ColumnBean mColumnBean;
 
-		public AdPageAdapter(Context context, ArrayList<HfPagerBean> list) {
+		public AdPageAdapter(Context context, ArrayList<HfPagerBean> list, final ColumnBean columnBean) {
 
 			this.mList = list;
 			this.mContext=context;
+			this.mColumnBean=columnBean;
 		}
 
 		@Override
@@ -91,17 +96,17 @@ public class AdPageAdapter extends PagerAdapter {
 		 * 载入图片进去，用当前的position 除以 图片数组长度取余数是关键
 		 */
 		@Override
-		public Object instantiateItem(ViewGroup container, int index) {
+		public Object instantiateItem(final ViewGroup container, int index) {
 			ImageView imageView = (ImageView) View.inflate(mContext,
 					R.layout.item_homepage, null);
-			HfPagerBean bean = null;
+
 			int y_index = 0;
 			if (mList.size() > 0 && index >= mList.size()) {
 				y_index = index % mList.size();
 			} else {
 				y_index = index;
 			}
-			bean = mList.get(y_index);
+			final HfPagerBean bean = mList.get(y_index);
 
 			if (null != bean) {
 				final String imgUrl = bean.getImage();
@@ -112,9 +117,12 @@ public class AdPageAdapter extends PagerAdapter {
 
 					@Override
 					public void onClick(View v) {// viewpager点击监听事件
-						if (null != adBean){
-							ToastUtil.showToast(mContext,adBean.getTid());
-						}
+						//跳转详情
+						NewsBean newsBean =new NewsBean();
+						newsBean.setTid(bean.getTid());
+						newsBean.setSubject(bean.getTitle());
+						newsBean.setShareUrl(bean.getUrl());
+						NewsDetailActivity.jumpNewsDetailActivity(mContext,newsBean,mColumnBean);
 					}
 				});
 			}

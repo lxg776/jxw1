@@ -13,6 +13,7 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.xiwang.jxw.R;
+import com.xiwang.jxw.bean.ColumnBean;
 import com.xiwang.jxw.bean.HfPagerBean;
 import com.xiwang.jxw.bean.HomeLunBoBean;
 import com.xiwang.jxw.bean.NewsBean;
@@ -40,6 +41,8 @@ public class HomeNewsListAdapter2 extends RecyclerView.Adapter{
 
     public final int TYPE_HEAD=0;
     public final int TYPE_NORMAL=1;
+    /**栏目id*/
+    ColumnBean mColumnBean;
 
 
 
@@ -87,8 +90,9 @@ public class HomeNewsListAdapter2 extends RecyclerView.Adapter{
 
 
 
-    public HomeNewsListAdapter2(Context context){
+    public HomeNewsListAdapter2(Context context,ColumnBean columnBean){
         this.context=context;
+        this.mColumnBean=columnBean;
     }
 
 
@@ -160,7 +164,7 @@ public class HomeNewsListAdapter2 extends RecyclerView.Adapter{
         // 将图片装载到数组中
         if (list != null && list.size() > 0) {
             viewPager.setVisibility(View.VISIBLE);
-            final AdPageAdapter adapter = new AdPageAdapter(context,list);
+            final AdPageAdapter adapter = new AdPageAdapter(context,list,mColumnBean);
             viewPager.setAdapter(adapter);
             long delayeTime = lunBoBean.getRotation_speed();
             if (delayeTime > 0 && delayeTime <= 2000) {
