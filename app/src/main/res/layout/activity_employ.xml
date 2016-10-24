@@ -28,7 +28,7 @@
         >
         <!--职位-->
         <com.xiwang.jxw.widget.DeleteAutoCompleteTextView
-            android:hint="招聘职位"
+            android:hint="招聘职位,多个职位以逗号分隔 如服务员,实习生"
             android:layout_marginTop="16dp"
             style="@style/etd_1"
             android:singleLine="true"

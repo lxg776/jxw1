@@ -140,6 +140,17 @@
             android:theme="@style/AppTheme" >
         </activity>
 
+
+        <!-- 我的发布 -->
+        <activity
+            android:name=".activity.MyPublishActivity"
+            android:screenOrientation="portrait"
+            android:exported="false"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustUnspecified"
+            android:theme="@style/AppTheme" >
+        </activity>
+
+
         <!-- 登录Activity -->
         <activity
             android:name=".activity.LoginActivity"

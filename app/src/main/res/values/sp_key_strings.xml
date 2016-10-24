@@ -5,6 +5,7 @@
      <!-- **********************本地缓存模块*********************** -->
     <string name="start_app_img">start_app_img</string>
     <string name="home_newslist">home_newslist</string>
+    <string name="my_publish">my_publish</string>
     <string name="cache_newsdetail">cache_newsdetail</string>
     <string name="cache_user">cache_user</string>
     <string name="cache_userName">cache_userName</string>

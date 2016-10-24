@@ -11,8 +11,14 @@ import android.widget.EditText;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.adapter.UploadImgesAdapter;
 import com.xiwang.jxw.base.BaseActivity;
+import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.base.BaseSubmitActivity;
+import com.xiwang.jxw.bean.ResponseBean;
+import com.xiwang.jxw.biz.PublishBiz;
+import com.xiwang.jxw.biz.UserBiz;
 import com.xiwang.jxw.util.CheckUtil;
+import com.xiwang.jxw.util.ProcessDialogUtil;
+import com.xiwang.jxw.util.ToastUtil;
 import com.xiwang.jxw.widget.DeleteAutoCompleteTextView;
 import com.xiwang.jxw.widget.DeleteEditText;
 import com.xiwang.jxw.widget.MyDatePickView;
@@ -44,6 +50,8 @@ public class ApplyWorkActivity extends BaseSubmitActivity{
     MyTextSelectView salary_sv;
     /**自我评价*/
     EditText pingjia_edt;
+
+
     @Override
     protected String getPageName() {
         return "求职";
@@ -93,6 +101,61 @@ public class ApplyWorkActivity extends BaseSubmitActivity{
         pingjia_edt= (EditText) findViewById(R.id.pingjia_edt);
 
     }
+
+
+    /**
+     * 提交方法
+     * @return
+     */
+    protected  void  submit(){
+        if(checkInput()){
+
+            String name_text=name_edt.getText().toString();
+            String brith_text=birthDate_pv.getText();
+            String sex_text=sex_sv.getText();
+            String sexValue;
+
+            //0:保密 1女 2男
+            if("保密".equals(sex_text)){
+                sexValue = "0";
+            }else if("女".equals(sex_text)){
+                sexValue = "1";
+            }else{
+                sexValue = "2";
+            }
+            String education_text=education_sv.getText();
+            String workExperience_text= workExperience_sv.getText();
+            String phone_text=phone_edt.getText().toString();
+            String postion_text=position_tv.getText().toString();
+            String salary_text=salary_sv.getText();
+            String pingjia_text=pingjia_edt.getText().toString();
+            ProcessDialogUtil.showDialog(context, getResources().getString(R.string.loading), false);
+            PublishBiz.publishQiuzhi(name_text, brith_text, sex_text, education_text, workExperience_text, phone_text, postion_text, salary_text, pingjia_text, new BaseBiz.RequestHandle() {
+                @Override
+                public void onSuccess(ResponseBean responseBean) {
+                    ToastUtil.showToast(context,responseBean.getInfo());
+                    ProcessDialogUtil.dismissDialog();
+                    finish();
+                }
+
+                @Override
+                public void onFail(ResponseBean responseBean) {
+                    ProcessDialogUtil.dismissDialog();
+                    ToastUtil.showToast(context,responseBean.getInfo());
+                }
+
+                @Override
+                public ResponseBean getRequestCache() {
+                    return null;
+                }
+
+                @Override
+                public void onRequestCache(ResponseBean result) {
+
+                }
+            });
+        }
+    };
 
 
 

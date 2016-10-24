@@ -58,24 +58,24 @@
         </LinearLayout>
 
 
-        <!--招聘启事-->
+        <!-- 求租-->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
-            android:id="@+id/zhaopin_btn"
+            android:id="@+id/qiuzu_btn"
             >
             <ImageView
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                android:background="@drawable/pink700_circle"
-                android:textSize="14sp"
+                android:background="@drawable/red500_circle"
+
                 />
             <TextView
                 style="@style/common_text1"
-                android:text="招聘启事"
+                android:text="求租"
                 android:layout_marginTop="8dp"
                 android:textColor="@color/black_transparent_87"
                 android:textSize="14sp"
@@ -120,24 +120,26 @@
 
 
 
-        <!-- 求租-->
+
+
+        <!--招聘启事-->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
-            android:id="@+id/qiuzu_btn"
+            android:id="@+id/zhaopin_btn"
             >
             <ImageView
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                android:background="@drawable/red500_circle"
-
+                android:background="@drawable/pink700_circle"
+                android:textSize="14sp"
                 />
             <TextView
                 style="@style/common_text1"
-                android:text="求租"
+                android:text="招聘启事"
                 android:layout_marginTop="8dp"
                 android:textColor="@color/black_transparent_87"
                 android:textSize="14sp"

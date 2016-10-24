@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.activity.MainActivity;
+import com.xiwang.jxw.activity.MyPublishActivity;
 import com.xiwang.jxw.activity.PersionDetailActivity;
 import com.xiwang.jxw.base.BaseFragment;
 import com.xiwang.jxw.bean.UserBean;
@@ -103,6 +104,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
                     startActivity(intent);
                     break;
                 case R.id.fabu_ll:
+                    //我的发布
+                    MyPublishActivity.jumpActivity(context);
                     break;
                 case R.id.setting_ll:
                     break;
@@ -154,9 +157,9 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
     private void showUserInfo(){
         UserBean userBean= UserBiz.getUserBean(context);
         if(null!=userBean){
-            ImgLoadUtil.displayImage(userBean.getUserInfoBean().getFace(), user_headimg_iv);
             user_tv.setText(userBean.getUsername());
             if(null!=userBean.getUserInfoBean()){
+                ImgLoadUtil.displayImage(userBean.getUserInfoBean().getFace(), user_headimg_iv);
                 if(!TextUtils.isEmpty(userBean.getUserInfoBean().getSignature())){
                     sign_tv.setText(userBean.getUserInfoBean().getSignature());
                 }

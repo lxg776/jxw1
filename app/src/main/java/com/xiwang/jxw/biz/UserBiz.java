@@ -13,6 +13,8 @@ import com.xiwang.jxw.activity.LoginActivity;
 import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.bean.BaseBean;
 import com.xiwang.jxw.bean.DigOrFightBean;
+import com.xiwang.jxw.bean.ListBean;
+import com.xiwang.jxw.bean.NewsBean;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.bean.UserBean;
 import com.xiwang.jxw.bean.UserInfoBean;
@@ -528,6 +530,48 @@ public class UserBiz {
             }
         });
 
+    }
+
+    /**
+     * 获取我的发布
+     * @param context
+     * @param handle
+     */
+    public static void getMyPublish(Context context,int page,final BaseBiz.RequestHandle handle){
+        RequestParams params = new RequestParams();
+        params.put("a", "myread");
+        params.put("page", page);
+        BaseBiz.postRequest(context,ServerConfig.GETAPP_URL, params, new BaseBiz.RequestHandle() {
+
+            @Override
+            public void onSuccess(ResponseBean responseBean) {
+                String string= (String) responseBean.getObject();
+                try {
+                    ListBean listBean=new ListBean(string,NewsBean.class);
+                    responseBean.setObject(listBean);
+                    handle.onSuccess(responseBean);
+                }catch (JSONException e){
+                    responseBean.setStatus(ServerConfig.JSON_DATA_ERROR);
+                    responseBean.setInfo(TApplication.context.getResources().getString(R.string.exception_local_json_message));
+                    handle.onFail(responseBean);
+                }
+            }
+
+            @Override
+            public void onFail(ResponseBean responseBean) {
+                handle.onFail(responseBean);
+            }
+
+            @Override
+            public ResponseBean getRequestCache() {
+                return handle.getRequestCache();
+            }
+
+            @Override
+            public void onRequestCache(ResponseBean result) {
+                handle.onRequestCache(result);
+            }
+        });
     }
 
     /**
