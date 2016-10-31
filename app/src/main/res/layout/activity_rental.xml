@@ -37,7 +37,18 @@
             android:background="@color/white"
             >
         </com.xiwang.jxw.widget.DeleteAutoCompleteTextView >
-
+        <View
+            style="@style/line_view_w"
+            />
+        <com.xiwang.jxw.widget.DeleteAutoCompleteTextView
+            android:hint="面积"
+            style="@style/etd_1"
+            android:singleLine="true"
+            android:id="@+id/mianji_tv"
+            android:completionThreshold="1"
+            android:background="@color/white"
+            >
+        </com.xiwang.jxw.widget.DeleteAutoCompleteTextView >
 
         <!--分类选择-->
         <com.xiwang.jxw.widget.MyTextSelectView

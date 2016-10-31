@@ -12,6 +12,8 @@ import android.graphics.Typeface;
 import com.loopj.android.http.AsyncHttpClient;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.utils.StorageUtils;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.xiwang.jxw.bean.SmileListBean;
@@ -85,9 +87,25 @@ public class TApplication extends Application  {
 		JPushInterface.setDebugMode(true);
 		JPushInterface.init(this);
         initPlatform();
+		//内存检查
+		if (LeakCanary.isInAnalyzerProcess(this)) {
+			// This process is dedicated to LeakCanary for heap analysis.
+			// You should not init your app in this process.
+			return;
+		}
+		refWatcher= LeakCanary.install(this);
 
 
 	}
+
+	private RefWatcher refWatcher;
+
+	public static RefWatcher getRefWatcher(Context context) {
+		TApplication application = (TApplication) context.getApplicationContext();
+		return application.refWatcher;
+	}
+
+
 	/**
 	 * 初始化ImageLoader配置
 	 * 

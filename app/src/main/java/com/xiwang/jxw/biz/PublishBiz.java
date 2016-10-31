@@ -188,6 +188,62 @@ public class PublishBiz {
     }
 
 
+    /**
+     * 发布房屋出租/出售
+     * @param type 出租/出售 {出租：zhire 出售: hire  求租：qhire}
+     * @param htype 户型
+     * @param msize 面积
+     * @param ymoney 价格
+     * @param subject 标题
+     * @param content 描述
+     * @param cname 联系人
+     * @param mobile 手机号
+     * @param aids 图片
+     * @param handle 回调
+     */
+    public  static void publicHouse(String type,String htype,String msize,String ymoney,String subject,String content,String cname,String mobile,String address,String aids,final BaseBiz.RequestHandle handle){
+        String url=ServerConfig.GETAPP_URL;
+        RequestParams params =new RequestParams();
+        params.put("action","new");
+        params.put("a","posts");
+        params.put("type",type);
+        params.put("msize",msize);
+        params.put("ymoney",ymoney);
+        params.put("address",address);
+        params.put("subject",subject);
+        params.put("content",content);
+        params.put("cname",cname);
+        params.put("mobile",mobile);
+        params.put("aids",aids);
+
+        BaseBiz.getRequest(url, params, new BaseBiz.RequestHandle() {
+            @Override
+            public void onSuccess(ResponseBean responseBean) {
+                // BaseBean.setResponseObjectList(responseBean, DigUserBean.class, "diglist");
+                handle.onSuccess(responseBean);
+            }
+
+            @Override
+            public void onFail(ResponseBean responseBean) {
+                handle.onFail(responseBean);
+            }
+
+            @Override
+            public ResponseBean getRequestCache() {
+                return handle.getRequestCache();
+            }
+
+            @Override
+            public void onRequestCache(ResponseBean result) {
+                handle.onRequestCache(result);
+            }
+        });
+    }
+
+
+
+
+
 
 
 

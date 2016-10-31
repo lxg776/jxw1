@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
@@ -31,6 +32,8 @@ import com.xiwang.jxw.util.AlbumBitmapCacheHelper;
 import com.xiwang.jxw.util.DisplayUtil;
 import com.xiwang.jxw.util.IntentUtil;
 import com.xiwang.jxw.util.ToastUtil;
+import com.xiwang.jxw.widget.rv.BGAImageView;
+import com.xiwang.jxw.widget.rv.BGASpaceItemDecoration;
 
 import org.json.JSONException;
 import java.io.FileNotFoundException;
@@ -178,14 +181,18 @@ public class UploadImgView extends RelativeLayout{
 
         View contentView = View.inflate(context, R.layout.view_upload_img,null);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.UploadImgView);
-        numColumns=a.getInteger(R.styleable.UploadImgView_numColumns,5);
+        numColumns=a.getInteger(R.styleable.UploadImgView_numColumns,4);
         isAdd = a.getBoolean(R.styleable.UploadImgView_isAdd,true);
 
         a.recycle();
         recyclerView= (RecyclerView) contentView.findViewById(R.id.recyclerView);
-        StaggeredGridLayoutManager mLayoutManager=new StaggeredGridLayoutManager(4,StaggeredGridLayoutManager.VERTICAL);
+        recyclerView.setOverScrollMode(OVER_SCROLL_NEVER);
+
+
+
+        GridLayoutManager mLayoutManager=new GridLayoutManager(context,numColumns);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new DividerGridItemDecoration(context));
+        recyclerView.addItemDecoration(new BGASpaceItemDecoration(3));
         recyclerView.setItemAnimator(null);
         //添加add按钮
         if(isAdd){
@@ -193,10 +200,6 @@ public class UploadImgView extends RelativeLayout{
             imageModelList.add(new ShowImg());
         }
         recyclerView.setAdapter(adapter);
-
-
-
-
         RelativeLayout.LayoutParams params= new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         addView(contentView,params);
     }
@@ -396,8 +399,8 @@ public class UploadImgView extends RelativeLayout{
             }else{
                  view = LayoutInflater.from(viewGroup.getContext()).inflate(mitemlayout,
                         viewGroup, false);
-                view.getLayoutParams().width = DisplayUtil.dip2px(context,24);
-                view.getLayoutParams().height = DisplayUtil.dip2px(context,24);
+//                view.getLayoutParams().width = DisplayUtil.dip2px(context,24);
+//                view.getLayoutParams().height = DisplayUtil.dip2px(context,24);
                 return new ViewHolder(view,ViewHolder.TYPE_IMG);
             }
         }
@@ -436,7 +439,7 @@ public class UploadImgView extends RelativeLayout{
                     viewHolder.progress_view.setVisibility(View.GONE);
                 }else if(showImg.percent==-1){
                     viewHolder.progress_view.setVisibility(View.GONE);
-                    viewHolder.img_iv.setBackgroundDrawable(getResources().getDrawable(R.mipmap.ic_launcher));
+                    viewHolder.img_iv.setBackgroundDrawable(getResources().getDrawable(R.mipmap.default_loading_img));
                 }
                 else{
                     viewHolder.progress_view.setVisibility(View.VISIBLE);
@@ -455,7 +458,7 @@ public class UploadImgView extends RelativeLayout{
 
         class ViewHolder extends RecyclerView.ViewHolder {
 
-            ImageView img_iv;
+            BGAImageView img_iv;
             PercentView progress_view;
 
             public static final int TYPE_IMG=2;
@@ -463,7 +466,7 @@ public class UploadImgView extends RelativeLayout{
 
             public ViewHolder(View itemView,int type) {
                   super(itemView);
-                    img_iv= (ImageView) itemView.findViewById(R.id.img_iv);
+                    img_iv= (BGAImageView) itemView.findViewById(R.id.img_iv);
                     progress_view= (PercentView) itemView.findViewById(R.id.progress_view);
             }
         }

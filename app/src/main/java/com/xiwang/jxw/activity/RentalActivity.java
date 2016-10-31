@@ -10,8 +10,12 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import com.xiwang.jxw.R;
+import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.base.BaseSubmitActivity;
+import com.xiwang.jxw.bean.ResponseBean;
+import com.xiwang.jxw.biz.PublishBiz;
 import com.xiwang.jxw.util.CheckUtil;
+import com.xiwang.jxw.util.ToastUtil;
 import com.xiwang.jxw.widget.DeleteAutoCompleteTextView;
 import com.xiwang.jxw.widget.DeleteEditText;
 import com.xiwang.jxw.widget.MyTextSelectView;
@@ -25,6 +29,8 @@ public class RentalActivity extends BaseSubmitActivity{
 
     /**房/位/厅*/
     DeleteAutoCompleteTextView fwt_tv;
+    /**面积*/
+    DeleteAutoCompleteTextView mianji_tv;
     /**期望房租*/
     MyTextSelectView fangzu_sv;
     /**标题*/
@@ -46,6 +52,7 @@ public class RentalActivity extends BaseSubmitActivity{
     @Override
     protected void findViews() {
         fwt_tv= (DeleteAutoCompleteTextView) findViewById(R.id.fwt_tv);
+        mianji_tv= (DeleteAutoCompleteTextView) findViewById(R.id.mianji_tv);
         fangzu_sv= (MyTextSelectView) findViewById(R.id.fangzu_sv);
         title_edt= (DeleteEditText) findViewById(R.id.title_edt);
         content_edt= (EditText) findViewById(R.id.content_edt);
@@ -59,6 +66,7 @@ public class RentalActivity extends BaseSubmitActivity{
     protected boolean checkInput() {
         String fwt_text=fwt_tv.getText().toString();
         String fangzu_text=fangzu_sv.getText();
+        String mianji_text=mianji_tv.getText().toString();
         String title_text=title_edt.getText().toString();
         String desc_text=content_edt.getText().toString();
         String linkman_text=linkman_edt.getText().toString();
@@ -67,6 +75,10 @@ public class RentalActivity extends BaseSubmitActivity{
         if(CheckUtil.isEmpty(context,"房/厅/卫",fwt_text)){
             return  false;
         }
+        if(CheckUtil.isSelect(context, "面积", mianji_text)){
+            return  false;
+        }
+
         if(CheckUtil.isSelect(context, "期望房租", fangzu_text)){
             return  false;
         }
@@ -126,6 +138,40 @@ public class RentalActivity extends BaseSubmitActivity{
         if(!checkInput()){
             return;
         }
+        String fwt_text=fwt_tv.getText().toString();
+        String fangzu_text=fangzu_sv.getText();
+        String mianji_text=mianji_tv.getText().toString();
+        String title_text=title_edt.getText().toString();
+        String desc_text=content_edt.getText().toString();
+        String linkman_text=linkman_edt.getText().toString();
+        String phone_text=phone_edt.getText().toString();
+
+
+        PublishBiz.publicHouse("qhire", fwt_text, mianji_text, fangzu_text, title_text, desc_text, linkman_text, phone_text, "", "", new BaseBiz.RequestHandle() {
+            @Override
+            public void onSuccess(ResponseBean responseBean) {
+                ToastUtil.showToast(context,responseBean.getInfo());
+                finish();
+            }
+
+            @Override
+            public void onFail(ResponseBean responseBean) {
+                ToastUtil.showToast(context,responseBean.getInfo());
+            }
+
+            @Override
+            public ResponseBean getRequestCache() {
+                return null;
+            }
+
+            @Override
+            public void onRequestCache(ResponseBean result) {
+
+            }
+        });
+
+
+
     }
 
     @Override

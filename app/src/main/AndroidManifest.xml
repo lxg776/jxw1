@@ -90,6 +90,7 @@
             android:name=".activity.NewsDetailActivity"
             android:screenOrientation="portrait"
             android:exported="false"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme" >
         </activity>
         <!-- 填写手机号码 -->

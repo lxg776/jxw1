@@ -11,6 +11,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.base.BaseSubmitActivity;
+import com.xiwang.jxw.biz.PublishBiz;
 import com.xiwang.jxw.util.CheckUtil;
 import com.xiwang.jxw.widget.DeleteAutoCompleteTextView;
 import com.xiwang.jxw.widget.DeleteEditText;
@@ -153,6 +154,27 @@ public class HouseActivity extends BaseSubmitActivity{
         if(!checkInput()){
             return;
         }
+        String fwt_text=fwt_tv.getText().toString();
+        String mianji_text=mianji_edt.getText().toString();
+        String price_text=total_price_edt.getText().toString();
+        String address_text=address_edt.getText().toString();
+        String linkman_text=linkman_edt.getText().toString();
+        String phone_text=phone_edt.getText().toString();
+        String title_text=title_edt.getText().toString();
+        String content_text=content_edt.getText().toString();
+
+
+        String type;
+
+        if("出租".equals(rent_type_sv.getText())){
+
+        }
+
+
+//        PublishBiz.publicHouse("");
+
+
+
     }
 
     @Override

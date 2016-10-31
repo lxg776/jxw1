@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray_100"
-    tools:context=".PublishNewsActivity"
+
     >
 <com.xiwang.jxw.widget.AutoRelativeLayout
     android:layout_width="match_parent"
@@ -61,6 +61,18 @@
             android:background="@color/white"
             >
         </com.xiwang.jxw.widget.MyTextSelectView>
+        <View
+            style="@style/line_view_w"
+            />
+        <com.xiwang.jxw.widget.DeleteAutoCompleteTextView
+            android:hint="房屋地址"
+            style="@style/etd_1"
+            android:singleLine="true"
+            android:id="@+id/address_tv"
+            android:completionThreshold="1"
+            android:background="@color/white"
+            >
+        </com.xiwang.jxw.widget.DeleteAutoCompleteTextView >
         <View
             style="@style/line_view_w"
             />

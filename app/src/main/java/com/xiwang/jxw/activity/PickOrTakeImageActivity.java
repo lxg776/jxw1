@@ -1,5 +1,6 @@
 package com.xiwang.jxw.activity;
 
+import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
@@ -7,7 +8,9 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -17,6 +20,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -286,15 +292,15 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
      */
     private void getAllImages(){
         //使用兼容库就无需判断系统版本
-//        int hasWriteContactsPermission = ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
-//        if (hasWriteContactsPermission == PackageManager.PERMISSION_GRANTED) {
-//            startGetImageThread();
-//        }
-//        //需要弹出dialog让用户手动赋予权限
-//        else{
-//            ActivityCompat.requestPermissions(PickOrTakeImageActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, CODE_FOR_WRITE_PERMISSION);
-//        }
-        startGetImageThread();
+        int hasWriteContactsPermission = ContextCompat.checkSelfPermission(getApplication(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (hasWriteContactsPermission == PackageManager.PERMISSION_GRANTED) {
+            startGetImageThread();
+        }
+        //需要弹出dialog让用户手动赋予权限
+        else{
+            ActivityCompat.requestPermissions(PickOrTakeImageActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, CODE_FOR_WRITE_PERMISSION);
+        }
+       // startGetImageThread();
     }
 
     /**
@@ -337,37 +343,37 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
         }).start();
     }
 
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-//        if (requestCode == CODE_FOR_WRITE_PERMISSION){
-//            if (permissions[0].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-//                &&grantResults[0] == PackageManager.PERMISSION_GRANTED){
-//                //用户同意使用write
-//                startGetImageThread();
-//            }else{
-//                //用户不同意，向用户展示该权限作用
-//                if (!ActivityCompat.sh(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-//                    AlertDialog dialog = new AlertDialog.Builder(this)
-//                            .setMessage("该相册需要赋予访问存储的权限，不开启将无法正常工作！")
-//                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    finish();
-//                                }
-//                            })
-//                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    finish();
-//                                }
-//                            }).create();
-//                    dialog.show();
-//                    return;
-//                }
-//                finish();
-//            }
-//        }
-//    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == CODE_FOR_WRITE_PERMISSION){
+            if (permissions[0].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                &&grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                //用户同意使用write
+                startGetImageThread();
+            }else{
+                //用户不同意，向用户展示该权限作用
+                if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    AlertDialog dialog = new AlertDialog.Builder(this)
+                            .setMessage("该相册需要赋予访问存储的权限，不开启将无法正常工作！")
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            })
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            }).create();
+                    dialog.show();
+                    return;
+                }
+                finish();
+            }
+        }
+    }
 
     @Override
     public void onClick(View view) {
@@ -587,7 +593,7 @@ public class PickOrTakeImageActivity extends Activity implements View.OnClickLis
             //第一个要显示拍摄照片图片
             if (currentShowPosition == -1 && i==0){
                 view = new ImageView(PickOrTakeImageActivity.this);
-                ((ImageView)view).setBackgroundResource(R.drawable.take_pic);
+                ((ImageView)view).setImageResource(R.mipmap.bga_pp_ic_gallery_camera);
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

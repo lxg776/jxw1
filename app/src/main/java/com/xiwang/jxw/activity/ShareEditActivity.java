@@ -80,13 +80,15 @@ public class ShareEditActivity extends BaseActivity{
         toolbar= (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("分享" + shareBean.getShowText());
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.back_btn));
+        setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        setSupportActionBar(toolbar);
+
+
     }
 
     @Override

@@ -51,7 +51,7 @@
                     android:id="@+id/user_headimg_iv"
                     android:layout_width="56dp"
                     android:layout_height="56dp"
-                    android:background="@mipmap/ic_launcher"
+                    android:background="@mipmap/defualt_user_icon"
                     />
 
                 <com.xiwang.jxw.widget.PercentView

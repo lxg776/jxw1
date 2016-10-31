@@ -2,11 +2,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/contentView"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
-    <com.xiwang.jxw.widget.AutoScrollViewPager
+    <cn.bingoogolapple.bgabanner.BGABanner
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="160dp" />
+        android:layout_height="160dp"
+        app:banner_indicatorGravity="right"
+        app:banner_pageChangeDuration="2000"
+        app:banner_pointDrawable="@drawable/point_drawable"
+
+        />
 
 </RelativeLayout>

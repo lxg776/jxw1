@@ -6,9 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
-
-import com.cjj.MaterialRefreshLayout;
-import com.cjj.MaterialRefreshListener;
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.activity.NewsDetailActivity;
 import com.xiwang.jxw.adapter.HomeNewsListAdapter2;
@@ -21,10 +18,14 @@ import com.xiwang.jxw.bean.ListBean;
 import com.xiwang.jxw.bean.NewsBean;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.biz.HomeBiz;
+import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.util.SpUtil;
+import com.xiwang.jxw.widget.refresh.JxwRefreshViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
 
 
 
@@ -37,7 +38,7 @@ public class NewsListFragment extends BaseFragment3 {
     /** 栏目信息*/
     ColumnBean columnBean;
     /** 下拉刷新和上拉更多控件*/
-    MaterialRefreshLayout refreshLayout;
+    BGARefreshLayout refreshLayout;
     /** 新闻列表适配器*/
     HomeNewsListAdapter2 adapter;
     /** data列表控件*/
@@ -100,12 +101,31 @@ public class NewsListFragment extends BaseFragment3 {
         listView.setLayoutManager(new LinearLayoutManager(listView
                 .getContext()));
         listView.setAdapter(adapter);
-        refreshLayout = (MaterialRefreshLayout) view_Parent.findViewById(R.id.refresh_layout);
-        refreshLayout.setWaveColor(0xffffffff);
-        refreshLayout.setIsOverLay(false);
-        refreshLayout.setWaveShow(true);
+        refreshLayout = (BGARefreshLayout) view_Parent.findViewById(R.id.refresh_layout);
+
+
+
+
+        //设置刷新头部
+
+        JxwRefreshViewHolder meiTuanRefreshViewHolder = new JxwRefreshViewHolder(TApplication.context, true);
+
+        meiTuanRefreshViewHolder.setPullDownImageResource(R.mipmap.bga_refresh_mt_pull_down);
+        meiTuanRefreshViewHolder.setChangeToReleaseRefreshAnimResId(R.drawable.bga_refresh_mt_change_to_release_refresh);
+        meiTuanRefreshViewHolder.setRefreshingAnimResId(R.drawable.bga_refresh_mt_refreshing);
+
+        refreshLayout.setRefreshViewHolder(meiTuanRefreshViewHolder);
+
+
+
+//        refreshLayout.setWaveColor(0xffffffff);
+//        refreshLayout.setIsOverLay(false);
+//        refreshLayout.setWaveShow(true);
 
     }
+
+
+
 
     @Override
     public void initGetData() {
@@ -130,28 +150,42 @@ public class NewsListFragment extends BaseFragment3 {
                 }
             }
         });
-        refreshLayout
-                .setMaterialRefreshListener(new MaterialRefreshListener() {
-                    @Override
-                    public void onRefresh(
-                            final MaterialRefreshLayout materialRefreshLayout) {
 
-                        // materialRefreshLayout.finishRefreshLoadMore();
-                        loadData(1, false, false);
-                    }
+        refreshLayout.setDelegate(new BGARefreshLayout.BGARefreshLayoutDelegate() {
+            @Override
+            public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+                loadData(1, false, false);
+            }
 
-                    @Override
-                    public void onfinish() {
+            @Override
+            public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+                loadData(currentPage+1, false, false);
+                return false;
+            }
+        });
 
-                    }
-
-                    @Override
-                    public void onRefreshLoadMore(
-                            final MaterialRefreshLayout materialRefreshLayout) {
-                        loadData(currentPage+1, false, false);
-                    }
-
-                });
+//        refreshLayout
+//                .setMaterialRefreshListener(new MaterialRefreshListener() {
+//                    @Override
+//                    public void onRefresh(
+//                            final MaterialRefreshLayout materialRefreshLayout) {
+//
+//                        // materialRefreshLayout.finishRefreshLoadMore();
+//                        loadData(1, false, false);
+//                    }
+//
+//                    @Override
+//                    public void onfinish() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onRefreshLoadMore(
+//                            final MaterialRefreshLayout materialRefreshLayout) {
+//                        loadData(currentPage+1, false, false);
+//                    }
+//
+//                });
 
     }
 
@@ -255,17 +289,18 @@ public class NewsListFragment extends BaseFragment3 {
                             objectList.addAll(listBean.getModelList());
                             adapter.setNewsBeanList(objectList);
                         }
-                        if(currentPage!=listBean.getPages()){
-                            refreshLayout.setLoadMore(true);
-                        }else{
-                            refreshLayout.setLoadMore(false);
-                        }
+//                        if(currentPage!=listBean.getPages()){
+//                            refreshLayout.setLoadMore(true);
+//
+//                        }else{
+//                            refreshLayout.setLoadMore(false);
+//                        }
                         finishLoad();
                     }
 
                     @Override
                     public void onFail(ResponseBean responseBean) {
-
+                        finishLoad();
                     }
 
                     @Override
@@ -296,8 +331,8 @@ public class NewsListFragment extends BaseFragment3 {
      * 加载完成
      */
     private void finishLoad(){
-        refreshLayout.finishRefresh();
-        refreshLayout.finishRefreshLoadMore();
+        refreshLayout.endLoadingMore();
+        refreshLayout.endRefreshing();
         adapter.notifyDataSetChanged();
     }
 

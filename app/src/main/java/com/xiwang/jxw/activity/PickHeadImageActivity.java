@@ -597,7 +597,7 @@ public class PickHeadImageActivity extends Activity implements View.OnClickListe
             //第一个要显示拍摄照片图片
             if (currentShowPosition == -1 && i==0){
                 view = new ImageView(PickHeadImageActivity.this);
-                ((ImageView)view).setBackgroundResource(R.drawable.take_pic);
+                ((ImageView)view).setImageResource(R.mipmap.bga_pp_ic_gallery_camera);
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

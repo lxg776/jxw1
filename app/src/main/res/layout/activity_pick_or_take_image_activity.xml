@@ -20,7 +20,6 @@
             android:verticalSpacing="4dp"
             android:horizontalSpacing="4dp"
             android:listSelector="@color/trans">
-
         </GridView>
         <RelativeLayout
             android:id="@+id/rl_date"
@@ -91,7 +90,7 @@
                 android:id="@+id/v_line"
                 android:layout_width="1px"
                 android:layout_height="match_parent"
-                android:background="#bb000000"
+                android:background="@color/gray_500"
                 android:layout_toLeftOf="@+id/tv_preview"/>
             <TextView
                 android:id="@+id/tv_preview"

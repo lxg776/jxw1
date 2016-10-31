@@ -168,7 +168,7 @@ public class PersionDetailActivity extends BaseActivity implements  View.OnClick
             }
         }
         if(TextUtils.isEmpty(userBean.getUserInfoBean().getCellphone())){
-            cellphone_tv.setTextColor(getResources().getColor(R.color.material_red));
+            cellphone_tv.setTextColor(getResources().getColor(R.color.red_500));
             cellphone_tv.setText("立即绑定");
         }else{
             cellphone_tv.setTextColor(getResources().getColor(R.color.black_transparent_54));

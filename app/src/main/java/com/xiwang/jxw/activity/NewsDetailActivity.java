@@ -82,7 +82,7 @@ import me.zhanghai.android.materialprogressbar.IndeterminateProgressDrawable;
  * 帖子详情界面
  * Created by sunshine on 15/11/9.
  */
-public class NewsDetailActivity extends BaseActivity implements RefreshLayout.OnLoadListener,RefreshLayout.OnRefreshListener,AbsListView.OnScrollListener {
+public class NewsDetailActivity extends BaseActivity implements RefreshLayout.OnLoadListener,RefreshLayout.OnRefreshListener {
     /** webview用于显示html内容*/
     private WebView webView;
     /** 内容布局*/
@@ -302,9 +302,6 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         replies_tv= (TextView) findViewById(R.id.replies_tv);
         show_replies_rl= (RelativeLayout) findViewById(R.id.show_replies_rl);
         huifu_btn= (TextView) findViewById(R.id.huifu_btn);
-
-
-        mUploadView.setItemLayout(R.layout.item_upload_image_40);
     }
 
 
@@ -328,6 +325,13 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         });
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        webView.removeAllViews();
+        webView.destroy();
+    }
 
     /**
      * 跳转新闻详情
@@ -1006,7 +1010,25 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
                 }
             }
         });
-        listView.setOnScrollListener(this);
+        listView.setOnScrollListener(new AbsListView.OnScrollListener(){
+
+            /**
+             * 滚动事件监听
+             */
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                switch (scrollState){
+                    case  AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
+                        hideCommentView();
+                        break;
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+            }
+        });
 
 
 
@@ -1106,22 +1128,7 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         }
     }
 
-    /**
-     * 滚动事件监听
-     */
-    @Override
-    public void onScrollStateChanged(AbsListView view, int scrollState) {
-            switch (scrollState){
-                case  AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
-                        hideCommentView();
-                    break;
-            }
-    }
 
-    @Override
-    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-    }
 
     @Override
     public void finish() {

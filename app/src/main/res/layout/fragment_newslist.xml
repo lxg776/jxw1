@@ -1,29 +1,18 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.xiwang.jxw.activity.MainActivity">
-        <com.cjj.MaterialRefreshLayout
-            android:id="@+id/refresh_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:isLoadMore="true"
-            app:overlay="true"
-            app:progress_colors="@array/material_colors"
-            app:progress_size_type="normal"
-            app:wave_height_type="normal"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:wave_show="true" >
+<cn.bingoogolapple.refreshlayout.BGARefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/refresh_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/listView"
-            android:dividerHeight="0dp"
             android:divider="@color/trans"
-            android:footerDividersEnabled="false"
-            ></android.support.v7.widget.RecyclerView>
-    </com.cjj.MaterialRefreshLayout>
+            android:dividerHeight="0dp"
+            android:footerDividersEnabled="false"></android.support.v7.widget.RecyclerView>
 
-</LinearLayout>
+
+</cn.bingoogolapple.refreshlayout.BGARefreshLayout>

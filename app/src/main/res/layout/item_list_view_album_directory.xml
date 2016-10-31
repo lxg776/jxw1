@@ -48,7 +48,7 @@
         android:id="@+id/iv_directory_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/ic_arrow_check"
+        android:src="@mipmap/ic_arrow_check"
         android:layout_gravity="center_vertical"
         android:visibility="invisible"/>
 

@@ -16,6 +16,7 @@ import com.xiwang.jxw.bean.UserInfoBean;
 import com.xiwang.jxw.biz.UserBiz;
 import com.xiwang.jxw.event.LoginEvent;
 import com.xiwang.jxw.event.RegEvent;
+import com.xiwang.jxw.event.UserInfoEvent;
 import com.xiwang.jxw.intf.LogoutListener;
 import com.xiwang.jxw.network.AppHttpClient;
 import com.xiwang.jxw.util.CommonUtil;
@@ -105,7 +106,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
                     break;
                 case R.id.fabu_ll:
                     //我的发布
-                    MyPublishActivity.jumpActivity(context);
+                  //  MyPublishActivity.jumpActivity(context);
                     break;
                 case R.id.setting_ll:
                     break;
@@ -138,7 +139,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
     public void onEvent(LoginEvent event) {
         showUserInfo();
     }
-    public void onEvent(UserInfoBean event) {
+    public void onEvent(UserInfoEvent event) {
         showUserInfo();
     }
     public void onEvent(RegEvent event) {

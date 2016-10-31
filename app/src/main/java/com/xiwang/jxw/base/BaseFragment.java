@@ -11,7 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.squareup.leakcanary.RefWatcher;
 import com.umeng.analytics.MobclickAgent;
+import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.util.CommonUtil;
 
 import de.greenrobot.event.EventBus;
@@ -149,6 +151,9 @@ public abstract class BaseFragment extends Fragment {
 		if (useEventBus()) {
 			EventBus.getDefault().unregister(this);
 		}
+		RefWatcher refWatcher = TApplication.getRefWatcher(getActivity());
+		refWatcher.watch(this);
+
 		super.onDestroy();
 	}
 

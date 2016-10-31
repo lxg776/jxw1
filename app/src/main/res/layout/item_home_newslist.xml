@@ -47,21 +47,21 @@
                     android:layout_width="0dp"
                     android:layout_height="80dp"
                     android:layout_weight="1"
-                    android:background="@mipmap/ic_launcher" />
+                   />
 
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="80dp"
                     android:layout_marginLeft="2dp"
                     android:layout_weight="1"
-                    android:background="@mipmap/ic_launcher" />
+                   />
 
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="80dp"
                     android:layout_marginLeft="2dp"
                     android:layout_weight="1"
-                    android:background="@mipmap/ic_launcher" />
+                     />
             </LinearLayout>
 
             <!--热点 作者 浏览数 回复数-->
@@ -160,7 +160,7 @@
             android:layout_height="80dp"
 
             android:layout_marginLeft="16dp"
-            android:background="@mipmap/ic_launcher"
+
             android:visibility="gone" />
 
     </LinearLayout>

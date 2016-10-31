@@ -301,21 +301,39 @@ public class LoginActivity extends BaseSubmitActivity implements View.OnClickLis
                 return;
         }
         /**性别*/
-        String gender=map.get("gender");
+        final String gender=map.get("gender");
         /**uid*/
         String openid=map.get("openid");
         /**显示名称*/
         String screen_name=map.get("screen_name");
         /**头像地址*/
-        String profile_image_url=map.get("profile_image_url");
+        final String profile_image_url=map.get("profile_image_url");
 
+        final  String platform = "qq";
 
         ProcessDialogUtil.showDialog(context, getResources().getString(R.string.loading), false);
-        UserBiz.otherLogin(LoginActivity.this, openid, "qq", screen_name, gender, new BaseBiz.RequestHandle() {
+        UserBiz.otherLogin(LoginActivity.this, openid, platform, screen_name, gender,profile_image_url, new BaseBiz.RequestHandle() {
             @Override
             public void onSuccess(ResponseBean responseBean) {
                 ProcessDialogUtil.dismissDialog();
                 ToastUtil.showToast(context, responseBean.getInfo());
+                TApplication.mUser = (UserBean) responseBean.getObject();
+                TApplication.mUser.setPlatform(platform);
+                TApplication.mUser.setFace(profile_image_url);
+                TApplication.mUser.setSex(gender);
+                TApplication.mUser.setOpenid("openid");
+                UserBiz.setUserBean(context, TApplication.mUser);
+                /** 发出登录成功通知*/
+                EventBus.getDefault().post(new LoginEvent(true));
+                ProcessDialogUtil.dismissDialog();
+                Intent intent = new Intent();
+                Bundle bundle = getIntent().getExtras();
+                if (null != bundle)
+                    intent.putExtras(bundle);
+                setResult(RESULT_OK, intent);
+                /** 帐号登录，记录友盟*/
+                MobclickAgent.onProfileSignIn(TApplication.mUser.getUid() + "_" + TApplication.mUser.getUsername());
+                finish();
             }
 
             @Override

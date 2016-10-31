@@ -9,10 +9,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.xiwang.jxw.R;
+import com.xiwang.jxw.activity.NewsDetailActivity;
 import com.xiwang.jxw.bean.ColumnBean;
 import com.xiwang.jxw.bean.HfPagerBean;
 import com.xiwang.jxw.bean.HomeLunBoBean;
@@ -22,6 +26,8 @@ import com.xiwang.jxw.widget.AutoScrollViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.bingoogolapple.bgabanner.BGABanner;
 
 /**
  * 首页新闻列表适配器
@@ -44,6 +50,13 @@ public class HomeNewsListAdapter2 extends RecyclerView.Adapter{
     /**栏目id*/
     ColumnBean mColumnBean;
 
+    DisplayImageOptions options = new DisplayImageOptions.Builder()
+            .showImageOnLoading(R.drawable.default_loading_img01) // 设置图片下载期间显示的图片
+            .showImageForEmptyUri(R.drawable.default_loading_img01) // 设置图片Uri为空或是错误的时候显示的图片
+            .showImageOnFail(R.drawable.default_loading_img01) // 设置图片加载或解码过程中发生错误显示的图片
+            .cacheInMemory(true) // 设置下载的图片是否缓存在内存中
+            .cacheOnDisk(true) // 设置下载的图片是否缓存在SD卡中
+            .build();
 
 
 
@@ -159,18 +172,43 @@ public class HomeNewsListAdapter2 extends RecyclerView.Adapter{
      * 网络请求后的结果 填充 viewPager
      * @param lunBoBean
      */
-    public void setViewPagerSrc(HomeLunBoBean lunBoBean, AutoScrollViewPager viewPager) {
+    public void setViewPagerSrc(HomeLunBoBean lunBoBean, BGABanner viewPager) {
         ArrayList<HfPagerBean> list = lunBoBean.getDataList();
         // 将图片装载到数组中
         if (list != null && list.size() > 0) {
-            viewPager.setVisibility(View.VISIBLE);
-            final AdPageAdapter adapter = new AdPageAdapter(context,list,mColumnBean);
-            viewPager.setAdapter(adapter);
-            long delayeTime = lunBoBean.getRotation_speed();
-            if (delayeTime > 0 && delayeTime <= 2000) {
-                delayeTime = 2000;
+            ArrayList<String> stringArrayList =new ArrayList<>();
+            for(HfPagerBean bean:list){
+                stringArrayList.add(bean.getTitle());
             }
-            viewPager.startAutoScroll(delayeTime);
+            viewPager.setData(R.layout.item_homepage,list,stringArrayList);
+            viewPager.setVisibility(View.VISIBLE);
+            viewPager.setPageChangeDuration(200);
+            viewPager.setAdapter(new BGABanner.Adapter() {
+                @Override
+                public void fillBannerItem(BGABanner banner, View view, Object model, int position) {
+                    ImageView imageView = (ImageView) view;
+                    final HfPagerBean bean = (HfPagerBean) model;
+                    if (null != bean) {
+                        final String imgUrl = bean.getImage();
+                        ImageLoader.getInstance().displayImage(imgUrl, imageView,
+                                options, listener);
+                        final HfPagerBean adBean = bean;
+
+                        imageView.setOnClickListener(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {// viewpager点击监听事件
+                                //跳转详情
+                                NewsBean newsBean =new NewsBean();
+                                newsBean.setTid(bean.getTid());
+                                newsBean.setSubject(bean.getTitle());
+                                newsBean.setShareUrl(bean.getUrl());
+                                NewsDetailActivity.jumpNewsDetailActivity(context,newsBean,mColumnBean);
+                            }
+                        });
+                    }
+                }
+            });
         } else {
             viewPager.setVisibility(View.GONE);
         }
@@ -187,10 +225,10 @@ public class HomeNewsListAdapter2 extends RecyclerView.Adapter{
 
 
     class LunBoAdHolder extends RecyclerView.ViewHolder{
-        AutoScrollViewPager viewPager;
+        BGABanner viewPager;
         public LunBoAdHolder(View itemView) {
             super(itemView);
-            viewPager = (AutoScrollViewPager) itemView.findViewById(R.id.viewPager);
+            viewPager = (BGABanner) itemView.findViewById(R.id.viewPager);
         }
     }
 

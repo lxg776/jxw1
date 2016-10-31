@@ -92,6 +92,31 @@ public class UserBiz {
                 }
             });
 
+        }else if(null!=userBean&&!TextUtils.isEmpty(userBean.getOpenid())){
+            //第三方登录
+            otherLogin(context,userBean.getOpenid(),userBean.getPlatform(),userBean.getUsername(),userBean.getSex(),userBean.getFace(),new BaseBiz.RequestHandle(){
+
+                @Override
+                public void onSuccess(ResponseBean responseBean) {
+                    EventBus.getDefault().post(new LoginEvent(true));
+                }
+
+                @Override
+                public void onFail(ResponseBean responseBean) {
+                    setNullToUser(context);
+                    AppHttpClient.clearCookie();
+                }
+
+                @Override
+                public ResponseBean getRequestCache() {
+                    return null;
+                }
+
+                @Override
+                public void onRequestCache(ResponseBean result) {
+
+                }
+            });
         }
     }
 
@@ -104,7 +129,7 @@ public class UserBiz {
      * @param sex
      * @param mHandle
      */
-    public static void otherLogin(final Context context ,String openid,String platform,String username,String sex,final BaseBiz.RequestHandle mHandle){
+    public static void otherLogin(final Context context ,String openid,String platform,String username,String sex,String face,final BaseBiz.RequestHandle mHandle){
         RequestParams params = new RequestParams();
         params.put("a", "login");
         params.put("step", "qqlogin");
@@ -112,11 +137,23 @@ public class UserBiz {
         params.put("platform", platform);
         params.put("username", username);
         params.put("sex", sex);
+        params.put("face", face);
         BaseBiz.postRequest(context,ServerConfig.GETAPP_URL, params, new BaseBiz.RequestHandle() {
             @Override
             public void onSuccess(ResponseBean responseBean) {
-                EventBus.getDefault().post(new LoginEvent(true));
-                mHandle.onSuccess(responseBean);
+
+
+                String string = (String) responseBean.getObject();
+                try {
+                    responseBean.setObject(BaseBean.newInstance(UserBean.class, string));
+                    mHandle.onSuccess(responseBean);
+                } catch (JSONException e) {
+                    responseBean.setStatus(ServerConfig.JSON_DATA_ERROR);
+                    responseBean.setInfo(TApplication.context.getResources().getString(R.string.exception_local_json_message));
+                    mHandle.onFail(responseBean);
+                }
+
+
             }
 
             @Override
@@ -435,6 +472,9 @@ public class UserBiz {
             }
         });
     }
+
+
+
 
 
     /**

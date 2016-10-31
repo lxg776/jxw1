@@ -27,6 +27,28 @@ public class UserBean extends BaseBean{
     /** 个人信息*/
     private UserInfoBean userInfoBean;
 
+    /**第三方登录平台*/
+    private String platform;
+    /**第三方分配的openid*/
+    private String openid;
+
+
+    public String getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(String platform) {
+        this.platform = platform;
+    }
+
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
+    }
+
     public UserInfoBean getUserInfoBean() {
         return userInfoBean;
     }

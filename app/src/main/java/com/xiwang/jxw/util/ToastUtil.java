@@ -12,19 +12,14 @@ import android.widget.Toast;
  */
 public class ToastUtil {
 
-	private static Toast toast;
 
 	public static void showToast(Context context, Object text) {
 		if (text == null) {
 			return;
 		}
-		if (toast == null) {
-			toast = Toast.makeText(context, text.toString(), Toast.LENGTH_SHORT);
-		} else {
-			toast.setText(text.toString());
-		}
-		toast.show();
+ 		Toast.makeText(context, text.toString(), Toast.LENGTH_SHORT).show();
 	}
+
 
 
 }

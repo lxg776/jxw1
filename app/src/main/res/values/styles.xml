@@ -12,7 +12,7 @@ by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
             backward-compatibility can go here.
         -->
 
-        <item name="colorPrimaryDark">@color/orange_700</item>
+        <item name="colorPrimaryDark">@color/black</item>
         <item name="colorPrimary">@color/orange_500</item>
         <item name="android:windowBackground">@color/gray_50</item>
         <item name="actionMenuTextColor">@color/white</item>
