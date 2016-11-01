@@ -8,9 +8,12 @@ import android.view.ViewGroup;
 
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.adapter.HomePagerAdapter;
+import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.base.BaseFragment;
 import com.xiwang.jxw.base.BaseFragment2;
 import com.xiwang.jxw.bean.ColumnBean;
+import com.xiwang.jxw.bean.ResponseBean;
+import com.xiwang.jxw.biz.HomeBiz;
 import com.xiwang.jxw.event.MenuEvent;
 import com.xiwang.jxw.util.SpUtil;
 import com.xiwang.jxw.widget.MyJazzyViewPager;
@@ -18,6 +21,8 @@ import com.xiwang.jxw.widget.PagerSlidingTabStrip;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 
 /**
@@ -121,12 +126,58 @@ public class HomeFragment extends BaseFragment2 {
     }
 
     private void showColumnList(){
-        columnBeanList= (List<ColumnBean>) SpUtil.getObject(context,getString(R.string.cache_menu));
-        if(null!=columnBeanList&&columnBeanList.size()>0){
-            adapter.setColumnBeanList(columnBeanList);
-            pager.setAdapter(adapter);
-            tabs.setViewPager(pager);
-        }
+
+
+
+       final ResponseBean cacheData= (ResponseBean) SpUtil.getObject(context,getString(R.string.cache_menu));
+
+
+        /**
+         * 获取栏目
+         */
+        HomeBiz.getHomeMenu(new BaseBiz.RequestHandle() {
+            @Override
+            public void onSuccess(ResponseBean responseBean) {
+
+                SpUtil.setObject(context, getString(R.string.cache_menu), responseBean);
+                Object o =responseBean.getObject();
+                if(null!=o&&o instanceof  List){
+                    columnBeanList = (List<ColumnBean>)o;
+                    if(null!=columnBeanList&&columnBeanList.size()>0){
+                        adapter.setColumnBeanList(columnBeanList);
+                        pager.setAdapter(adapter);
+                        tabs.setViewPager(pager);
+                    }
+                }
+//                EventBus.getDefault().post(new MenuEvent());
+            }
+
+            @Override
+            public void onFail(ResponseBean responseBean) {
+
+            }
+            @Override
+            public ResponseBean getRequestCache() {
+                return cacheData;
+            }
+            @Override
+            public void onRequestCache(ResponseBean result) {
+                Object o =result.getObject();
+//                if(null!=o&&o instanceof  List){
+//                    columnBeanList = (List<ColumnBean>)o;
+//                    if(null!=columnBeanList&&columnBeanList.size()>0){
+//                        adapter.setColumnBeanList(columnBeanList);
+//                        pager.setAdapter(adapter);
+//                        tabs.setViewPager(pager);
+//                    }
+                //}
+            }
+        });
+
+
+
+
+
 
     }
 

@@ -51,6 +51,14 @@
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
 
+    <!-- 相机权限 -->
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <application
         android:name=".config.TApplication"
         android:allowBackup="true"
@@ -414,7 +422,7 @@
 
         <!--Umeng统计-->
         <meta-data android:value="569615b6e0f55aeacf000acb" android:name="UMENG_APPKEY"></meta-data>
-        <meta-data android:value="android" android:name="UMENG_CHANNEL"/>
+        <meta-data android:value="android" android:name="${UMENG_CHANNEL_VALUE}"/>
 
     </application>
 </manifest>

@@ -4,17 +4,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity"
-
     >
     <include layout="@layout/tootbar_main"></include>
    <WebView
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:id="@+id/mWebView"
+       android:visibility="gone"
        >
 
 
    </WebView>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/xieyi"
+                android:textColor="@color/black_transparent_87"
+                android:textSize="14sp"
+                android:layout_margin="8dp"
+                android:lineSpacingExtra="8dp"
+                />
+        </LinearLayout>
+
+    </ScrollView>
+
 
 </LinearLayout>

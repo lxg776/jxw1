@@ -25,6 +25,14 @@ public class HomeBiz {
 
 
 
+
+
+
+
+
+
+
+
     /**
      * 获取首页栏目
      * @param handle 回调
@@ -38,7 +46,6 @@ public class HomeBiz {
                 String string= (String) responseBean.getObject();
                 try {
                     responseBean.setObject(BaseBean.toModelList(string,ColumnBean.class));
-
                     handle.onSuccess(responseBean);
                 }catch (JSONException e){
                     responseBean.setStatus(ServerConfig.JSON_DATA_ERROR);
@@ -62,6 +69,10 @@ public class HomeBiz {
                 handle.onRequestCache(result);
             }
         });
+
+
+
+
 
     }
 

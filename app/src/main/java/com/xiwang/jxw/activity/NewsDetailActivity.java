@@ -3,7 +3,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -54,6 +53,7 @@ import com.xiwang.jxw.biz.UserBiz;
 import com.xiwang.jxw.config.IntentConfig;
 import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.intf.OnShareListener;
+import com.xiwang.jxw.intf.WebImageIntf;
 import com.xiwang.jxw.util.ImgLoadUtil;
 import com.xiwang.jxw.util.IntentUtil;
 import com.xiwang.jxw.util.SpUtil;
@@ -293,7 +293,17 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
         refreshLayout.setColorSchemeColors(getResources().getColor(R.color.orange_500));
         /**添加js调用activity方法 用于展现图片列表*/
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.addJavascriptInterface(new JsObject(), "jsObject");
+        webView.addJavascriptInterface(new WebImageIntf() {
+            @JavascriptInterface
+            @Override
+            public void toImages(String url) {
+                    Intent intent=new Intent(NewsDetailActivity.this,NewsImagesActivity.class);
+                    intent.putExtra(IntentConfig.SEND_URL,url);
+                    intent.putStringArrayListExtra(IntentConfig.SEND_URL_LIST, imagesUrlList);
+                    intent.putExtra(IntentConfig.SEND_TITLE, newsBean.getSubject());
+                    startActivity(intent);
+            }
+        }, "jsObject");
         /**评论部分*/
         showComment_btn= (TextView)findViewById(R.id.showComment_btn);
         comment_edt= (RichEditText) findViewById(R.id.comment_edt);
@@ -1114,19 +1124,6 @@ public class NewsDetailActivity extends BaseActivity implements RefreshLayout.On
 
 
 
-    /**
-     * 网页调用android接口
-     */
-    class JsObject {
-        @JavascriptInterface
-        public void toImages(String url) {
-            Intent intent=new Intent(NewsDetailActivity.this,NewsImagesActivity.class);
-            intent.putExtra(IntentConfig.SEND_URL,url);
-            intent.putStringArrayListExtra(IntentConfig.SEND_URL_LIST, imagesUrlList);
-            intent.putExtra(IntentConfig.SEND_TITLE, newsBean.getSubject());
-            startActivity(intent);
-        }
-    }
 
 
 

@@ -2,7 +2,7 @@ package com.xiwang.jxw.bean;
 
 import android.text.TextUtils;
 
-import com.sina.weibo.sdk.api.share.Base;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;

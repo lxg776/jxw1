@@ -127,31 +127,6 @@ public class MainActivity extends BaseActivity {
 
 
 
-        /**
-         * 获取栏目
-         */
-        HomeBiz.getHomeMenu(new BaseBiz.RequestHandle() {
-            @Override
-            public void onSuccess(ResponseBean responseBean) {
-                List<ColumnBean> columnBeanList = (List<ColumnBean>) responseBean.getObject();
-                SpUtil.setObject(context, getString(R.string.cache_menu), columnBeanList);
-                EventBus.getDefault().post(new MenuEvent());
-            }
-
-            @Override
-            public void onFail(ResponseBean responseBean) {
-
-            }
-            @Override
-            public ResponseBean getRequestCache() {
-                return null;
-            }
-            @Override
-            public void onRequestCache(ResponseBean result) {
-
-            }
-        });
-
     }
 
     @Override
