@@ -16,11 +16,15 @@ import com.xiwang.jxw.R;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.config.TApplication;
+import com.xiwang.jxw.fragment.SignatureUtil;
 import com.xiwang.jxw.network.AppHttpClient;
+import com.xiwang.jxw.util.DateUtil;
 import com.xiwang.jxw.util.Log;
 import com.xiwang.jxw.util.LogUtil;
 import com.xiwang.jxw.util.ProcessDialogUtil;
 import android.content.DialogInterface.OnDismissListener;
+
+import java.util.Random;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -35,8 +39,6 @@ public class BaseBiz {
 
     /**是否测试*/
     public static final boolean isDebug=true;
-
-
     public static final String SUCCESS_CODE="200";
 
 
@@ -45,7 +47,7 @@ public class BaseBiz {
      * @param url
      * @param params
      */
-    public static void getRequest(final String url, final RequestParams params, final RequestHandle handle){
+    protected static void getRequest(final String url, final RequestParams params, final RequestHandle handle){
 
                 ResponseBean cacheData = handle.getRequestCache();
                 if (cacheData != null) {
@@ -271,5 +273,40 @@ public class BaseBiz {
         public void onFail(ResponseBean responseBean);
         public ResponseBean getRequestCache();
         public  void onRequestCache(ResponseBean result);
+    }
+
+    public static String ver="1.0";
+    public static String platform="android";
+    public static String signatureKay ="hd88d145dasg";
+
+
+    public  static RequestParams getParams(){
+        RequestParams params =new RequestParams();
+        params.put("ver",ver);
+        String timestamp = System.currentTimeMillis()+"";
+        String randomString = getRandomString(5);
+        params.put("apptimestamp",timestamp);
+        params.put("ver",ver);
+        params.put("random",randomString);
+        params.put("platform",platform);
+        params.put("signature", SignatureUtil.getSignature(signatureKay,timestamp,randomString));
+        return  params;
+    }
+
+
+    /**
+     * 获取随机字符
+     * @param length
+     * @return
+     */
+    public static String getRandomString(int length){ //length表示生成字符串的长度
+        String base = "abcdefghijklmnopqrstuvwxyz0123456789";
+        Random random = new Random();
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < length; i++) {
+            int number = random.nextInt(base.length());
+            sb.append(base.charAt(number));
+        }
+        return sb.toString();
     }
 }

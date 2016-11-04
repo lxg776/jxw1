@@ -21,16 +21,7 @@ import java.util.ArrayList;
  * 首页逻辑
  * Created by sunshine on 15/11/6.
  */
-public class HomeBiz {
-
-
-
-
-
-
-
-
-
+public class HomeBiz extends BaseBiz{
 
 
     /**
@@ -40,7 +31,7 @@ public class HomeBiz {
     public static void getHomeMenu(final BaseBiz.RequestHandle handle){
 
 
-        BaseBiz.getRequest(ServerConfig.MENUTOP_TOP, null, new BaseBiz.RequestHandle() {
+        BaseBiz.getRequest(ServerConfig.MENUTOP_TOP, getParams(), new BaseBiz.RequestHandle() {
             @Override
             public void onSuccess(ResponseBean responseBean) {
                 String string= (String) responseBean.getObject();
@@ -87,7 +78,7 @@ public class HomeBiz {
         public static void getHomeNewsList(String url,int page,final BaseBiz.RequestHandle handle){
 
             url=ServerConfig.SERVER_API_URL+url+"&page="+page;
-            BaseBiz.getRequest(url, null, new BaseBiz.RequestHandle() {
+            BaseBiz.getRequest(url, getParams(), new BaseBiz.RequestHandle() {
                 @Override
                 public void onSuccess(ResponseBean responseBean) {
                     String string= (String) responseBean.getObject();
@@ -127,7 +118,7 @@ public class HomeBiz {
      */
     public static void getTopLunbo(String fid,final BaseBiz.RequestHandle handle){
             String url = ServerConfig.GETAPP_URL;
-        RequestParams params =new RequestParams();
+        RequestParams params = getParams();
         params.put("a","ibenner");
         params.put("fid",fid);
         BaseBiz.getRequest(url, params, new BaseBiz.RequestHandle() {
@@ -163,6 +154,9 @@ public class HomeBiz {
             }
         });
     }
+
+
+
 
 
 }

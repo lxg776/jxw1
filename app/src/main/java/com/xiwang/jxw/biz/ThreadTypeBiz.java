@@ -20,7 +20,7 @@ import java.util.List;
  * 主题分类业务逻辑
  * Created by liangxg on 2016/1/22.
  */
-public class ThreadTypeBiz {
+public class ThreadTypeBiz extends BaseBiz{
 
     /**
      * 获取表情表情
@@ -28,7 +28,7 @@ public class ThreadTypeBiz {
      */
     public static void getThreadTypes(final BaseBiz.RequestHandle handle){
 
-        BaseBiz.getRequest(ServerConfig.THREAD_TYPE_URL, new RequestParams(), new BaseBiz.RequestHandle() {
+        BaseBiz.getRequest(ServerConfig.THREAD_TYPE_URL, getParams(), new BaseBiz.RequestHandle() {
             @Override
             public void onSuccess(ResponseBean responseBean) {
                 String string= (String) responseBean.getObject();

@@ -110,7 +110,7 @@ public class NewsListFragment extends BaseFragment3 {
 
         JxwRefreshViewHolder meiTuanRefreshViewHolder = new JxwRefreshViewHolder(TApplication.context, true);
 
-        meiTuanRefreshViewHolder.setPullDownImageResource(R.mipmap.bga_refresh_mt_pull_down);
+        meiTuanRefreshViewHolder.setPullDownImageResource(R.mipmap.bga_refresh_mt_change_to_release_refresh_05);
         meiTuanRefreshViewHolder.setChangeToReleaseRefreshAnimResId(R.drawable.bga_refresh_mt_change_to_release_refresh);
         meiTuanRefreshViewHolder.setRefreshingAnimResId(R.drawable.bga_refresh_mt_refreshing);
 

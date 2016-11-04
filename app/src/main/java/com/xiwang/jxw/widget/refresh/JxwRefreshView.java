@@ -46,10 +46,14 @@ public class JxwRefreshView extends RelativeLayout {
 
 
     public void handleScale(float scale) {
-        scale = 0.1f + 0.9f * scale;
-        ViewCompat.setScaleX(mPullDownView, scale);
-        ViewCompat.setPivotY(mPullDownView, mPullDownView.getHeight());
-        ViewCompat.setScaleY(mPullDownView, scale);
+//        scale = 0.1f + 0.9f * scale;
+//        ViewCompat.setScaleX(mPullDownView, scale);
+//        ViewCompat.setPivotY(mPullDownView, mPullDownView.getHeight());
+//        ViewCompat.setScaleY(mPullDownView, scale);
+
+        //设置旋转角度
+        float rotationVaule = -180+(180)*scale;
+        ViewCompat.setRotation(mPullDownView,rotationVaule);
     }
 
     public void changeToIdle() {

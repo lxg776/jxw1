@@ -44,7 +44,7 @@ import de.greenrobot.event.EventBus;
  * @date 2015/11/23
  * @modifier
  */
-public class UserBiz {
+public class UserBiz  extends BaseBiz{
 
     /**
      * 判断是否登录
@@ -130,7 +130,7 @@ public class UserBiz {
      * @param mHandle
      */
     public static void otherLogin(final Context context ,String openid,String platform,String username,String sex,String face,final BaseBiz.RequestHandle mHandle){
-        RequestParams params = new RequestParams();
+        RequestParams params =  getParams();
         params.put("a", "login");
         params.put("step", "qqlogin");
         params.put("openid", openid);
@@ -180,7 +180,7 @@ public class UserBiz {
      */
     public static void testCookies() {
         String url = "http://m.jingxi.net/cookie.php";
-        BaseBiz.getRequest(url, null, new BaseBiz.RequestHandle() {
+        BaseBiz.getRequest(url, getParams(), new BaseBiz.RequestHandle() {
             @Override
             public void onSuccess(ResponseBean responseBean) {
 
@@ -218,7 +218,7 @@ public class UserBiz {
      * @param pid  （评论ID，0为楼主）
      */
     public static void digOrFight(String type, String tid, String pid, final BaseBiz.RequestHandle handle) {
-        RequestParams params = new RequestParams();
+        RequestParams params = getParams();
         params.put("a", "reply");
         params.put("type", type);
         params.put("tid", tid);
@@ -374,7 +374,7 @@ public class UserBiz {
      * @param handle  操作
      */
     public static void faTie(String fid, String type, String action, String tid, String subject, String content, String aids, final BaseBiz.RequestHandle handle) {
-        RequestParams params = new RequestParams();
+        RequestParams params = getParams();
         if (!TextUtils.isEmpty(fid)) {
             params.put("fid", fid);
         }
@@ -435,7 +435,7 @@ public class UserBiz {
      * @param handle
      */
     public static void getUserInfo(String uid, final BaseBiz.RequestHandle handle) {
-        RequestParams params = new RequestParams();
+        RequestParams params = getParams();
         if (!TextUtils.isEmpty(uid)) {
             params.put("uid", uid);
         }
@@ -485,7 +485,7 @@ public class UserBiz {
      * @param handle
      */
     public static void login(String userName, String pwd, final BaseBiz.RequestHandle handle) {
-        RequestParams params = new RequestParams();
+        RequestParams params = getParams();
         params.put("username", userName);
         params.put("password", pwd);
         //params.put("a","login");
@@ -532,7 +532,7 @@ public class UserBiz {
      * @param handle
      */
     public static void reg(String userName, String pwd, String email, String sex, final BaseBiz.RequestHandle handle) {
-        RequestParams params = new RequestParams();
+        RequestParams params = getParams();
         params.put("username", userName);
         params.put("password", pwd);
         params.put("email", email);
@@ -578,7 +578,7 @@ public class UserBiz {
      * @param handle
      */
     public static void getMyPublish(Context context,int page,final BaseBiz.RequestHandle handle){
-        RequestParams params = new RequestParams();
+        RequestParams params = getParams();
         params.put("a", "myread");
         params.put("page", page);
         BaseBiz.postRequest(context,ServerConfig.GETAPP_URL, params, new BaseBiz.RequestHandle() {
@@ -621,7 +621,7 @@ public class UserBiz {
      * @param type
      */
     public static void verifyCode(Context context,String phoneOrMail,String code,String type,final BaseBiz.RequestHandle handle){
-        RequestParams params = new RequestParams();
+        RequestParams params = getParams();
         if(TextUtils.isEmpty(type)){
             type="mobile";
         }
@@ -673,7 +673,7 @@ public class UserBiz {
      * @param type mobile 手机验证码 email 邮件验证码
      */
     public static void getVerifyCode(Context context,String phoneOrMail,String type,final BaseBiz.RequestHandle handle){
-        RequestParams params = new RequestParams();
+        RequestParams params = getParams();
         if(TextUtils.isEmpty(type)){
             type="mobile";
         }
@@ -717,7 +717,7 @@ public class UserBiz {
      * @throws FileNotFoundException
      */
     public static void uploadHeadImg(String path,final SystemBiz.UploadImgListener handle) throws FileNotFoundException {
-        RequestParams params=new RequestParams();
+        RequestParams params= getParams();
         params.put("a","userinfo");
         params.put("ac","upface");
         File file =new File(path);
@@ -774,6 +774,11 @@ public class UserBiz {
                 handle.onProgress(progress);
             }
         });
+    }
+
+
+    public static void updateUserInfo(Context context,String sex,String qq, String wx,final BaseBiz.RequestHandle handle){
+
     }
 
 

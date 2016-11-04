@@ -57,11 +57,11 @@ public class ServerConfig {
 
 	/** Api服务器地址 */
 	// public final static String SERVER_API_URL = "http://www.brightoilonline.cn/b2b/";
-	public final static String SERVER_API_URL = "http://m.jingxi.net/";
+	public final static String SERVER_API_URL = "https://m.jingxi.net/";
 	/** 图片根地址 */
-	public final static String IMAGE_BASE_URL = "http://images.jingxi.net/";
-	/** 西网服务协议 */
-	public final static String PROTOCOL_URL = "http://www.baidu.com";
+	public final static String IMAGE_BASE_URL = "https://images.jingxi.net/";
+//	/** 西网服务协议 */
+//	public final static String PROTOCOL_URL = "http://www.baidu.com";
 	/** 获取用户信息*/
 	public final static String MYINFO_URL=SERVER_API_URL+"getapp.php?a=myinfo";
 	/**发贴 回复*/

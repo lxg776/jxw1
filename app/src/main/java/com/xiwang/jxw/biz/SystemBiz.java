@@ -26,7 +26,7 @@ import cz.msebera.android.httpclient.Header;
  * 系统逻辑
  * Created by sunshine on 15/11/6.
  */
-public class SystemBiz {
+public class SystemBiz extends BaseBiz {
         /**
          * 上传图片
          * @param path
@@ -34,7 +34,7 @@ public class SystemBiz {
          * @throws FileNotFoundException
          */
         public static void uploadImg(String path,final UploadImgListener handle) throws FileNotFoundException {
-            RequestParams params=new RequestParams();
+            RequestParams params= getParams();
             params.put("type","media");
             File file =new File(path);
             if(!file.exists()){
@@ -95,7 +95,7 @@ public class SystemBiz {
 
         public static void getStartAppImage(final BaseBiz.RequestHandle handle){
 
-            BaseBiz.getRequest(ServerConfig.START_APP_IMG, null, new BaseBiz.RequestHandle() {
+            BaseBiz.getRequest(ServerConfig.START_APP_IMG, new RequestParams(), new BaseBiz.RequestHandle() {
 
                 @Override
                 public void onSuccess(ResponseBean responseBean) {

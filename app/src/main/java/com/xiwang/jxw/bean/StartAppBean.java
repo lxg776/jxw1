@@ -10,9 +10,20 @@ import org.json.JSONObject;
 public class StartAppBean extends BaseBean {
     /**图片地址*/
     String imgurl;
+    String signkey;
+
+    public String getSignkey() {
+        return signkey;
+    }
+
+    public void setSignkey(String signkey) {
+        this.signkey = signkey;
+    }
+
     @Override
     protected void init(JSONObject jSon) throws JSONException {
             setImgurl(jSon.optString("imgurl"));
+            setSignkey(jSon.optString("signkey"));
     }
 
     public String getImgurl() {
@@ -22,4 +33,7 @@ public class StartAppBean extends BaseBean {
     public void setImgurl(String imgurl) {
         this.imgurl = imgurl;
     }
+
+
+
 }

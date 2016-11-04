@@ -33,7 +33,7 @@ import java.util.List;
  * @date 2015/11/11
  * @modifier
  */
-public class NewsBiz {
+public class NewsBiz extends BaseBiz {
 
 
     /**
@@ -43,7 +43,7 @@ public class NewsBiz {
     public static void getSmileBean(final BaseBiz.RequestHandle handle){
 
 
-        BaseBiz.getRequest(ServerConfig.SMILES_URL, new RequestParams(), new BaseBiz.RequestHandle() {
+        BaseBiz.getRequest(ServerConfig.SMILES_URL, getParams(), new BaseBiz.RequestHandle() {
             @Override
             public void onSuccess(ResponseBean responseBean) {
                     String string= (String) responseBean.getObject();
@@ -87,7 +87,7 @@ public class NewsBiz {
      * @param handle
      */
     public static void reply(String tid, String content, String aids, final BaseBiz.RequestHandle handle) {
-        RequestParams params = new RequestParams();
+        RequestParams params =getParams();
         params.put("tid", tid);
         params.put("action", "reply");
         params.put("content", content);
@@ -139,7 +139,7 @@ public class NewsBiz {
             return;
         }
 
-        RequestParams params =new RequestParams();
+        RequestParams params =getParams();
        // params.put("fid","70");
         params.put("fid",topicBean.getFid());
         //params.put("tid",topicBean.getTid());
@@ -194,7 +194,7 @@ public class NewsBiz {
      */
     public static void getNewsDetail(String tid,int page,final BaseBiz.RequestHandle handle){
         String url=ServerConfig.NEWS_DETAIL;
-        RequestParams params =new RequestParams();
+        RequestParams params = getParams();
         params.put("page",page);
         params.put("tid",tid);
         BaseBiz.getRequest(url, params, new BaseBiz.RequestHandle() {
@@ -272,7 +272,7 @@ public class NewsBiz {
      */
     public static void getDigUsers(String tid,final BaseBiz.RequestHandle handle){
         String url=ServerConfig.DIG_LIST_URL;
-        RequestParams params =new RequestParams();
+        RequestParams params = getParams();
         params.put("tid",tid);
 
         BaseBiz.getRequest(url, params, new BaseBiz.RequestHandle() {

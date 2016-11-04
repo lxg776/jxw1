@@ -87,7 +87,7 @@ public class ServiceProtocolActivity extends BaseActivity {
 
     @Override
     protected void initGetData() {
-        mWebView.loadUrl(ServerConfig.PROTOCOL_URL);
+       // mWebView.loadUrl(ServerConfig.PROTOCOL_URL);
     }
 
     @Override

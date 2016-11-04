@@ -14,7 +14,7 @@ import cn.bingoogolapple.refreshlayout.BGARefreshViewHolder;
 public class JxwRefreshViewHolder extends BGARefreshViewHolder {
 
 
-    private BGAMeiTuanRefreshView mMeiTuanRefreshView;
+    private JxwRefreshView mMeiTuanRefreshView;
     private int mPullDownImageResId = -1;
     private int mChangeToReleaseRefreshAnimResId = -1;
     private int mRefreshingAnimResId = -1;
@@ -67,7 +67,7 @@ public class JxwRefreshViewHolder extends BGARefreshViewHolder {
                 mRefreshHeaderView.setBackgroundResource(mRefreshViewBackgroundDrawableRes);
             }
 
-            mMeiTuanRefreshView = (BGAMeiTuanRefreshView) mRefreshHeaderView.findViewById(cn.bingoogolapple.refreshlayout.R.id.meiTuanView);
+            mMeiTuanRefreshView = (JxwRefreshView) mRefreshHeaderView.findViewById(cn.bingoogolapple.refreshlayout.R.id.meiTuanView);
             if (mPullDownImageResId != -1) {
                 mMeiTuanRefreshView.setPullDownImageResource(mPullDownImageResId);
             } else {
