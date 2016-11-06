@@ -106,7 +106,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
                     break;
                 case R.id.fabu_ll:
                     //我的发布
-                  //  MyPublishActivity.jumpActivity(context);
+                    MyPublishActivity.jumpActivity(context);
                     break;
                 case R.id.setting_ll:
                     break;

@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.support.annotation.DrawableRes;
 import android.view.View;
 
+import com.xiwang.jxw.R;
+
 import cn.bingoogolapple.refreshlayout.BGAMeiTuanRefreshView;
 import cn.bingoogolapple.refreshlayout.BGARefreshViewHolder;
 
@@ -58,7 +60,7 @@ public class JxwRefreshViewHolder extends BGARefreshViewHolder {
     @Override
     public View getRefreshHeaderView() {
         if (mRefreshHeaderView == null) {
-            mRefreshHeaderView = View.inflate(mContext, cn.bingoogolapple.refreshlayout.R.layout.view_refresh_header_meituan, null);
+            mRefreshHeaderView = View.inflate(mContext, R.layout.view_refresh_header_jxw, null);
             mRefreshHeaderView.setBackgroundColor(Color.TRANSPARENT);
             if (mRefreshViewBackgroundColorRes != -1) {
                 mRefreshHeaderView.setBackgroundResource(mRefreshViewBackgroundColorRes);

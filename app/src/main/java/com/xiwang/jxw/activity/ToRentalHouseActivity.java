@@ -47,6 +47,9 @@ public class ToRentalHouseActivity extends BaseSubmitActivity{
     /**房租相片*/
     UploadImgView uploadView;
 
+    /**房/位/厅 数据*/
+    String [] fwtArray;
+
     DeleteAutoCompleteTextView mAddressTv;
 
 
@@ -235,7 +238,9 @@ public class ToRentalHouseActivity extends BaseSubmitActivity{
     @Override
     protected void initGetData() {
 
-
+        fwtArray=getResources().getStringArray(R.array.select_ftw);
+        ArrayAdapter arrayAdapter=new ArrayAdapter<String>(this,R.layout.item_autotext,fwtArray);
+        fwt_tv.setAdapter(arrayAdapter);
     }
 
     @Override

@@ -777,7 +777,24 @@ public class UserBiz  extends BaseBiz{
     }
 
 
+    /**
+     * 更新个人信息
+     * @param context 上下文
+     * @param sex 性别
+     * @param qq qq号码
+     * @param wx 微信号码
+     * @param handle
+     */
     public static void updateUserInfo(Context context,String sex,String qq, String wx,final BaseBiz.RequestHandle handle){
+
+
+        RequestParams params= getParams();
+        params.put("sex",sex);
+        params.put("qq",qq);
+        params.put("wx",wx);
+        params.put("a","userinfo");
+        params.put("ac","editinfo");
+        BaseBiz.postRequest(context,ServerConfig.GETAPP_URL, params, handle);
 
     }
 

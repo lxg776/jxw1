@@ -161,19 +161,32 @@ public class PersionDetailActivity extends BaseActivity implements  View.OnClick
                 ImgLoadUtil.displayImage(userBean.getUserInfoBean().getFace(), user_headimg_iv);
             }
             name_tv.setText(userBean.getUsername());
+
+            if("1".equals(userBean.getSex())){
+                userBean.setSex("男");
+            }else if("0".equals(userBean.getSex())){
+                userBean.setSex("未知");
+            }else if("2".equals(userBean.getSex())){
+                userBean.setSex("女");
+            }
+
+
             sex_tv.setText(userBean.getSex());
             if(null!=userBean.getUserInfoBean()){
                 sign_tv.setText(userBean.getUserInfoBean().getSignature());
                 //cellphone_tv.setText(userBean.getUserInfoBean().getUsername());
             }
         }
-        if(TextUtils.isEmpty(userBean.getUserInfoBean().getCellphone())){
-            cellphone_tv.setTextColor(getResources().getColor(R.color.red_500));
-            cellphone_tv.setText("立即绑定");
-        }else{
-            cellphone_tv.setTextColor(getResources().getColor(R.color.black_transparent_54));
-            cellphone_tv.setText(userBean.getUserInfoBean().getCellphone());
+        if(null!=userBean.getUserInfoBean()){
+            if(TextUtils.isEmpty(userBean.getUserInfoBean().getCellphone())){
+                cellphone_tv.setTextColor(getResources().getColor(R.color.red_500));
+                cellphone_tv.setText("立即绑定");
+            }else{
+                cellphone_tv.setTextColor(getResources().getColor(R.color.black_transparent_54));
+                cellphone_tv.setText(userBean.getUserInfoBean().getCellphone());
+            }
         }
+
     }
 
 
