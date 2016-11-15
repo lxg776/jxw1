@@ -12,16 +12,17 @@ import com.xiwang.jxw.activity.MyPublishActivity;
 import com.xiwang.jxw.activity.PersionDetailActivity;
 import com.xiwang.jxw.base.BaseFragment;
 import com.xiwang.jxw.bean.UserBean;
-import com.xiwang.jxw.bean.UserInfoBean;
+import com.xiwang.jxw.bean.VersionInfoBean;
 import com.xiwang.jxw.biz.UserBiz;
 import com.xiwang.jxw.event.LoginEvent;
 import com.xiwang.jxw.event.RegEvent;
 import com.xiwang.jxw.event.UserInfoEvent;
-import com.xiwang.jxw.intf.LogoutListener;
-import com.xiwang.jxw.network.AppHttpClient;
+import com.xiwang.jxw.event.VersionEvent;
+import com.xiwang.jxw.intf.ConfirmListener;
+import com.xiwang.jxw.util.AppUtils;
 import com.xiwang.jxw.util.CommonUtil;
 import com.xiwang.jxw.util.ImgLoadUtil;
-import com.xiwang.jxw.util.ToastUtil;
+import com.xiwang.jxw.util.SpUtil;
 
 
 /**
@@ -51,6 +52,9 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
     /** 注销当前帐号*/
     private LinearLayout quit_ll;
 
+    /**当前版本信息*/
+    TextView mCurrentVerionTv;
+
     @Override
     protected String getPageName() {
         return "我的f";
@@ -73,6 +77,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
         user_tv= (TextView) view_Parent.findViewById(R.id.user_tv);
         user_headimg_iv= (ImageView) view_Parent.findViewById(R.id.user_headimg_iv);
         quit_ll=(LinearLayout)view_Parent.findViewById(R.id.quit_ll);
+        mCurrentVerionTv=(TextView)view_Parent.findViewById(R.id.current_verion_tv);
     }
 
     @Override
@@ -94,6 +99,36 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
     @Override
     protected void init() {
 
+
+        updateVersionInfo();
+    }
+
+    /**
+     * 更新版本信息
+     */
+    public  void updateVersionInfo(){
+       Object o =  SpUtil.getObject(context,getString(R.string.update_verion));
+        if(o!=null&& o instanceof VersionInfoBean){
+           final VersionInfoBean versionInfoBean = (VersionInfoBean) o;
+            int currentCode =  AppUtils.getAppVersionCode(context);
+            if(currentCode<versionInfoBean.getVersioncode()){
+                findViewById(R.id.version_ll).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        CommonUtil.checkVersion(context,"版本更新",versionInfoBean,true);
+                    }
+                });
+                mCurrentVerionTv.setText("有新版本哦，点击进行版本更新");
+                mCurrentVerionTv.setTextColor(getResources().getColor(R.color.red));
+            }else{
+                mCurrentVerionTv.setText("当前版本为v"+AppUtils.getAppVersionName(getActivity()));
+                mCurrentVerionTv.setTextColor(getResources().getColor(R.color.black_transparent_54));
+            }
+        }else{
+            mCurrentVerionTv.setText(AppUtils.getAppName(getActivity())+"v"+AppUtils.getAppVersionName(getActivity()));
+            mCurrentVerionTv.setTextColor(getResources().getColor(R.color.black_transparent_54));
+            findViewById(R.id.version_ll).setOnClickListener(null);
+        }
     }
 
     @Override
@@ -111,12 +146,12 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
                 case R.id.setting_ll:
                     break;
                 case R.id.collect_ll:
-                    ToastUtil.showToast(context,"lxg776");
+                    //ToastUtil.showToast(context,"lxg776");
                     break;
                 case R.id.tidao_ll:
                     break;
                 case R.id.quit_ll:
-                    CommonUtil.showExitDialog(context,"提示","注销当前账号？",new LogoutListener(){
+                    CommonUtil.showExitDialog(context,"提示","注销当前账号？",new ConfirmListener(){
 
                         @Override
                         public void confirm() {
@@ -144,6 +179,11 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
     }
     public void onEvent(RegEvent event) {
         showUserInfo();
+    }
+
+    public void onEvent(VersionEvent event) {
+
+        updateVersionInfo();
     }
 
 

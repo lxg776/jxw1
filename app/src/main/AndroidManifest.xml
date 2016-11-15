@@ -296,6 +296,11 @@
             </intent-filter>
         </receiver>
 
+        <!-- 版本下载服务 -->
+        <service
+            android:name=".service.UpdateService"
+            android:enabled="true" />
+
 
         <!--*************************************************Jpush************************************-->
         <!-- Rich push 核心功能 since 2.0.6-->

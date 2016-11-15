@@ -9,7 +9,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.*;
 import android.view.ContextThemeWrapper;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -25,14 +27,16 @@ import com.xiwang.jxw.bean.PushNewsBean;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.bean.SmileListBean;
 import com.xiwang.jxw.bean.ThreadTypeBean;
+import com.xiwang.jxw.bean.VersionInfoBean;
 import com.xiwang.jxw.biz.NewsBiz;
 import com.xiwang.jxw.biz.ThreadTypeBiz;
 import com.xiwang.jxw.biz.UserBiz;
 import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.config.TApplication;
-import com.xiwang.jxw.intf.LogoutListener;
+import com.xiwang.jxw.intf.ConfirmListener;
 import com.xiwang.jxw.listener.SaveImageListener;
 import com.xiwang.jxw.network.AppHttpClient;
+import com.xiwang.jxw.service.UpdateService;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -354,6 +358,96 @@ public class CommonUtil {
         }
     }
 
+
+    /**
+     * 监测更新
+     * @param context 上下文
+     * @param title 标题
+     * @param versionInfoBean 版本信息
+     * @param isManual 是否手动
+     */
+    public static void checkVersion(final Context context, String title,final VersionInfoBean versionInfoBean ,boolean isManual){
+        if(versionInfoBean==null){
+            return;
+        }
+        //当前版本
+        int currentAndroidCode = AppUtils.getAppVersionCode(context);
+        //服务器最新的版本
+        int updateAndroidCode = versionInfoBean.getVersioncode();
+        //强制更新的版本
+        int forceUpdateAndroidCode = versionInfoBean.getMinForceUpdateVersion();
+        //是否强制更新
+        boolean isForce = false;
+        //当前提示的时间
+        final long alert_update_time = System.currentTimeMillis();
+        long laster_alert_update_time= SpUtil.getSpUtil().getSPValue(context.getString(R.string.alert_update_time),new Long(0));
+
+        if(currentAndroidCode>=updateAndroidCode){
+            /**
+             * 当前版本大于或者服务器版本不进行更新操作
+             */
+            return;
+        }
+
+        if(currentAndroidCode<=forceUpdateAndroidCode){
+            isForce = true;
+        }
+
+        RelativeLayout ll = (RelativeLayout) LayoutInflater.from(context)
+                .inflate(R.layout.view_dialog, null);
+        final AlertDialog dlg = new AlertDialog.Builder(
+                new ContextThemeWrapper(context, R.style.Theme_Transparent))
+                .setView(ll).create();
+        TextView txt_title = (TextView) ll.findViewById(R.id.txt_title);
+        TextView txt_message = (TextView) ll.findViewById(R.id.txt_message);
+        TextView btn_affirm = (TextView) ll.findViewById(R.id.btn_affirm);
+        TextView btn_cancel = (TextView) ll.findViewById(R.id.btn_cancel);
+        btn_affirm.setText("稍后提醒我");
+        txt_title.setText(title);
+        txt_message.setText(versionInfoBean.getContent());
+        btn_cancel.setText("更新");
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                // TODO Auto-generated method stub
+
+                Intent intent = new Intent(context, UpdateService.class);
+                intent.putExtra("path", versionInfoBean.getUrls());
+                context.startService(intent);
+                dlg.dismiss();
+            }
+        });
+        btn_affirm.setOnClickListener(new android.view.View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                // TODO Auto-generated method stub
+                dlg.dismiss();
+                //推迟更新保存当前时间戳
+                SpUtil.getSpUtil().putSPValue(context.getString(R.string.alert_update_time),alert_update_time);
+            }
+        });
+        dlg.setCanceledOnTouchOutside(false);
+        if(!isManual&&laster_alert_update_time==0){
+            dlg.show();
+        }
+       else if(isForce&&!isManual&&laster_alert_update_time>0&&Math.abs(alert_update_time-laster_alert_update_time)>1000*60*24*1){
+            //强制更新大于1天 再次提醒
+            dlg.show();
+        }
+        else if(!isManual&&laster_alert_update_time>0&&Math.abs(alert_update_time-laster_alert_update_time)>1000*60*24*5){
+            //大于五天 再次提醒
+            dlg.show();
+        }else if(isManual){
+            //手动的方式直接弹出提醒
+            dlg.show();
+        }
+
+
+    }
+
+
+
     /**
      * 用户退出登录
      *
@@ -367,7 +461,7 @@ public class CommonUtil {
      * @param title
      * @param message
      */
-    public static void showExitDialog(final Context context, String title, String message, final LogoutListener listener) {
+    public static void showExitDialog(final Context context, String title, String message, final ConfirmListener listener) {
         RelativeLayout ll = (RelativeLayout) LayoutInflater.from(context)
                 .inflate(R.layout.view_dialog, null);
         final AlertDialog dlg = new AlertDialog.Builder(
@@ -387,6 +481,30 @@ public class CommonUtil {
                 UserBiz.setNullToUser(context);
                 /**注销cookies*/
                 AppHttpClient.clearCookie();
+                /**服务器登出*/
+                UserBiz.loginOut(new BaseBiz.RequestHandle() {
+                    @Override
+                    public void onSuccess(ResponseBean responseBean) {
+
+                    }
+
+                    @Override
+                    public void onFail(ResponseBean responseBean) {
+
+                    }
+
+                    @Override
+                    public ResponseBean getRequestCache() {
+                        return null;
+                    }
+
+                    @Override
+                    public void onRequestCache(ResponseBean result) {
+
+                    }
+                });
+
+
                 if(null!=listener){
                     listener.confirm();
                 }

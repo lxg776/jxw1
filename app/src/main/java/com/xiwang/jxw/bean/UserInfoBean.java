@@ -25,6 +25,8 @@ public class UserInfoBean extends BaseBean{
     private String newpm;
     /**手机号码*/
     private String cellphone;
+    /**邮箱*/
+    private String email;
 
     public String getCellphone() {
         return cellphone;
@@ -90,6 +92,15 @@ public class UserInfoBean extends BaseBean{
         this.newpm = newpm;
     }
 
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     protected void init(JSONObject jSon) throws JSONException {
         setUid(jSon.optString("uid"));
@@ -100,5 +111,6 @@ public class UserInfoBean extends BaseBean{
         setIntroduce(jSon.optString("introduce"));
         setNewpm(jSon.optString("newpm"));
         setCellphone(jSon.optString("cellphone"));
+        setEmail(jSon.optString("email"));
     }
 }

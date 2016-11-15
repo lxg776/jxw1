@@ -160,7 +160,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_marginLeft="16dp"
-                    android:text="262621979@qq.com"
+
                     android:textColor="@color/black_transparent_54"
                     android:textSize="16sp" />
             </RelativeLayout>

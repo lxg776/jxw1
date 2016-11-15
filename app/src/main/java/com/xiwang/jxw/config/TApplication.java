@@ -87,23 +87,23 @@ public class TApplication extends Application  {
 		JPushInterface.setDebugMode(true);
 		JPushInterface.init(this);
         initPlatform();
-		//内存检查
-		if (LeakCanary.isInAnalyzerProcess(this)) {
-			// This process is dedicated to LeakCanary for heap analysis.
-			// You should not init your app in this process.
-			return;
-		}
-		refWatcher= LeakCanary.install(this);
+//		//内存检查
+//		if (LeakCanary.isInAnalyzerProcess(this)) {
+//			// This process is dedicated to LeakCanary for heap analysis.
+//			// You should not init your app in this process.
+//			return;
+//		}
+//		refWatcher= LeakCanary.install(this);
 
 
 	}
 
-	private RefWatcher refWatcher;
+	//private RefWatcher refWatcher;
 
-	public static RefWatcher getRefWatcher(Context context) {
-		TApplication application = (TApplication) context.getApplicationContext();
-		return application.refWatcher;
-	}
+//	public static RefWatcher getRefWatcher(Context context) {
+//		TApplication application = (TApplication) context.getApplicationContext();
+//		return application.refWatcher;
+//	}
 
 
 	/**

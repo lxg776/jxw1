@@ -151,8 +151,8 @@ public abstract class BaseFragment extends Fragment {
 		if (useEventBus()) {
 			EventBus.getDefault().unregister(this);
 		}
-		RefWatcher refWatcher = TApplication.getRefWatcher(getActivity());
-		refWatcher.watch(this);
+		//RefWatcher refWatcher = TApplication.getRefWatcher(getActivity());
+		//refWatcher.watch(this);
 
 		super.onDestroy();
 	}

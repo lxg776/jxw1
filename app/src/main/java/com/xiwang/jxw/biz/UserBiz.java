@@ -474,6 +474,17 @@ public class UserBiz  extends BaseBiz{
     }
 
 
+    /**
+     * 登出方法
+     */
+    public static void loginOut(final BaseBiz.RequestHandle handle){
+        RequestParams params = getParams();
+        params.put("a", "login");
+        params.put("step", "outlogin");
+        //params.put("a","login");
+        BaseBiz.getRequest(ServerConfig.GETAPP_URL, params,handle);
+
+    }
 
 
 

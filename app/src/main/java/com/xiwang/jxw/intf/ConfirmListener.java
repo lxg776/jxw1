@@ -4,7 +4,7 @@ package com.xiwang.jxw.intf;
  * 登出监听
  * Created by liangxg on 2016/1/21.
  */
-public interface LogoutListener {
+public interface ConfirmListener {
     /**
      * 确认
      */

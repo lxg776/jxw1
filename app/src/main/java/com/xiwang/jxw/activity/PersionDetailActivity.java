@@ -174,7 +174,9 @@ public class PersionDetailActivity extends BaseActivity implements  View.OnClick
             sex_tv.setText(userBean.getSex());
             if(null!=userBean.getUserInfoBean()){
                 sign_tv.setText(userBean.getUserInfoBean().getSignature());
-                //cellphone_tv.setText(userBean.getUserInfoBean().getUsername());
+                email_tv.setText(userBean.getUserInfoBean().getEmail());
+                //cellphone_tv.setText(userBean.getUserInfoBean().getUsername())
+                // ;
             }
         }
         if(null!=userBean.getUserInfoBean()){
@@ -225,25 +227,25 @@ public class PersionDetailActivity extends BaseActivity implements  View.OnClick
                     /*
                         性别按钮
                          */
-                    showSexListView();
+                   // showSexListView();
                     break;
                 case R.id.email_rl:
                        /*
                         邮箱按钮
                          */
-                    Intent intent=new Intent(context,PersonMsgSaveActivity.class);
-                    intent.putExtra(IntentConfig.SEND_TYPE,PersonMsgSaveActivity.TYPE_EMAIL);
-                    intent.putExtra(IntentConfig.SEND_VALUE,email_tv.getText().toString());
-                    startActivity(intent);
+//                    Intent intent=new Intent(context,PersonMsgSaveActivity.class);
+//                    intent.putExtra(IntentConfig.SEND_TYPE,PersonMsgSaveActivity.TYPE_EMAIL);
+//                    intent.putExtra(IntentConfig.SEND_VALUE,email_tv.getText().toString());
+//                    startActivity(intent);
                     break;
                 case R.id.sign_rl:
                          /*
                         个性签名按钮
                          */
-                    Intent signIntent=new Intent(context,PersonMsgSaveActivity.class);
-                    signIntent.putExtra(IntentConfig.SEND_TYPE,PersonMsgSaveActivity.TYPE_SIGN);
-                    signIntent.putExtra(IntentConfig.SEND_VALUE,sign_tv.getText().toString());
-                    startActivity(signIntent);
+//                    Intent signIntent=new Intent(context,PersonMsgSaveActivity.class);
+//                    signIntent.putExtra(IntentConfig.SEND_TYPE,PersonMsgSaveActivity.TYPE_SIGN);
+//                    signIntent.putExtra(IntentConfig.SEND_VALUE,sign_tv.getText().toString());
+//                    startActivity(signIntent);
                     break;
                 case R.id.cellphone_rl:
                     if(TextUtils.isEmpty(userBean.getUserInfoBean().getCellphone())){

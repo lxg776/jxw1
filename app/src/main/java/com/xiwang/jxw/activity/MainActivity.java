@@ -21,13 +21,16 @@ import com.xiwang.jxw.bean.ColumnBean;
 import com.xiwang.jxw.bean.NewsBean;
 import com.xiwang.jxw.bean.PushNewsBean;
 import com.xiwang.jxw.bean.ResponseBean;
+import com.xiwang.jxw.bean.VersionInfoBean;
 import com.xiwang.jxw.biz.HomeBiz;
+import com.xiwang.jxw.biz.SystemBiz;
 import com.xiwang.jxw.biz.UserBiz;
 import com.xiwang.jxw.config.IntentConfig;
 import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.event.LoginEvent;
 import com.xiwang.jxw.event.MenuEvent;
 import com.xiwang.jxw.event.PushMessageEvent;
+import com.xiwang.jxw.event.VersionEvent;
 import com.xiwang.jxw.fragment.FindFragment;
 import com.xiwang.jxw.fragment.HomeFragment;
 import com.xiwang.jxw.fragment.MineFragment;
@@ -39,6 +42,7 @@ import com.xiwang.jxw.util.DisplayUtil;
 import com.xiwang.jxw.util.IntentUtil;
 import com.xiwang.jxw.util.NotifyHelper;
 import com.xiwang.jxw.util.SpUtil;
+import com.xiwang.jxw.util.SystemUtil;
 import com.xiwang.jxw.widget.MyRadioView;
 
 import java.util.ArrayList;
@@ -146,6 +150,37 @@ public class MainActivity extends BaseActivity {
         /** 進行自動登錄*/
        UserBiz.autoLogin(context);
 
+        /** 版本更新*/
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                SystemBiz.checkUpdate(new BaseBiz.RequestHandle() {
+                    @Override
+                    public void onSuccess(ResponseBean responseBean) {
+                        VersionInfoBean versionInfoBean = (VersionInfoBean) responseBean.getObject();
+                        SpUtil.setObject(context,getString(R.string.update_verion),versionInfoBean);
+                        CommonUtil.checkVersion(context,"版本提示",versionInfoBean,false);
+                        //发出版本事件
+                        EventBus.getDefault().post(new VersionEvent());
+                    }
+
+                    @Override
+                    public void onFail(ResponseBean responseBean) {
+
+                    }
+
+                    @Override
+                    public ResponseBean getRequestCache() {
+                        return null;
+                    }
+
+                    @Override
+                    public void onRequestCache(ResponseBean result) {
+
+                    }
+                });
+            }
+        },2*1000);
 
     }
 

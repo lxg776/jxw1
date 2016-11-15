@@ -7,6 +7,7 @@ import com.xiwang.jxw.base.BaseBiz;
 import com.xiwang.jxw.bean.BaseBean;
 import com.xiwang.jxw.bean.ResponseBean;
 import com.xiwang.jxw.bean.StartAppBean;
+import com.xiwang.jxw.bean.VersionInfoBean;
 import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.network.AppHttpClient;
@@ -19,8 +20,10 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.util.VersionInfo;
 
 /**
  * 系统逻辑
@@ -130,6 +133,51 @@ public class SystemBiz extends BaseBiz {
 
         }
 
+
+    /**
+     * 监测版本更新
+     * @param handle
+     */
+    public static void checkUpdate(final BaseBiz.RequestHandle handle){
+
+        RequestParams requestParams =getParams();
+        requestParams.put("a","version");
+        BaseBiz.getRequest(ServerConfig.GETAPP_URL, requestParams, new BaseBiz.RequestHandle() {
+
+            @Override
+            public void onSuccess(ResponseBean responseBean) {
+                String string= (String) responseBean.getObject();
+                try {
+                   List<VersionInfoBean> list = (List<VersionInfoBean>) BaseBean.toModelList(string, VersionInfoBean.class);
+                    VersionInfoBean versionInfoBean=null;
+                    if(list!=null&&list.size()>0){
+                        versionInfoBean = list.get(0);
+                    }
+                    responseBean.setObject(versionInfoBean);
+                    handle.onSuccess(responseBean);
+                } catch (JSONException e) {
+                    handle.onFail(responseBean);
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFail(ResponseBean responseBean) {
+                handle.onFail(responseBean);
+            }
+
+            @Override
+            public ResponseBean getRequestCache() {
+                return handle.getRequestCache();
+            }
+
+            @Override
+            public void onRequestCache(ResponseBean result) {
+                handle.onRequestCache(result);
+            }
+        });
+
+    }
 
     /**
      * 上传图片监听
