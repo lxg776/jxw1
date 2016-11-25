@@ -70,6 +70,16 @@ public class ImgLoadUtil {
     public static void displayImage(String Uri,ImageView imageView){
         getInstance().displayImage(Uri,imageView,defaultDisplayOptions);
     }
+
+    /**
+     * 异步加载图片
+     * @param Uri 地址
+     * @param imageView 显示的控件
+     */
+    public static void displayImage(String Uri,ImageView imageView,DisplayImageOptions options){
+        getInstance().displayImage(Uri,imageView,options);
+    }
+
     public static void displayImage(String Uri,ImageView imageView,DisplayImageOptions options,ImageLoadingListener listener){
         getInstance().displayImage(Uri,imageView,options,listener);
     }
@@ -92,7 +102,7 @@ public class ImgLoadUtil {
                     .showImageOnFail(R.mipmap.default_loading_img)       // 设置图片加载或解码过程中发生错误显示的图片
                     .cacheInMemory(true)                        // 设置下载的图片是否缓存在内存中
                     .cacheOnDisc(true)                          // 设置下载的图片是否缓存在SD卡中
-                    .displayer(new RoundedBitmapDisplayer(20))  // 设置成圆角图片
+                    //.displayer(new RoundedBitmapDisplayer(20))  // 设置成圆角图片
                     .build();                                   // 创建配置过得DisplayImageOption对象
 
     /**

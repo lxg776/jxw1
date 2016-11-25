@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -183,13 +184,14 @@ public class NewsImagesActivity extends BaseActivity{
         final ImageView imageView = (ImageView) view.findViewById(R.id.img_iv);
        // final ZoomImageView zoom_img_iv = (ZoomImageView) view.findViewById(R.id.zoom_img_iv);
 
-        final PercentView progress_view= (PercentView) view.findViewById(R.id.progress_view);
+        final ProgressBar progress_view= (ProgressBar) view.findViewById(R.id.progress_view);
+
         ImageViewAware imageViewAware=new ImageViewAware(imageView);
         ImgLoadUtil.getInstance().displayImage(url, imageViewAware, ImgLoadUtil.defaultDisplayOptions, new ImageLoadingListener() {
 
             @Override
             public void onLoadingStarted(String imageUri, View view) {
-
+                progress_view.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -208,7 +210,7 @@ public class NewsImagesActivity extends BaseActivity{
 
             @Override
             public void onLoadingCancelled(String imageUri, View view) {
-                progress_view.setVisibility(View.VISIBLE);
+//                progress_view.setVisibility(View.VISIBLE);
             }
         }, new ImageLoadingProgressListener() {
 
@@ -216,7 +218,7 @@ public class NewsImagesActivity extends BaseActivity{
             public void onProgressUpdate(String imageUri, View view, int current, int total) {
                 int proess = current * 100 / total;
                 LogUtil.i("progress",proess+"%");
-                progress_view.setPercent(proess);
+                //progress_view.setPercent(proess);
             }
         });
 

@@ -48,8 +48,9 @@ public class HomeFragment extends BaseFragment2 {
     }
 
     @Override
-    protected View getViews() {
-        return View.inflate(context, R.layout.fragment_home, null);
+    protected View getViews(LayoutInflater inflater, ViewGroup container) {
+        final View result = inflater.inflate(R.layout.fragment_home, container, false);
+        return result;
     }
 
     @Override
@@ -76,7 +77,7 @@ public class HomeFragment extends BaseFragment2 {
                 parent.removeView(view_Parent);
             }
         } else {
-            view_Parent = getViews();
+            view_Parent = getViews(inflater,container);
             findViews();
             widgetListener();
         }

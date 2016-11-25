@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+
 import com.xiwang.jxw.R;
 import com.xiwang.jxw.activity.NewsDetailActivity;
 import com.xiwang.jxw.adapter.HomeNewsListAdapter2;
@@ -89,8 +92,8 @@ public class NewsListFragment extends BaseFragment3 {
     }
 
     @Override
-    protected View getViews() {
-         return View.inflate(context, R.layout.fragment_newslist, null);
+    protected View getViews(LayoutInflater inflater, ViewGroup container) {
+         return inflater.inflate( R.layout.fragment_newslist, container,false);
     }
 
     @Override

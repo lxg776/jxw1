@@ -158,10 +158,10 @@
             android:id="@+id/image_iv"
             android:layout_width="110dp"
             android:layout_height="80dp"
-
             android:layout_marginLeft="16dp"
+            android:scaleType="centerCrop"
 
-            android:visibility="gone" />
+            />
 
     </LinearLayout>
     

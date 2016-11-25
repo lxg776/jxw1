@@ -1,0 +1,64 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_100"
+    >
+<com.xiwang.jxw.widget.AutoRelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/auto_rl"
+    android:orientation="vertical">
+    <include layout="@layout/tootbar_common"
+        android:id="@+id/toolbar"
+        ></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="24dp"
+        >
+
+
+
+        <!--输入内容-->
+            <com.xiwang.jxw.widget.RichEditText
+                android:id="@+id/content_edt"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginTop="8dp"
+                android:padding="16dp"
+                android:hint="吐槽点什么？"
+                android:background="@color/white"
+                android:textColor="@color/black_transparent_87"
+                android:textColorHint="@color/black_transparent_26"
+                android:gravity="top"
+                />
+        <!--图片上传-->
+        <com.xiwang.jxw.widget.UploadImgView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:minHeight="80dp"
+            android:id="@+id/uploadView"
+            app:horizontalSpacing="8dp"
+            app:verticalSpacing="8dp"
+            android:layout_marginTop="8dp"
+            app:numColumns="4"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            ></com.xiwang.jxw.widget.UploadImgView>
+
+        <!--表情布局-->
+        <com.xiwang.jxw.widget.EmojiView
+            android:id="@+id/emoji_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone"
+            ></com.xiwang.jxw.widget.EmojiView>
+    </LinearLayout>
+</com.xiwang.jxw.widget.AutoRelativeLayout>
+</RelativeLayout>

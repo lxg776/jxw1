@@ -80,7 +80,7 @@ public abstract class BaseFragment3 extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		view_Parent = getViews();
+		view_Parent = getViews(inflater,container);
 		findViews();
 		widgetListener();
 		return view_Parent;
@@ -103,7 +103,7 @@ public abstract class BaseFragment3 extends Fragment {
 	/**
 	 * 获取布局
 	 */
-	protected abstract View getViews();
+	protected abstract View getViews(LayoutInflater inflater, ViewGroup container);
 
 	/**
 	 * 查询View

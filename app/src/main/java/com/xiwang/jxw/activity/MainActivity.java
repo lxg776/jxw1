@@ -5,6 +5,7 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
@@ -53,7 +54,7 @@ import java.util.TimerTask;
 import de.greenrobot.event.EventBus;
 
 /**
- * @author liangxg
+ * @author liangxg ss
  * @description 主界面
  * @date 2015/11/3
  * @modifier
@@ -104,6 +105,10 @@ public class MainActivity extends BaseActivity {
     private TimerTask timeTask = null;
     private boolean isExit = false;
 
+
+
+    boolean DEVELOPER_MODE =true;
+
     @Override
     protected int getContentViewId() {
         return R.layout.activity_main;
@@ -126,6 +131,17 @@ public class MainActivity extends BaseActivity {
       //  find_rv=(MyRadioView)findViewById(R.id.find_rv);
         publish_rl=(MyRadioView)findViewById(R.id.publish_rl);
         mine_rv=(MyRadioView)findViewById(R.id.mine_rv);
+
+
+            if (DEVELOPER_MODE) {
+                StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                        .detectDiskReads()
+                        .detectDiskWrites()
+                        .detectNetwork()
+                        .penaltyLog()
+                        .build());
+            }
+
 
 
 

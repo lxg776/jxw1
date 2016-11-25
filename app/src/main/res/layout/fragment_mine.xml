@@ -221,7 +221,33 @@
             />
     </LinearLayout>
 
+    <!--意见反馈-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="24dp"
+        android:paddingLeft="16dp"
+        android:background="@drawable/white_btn"
+        android:id="@+id/feedback_ll"
+        android:clickable="true"
 
+        >
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@mipmap/feedback_icon"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black_transparent_54"
+            android:textSize="16sp"
+            android:layout_marginLeft="16dp"
+            android:text="意见反馈"
+            />
+    </LinearLayout>
     <!--注销-->
     <LinearLayout
         android:layout_width="match_parent"

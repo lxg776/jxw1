@@ -101,6 +101,18 @@
             android:launchMode="singleTask"
             android:theme="@style/AppTheme" >
         </activity>
+        <!-- 意见反馈 -->
+        <activity
+            android:name=".activity.FeedBackActivity"
+            android:screenOrientation="portrait"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme" >
+        </activity>
+
+
+
+
         <!-- 填写手机号码 -->
         <activity
             android:name=".activity.WritePhoneActivity"

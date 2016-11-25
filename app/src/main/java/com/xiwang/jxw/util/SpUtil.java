@@ -77,24 +77,31 @@ public class SpUtil {
 	 * @param obj
 	 *                要保存的对象，只能保存实现了serializable的对象
 	 */
-	public static void setObject( Context context, String key, Object obj) {
-		try {
-			// 先将序列化结果写到byte缓存中，其实就分配一个内存空间
-			if (obj!=null) {
-				ByteArrayOutputStream bos = new ByteArrayOutputStream();
-				ObjectOutputStream os = new ObjectOutputStream(bos);
-				// 将对象序列化写入byte缓存
-				os.writeObject(obj);
-				// 将序列化的数据转为16进制保存
-				String bytesToHexString = bytesToHexString(bos.toByteArray());
-				// 保存该16进制数组
-				sp.edit().putString(key, bytesToHexString).commit();
-			}else{
-				sp.edit().putString(key, "").commit();
+	public static void setObject( Context context, final String key, final Object obj) {
+		HandlerUtil.getInstence().backgroundHandler.post(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					// 先将序列化结果写到byte缓存中，其实就分配一个内存空间
+					if (obj!=null) {
+						ByteArrayOutputStream bos = new ByteArrayOutputStream();
+						ObjectOutputStream os = new ObjectOutputStream(bos);
+						// 将对象序列化写入byte缓存
+						os.writeObject(obj);
+						// 将序列化的数据转为16进制保存
+						String bytesToHexString = bytesToHexString(bos.toByteArray());
+						// 保存该16进制数组
+						sp.edit().putString(key, bytesToHexString).commit();
+					}else{
+						sp.edit().putString(key, "").commit();
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		});
+
+
 	}
 	/**
 	 * 获取sp里面的obj

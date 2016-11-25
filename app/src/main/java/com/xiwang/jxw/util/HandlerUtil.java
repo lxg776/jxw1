@@ -1,6 +1,8 @@
 package com.xiwang.jxw.util;
 
 import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
 import android.os.Message;
 
 /**
@@ -13,6 +15,39 @@ import android.os.Message;
  * 
  */
 public class HandlerUtil {
+
+
+	HandlerThread backgroundThread;
+	public Handler backgroundHandler;
+	public Handler mainHandler;
+
+	private static  HandlerUtil instence;
+
+
+	private HandlerUtil(){
+		backgroundThread = new HandlerThread("BackgroundThumbnailHandlerThread");
+		backgroundThread.start();
+
+
+
+		backgroundHandler = new Handler(backgroundThread.getLooper());
+		mainHandler =new Handler(Looper.getMainLooper());
+	}
+
+	public  static HandlerUtil getInstence(){
+		if(instence ==null){
+			instence = new HandlerUtil();
+		}
+		return  instence;
+	}
+
+
+
+
+
+
+
+
 
 	/**
 	 * 发送消息

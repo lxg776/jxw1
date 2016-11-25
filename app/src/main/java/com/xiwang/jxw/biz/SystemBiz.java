@@ -11,6 +11,7 @@ import com.xiwang.jxw.bean.VersionInfoBean;
 import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.config.TApplication;
 import com.xiwang.jxw.network.AppHttpClient;
+import com.xiwang.jxw.util.HandlerUtil;
 import com.xiwang.jxw.util.Log;
 
 
@@ -36,63 +37,91 @@ public class SystemBiz extends BaseBiz {
          * @param handle
          * @throws FileNotFoundException
          */
-        public static void uploadImg(String path,final UploadImgListener handle) throws FileNotFoundException {
-            RequestParams params= getParams();
-            params.put("type","media");
-            File file =new File(path);
-            if(!file.exists()){
-                return;
-            }
-            params.put("file",file);
-            AppHttpClient.post(ServerConfig.UPLOAD_IMG, params, new AsyncHttpResponseHandler() {
+        public static void uploadImg(final String path,final UploadImgListener handle){
 
-
-
-
+            HandlerUtil.getInstence().backgroundHandler.post(new Runnable() {
                 @Override
-                public void onProgress(long bytesWritten, long totalSize) {
-                    super.onProgress(bytesWritten, totalSize);
-                    int progress= (int) (bytesWritten*100/totalSize);
-                    if(progress==100){
-                        handle.onFinish();
+                public void run() {
+                    RequestParams params= getParams();
+                    params.put("type","media");
+                    File file =new File(path);
+                    if(!file.exists()){
+                        return;
                     }
-                    handle.onProgress(progress);
-                }
-
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    String responseStr = new String(responseBody);
-
-                    ResponseBean responseBean = new ResponseBean();
-                    Log.d("data:" + responseStr);
                     try {
-                        JSONObject jsonObject = new JSONObject(responseStr);
-                        responseBean.setInfo(jsonObject.optString("msg"));
-                        responseBean.setStatus(jsonObject.optString("code"));
-                        responseBean.setObject(jsonObject.optString("data"));
-                    } catch (JSONException e) {
-                        responseBean.setStatus(ServerConfig.JSON_DATA_ERROR);
-                        responseBean.setInfo(TApplication.context.getResources().getString(R.string.exception_local_json_message));
-                        handle.onFail(responseBean);
+                        params.put("file",file);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
                     }
-                    if(BaseBiz.isSuccess(responseBean.getStatus())){
-                        handle.onSuccess(responseBean);
-                    }else
-                    {
-                        handle.onFail(responseBean);
-                    }
-                }
 
-                @Override
-                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    ResponseBean responseBean = new ResponseBean();
-                    responseBean.setStatus(statusCode + "");
-                    if(null!=responseBody){
-                        responseBean.setInfo(new String(responseBody));
-                    }
-                    handle.onFail(responseBean);
+                    AppHttpClient.post(ServerConfig.UPLOAD_IMG, params, new AsyncHttpResponseHandler() {
+                        @Override
+                        public void onProgress(final long bytesWritten, final long totalSize) {
+                           // super.onProgress(bytesWritten, totalSize);
+                            HandlerUtil.getInstence().mainHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    int progress= (int) (bytesWritten*100/totalSize);
+                                    if(progress==100){
+                                        handle.onFinish();
+                                    }
+                                    handle.onProgress(progress);
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                           final String responseStr = new String(responseBody);
+
+                            final ResponseBean responseBean = new ResponseBean();
+
+                            HandlerUtil.getInstence().mainHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Log.d("data:" + responseStr);
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(responseStr);
+                                        responseBean.setInfo(jsonObject.optString("msg"));
+                                        responseBean.setStatus(jsonObject.optString("code"));
+                                        responseBean.setObject(jsonObject.optString("data"));
+                                    } catch (JSONException e) {
+                                        responseBean.setStatus(ServerConfig.JSON_DATA_ERROR);
+                                        responseBean.setInfo(TApplication.context.getResources().getString(R.string.exception_local_json_message));
+                                        handle.onFail(responseBean);
+                                    }
+                                    if(BaseBiz.isSuccess(responseBean.getStatus())){
+                                        handle.onSuccess(responseBean);
+                                    }else
+                                    {
+                                        handle.onFail(responseBean);
+                                    }
+                                }
+                            });
+
+
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                            final ResponseBean responseBean = new ResponseBean();
+                            responseBean.setStatus(statusCode + "");
+                            if(null!=responseBody){
+                                responseBean.setInfo(new String(responseBody));
+                            }
+                            HandlerUtil.getInstence().mainHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    handle.onFail(responseBean);
+                                }
+                            });
+
+
+                        }
+                    });
                 }
             });
+
         }
 
 

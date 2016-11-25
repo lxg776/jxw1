@@ -8,6 +8,7 @@ import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 
 import com.xiwang.jxw.config.TApplication;
+import com.xiwang.jxw.util.HandlerUtil;
 import com.xiwang.jxw.util.Log;
 
 
@@ -53,8 +54,13 @@ public class AppHttpClient {
      * 清除cookies
      */
     public static  void clearCookie(){
-        PersistentCookieStore cookieStore = new PersistentCookieStore(TApplication.context);
-        cookieStore.clear();
+        HandlerUtil.getInstence().backgroundHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                PersistentCookieStore cookieStore = new PersistentCookieStore(TApplication.context);
+                cookieStore.clear();
+            }
+        });
     }
 
 

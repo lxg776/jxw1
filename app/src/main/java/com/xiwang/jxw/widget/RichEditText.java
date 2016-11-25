@@ -77,7 +77,6 @@ public class RichEditText extends EditText {
 						if(null!=bitmap){
 							bitmap=zoomImage(bitmap, DisplayUtil.dip2px(mContext, 24),DisplayUtil.dip2px(mContext,24));
 							addEmoji(bitmap,smileBean.getId());
-							ToastUtil.showToast(mContext,getRichText());
 						}
 					}catch (Exception e){
 						e.printStackTrace();

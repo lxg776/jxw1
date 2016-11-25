@@ -227,7 +227,7 @@ public class UploadImgView extends RelativeLayout{
 
     private void uploadImage(final ShowImg img){
 
-        try {
+
             SystemBiz.uploadImg(img.path, new SystemBiz.UploadImgListener() {
                 @Override
                 public void onSuccess(ResponseBean responseBean) {
@@ -268,9 +268,7 @@ public class UploadImgView extends RelativeLayout{
                     notifyChance(img.path);
                 }
             });
-        } catch (FileNotFoundException e) {
-            notifyChance(img.path);
-        }
+
     }
 
 

@@ -20,13 +20,21 @@
     <!--android:visibility="gone"-->
     <!--/>-->
 
-    <com.xiwang.jxw.widget.PercentView
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Mine.ProgressBar"
         android:id="@+id/progress_view"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        app:is_rect="false"
-        app:background_color="#7fff9800"
         android:layout_centerInParent="true"
+        />
 
-    />
+    <!--<com.xiwang.jxw.widget.PercentView-->
+        <!--android:id="@+id/progress_view"-->
+        <!--android:layout_width="200dp"-->
+        <!--android:layout_height="200dp"-->
+        <!--app:is_rect="false"-->
+        <!--app:background_color="#7fff9800"-->
+        <!--android:layout_centerInParent="true"-->
+
+    <!--/>-->
 </RelativeLayout>

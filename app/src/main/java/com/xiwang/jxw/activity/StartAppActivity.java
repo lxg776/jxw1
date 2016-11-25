@@ -1,6 +1,8 @@
 package com.xiwang.jxw.activity;
 
 import android.graphics.Bitmap;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.view.View;
 import android.widget.ImageView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -19,6 +21,7 @@ import com.xiwang.jxw.biz.SystemBiz;
 import com.xiwang.jxw.config.ServerConfig;
 import com.xiwang.jxw.network.AppHttpClient;
 import com.xiwang.jxw.util.CommonUtil;
+import com.xiwang.jxw.util.HandlerUtil;
 import com.xiwang.jxw.util.ImgLoadUtil;
 import com.xiwang.jxw.util.IntentUtil;
 import com.xiwang.jxw.util.NetWorkUtil;
@@ -39,6 +42,10 @@ public class StartAppActivity extends BaseActivity {
     /** 图片路径*/
     String imgUrl;
 
+
+
+    HandlerThread backgroundThread;
+    Handler backgroundHandler;
 
 
     /** 图片显示的配置*/
@@ -105,15 +112,22 @@ public class StartAppActivity extends BaseActivity {
     @Override
     protected void init() {
         MobclickAgent.openActivityDurationTrack(false);
+
+        backgroundThread = new HandlerThread("BackgroundThumbnailHandlerThread");
+        backgroundThread.start();
+        backgroundHandler = new Handler(backgroundThread.getLooper());
+
         /** 获取开机界面*/
         SystemBiz.getStartAppImage(new BaseBiz.RequestHandle() {
             @Override
-            public void onSuccess(ResponseBean responseBean) {
+            public void onSuccess(final ResponseBean responseBean) {
                 StartAppBean bean = (StartAppBean) responseBean.getObject();
                 imgUrl = bean.getImgurl();
                 BaseBiz.signatureKay = bean.getSignkey();
                 ImgLoadUtil.displayImage(imgUrl, img_view, displayOptions, listener);
+
                 SpUtil.setObject(context, getString(R.string.start_app_img), responseBean);
+
             }
 
             @Override
@@ -136,7 +150,13 @@ public class StartAppActivity extends BaseActivity {
         });
         mHandler.postDelayed(toMainRunable, 3000);
 
+
+
+
     }
+
+
+
 
     @Override
     protected void initGetData() {

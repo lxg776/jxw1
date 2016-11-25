@@ -1,12 +1,14 @@
 package com.xiwang.jxw.fragment;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.xiwang.jxw.R;
+import com.xiwang.jxw.activity.FeedBackActivity;
 import com.xiwang.jxw.activity.MainActivity;
 import com.xiwang.jxw.activity.MyPublishActivity;
 import com.xiwang.jxw.activity.PersionDetailActivity;
@@ -23,6 +25,7 @@ import com.xiwang.jxw.util.AppUtils;
 import com.xiwang.jxw.util.CommonUtil;
 import com.xiwang.jxw.util.ImgLoadUtil;
 import com.xiwang.jxw.util.SpUtil;
+import com.xiwang.jxw.util.ToastUtil;
 
 
 /**
@@ -51,6 +54,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
     private TextView sign_tv;
     /** 注销当前帐号*/
     private LinearLayout quit_ll;
+    /** 意见反馈*/
+    private LinearLayout feedback_ll;
 
     /**当前版本信息*/
     TextView mCurrentVerionTv;
@@ -72,7 +77,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
         setting_ll= (LinearLayout) view_Parent.findViewById(R.id.setting_ll);
         collect_ll = (LinearLayout) view_Parent.findViewById(R.id.collect_ll);
         tidao_ll = (LinearLayout) view_Parent.findViewById(R.id.tidao_ll);
-
+        feedback_ll= (LinearLayout) view_Parent.findViewById(R.id.feedback_ll);
         sign_tv= (TextView) view_Parent.findViewById(R.id.sign_tv);
         user_tv= (TextView) view_Parent.findViewById(R.id.user_tv);
         user_headimg_iv= (ImageView) view_Parent.findViewById(R.id.user_headimg_iv);
@@ -93,6 +98,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
         collect_ll.setOnClickListener(this);
         tidao_ll.setOnClickListener(this);
         quit_ll.setOnClickListener(this);
+        feedback_ll.setOnClickListener(this);
 
     }
 
@@ -123,11 +129,22 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
             }else{
                 mCurrentVerionTv.setText("当前版本为v"+AppUtils.getAppVersionName(getActivity()));
                 mCurrentVerionTv.setTextColor(getResources().getColor(R.color.black_transparent_54));
+                findViewById(R.id.version_ll).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ToastUtil.showToast(context,"已是最新版本!");
+                    }
+                });
             }
         }else{
             mCurrentVerionTv.setText(AppUtils.getAppName(getActivity())+"v"+AppUtils.getAppVersionName(getActivity()));
             mCurrentVerionTv.setTextColor(getResources().getColor(R.color.black_transparent_54));
-            findViewById(R.id.version_ll).setOnClickListener(null);
+            findViewById(R.id.version_ll).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ToastUtil.showToast(context,"已是最新版本!");
+                }
+            });
         }
     }
 
@@ -147,6 +164,10 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
                     break;
                 case R.id.collect_ll:
                     //ToastUtil.showToast(context,"lxg776");
+                    break;
+                case R.id.feedback_ll:
+                    //意见反馈
+                    FeedBackActivity.openActivity(getActivity(),new Bundle());
                     break;
                 case R.id.tidao_ll:
                     break;
@@ -200,7 +221,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener{
         if(null!=userBean){
             user_tv.setText(userBean.getUsername());
             if(null!=userBean.getUserInfoBean()){
-                ImgLoadUtil.displayImage(userBean.getUserInfoBean().getFace(), user_headimg_iv);
+                ImgLoadUtil.displayImage(userBean.getUserInfoBean().getFace(), user_headimg_iv,ImgLoadUtil.getUserOptions());
                 if(!TextUtils.isEmpty(userBean.getUserInfoBean().getSignature())){
                     sign_tv.setText(userBean.getUserInfoBean().getSignature());
                 }
