@@ -275,7 +275,7 @@ public class BaseBiz {
         public  void onRequestCache(ResponseBean result);
     }
 
-    public static String ver="1.0";
+    public static String ver="1.1";
     public static String platform="android";
     public static String signatureKay ="hd88d145dasg";
 

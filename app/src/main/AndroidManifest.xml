@@ -85,6 +85,18 @@
             android:theme="@style/AppTheme" >
         </activity>
 
+
+        <!-- 主界面 -->
+        <activity
+            android:name=".activity.SearchActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:exported="false"
+            android:theme="@style/AppTheme" >
+        </activity>
+
+
+
         <!-- 退出Activity -->
         <activity
             android:name=".activity.ExitActivity"

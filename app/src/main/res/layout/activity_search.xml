@@ -1,0 +1,163 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_100"
+    android:orientation="vertical"
+    >
+
+    <!--头部-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        >
+        <ImageView
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:src="@mipmap/back_gray"
+            android:scaleType="center"
+            android:layout_centerVertical="true"
+            android:id="@+id/back_btn"
+            />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="32dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/search_input"
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/search_icon"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="12dp"
+                />
+            <com.xiwang.jxw.widget.DeleteEditText
+                android:id="@+id/input_key_edt"
+                android:hint="请输入关键词"
+                style="@style/etd_1"
+                android:layout_height="32dp"
+                android:password="true"
+                />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:text="搜索"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textColor="#4b73a7"
+            android:id="@+id/do_search_btn"
+
+            />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!--初始-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/search_options_ll"
+            >
+            <!--历史搜索-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/history_key_ll"
+                android:visibility="gone"
+                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:text="历史搜索"
+                        android:gravity="center"
+                        android:textSize="14sp"
+                        android:textColor="@color/black_transparent_54"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:text="清除历史搜索"
+                        android:gravity="center"
+                        android:textSize="14sp"
+                        android:textColor="#4b73a7"
+                        android:id="@+id/clear_btn"
+                        android:layout_alignParentRight="true"
+                        />
+                    <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/item_default_selector"
+                        android:id="@+id/history_key_list"
+                        ></ListView>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <!--搜索热词-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:text="热门搜索"
+                android:layout_marginLeft="16dp"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:textColor="@color/black_transparent_54"
+                />
+
+            <com.zhy.view.flowlayout.TagFlowLayout
+                android:id="@+id/hot_search_tag"
+                app:max_select="-1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+            </com.zhy.view.flowlayout.TagFlowLayout>
+
+        </LinearLayout>
+        <!--搜索结果-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:id="@+id/result_ll"
+            >
+        <cn.bingoogolapple.refreshlayout.BGARefreshLayout
+            android:id="@+id/refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/reslut_listview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@color/trans"
+                android:dividerHeight="0dp"
+                android:footerDividersEnabled="false"></android.support.v7.widget.RecyclerView>
+        </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
+        </LinearLayout>
+
+    </FrameLayout>
+
+
+
+
+</LinearLayout>

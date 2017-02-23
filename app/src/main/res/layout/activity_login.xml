@@ -31,6 +31,7 @@
             android:id="@+id/pwd_edt"
             android:hint="密码"
             style="@style/etd_1"
+            android:paddingLeft="8dp"
             android:password="true"
             />
 

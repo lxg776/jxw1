@@ -17,5 +17,6 @@
     <string name="cache_dig">cache_dig</string>
     <string name="alert_update_time">alert_update_time</string>
     <string name="update_verion">update_verion</string>
+    <string name="search_data">search_data</string>
 
 </resources>

@@ -6,8 +6,8 @@ android {
         applicationId "com.xiwang.jxw"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 100
-        versionName "1.0"
+        versionCode 110
+        versionName "1.1"
     }
 
     signingConfigs {
@@ -86,4 +86,6 @@ dependencies {
     //  compile 'pl.droidsonroids.gif:android-gif-drawable:1.1.+'
     compile 'cn.bingoogolapple:bga-refreshlayout:1.1.6@aar'
     compile 'com.android.support:design:23.4.0'
+    compile 'org.sufficientlysecure:html-textview:3.0'
+    compile 'com.zhy:flowlayout-lib:1.0.3'
 }
